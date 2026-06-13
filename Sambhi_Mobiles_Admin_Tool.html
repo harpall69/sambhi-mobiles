@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sambhi Mobiles — Bill Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--white:#fff;--accent:#FF4C1C;--accent-soft:#fff1ed;
+  --gray-50:#f9f9f8;--gray-100:#f0efeb;--gray-300:#d0cfc9;
+  --gray-500:#7a7975;--gray-700:#3d3d3b;--green:#1a7a45;--green-soft:#e8f5ee;
+  --border:rgba(0,0,0,0.09);--red:#c0392b;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--black);min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:var(--black);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-logo{font-size:18px;font-weight:800;color:var(--white)}
+.topbar-logo span{color:var(--accent)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.inv-counter{font-size:12px;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 400px;gap:0;min-height:calc(100vh - 58px)}
+
+/* FORM PANEL */
+.form-panel{padding:28px;overflow-y:auto;border-right:1px solid var(--border)}
+.section-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;margin-top:28px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.section-title:first-child{margin-top:0}
+
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--gray-500);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:9px;color:var(--black);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+.fg select{-webkit-appearance:none;cursor:pointer}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* DEPRECIATION CHECKBOXES */
+.dep-grid{display:flex;flex-direction:column;gap:8px}
+.dep-item{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .2s;user-select:none}
+.dep-item:hover{border-color:var(--gray-300)}
+.dep-item.checked{border-color:var(--accent);background:var(--accent-soft)}
+.dep-left{display:flex;align-items:center;gap:10px}
+.dep-cb{width:18px;height:18px;border-radius:5px;border:2px solid var(--gray-300);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .2s}
+.dep-item.checked .dep-cb{background:var(--accent);border-color:var(--accent);color:white}
+.dep-label-text{font-size:13px;font-weight:500}
+.dep-pct{font-size:11px;font-weight:700;color:var(--red)}
+
+/* SLOT BUTTONS */
+.slot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot-btn{border:1.5px solid var(--border);background:var(--white);color:var(--gray-700);padding:11px;border-radius:9px;font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.slot-btn.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+/* PRICE SUMMARY */
+.price-box{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-top:4px}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.price-row:last-child{border:none}
+.price-row.deduct .val{color:var(--red);font-weight:600}
+.price-row.total-row{padding-top:8px}
+.price-row .lbl{color:var(--gray-500)}
+.grand-box{background:var(--black);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.grand-box .gl{font-size:12px;color:rgba(255,255,255,0.5)}
+.grand-box .gv{font-size:22px;font-weight:800;color:var(--white)}
+.grand-box .ga{font-size:11px;color:var(--accent);margin-top:2px}
+
+/* GENERATE BUTTON */
+.gen-btn{width:100%;background:var(--accent);color:var(--white);border:none;padding:15px;border-radius:11px;font-size:16px;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.gen-btn:hover{opacity:.88}
+.wa-btn{width:100%;background:#25D366;color:var(--white);border:none;padding:13px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;transition:opacity .2s}
+.wa-btn:hover{opacity:.88}
+
+/* PREVIEW PANEL */
+.preview-panel{background:var(--white);padding:0;display:flex;flex-direction:column}
+.preview-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--gray-50)}
+.preview-header h3{font-size:14px;font-weight:700}
+.preview-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--green-soft);color:var(--green)}
+.bill-wrap{padding:20px;flex:1;overflow-y:auto}
+
+/* BILL PREVIEW */
+.bill{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-family:'Segoe UI',sans-serif}
+.bill-head{background:var(--black);padding:16px 18px;display:flex;justify-content:space-between;align-items:flex-start}
+.bill-head-left .biz{font-size:17px;font-weight:800;color:var(--white)}
+.bill-head-left .biz span{color:var(--accent)}
+.bill-head-left p{font-size:9px;color:rgba(255,255,255,0.4);margin-top:3px;line-height:1.5}
+.bill-head-right{text-align:right}
+.bill-inv-badge{background:var(--accent);color:var(--white);font-size:10px;font-weight:700;padding:4px 12px;border-radius:5px;margin-bottom:5px;display:inline-block}
+.bill-head-right p{font-size:9px;color:rgba(255,255,255,0.45);margin-top:2px}
+.bill-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.bcol{background:var(--gray-50);border-radius:8px;padding:10px}
+.bcol .lbl{font-size:8px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.bcol h4{font-size:12px;font-weight:700;margin-bottom:3px}
+.bcol p{font-size:10px;color:var(--gray-500);line-height:1.55}
+.imei-bar{margin:0 14px 10px;background:#e8f0fe;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:600;color:#1560BD}
+.tx-bar{margin:0 14px 10px;border-radius:7px;padding:7px 10px;font-size:10px;font-weight:700;color:var(--white)}
+.tx-purchase{background:var(--green)}
+.tx-sale{background:var(--accent)}
+/* TABLE */
+.btable{width:100%;border-collapse:collapse;margin:0 0 0}
+.btable th{background:var(--black);color:var(--white);font-size:8px;font-weight:700;padding:6px 6px;text-align:center}
+.btable th:nth-child(2){text-align:left}
+.btable td{font-size:9px;padding:6px 6px;border-bottom:1px solid var(--border);text-align:center;color:var(--black)}
+.btable td:nth-child(2){text-align:left}
+.btable tr:nth-child(even) td{background:var(--gray-50)}
+.item-name{font-weight:600;font-size:10px}
+.item-sub{font-size:8px;color:var(--gray-500);margin-top:1px}
+/* TOTALS */
+.btotals{display:flex;justify-content:flex-end;padding:10px 14px}
+.btot-inner{width:190px}
+.btr{display:flex;justify-content:space-between;font-size:10px;padding:3px 0;border-bottom:1px solid var(--border)}
+.btr.grand{background:var(--black);color:var(--white);padding:7px 8px;border-radius:7px;font-weight:700;font-size:12px;border:none;margin-top:4px}
+/* DEP + COND */
+.bill-bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px}
+.dep-box{background:#fff1ed;border:1px solid rgba(255,76,28,0.2);border-radius:8px;padding:10px}
+.dep-box h5{font-size:9px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase}
+.dep-box p{font-size:9px;color:var(--gray-700);padding:2px 0;line-height:1.5}
+.cond-box{background:var(--gray-50);border-radius:8px;padding:10px}
+.cond-box h5{font-size:9px;font-weight:700;color:var(--gray-700);margin-bottom:6px;text-transform:uppercase}
+.cond-box p{font-size:9px;color:var(--gray-500);padding:2px 0}
+/* SIG */
+.bill-sig{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px}
+.sig-box{background:var(--gray-50);border-radius:8px;padding:10px;min-height:44px}
+.sig-box p{font-size:8px;color:var(--gray-500);line-height:1.5}
+/* FOOTER */
+.bill-foot{background:var(--black);padding:10px 14px;text-align:center}
+.bill-foot p{font-size:8px;color:rgba(255,255,255,0.35);line-height:1.6}
+.bill-foot .accent{color:var(--accent)}
+/* words */
+.bill-words{font-size:9px;color:var(--gray-500);font-style:italic;padding:4px 14px 8px}
+
+/* SUCCESS TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;display:none;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.toast.show{display:block}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr}.preview-panel{display:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Sambhi <span>Mobiles</span> — Admin</div>
+  <div class="topbar-right">
+    <span class="inv-counter">Invoice: <strong id="invNumDisplay">SMB-2025-0001</strong></span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ── FORM PANEL ── -->
+  <div class="form-panel">
+
+    <div class="section-title">Customer Details</div>
+    <div class="two">
+      <div class="fg"><label>Customer Name *</label><input id="cName" placeholder="Rohan Mehta" oninput="liveUpdate()"></div>
+      <div class="fg"><label>WhatsApp Number *</label><input id="cPhone" placeholder="+91 98100 55678" oninput="liveUpdate()"></div>
+    </div>
+    <div class="fg"><label>Delhi Address</label><input id="cAddr" placeholder="B-42, Safdarjung Enclave, New Delhi" oninput="liveUpdate()"></div>
+
+    <div class="section-title">Transaction Details</div>
+    <div class="two">
+      <div class="fg">
+        <label>Transaction Type *</label>
+        <select id="txType" onchange="liveUpdate()">
+          <option value="PURCHASE">Purchase from Customer (We Buy)</option>
+          <option value="SALE">Sale to Customer (We Sell)</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Pickup Slot</label>
+        <div class="slot-row">
+          <button class="slot-btn active" id="sl-m" onclick="pickSlot('morning')">🌅 Morning<br><small>9AM–1PM</small></button>
+          <button class="slot-btn" id="sl-e" onclick="pickSlot('evening')">🌆 Evening<br><small>4PM–8PM</small></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Device Details</div>
+    <div class="two">
+      <div class="fg">
+        <label>Device Type *</label>
+        <select id="devType" onchange="updateModels();liveUpdate()">
+          <option value="">Select device</option>
+          <option value="iphone">iPhone</option>
+          <option value="airpods">AirPods</option>
+          <option value="playstation">PlayStation</option>
+          <option value="applewatch">Apple Watch</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Model *</label>
+        <select id="devModel" onchange="setBasePrice();liveUpdate()">
+          <option value="">Select model</option>
+        </select>
+      </div>
+    </div>
+    <div class="three">
+      <div class="fg"><label>Storage / Size</label><input id="devStorage" placeholder="256GB" oninput="liveUpdate()"></div>
+      <div class="fg"><label>Colour</label><input id="devColor" placeholder="Deep Purple" oninput="liveUpdate()"></div>
+      <div class="fg"><label>Year of Purchase</label>
+        <select id="devYear" onchange="calcAll();liveUpdate()">
+          <option value="">Year</option>
+          <option>2024</option><option>2023</option><option>2022</option>
+          <option>2021</option><option>2020</option><option>2019</option>
+          <option>2018</option><option>2017</option>
+        </select>
+      </div>
+    </div>
+    <div class="two">
+      <div class="fg"><label>IMEI Number</label><input id="devIMEI" placeholder="15-digit IMEI (*#06#)" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'');liveUpdate()"></div>
+      <div class="fg"><label>Battery Health %</label><input id="devBatt" type="number" min="40" max="100" placeholder="84" oninput="calcAll();liveUpdate()"></div>
+    </div>
+
+    <div class="section-title">Condition & Depreciation</div>
+    <p style="font-size:12px;color:var(--gray-500);margin-bottom:10px">Tick everything that applies — price adjusts automatically.</p>
+    <div class="dep-grid" id="depGrid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="section-title">Pricing</div>
+    <div class="price-box">
+      <div class="price-row"><span class="lbl">Base market price</span><span class="val" id="pBase">—</span></div>
+      <div class="price-row deduct"><span class="lbl">Age depreciation (auto)</span><span class="val" id="pAge">—</span></div>
+      <div class="price-row deduct"><span class="lbl">Battery deduction (auto)</span><span class="val" id="pBatt">—</span></div>
+      <div class="price-row deduct"><span class="lbl">Condition deductions</span><span class="val" id="pCond">—</span></div>
+      <div class="price-row total-row"><span class="lbl" style="font-weight:600">Taxable value</span><span class="val" id="pTaxable" style="font-weight:700">—</span></div>
+      <div class="price-row"><span class="lbl">CGST @ 9%</span><span class="val" id="pCGST">—</span></div>
+      <div class="price-row"><span class="lbl">SGST @ 9%</span><span class="val" id="pSGST">—</span></div>
+    </div>
+    <div class="grand-box">
+      <div><div class="gl">Grand Total (incl. GST)</div><div class="gv" id="pGrand">—</div><div class="ga" id="pRetain"></div></div>
+      <div style="text-align:right"><div style="font-size:10px;color:rgba(255,255,255,0.35)">Customer pays</div><div id="pWords" style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:3px;max-width:120px;text-align:right;line-height:1.4"></div></div>
+    </div>
+
+    <div class="fg" style="margin-top:14px"><label>Additional Notes (optional)</label>
+      <textarea id="notes" rows="2" placeholder="Any extra accessories, remarks…" oninput="liveUpdate()"></textarea>
+    </div>
+
+    <button class="gen-btn" onclick="generatePDF()">📄 Generate & Download GST Bill</button>
+    <button class="wa-btn" onclick="openWhatsApp()">📲 Send via WhatsApp</button>
+    <p style="font-size:11px;color:var(--gray-500);text-align:center;margin-top:10px">Invoice auto-numbered · GSTIN & PAN pre-filled · Ready to share</p>
+
+  </div>
+
+  <!-- ── PREVIEW PANEL ── -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <h3>Live Bill Preview</h3>
+      <span class="preview-badge">Auto-updates</span>
+    </div>
+    <div class="bill-wrap">
+      <div class="bill" id="billPreview">
+        <!-- filled by liveUpdate() -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">✅ Bill downloaded successfully!</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const MODELS = {
+  iphone:{
+    'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,
+    'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,
+    'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,
+    'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,
+    'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,
+    'iPhone SE (2022)':24000,'iPhone SE (2020)':14000,'iPhone XR':12000
+  },
+  airpods:{
+    'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,
+    'AirPods Max':30000,'AirPods 3rd Gen':10000,'AirPods 2nd Gen':6000
+  },
+  playstation:{
+    'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,
+    'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000
+  },
+  applewatch:{
+    'Apple Watch Ultra 2':58000,'Apple Watch Ultra':44000,
+    'Apple Watch Series 9':32000,'Apple Watch Series 8':26000,
+    'Apple Watch Series 7':20000,'Apple Watch SE 2nd Gen':16000,
+    'Apple Watch Series 6':15000,'Apple Watch Series 5':11000
+  }
+};
+const HSN = {iphone:'8517',airpods:'8518',playstation:'9504',applewatch:'9102'};
+const DEP_ITEMS = [
+  {id:'charger', label:'Charger missing',          pct:0.05},
+  {id:'screen',  label:'Screen cracked / damaged', pct:0.18},
+  {id:'body',    label:'Body dents / damage',       pct:0.10},
+  {id:'battlow', label:'Battery below 80%',         pct:0.12},
+  {id:'nobox',   label:'Original box missing',      pct:0.03},
+  {id:'biometric',label:'Face ID / Touch ID broken',pct:0.10},
+];
+let depState = {};
+let basePrice = 0;
+let invNum = parseInt(localStorage.getItem('smb_inv') || '1');
+let selectedSlot = 'morning';
+
+// ── INIT ─────────────────────────────────────────────────────────
+document.getElementById('invNumDisplay').textContent = fmtInv(invNum);
+
+function fmtInv(n){ return 'SMB-2025-' + String(n).padStart(4,'0'); }
+
+// Build dep checkboxes
+const dg = document.getElementById('depGrid');
+DEP_ITEMS.forEach(d => {
+  depState[d.id] = false;
+  const el = document.createElement('div');
+  el.className = 'dep-item';
+  el.id = 'dep_' + d.id;
+  el.innerHTML = `<div class="dep-left"><div class="dep-cb" id="dcb_${d.id}"></div><span class="dep-label-text">${d.label}</span></div><span class="dep-pct">-${(d.pct*100).toFixed(0)}%</span>`;
+  el.onclick = () => toggleDep(d.id);
+  dg.appendChild(el);
+});
+
+// ── MODELS ────────────────────────────────────────────────────────
+function updateModels(){
+  const dt = document.getElementById('devType').value;
+  const ms = document.getElementById('devModel');
+  ms.innerHTML = '<option value="">Select model</option>';
+  basePrice = 0;
+  if(!dt || !MODELS[dt]) return;
+  Object.keys(MODELS[dt]).forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m; ms.appendChild(o);
+  });
+}
+function setBasePrice(){
+  const dt = document.getElementById('devType').value;
+  const m  = document.getElementById('devModel').value;
+  basePrice = (dt && m && MODELS[dt] && MODELS[dt][m]) ? MODELS[dt][m] : 0;
+  calcAll();
+}
+
+// ── SLOT ─────────────────────────────────────────────────────────
+function pickSlot(s){
+  selectedSlot = s;
+  document.getElementById('sl-m').classList.toggle('active', s==='morning');
+  document.getElementById('sl-e').classList.toggle('active', s==='evening');
+}
+
+// ── DEPRECIATION ─────────────────────────────────────────────────
+function toggleDep(id){
+  if(!basePrice){ alert('Select device & model first.'); return; }
+  depState[id] = !depState[id];
+  document.getElementById('dep_'+id).classList.toggle('checked', depState[id]);
+  document.getElementById('dcb_'+id).textContent = depState[id] ? '✕' : '';
+  calcAll(); liveUpdate();
+}
+function ageDep(){
+  const yr = parseInt(document.getElementById('devYear').value);
+  if(!yr || !basePrice) return 0;
+  return Math.round(basePrice * Math.min((2025-yr)*0.07, 0.42));
+}
+function battDep(){
+  const b = parseInt(document.getElementById('devBatt').value);
+  if(!b || b >= 80 || !basePrice) return 0;
+  return Math.round(basePrice * Math.min((80-b)*0.007, 0.20));
+}
+function condDep(){
+  return DEP_ITEMS.reduce((s,d) => s + (depState[d.id] ? Math.round(basePrice*d.pct) : 0), 0);
+}
+
+// ── CALC ─────────────────────────────────────────────────────────
+let taxable=0, cgst=0, sgst=0, grand=0, ageD=0, battD=0, condD=0;
+function calcAll(){
+  if(!basePrice){ taxable=cgst=sgst=grand=ageD=battD=condD=0; updatePriceUI(); return; }
+  ageD  = ageDep();
+  battD = battDep();
+  condD = condDep();
+  taxable = Math.max(basePrice - ageD - battD - condD, Math.round(basePrice*0.15));
+  cgst = Math.round(taxable * 0.09 * 100)/100;
+  sgst = Math.round(taxable * 0.09 * 100)/100;
+  grand = Math.round((taxable + cgst + sgst)*100)/100;
+  updatePriceUI();
+}
+function updatePriceUI(){
+  const f = n => n ? 'Rs ' + n.toLocaleString('en-IN') : '—';
+  document.getElementById('pBase').textContent    = basePrice ? f(basePrice) : '—';
+  document.getElementById('pAge').textContent     = ageD  ? '-' + f(ageD)  : '-Rs 0';
+  document.getElementById('pBatt').textContent    = battD ? '-' + f(battD) : '-Rs 0';
+  document.getElementById('pCond').textContent    = condD ? '-' + f(condD) : '-Rs 0';
+  document.getElementById('pTaxable').textContent = taxable ? f(taxable) : '—';
+  document.getElementById('pCGST').textContent    = cgst ? f(cgst)   : '—';
+  document.getElementById('pSGST').textContent    = sgst ? f(sgst)   : '—';
+  document.getElementById('pGrand').textContent   = grand ? 'Rs ' + grand.toLocaleString('en-IN') : '—';
+  document.getElementById('pRetain').textContent  = basePrice ? Math.round((taxable/basePrice)*100)+'% of base retained' : '';
+  document.getElementById('pWords').textContent   = grand ? numWords(Math.round(grand)) + ' Rupees' : '';
+}
+
+// ── LIVE PREVIEW ─────────────────────────────────────────────────
+function liveUpdate(){
+  calcAll();
+  const cName  = document.getElementById('cName').value  || 'Customer Name';
+  const cPhone = document.getElementById('cPhone').value || '+91 XXXXX XXXXX';
+  const cAddr  = document.getElementById('cAddr').value  || 'Delhi, India';
+  const dt     = document.getElementById('devType').value;
+  const dm     = document.getElementById('devModel').value;
+  const ds     = document.getElementById('devStorage').value;
+  const dc     = document.getElementById('devColor').value;
+  const dy     = document.getElementById('devYear').value;
+  const imei   = document.getElementById('devIMEI').value;
+  const batt   = document.getElementById('devBatt').value;
+  const txType = document.getElementById('txType').value;
+  const notes  = document.getElementById('notes').value;
+  const hsn    = HSN[dt] || '8517';
+  const today  = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const devDesc = [dm, ds, dc].filter(Boolean).join(' – ') || 'Device not selected';
+  const subLine = ['Condition info', batt?`Battery: ${batt}%`:'', dy?`Year: ${dy}`:'', notes].filter(Boolean).join(' | ');
+  const depLines = DEP_ITEMS.filter(d=>depState[d.id])
+    .map(d=>`<p>• ${d.label}: -Rs ${Math.round(basePrice*d.pct).toLocaleString('en-IN')}</p>`).join('');
+  const condLines = [
+    ['Screen', depState.screen?'Cracked/damaged':'No cracks'],
+    ['Body', depState.body?'Dents/damage':'Good'],
+    ['Battery', batt?batt+'%':'Not checked'],
+    ['Face ID', depState.biometric?'Not working':'Working'],
+    ['Charger', depState.charger?'Not included':'Included'],
+    ['Box', depState.nobox?'Not included':'Included'],
+  ].map(([k,v])=>`<p>${k}: ${v}</p>`).join('');
+
+  document.getElementById('billPreview').innerHTML = `
+    <div class="bill-head">
+      <div class="bill-head-left">
+        <div class="biz">Sambhi <span>Mobiles</span></div>
+        <p>Prop: Amrik Singh | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M<br>
+        1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019<br>
+        Ph: +91 7827505579</p>
+      </div>
+      <div class="bill-head-right">
+        <div class="bill-inv-badge">TAX INVOICE</div>
+        <p>No: ${fmtInv(invNum)}</p>
+        <p>Date: ${today}</p>
+      </div>
+    </div>
+    <div class="bill-cols">
+      <div class="bcol"><div class="lbl">Seller</div><h4>Sambhi Mobiles</h4><p>Amrik Singh (Proprietor)<br>07BWPPS6835M1ZI<br>PAN: BWPPS6835M</p></div>
+      <div class="bcol"><div class="lbl">Customer</div><h4>${cName}</h4><p>${cPhone}<br>${cAddr}<br>Delhi (07)</p></div>
+    </div>
+    ${imei?`<div class="imei-bar">✅ IMEI VERIFIED (CEIR): ${imei}</div>`:''}
+    <div class="tx-bar ${txType==='PURCHASE'?'tx-purchase':'tx-sale'}">${txType==='PURCHASE'?'🔁 DEVICE PURCHASED FROM CUSTOMER':'🛒 DEVICE SOLD TO CUSTOMER'}</div>
+    <table class="btable">
+      <thead><tr><th>#</th><th>Item & Condition</th><th>HSN</th><th>Qty</th><th>Rate</th><th>Disc</th><th>Taxable</th><th>GST%</th><th>GST Amt</th><th>Total</th></tr></thead>
+      <tbody><tr>
+        <td>1</td>
+        <td><div class="item-name">${devDesc||'—'}</div><div class="item-sub">${subLine||'Fill device details'}</div></td>
+        <td>${hsn}</td><td>1</td>
+        <td>${basePrice?'Rs '+basePrice.toLocaleString('en-IN'):'—'}</td>
+        <td>${(ageD+battD+condD)?'Rs '+(ageD+battD+condD).toLocaleString('en-IN'):'—'}</td>
+        <td>${taxable?'Rs '+taxable.toLocaleString('en-IN'):'—'}</td>
+        <td>18%</td>
+        <td>${cgst?'Rs '+(cgst+sgst).toLocaleString('en-IN'):'—'}</td>
+        <td>${grand?'Rs '+grand.toLocaleString('en-IN'):'—'}</td>
+      </tr></tbody>
+    </table>
+    <div class="btotals">
+      <div class="btot-inner">
+        <div class="btr"><span>Taxable Value</span><span>${taxable?'Rs '+taxable.toLocaleString('en-IN'):'—'}</span></div>
+        <div class="btr"><span>CGST @ 9%</span><span>${cgst?'Rs '+cgst.toLocaleString('en-IN'):'—'}</span></div>
+        <div class="btr"><span>SGST @ 9%</span><span>${sgst?'Rs '+sgst.toLocaleString('en-IN'):'—'}</span></div>
+        <div class="btr grand"><span>GRAND TOTAL</span><span>${grand?'Rs '+grand.toLocaleString('en-IN'):'—'}</span></div>
+      </div>
+    </div>
+    <div class="bill-words">${grand?'Amount in words: '+numWords(Math.round(grand))+' Rupees Only':''}</div>
+    <div class="bill-bottom">
+      <div class="dep-box"><h5>Depreciation Summary</h5>
+        ${basePrice?`<p>Base price: Rs ${basePrice.toLocaleString('en-IN')}</p>${depLines}<p>Age dep: -Rs ${ageD.toLocaleString('en-IN')} | Batt dep: -Rs ${battD.toLocaleString('en-IN')}</p><p><strong>Final: Rs ${taxable.toLocaleString('en-IN')} (${Math.round((taxable/basePrice)*100)}% retained)</strong></p>`:'<p>Fill device details</p>'}
+      </div>
+      <div class="cond-box"><h5>Device Condition</h5>${condLines}</div>
+    </div>
+    <div class="bill-sig">
+      <div class="sig-box"><p>Customer Signature & Thumb</p><br><p style="margin-top:8px">${cName}</p></div>
+      <div class="sig-box"><p>For Sambhi Mobiles<br>Authorised Signatory<br><strong>Amrik Singh</strong><br>GSTIN: 07BWPPS6835M1ZI</p></div>
+    </div>
+    <div class="bill-foot">
+      <p><span class="accent">Sambhi Mobiles</span> | 1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019</p>
+      <p>Ph: +91 7827505579 | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M | Place of Supply: Delhi (07)</p>
+    </div>`;
+}
+
+// ── GENERATE PDF ─────────────────────────────────────────────────
+function generatePDF(){
+  const cName  = document.getElementById('cName').value.trim();
+  const cPhone = document.getElementById('cPhone').value.trim();
+  if(!cName||!cPhone){ alert('Please fill Customer Name and Phone.'); return; }
+  const dt = document.getElementById('devType').value;
+  const dm = document.getElementById('devModel').value;
+  if(!dt||!dm){ alert('Please select Device Type and Model.'); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  const W=210, M=18;
+
+  // Colors
+  const BLACK='#0a0a0a', ACCENT='#FF4C1C', LGRAY='#f5f5f3',
+        MGRAY='#888887', DGRAY='#3d3d3b', GREEN='#1a7a45',
+        BLUE='#1560BD', BSOFT='#e8f0fe';
+
+  const today = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const cAddr  = document.getElementById('cAddr').value  || 'Delhi, India';
+  const ds     = document.getElementById('devStorage').value;
+  const dc     = document.getElementById('devColor').value;
+  const dy     = document.getElementById('devYear').value;
+  const imei   = document.getElementById('devIMEI').value;
+  const batt   = document.getElementById('devBatt').value;
+  const notes  = document.getElementById('notes').value;
+  const txType = document.getElementById('txType').value;
+  const hsn    = HSN[dt]||'8517';
+  const devDesc= [dm,ds,dc].filter(Boolean).join(' – ');
+  const subLine= ['Batt:'+(batt||'?')+'%', dy?'Yr:'+dy:'', notes].filter(Boolean).join(' | ');
+
+  // HEADER BAND
+  doc.setFillColor(10,10,10);
+  doc.rect(0,0,W,38,'F');
+  doc.setFillColor(255,76,28);
+  doc.rect(0,0,W,2,'F');
+
+  // Logo
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.setTextColor(255,76,28);
+  doc.text('Sambhi Mobiles',M,13);
+  doc.setFontSize(8);
+  doc.setTextColor(150,150,148);
+  doc.setFont('helvetica','normal');
+  doc.text('Prop: Amrik Singh  |  GSTIN: 07BWPPS6835M1ZI  |  PAN: BWPPS6835M',M,19);
+  doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019  |  Ph: +91 7827505579',M,24);
+
+  // TAX INVOICE badge
+  doc.setFillColor(255,76,28);
+  doc.roundedRect(W-M-42,8,42,11,2,2,'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.setTextColor(255,255,255);
+  doc.text('TAX INVOICE',W-M-21,15.5,'center');
+  doc.setFontSize(7);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(150,150,148);
+  doc.text('No: '+fmtInv(invNum),W-M,24,'right');
+  doc.text('Date: '+today,W-M,29,'right');
+
+  // SELLER + BUYER BOXES
+  const bTop=42, bH=32, half=(W-2*M-4)/2;
+  doc.setFillColor(245,245,243);
+  doc.roundedRect(M,bTop,half,bH,3,3,'F');
+  doc.roundedRect(M+half+4,bTop,half,bH,3,3,'F');
+
+  // Seller
+  doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(255,76,28);
+  doc.text('SELLER DETAILS',M+3,bTop+5);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(10,10,10);
+  doc.text('Sambhi Mobiles',M+3,bTop+11);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(61,61,59);
+  doc.text('Prop: Amrik Singh',M+3,bTop+17);
+  doc.text('1498, Bhagat Niwas, 13,',M+3,bTop+22);
+  doc.text('Govind Puri, New Delhi – 110019',M+3,bTop+27);
+  doc.setFont('helvetica','bold'); doc.setFontSize(7);
+  doc.text('GSTIN: 07BWPPS6835M1ZI  |  PAN: BWPPS6835M',M+3,bTop+32.5);
+
+  // Buyer
+  const bx2=M+half+4;
+  doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(255,76,28);
+  doc.text('CUSTOMER DETAILS',bx2+3,bTop+5);
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(10,10,10);
+  doc.text(cName,bx2+3,bTop+11);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(61,61,59);
+  doc.text('Ph: '+cPhone,bx2+3,bTop+17);
+  doc.text(cAddr.substring(0,38),bx2+3,bTop+22);
+  doc.text('New Delhi | Place of Supply: Delhi (07)',bx2+3,bTop+27);
+
+  // TX TYPE BADGE
+  const badgeY = bTop+bH+3;
+  doc.setFillColor(txType==='PURCHASE'?26:255, txType==='PURCHASE'?122:76, txType==='PURCHASE'?69:28);
+  doc.roundedRect(M,badgeY,70,7,2,2,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,255,255);
+  doc.text(txType==='PURCHASE'?'DEVICE PURCHASED FROM CUSTOMER':'DEVICE SOLD TO CUSTOMER',M+35,badgeY+4.5,'center');
+
+  // IMEI badge
+  if(imei){
+    doc.setFillColor(232,240,254);
+    doc.roundedRect(M+73,badgeY,100,7,2,2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(21,96,189);
+    doc.text('IMEI VERIFIED (CEIR): '+imei,M+75,badgeY+4.5);
+  }
+
+  // TABLE HEADER
+  const tTop=badgeY+11, tX=M, tW=W-2*M;
+  const cols=[6,50,12,8,18,17,20,10,18,13];
+  const colX=[tX]; cols.slice(0,-1).forEach(w=>colX.push(colX[colX.length-1]+w));
+  const hdrs=['#','Item Description','HSN','Qty','Rate','Disc','Taxable','GST%','GST Amt','Total'];
+
+  doc.setFillColor(10,10,10);
+  doc.rect(tX,tTop,tW,7,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
+  hdrs.forEach((h,i)=>doc.text(h,colX[i]+cols[i]/2,tTop+4.5,'center'));
+
+  // TABLE ROW
+  const rY=tTop+7;
+  doc.setFillColor(255,255,255);
+  doc.rect(tX,rY,tW,13,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(10,10,10);
+  doc.text('1',colX[0]+3,rY+5);
+  doc.text(devDesc.substring(0,40)||'—',colX[1]+1,rY+5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(120,121,117);
+  doc.text(subLine.substring(0,55)||'',colX[1]+1,rY+9);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(10,10,10);
+  [hsn,'1',
+   basePrice?basePrice.toLocaleString('en-IN'):'—',
+   (ageD+battD+condD)?(ageD+battD+condD).toLocaleString('en-IN'):'0',
+   taxable?taxable.toLocaleString('en-IN'):'—',
+   '18%',
+   cgst?(cgst+sgst).toLocaleString('en-IN'):'—',
+   grand?grand.toLocaleString('en-IN'):'—'
+  ].forEach((v,i)=>doc.text(v,colX[i+2]+cols[i+2]/2,rY+7,'center'));
+
+  doc.setDrawColor(224,223,219); doc.setLineWidth(0.3);
+  doc.line(tX,rY+13,tX+tW,rY+13);
+
+  // TOTALS
+  const totY=rY+17, rw=80, rx=W-M-rw;
+  [['Taxable Value',taxable?'Rs '+taxable.toLocaleString('en-IN'):'—'],
+   ['CGST @ 9%',   cgst?'Rs '+cgst.toLocaleString('en-IN'):'—'],
+   ['SGST @ 9%',   sgst?'Rs '+sgst.toLocaleString('en-IN'):'—']
+  ].forEach(([l,v],i)=>{
+    doc.setFillColor(i%2===0?245:255,i%2===0?245:255,i%2===0?243:255);
+    doc.rect(rx,totY+i*6,rw,6,'F');
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(61,61,59);
+    doc.text(l,rx+2,totY+i*6+4);
+    doc.setFont('helvetica','bold');
+    doc.text(v,rx+rw-2,totY+i*6+4,'right');
+  });
+  const gtY=totY+3*6+1;
+  doc.setFillColor(10,10,10);
+  doc.roundedRect(rx,gtY,rw,9,2,2,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,76,28);
+  doc.text('GRAND TOTAL',rx+3,gtY+5.5);
+  doc.setFontSize(11); doc.setTextColor(255,255,255);
+  doc.text('Rs '+(grand?grand.toLocaleString('en-IN'):'—'),rx+rw-3,gtY+6,'right');
+
+  // Amount in words
+  doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(120,121,117);
+  doc.text('Amount: '+(grand?numWords(Math.round(grand))+' Rupees Only':'—'),M,gtY+5);
+
+  // DEP BOX
+  const depY=gtY+14, depH=28, dHalf=(W-2*M-4)/2;
+  doc.setFillColor(255,241,237);
+  doc.roundedRect(M,depY,dHalf,depH,3,3,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,76,28);
+  doc.text('CONDITION & DEPRECIATION',M+3,depY+5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(10,10,10);
+  let dy2=depY+10;
+  if(basePrice) doc.text('Base: Rs '+basePrice.toLocaleString('en-IN'),M+3,dy2);
+  dy2+=4.5;
+  doc.text('Age dep: -Rs '+ageD.toLocaleString('en-IN')+'  | Batt dep: -Rs '+battD.toLocaleString('en-IN'),M+3,dy2);
+  dy2+=4.5;
+  DEP_ITEMS.filter(d=>depState[d.id]).forEach(d=>{
+    doc.text('• '+d.label+': -Rs '+Math.round(basePrice*d.pct).toLocaleString('en-IN'),M+3,dy2);
+    dy2+=4;
+  });
+  doc.setFont('helvetica','bold');
+  doc.text('Final: Rs '+(taxable?taxable.toLocaleString('en-IN'):'—')+' ('+(basePrice?Math.round((taxable/basePrice)*100)+'%':'—')+' retained)',M+3,depY+depH-3);
+
+  // COND BOX
+  const cx2=M+dHalf+4;
+  doc.setFillColor(245,245,243);
+  doc.roundedRect(cx2,depY,dHalf,depH,3,3,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(61,61,59);
+  doc.text('DEVICE CONDITION REPORT',cx2+3,depY+5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,121,117);
+  const cLines=[
+    'Screen: '+(depState.screen?'Cracked/damaged':'No cracks'),
+    'Body: '+(depState.body?'Dents/damage':'Good'),
+    'Battery: '+(batt?batt+'%':'Not specified'),
+    'Face ID: '+(depState.biometric?'Not working':'Working'),
+    'Charger: '+(depState.charger?'Not included':'Included'),
+    'Box: '+(depState.nobox?'Not included':'Included'),
+  ];
+  cLines.forEach((l,i)=>doc.text(l,cx2+3,depY+10+i*4.5));
+
+  // TERMS
+  const trmY=depY+depH+5;
+  doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(120,121,117);
+  doc.text('TERMS: ',M,trmY);
+  doc.setFont('helvetica','normal');
+  doc.text('1. Valid GST invoice under CGST Act 2017.  2. Goods once transacted non-returnable unless defect within 24hrs.',M+9,trmY);
+  doc.text('3. IMEI verified at time of transaction. Seller declares rightful ownership.  4. Dispute jurisdiction: Delhi courts only.',M,trmY+4);
+
+  // SIGNATURES
+  const sigY=trmY+9;
+  doc.setFillColor(245,245,243);
+  doc.roundedRect(M,sigY,60,14,2,2,'F');
+  doc.roundedRect(W-M-60,sigY,60,14,2,2,'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,121,117);
+  doc.text('Customer Signature & Thumb',M+2,sigY+4);
+  doc.text(cName,M+2,sigY+12);
+  doc.text('For Sambhi Mobiles | Amrik Singh',W-M-58,sigY+4);
+  doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+  doc.text('GSTIN: 07BWPPS6835M1ZI',W-M-58,sigY+12);
+
+  // FOOTER
+  doc.setFillColor(10,10,10);
+  doc.rect(0,285,W,12,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(255,76,28);
+  doc.text('Sambhi Mobiles',W/2,290,'center');
+  doc.setFont('helvetica','normal'); doc.setTextColor(150,150,148);
+  doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019  |  +91 7827505579  |  GSTIN: 07BWPPS6835M1ZI  |  PAN: BWPPS6835M',W/2,294.5,'center');
+
+  // SAVE
+  const fname = `Sambhi_Mobiles_${fmtInv(invNum)}_${cName.replace(/\s+/g,'_')}.pdf`;
+  doc.save(fname);
+
+  // increment invoice number
+  invNum++;
+  localStorage.setItem('smb_inv', invNum);
+  document.getElementById('invNumDisplay').textContent = fmtInv(invNum);
+
+  showToast('✅ Bill downloaded: ' + fname);
+}
+
+// ── WHATSAPP ─────────────────────────────────────────────────────
+function openWhatsApp(){
+  const phone = document.getElementById('cPhone').value.replace(/\D/g,'');
+  if(!phone){ alert('Enter customer WhatsApp number first.'); return; }
+  const cName = document.getElementById('cName').value || 'Customer';
+  const msg = encodeURIComponent(
+    `Hello ${cName},\n\nThank you for transacting with *Sambhi Mobiles*!\n\n` +
+    `Your GST invoice *${fmtInv(invNum-1)}* has been generated.\n` +
+    `Amount: *Rs ${grand?grand.toLocaleString('en-IN'):'—'}*\n\n` +
+    `Please find your PDF invoice attached. For any queries:\n📞 +91 7827505579\n\n` +
+    `_Sambhi Mobiles | Govind Puri, New Delhi_`
+  );
+  window.open(`https://wa.me/91${phone}?text=${msg}`, '_blank');
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+function numWords(n){
+  const o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function b1000(n){if(n<20)return o[n];if(n<100)return t[Math.floor(n/10)]+(n%10?' '+o[n%10]:'');return o[Math.floor(n/100)]+' Hundred'+(n%100?' and '+b1000(n%100):'');}
+  if(n===0)return'Zero';if(n<1000)return b1000(n);
+  if(n<100000)return b1000(Math.floor(n/1000))+' Thousand'+(n%1000?' '+b1000(n%1000):'');
+  if(n<10000000)return b1000(Math.floor(n/100000))+' Lakh'+(n%100000?' '+numWords(n%100000):'');
+  return b1000(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+numWords(n%10000000):'');
+}
+
+// Init
+liveUpdate();
+</script>
+</body>
+</html>
