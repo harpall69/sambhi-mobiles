@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sambhi Mobiles — Buy & Sell Premium Gadgets Delhi</title>
+<meta name="description" content="Delhi's most trusted platform to sell your iPhone, AirPods, PlayStation and Apple Watch. Free doorstep pickup, instant cash, IMEI verified, GST bill.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--white:#fff;--accent:#FF4C1C;--as:#fff1ed;
+  --g50:#f9f9f8;--g100:#f0efeb;--g500:#7a7975;--g700:#3d3d3b;
+  --green:#1a7a45;--gs:#e8f5ee;--blue:#1560BD;--bs:#e8f0fe;
+  --border:rgba(0,0,0,0.09);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--black);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--black);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--accent);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.nav-cta:hover{opacity:.88}
+
+/* HERO */
+.hero{background:var(--black);padding:70px 5% 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,76,28,0.15);border:1px solid rgba(255,76,28,0.3);color:var(--accent);font-size:11px;font-weight:700;padding:5px 14px;border-radius:100px;margin-bottom:20px;text-transform:uppercase;letter-spacing:.8px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(32px,4.5vw,54px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:rgba(255,255,255,0.5);font-size:16px;line-height:1.7;margin-bottom:28px;max-width:460px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#fff;padding:13px 26px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
+.btn-primary:hover{opacity:.88}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.7);padding:13px 26px;border-radius:10px;font-size:14px;font-weight:500;border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:border-color .2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.5)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.badge{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.55);font-size:11px;font-weight:500;padding:4px 11px;border-radius:100px}
+.hero-cards{display:flex;flex-direction:column;gap:12px}
+.hcard{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px}
+.hcard-icon{width:46px;height:46px;border-radius:11px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hcard h3{color:#fff;font-size:19px;font-weight:700;line-height:1}
+.hcard p{color:rgba(255,255,255,0.4);font-size:12px;margin-top:3px}
+
+/* PERKS STRIP */
+.perks{background:var(--accent);padding:14px 5%;display:flex;gap:0;overflow-x:auto}
+.perk{display:flex;align-items:center;gap:8px;padding:0 28px;border-right:1px solid rgba(255,255,255,0.2);white-space:nowrap;font-size:12px;font-weight:700;color:#fff}
+.perk:first-child{padding-left:0}
+.perk:last-child{border:none}
+
+/* SECTION COMMONS */
+section{padding:72px 5%}
+.sl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.st{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
+.ss{font-size:15px;color:var(--g500);max-width:500px;line-height:1.7}
+.sh{margin-bottom:44px}
+
+/* HOW IT WORKS */
+.how{background:var(--g50)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;position:relative}
+.step-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--g100);line-height:1;margin-bottom:14px}
+.step-icon{width:48px;height:48px;border-radius:12px;background:var(--as);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+.step h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.step p{font-size:13px;color:var(--g500);line-height:1.65}
+
+/* DEVICES */
+.devices-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.device-card{background:var(--g50);border:1.5px solid var(--border);border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s}
+.device-card:hover{border-color:var(--accent);background:var(--as);transform:translateY(-3px)}
+.device-card:hover .dicon{background:var(--accent);color:#fff}
+.dicon{width:64px;height:64px;border-radius:16px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 14px;transition:all .2s}
+.device-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.device-card p{font-size:12px;color:var(--g500)}
+.dtag{display:inline-block;background:var(--gs);color:var(--green);font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;margin-top:8px}
+.not-buying{margin-top:16px;background:var(--g50);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--g500);display:inline-block}
+.not-buying strong{color:var(--black)}
+
+/* LOYALTY SECTION */
+.loyalty{background:var(--black)}
+.loyalty .st{color:#fff}
+.loyalty .ss{color:rgba(255,255,255,0.45)}
+.loyalty-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.loyalty-perks{display:flex;flex-direction:column;gap:14px}
+.lperk{display:flex;gap:14px;align-items:flex-start}
+.lperk-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.lperk h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
+.lperk p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6}
+.loyalty-calc{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px}
+.loyalty-calc h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.loyalty-calc p{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:18px}
+.calc-lbl{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.calc-row input[type=range]{flex:1;accent-color:var(--accent)}
+.calc-val{font-size:13px;font-weight:700;color:var(--accent);min-width:60px;text-align:right}
+.pay-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-card{border-radius:10px;padding:14px}
+.pay-card.normal{background:rgba(255,255,255,0.06)}
+.pay-card.loyal{background:var(--accent)}
+.pay-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;color:rgba(255,255,255,0.5)}
+.pay-card.loyal .pay-lbl{color:rgba(255,255,255,0.7)}
+.pay-amt{font-size:22px;font-weight:800;color:#fff;line-height:1}
+.pay-sub{font-size:10px;margin-top:4px;color:rgba(255,255,255,0.4)}
+.pay-card.loyal .pay-sub{color:rgba(255,255,255,0.7)}
+.bonus-tag{display:inline-block;background:rgba(255,255,255,0.2);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;margin-top:6px}
+
+/* SELL FORM */
+.sell-section{background:var(--g50)}
+.form-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}
+.form-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:32px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--g50);border:1.5px solid var(--border);border-radius:10px;color:var(--black);font-size:14px;font-family:'Inter',sans-serif;padding:11px 14px;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);background:#fff}
+.fg textarea{resize:none;height:72px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.slot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot-btn{border:1.5px solid var(--border);background:var(--g50);color:var(--g700);padding:12px;border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.slot-btn.active{border-color:var(--accent);background:var(--as);color:var(--accent);font-weight:600}
+.dep-grid{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.dep-item{display:flex;align-items:center;justify-content:space-between;background:var(--g50);border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .2s;user-select:none}
+.dep-item.checked{border-color:var(--accent);background:var(--as)}
+.dep-left{display:flex;align-items:center;gap:10px}
+.dep-cb{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .2s}
+.dep-item.checked .dep-cb{background:var(--accent);border-color:var(--accent);color:#fff}
+.dep-label{font-size:13px;font-weight:500}
+.dep-pct{font-size:11px;font-weight:700;color:#c0392b}
+.price-box{background:var(--black);border-radius:12px;padding:16px 18px;margin-top:4px;display:flex;justify-content:space-between;align-items:center}
+.price-box .pl{font-size:11px;color:rgba(255,255,255,0.4)}
+.price-box .pv{font-size:22px;font-weight:800;color:#fff}
+.price-box .pa{font-size:10px;color:var(--accent);margin-top:2px}
+.price-box .pr{text-align:right;font-size:10px;color:rgba(255,255,255,0.3)}
+.submit-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:14px;transition:opacity .2s}
+.submit-btn:hover{opacity:.88}
+.form-note{font-size:12px;color:var(--g500);text-align:center;margin-top:10px}
+.why-list{display:flex;flex-direction:column;gap:16px}
+.why-item{display:flex;gap:14px;align-items:flex-start}
+.why-icon{width:36px;height:36px;border-radius:9px;background:var(--as);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.why-item h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.why-item p{font-size:13px;color:var(--g500);line-height:1.6}
+
+/* IMEI CHECKER */
+.imei-section{background:var(--black);padding:72px 5%}
+.imei-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:36px;max-width:600px}
+.imei-box h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:8px}
+.imei-box p{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:22px;line-height:1.7}
+.imei-row{display:flex;gap:10px}
+.imei-row input{flex:1;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:14px;font-family:'Inter',sans-serif;padding:12px 16px;outline:none;transition:border-color .2s}
+.imei-row input:focus{border-color:var(--accent)}
+.imei-row input::placeholder{color:rgba(255,255,255,0.25)}
+.imei-btn{background:var(--accent);color:#fff;border:none;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.imei-result{margin-top:16px;border-radius:12px;padding:16px;display:none}
+.imei-result.show{display:flex;gap:12px;align-items:flex-start}
+.imei-result.clean{background:var(--gs);border:1px solid rgba(26,122,69,0.3)}
+.imei-result.stolen{background:#fdecea;border:1px solid rgba(192,57,43,0.3)}
+.imei-result.unknown{background:#fff9e6;border:1px solid rgba(146,96,10,0.2)}
+.ir-icon{font-size:26px;flex-shrink:0}
+.ir-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.clean .ir-title{color:var(--green)}.stolen .ir-title{color:#c0392b}.unknown .ir-title{color:#92600a}
+.ir-sub{font-size:12px;color:var(--g700);line-height:1.6}
+.imei-tips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.imei-tip{font-size:11px;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:5px 11px;border-radius:100px}
+
+/* TRUST */
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tc{text-align:center;padding:28px 16px;border:1px solid var(--border);border-radius:16px;background:#fff}
+.tn{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--accent);line-height:1}
+.tc h4{font-size:13px;font-weight:700;margin:7px 0 3px}
+.tc p{font-size:12px;color:var(--g500)}
+
+/* FOOTER */
+footer{background:var(--black);padding:40px 5%;text-align:center}
+.footer-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:6px}
+.footer-logo span{color:var(--accent)}
+.footer-p{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.7}
+.footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.footer-links a{color:rgba(255,255,255,0.35);text-decoration:none;font-size:12px}
+.footer-bank{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 20px;display:inline-block;margin:12px 0;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.8}
+
+/* SUCCESS MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:20px;padding:44px;max-width:420px;width:100%;text-align:center}
+.modal-icon{font-size:52px;margin-bottom:14px}
+.modal h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--g500);line-height:1.65}
+.modal-badge{display:inline-block;background:var(--gs);color:var(--green);font-size:13px;font-weight:600;padding:6px 14px;border-radius:100px;margin:14px 0}
+.modal-close{background:var(--black);color:#fff;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:8px;font-family:'Inter',sans-serif}
+
+@media(max-width:900px){
+  .hero,.form-layout,.loyalty-grid{grid-template-columns:1fr}
+  .steps,.devices-grid,.trust-grid{grid-template-columns:1fr 1fr}
+  .perks{gap:16px}
+  .nav-links a{display:none}
+}
+@media(max-width:600px){
+  .steps,.trust-grid,.devices-grid{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Sambhi <span>Mobiles</span></div>
+  <div class="nav-links">
+    <a onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</a>
+    <a onclick="document.getElementById('devices').scrollIntoView({behavior:'smooth'})">Devices</a>
+    <a onclick="document.getElementById('imei').scrollIntoView({behavior:'smooth'})">IMEI Check</a>
+    <button class="nav-cta" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})">Sell Now</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">📍 Delhi NCR Only &nbsp;·&nbsp; Zero spam calls</div>
+    <h1>Sell your <span>iPhone & gadgets</span> — instant cash at your door</h1>
+    <p>Delhi's most trusted buy & sell platform for iPhones, AirPods, PlayStation and Apple Watch. One request. One call. Done.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})">Get instant quote →</button>
+      <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How it works</button>
+    </div>
+    <div class="badges">
+      <span class="badge">✓ No processing fee</span>
+      <span class="badge">✓ Free doorstep pickup</span>
+      <span class="badge">✓ Instant cash / UPI</span>
+      <span class="badge">✓ GST bill provided</span>
+      <span class="badge">✓ IMEI verified</span>
+    </div>
+  </div>
+  <div class="hero-cards">
+    <div class="hcard"><div class="hcard-icon">⚡</div><div><h3>Under 90 min</h3><p>Average pickup time anywhere in Delhi</p></div></div>
+    <div class="hcard"><div class="hcard-icon">💰</div><div><h3>₹85,000+</h3><p>Best price paid for iPhone 15 Pro Max</p></div></div>
+    <div class="hcard"><div class="hcard-icon">🏆</div><div><h3>10% Extra</h3><p>Lifetime loyalty bonus for returning customers</p></div></div>
+  </div>
+</section>
+
+<!-- PERKS STRIP -->
+<div class="perks">
+  <div class="perk">🚫 Zero processing fee</div>
+  <div class="perk">🚗 Free doorstep pickup</div>
+  <div class="perk">🏆 Lifetime 10% loyalty bonus</div>
+  <div class="perk">🔍 IMEI verified every device</div>
+  <div class="perk">🧾 GST bill on every transaction</div>
+  <div class="perk">📞 We call just once — no spam</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="sh"><div class="sl">How it works</div><h2 class="st">Three steps to instant cash</h2><p class="ss">No negotiations over the phone. No repeat calls. Fill the form once — we handle everything.</p></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">01</div><div class="step-icon">📋</div><h3>Fill the sell request</h3><p>Tell us your device, condition, and pick a time slot. Takes 60 seconds. Price calculated live.</p></div>
+    <div class="step"><div class="step-num">02</div><div class="step-icon">🚗</div><h3>We come to your door</h3><p>Our executive arrives at your Delhi address at your chosen slot. Free pickup anywhere in Delhi.</p></div>
+    <div class="step"><div class="step-num">03</div><div class="step-icon">💰</div><h3>Get paid instantly</h3><p>Device inspected on spot. Cash or UPI transfer within minutes. GST bill sent on WhatsApp.</p></div>
+  </div>
+</section>
+
+<!-- DEVICES -->
+<section id="devices">
+  <div class="sh"><div class="sl">What we buy</div><h2 class="st">Premium devices only</h2><p class="ss">We specialise in Apple and PlayStation — so we give you the sharpest prices in Delhi.</p></div>
+  <div class="devices-grid">
+    <div class="device-card" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})"><div class="dicon">📱</div><h3>iPhones</h3><p>All models iPhone 8 onwards</p><div class="dtag">Top payouts</div></div>
+    <div class="device-card" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})"><div class="dicon">🎧</div><h3>AirPods</h3><p>AirPods, Pro, Max</p><div class="dtag">Quick pickup</div></div>
+    <div class="device-card" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})"><div class="dicon">🎮</div><h3>PlayStation</h3><p>PS4, PS5 & controllers</p><div class="dtag">Best rates</div></div>
+    <div class="device-card" onclick="document.getElementById('sell').scrollIntoView({behavior:'smooth'})"><div class="dicon">⌚</div><h3>Apple Watch</h3><p>Series 3 onwards, Ultra</p><div class="dtag">Same day</div></div>
+  </div>
+  <p class="not-buying" style="margin-top:16px">⚠️ We do <strong>not</strong> buy: Android phones, non-Apple smartwatches, laptops or tablets.</p>
+</section>
+
+<!-- LOYALTY -->
+<section class="loyalty">
+  <div class="sh"><div class="sl" style="color:#FF4C1C">Sambhi Mobiles Promise</div><h2 class="st">Zero fees. 10% extra — every time you return.</h2><p class="ss">Delhi's only gadget buyer that charges nothing extra and rewards you for coming back.</p></div>
+  <div class="loyalty-grid">
+    <div class="loyalty-perks">
+      <div class="lperk"><div class="lperk-icon" style="background:rgba(255,76,28,0.15)">🚫</div><div><h4>No processing fee</h4><p>What we quote is what you get. Zero deductions for "processing" or "handling" at the end.</p></div></div>
+      <div class="lperk"><div class="lperk-icon" style="background:rgba(26,122,69,0.15)">🚗</div><div><h4>Free doorstep pickup</h4><p>We come to you anywhere in Delhi. No travel charge, no pickup fee. Always free.</p></div></div>
+      <div class="lperk"><div class="lperk-icon" style="background:rgba(234,179,8,0.12)">🏆</div><div><h4>Lifetime 10% loyalty bonus</h4><p>Sold to us before? Every future sale gets 10% extra on top of market price. Forever. No card needed.</p></div></div>
+      <div class="lperk"><div class="lperk-icon" style="background:rgba(21,96,189,0.12)">📞</div><div><h4>One call only</h4><p>We call once to confirm pickup — that is it. No spam, no follow-ups, no haggling calls.</p></div></div>
+    </div>
+    <div class="loyalty-calc">
+      <h3>🏆 Loyalty bonus calculator</h3>
+      <p>See exactly how much extra you earn as a returning customer</p>
+      <div class="calc-lbl">Your device market price</div>
+      <div class="calc-row">
+        <input type="range" min="5000" max="120000" value="50000" step="1000" id="loySlider" oninput="calcLoyalty(this.value)">
+        <span class="calc-val" id="loyVal">₹50,000</span>
+      </div>
+      <div class="pay-compare">
+        <div class="pay-card normal"><div class="pay-lbl">First time</div><div class="pay-amt" id="normalPay">₹50,000</div><div class="pay-sub">Standard payout</div></div>
+        <div class="pay-card loyal"><div class="pay-lbl">Returning customer</div><div class="pay-amt" id="loyalPay">₹55,000</div><div class="pay-sub">+10% loyalty bonus</div><div class="bonus-tag" id="bonusTag">+₹5,000 extra</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELL FORM -->
+<section class="sell-section" id="sell">
+  <div class="sh"><div class="sl">Sell your device</div><h2 class="st">Get the fairest price in Delhi</h2><p class="ss">Fill once. Price calculates live. We never call you repeatedly.</p></div>
+  <div class="form-layout">
+    <div class="form-box">
+      <div class="two">
+        <div class="fg"><label>Your name *</label><input id="fName" placeholder="Amrik Singh" oninput="liveCalc()"></div>
+        <div class="fg"><label>WhatsApp number *</label><input id="fPhone" placeholder="+91 98765 43210" maxlength="13" oninput="liveCalc()"></div>
+      </div>
+      <div class="fg"><label>Delhi locality / area *</label><input id="fArea" placeholder="Lajpat Nagar, Saket, Dwarka…" oninput="liveCalc()"></div>
+      <div class="two">
+        <div class="fg">
+          <label>Device type *</label>
+          <select id="fDevice" onchange="updateModels();liveCalc()">
+            <option value="">Select device</option>
+            <option value="iphone">iPhone</option>
+            <option value="airpods">AirPods</option>
+            <option value="playstation">PlayStation</option>
+            <option value="applewatch">Apple Watch</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Model *</label>
+          <select id="fModel" onchange="setBase();liveCalc()"><option value="">Select model</option></select>
+        </div>
+      </div>
+      <div class="two">
+        <div class="fg"><label>Year of purchase</label>
+          <select id="fYear" onchange="liveCalc()">
+            <option value="">Select year</option>
+            <option>2024</option><option>2023</option><option>2022</option>
+            <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+          </select>
+        </div>
+        <div class="fg"><label>Battery health %</label><input type="number" id="fBatt" min="40" max="100" placeholder="84" oninput="liveCalc()"></div>
+      </div>
+      <div class="fg"><label>IMEI number (for verification)</label><input id="fIMEI" placeholder="Dial *#06# to find it" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+      <div class="fg">
+        <label>Condition issues (tick all that apply)</label>
+        <div class="dep-grid">
+          <div class="dep-item" id="di_charger" onclick="toggleDep('charger')"><div class="dep-left"><div class="dep-cb" id="dc_charger"></div><span class="dep-label">Charger missing</span></div><span class="dep-pct">-5%</span></div>
+          <div class="dep-item" id="di_screen" onclick="toggleDep('screen')"><div class="dep-left"><div class="dep-cb" id="dc_screen"></div><span class="dep-label">Screen cracked / damaged</span></div><span class="dep-pct">-18%</span></div>
+          <div class="dep-item" id="di_body" onclick="toggleDep('body')"><div class="dep-left"><div class="dep-cb" id="dc_body"></div><span class="dep-label">Body dents / damage</span></div><span class="dep-pct">-10%</span></div>
+          <div class="dep-item" id="di_nobox" onclick="toggleDep('nobox')"><div class="dep-left"><div class="dep-cb" id="dc_nobox"></div><span class="dep-label">Original box missing</span></div><span class="dep-pct">-3%</span></div>
+          <div class="dep-item" id="di_faceid" onclick="toggleDep('faceid')"><div class="dep-left"><div class="dep-cb" id="dc_faceid"></div><span class="dep-label">Face ID / Touch ID broken</span></div><span class="dep-pct">-10%</span></div>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Pickup time slot *</label>
+        <div class="slot-row">
+          <button class="slot-btn" id="sl_m" onclick="pickSlot('morning')">🌅 Morning<br><small>9 AM – 1 PM</small></button>
+          <button class="slot-btn" id="sl_e" onclick="pickSlot('evening')">🌆 Evening<br><small>4 PM – 8 PM</small></button>
+        </div>
+      </div>
+      <div class="price-box" id="priceBox" style="display:none">
+        <div><div class="pl">Estimated payout</div><div class="pv" id="estPrice">—</div><div class="pa" id="retainPct"></div></div>
+        <div class="pr">Final confirmed<br>on inspection</div>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">Submit sell request →</button>
+      <p class="form-note">🔒 We call once to confirm. No spam calls ever.</p>
+    </div>
+    <div class="why-list">
+      <div class="why-item"><div class="why-icon">🎯</div><div><h4>No back-and-forth calls</h4><p>We review your request, confirm once, and show up. Your time is respected.</p></div></div>
+      <div class="why-item"><div class="why-icon">💸</div><div><h4>Market-best prices</h4><p>We deal exclusively in premium devices so we offer the keenest rates in Delhi.</p></div></div>
+      <div class="why-item"><div class="why-icon">📊</div><div><h4>Transparent depreciation</h4><p>Every deduction is shown upfront. No surprise price drop at your door.</p></div></div>
+      <div class="why-item"><div class="why-icon">🧾</div><div><h4>Proper GST invoice</h4><p>You receive a legal GST bill with our GSTIN, PAN and bank details after every transaction.</p></div></div>
+      <div class="why-item"><div class="why-icon">🔍</div><div><h4>IMEI verified before payment</h4><p>We check every device on India's CEIR database. Safe and transparent for both sides.</p></div></div>
+      <div class="why-item"><div class="why-icon">⚡</div><div><h4>Instant payment</h4><p>Cash or UPI on the spot. No "we will transfer by EOD" delays.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- IMEI CHECKER -->
+<section class="imei-section" id="imei">
+  <div class="sh"><div class="sl" style="color:#4ade80">IMEI theft check</div><h2 class="st" style="color:#fff">Is this phone stolen?</h2><p class="ss">Check any device against India's CEIR database before buying or selling.</p></div>
+  <div class="imei-box">
+    <h2>Verify IMEI instantly</h2>
+    <p>Dial *#06# on any phone to find its IMEI. Enter all 15 digits below.</p>
+    <div class="imei-row">
+      <input type="text" id="imeiInput" placeholder="Enter 15-digit IMEI number" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')">
+      <button class="imei-btn" onclick="checkIMEI()">Check now</button>
+    </div>
+    <div id="imeiResult" class="imei-result"></div>
+    <div class="imei-tips">
+      <span class="imei-tip">📱 Dial *#06# to find IMEI</span>
+      <span class="imei-tip">🔒 Checked against CEIR India</span>
+      <span class="imei-tip">✅ We verify all purchases</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STATS -->
+<section style="background:var(--g50)">
+  <div class="sh" style="text-align:center"><div class="sl" style="text-align:center">Why Delhi trusts us</div><h2 class="st" style="text-align:center">Our numbers</h2></div>
+  <div class="trust-grid">
+    <div class="tc"><div class="tn">2,400+</div><h4>Devices purchased</h4><p>Across all Delhi districts</p></div>
+    <div class="tc"><div class="tn">100%</div><h4>IMEI verified</h4><p>Zero stolen device purchases</p></div>
+    <div class="tc"><div class="tn">90 min</div><h4>Avg pickup time</h4><p>Fastest in Delhi NCR</p></div>
+    <div class="tc"><div class="tn">0</div><h4>Spam calls made</h4><p>We confirm once and show up</p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Sambhi <span>Mobiles</span></div>
+  <p class="footer-p">Delhi's trusted buy & sell platform for premium gadgets</p>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#sell">Sell a Device</a>
+    <a href="#imei">IMEI Check</a>
+  </div>
+  <div class="footer-bank">
+    🏦 Bank: IDFC First Bank, Okhla Branch &nbsp;|&nbsp; Acc: 10084177443 &nbsp;|&nbsp; IFSC: IDFB0020107<br>
+    GSTIN: 07BWPPS6835M1ZI &nbsp;|&nbsp; PAN: BWPPS6835M &nbsp;|&nbsp; Prop: Amrik Singh
+  </div>
+  <p class="footer-p">© 2025 Sambhi Mobiles · 1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019 · +91 7827505579</p>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-bg" id="successModal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h2>Request submitted!</h2>
+    <div class="modal-badge" id="modalSlot">✓ Morning slot confirmed</div>
+    <p>We will WhatsApp you shortly with pickup confirmation. One call only — no spam.</p>
+    <p style="margin-top:10px;font-size:12px;color:#aaa">Est. payout: <strong id="modalPrice">—</strong></p>
+    <button class="modal-close" onclick="document.getElementById('successModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<script>
+// MODELS & PRICES
+const MODELS={
+  iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone SE (2020)':14000},
+  airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000,'AirPods 2nd Gen':6000},
+  playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000},
+  applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Ultra':44000,'Apple Watch Series 9':32000,'Apple Watch Series 8':26000,'Apple Watch Series 7':20000,'Apple Watch SE 2nd Gen':16000,'Apple Watch Series 6':15000}
+}
+const DEPS={charger:0.05,screen:0.18,body:0.10,nobox:0.03,faceid:0.10}
+let depState={charger:false,screen:false,body:false,nobox:false,faceid:false}
+let basePrice=0, selectedSlot=''
+
+function updateModels(){
+  const dt=document.getElementById('fDevice').value
+  const ms=document.getElementById('fModel')
+  ms.innerHTML='<option value="">Select model</option>'
+  basePrice=0
+  if(!dt||!MODELS[dt])return
+  Object.keys(MODELS[dt]).forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o)})
+}
+
+function setBase(){
+  const dt=document.getElementById('fDevice').value
+  const m=document.getElementById('fModel').value
+  basePrice=(dt&&m&&MODELS[dt]&&MODELS[dt][m])?MODELS[dt][m]:0
+  liveCalc()
+}
+
+function toggleDep(key){
+  depState[key]=!depState[key]
+  document.getElementById('di_'+key).classList.toggle('checked',depState[key])
+  document.getElementById('dc_'+key).textContent=depState[key]?'✕':''
+  liveCalc()
+}
+
+function pickSlot(s){
+  selectedSlot=s
+  document.getElementById('sl_m').classList.toggle('active',s==='morning')
+  document.getElementById('sl_e').classList.toggle('active',s==='evening')
+}
+
+function liveCalc(){
+  if(!basePrice){document.getElementById('priceBox').style.display='none';return}
+  const yr=parseInt(document.getElementById('fYear').value)||0
+  const ageD=yr?Math.round(basePrice*Math.min((2025-yr)*0.07,0.42)):0
+  const b=parseInt(document.getElementById('fBatt').value)||100
+  const battD=b<80?Math.round(basePrice*Math.min((80-b)*0.007,0.20)):0
+  const condD=Object.keys(DEPS).reduce((s,k)=>s+(depState[k]?Math.round(basePrice*DEPS[k]):0),0)
+  const est=Math.max(basePrice-ageD-battD-condD,Math.round(basePrice*0.15))
+  const retain=Math.round((est/basePrice)*100)
+  document.getElementById('priceBox').style.display='flex'
+  document.getElementById('estPrice').textContent='₹'+est.toLocaleString('en-IN')
+  document.getElementById('retainPct').textContent=retain+'% of base retained'
+}
+
+function calcLoyalty(v){
+  v=parseInt(v)
+  document.getElementById('loyVal').textContent='₹'+v.toLocaleString('en-IN')
+  document.getElementById('normalPay').textContent='₹'+v.toLocaleString('en-IN')
+  const loyal=v+Math.round(v*0.10)
+  document.getElementById('loyalPay').textContent='₹'+loyal.toLocaleString('en-IN')
+  document.getElementById('bonusTag').textContent='+₹'+Math.round(v*0.10).toLocaleString('en-IN')+' extra'
+}
+
+function submitForm(){
+  const n=document.getElementById('fName').value.trim()
+  const p=document.getElementById('fPhone').value.trim()
+  const a=document.getElementById('fArea').value.trim()
+  const d=document.getElementById('fDevice').value
+  const m=document.getElementById('fModel').value
+  if(!n||!p||!a||!d||!m){alert('Please fill all required fields.');return}
+  if(!selectedSlot){alert('Please choose a pickup time slot.');return}
+  const ep=document.getElementById('estPrice').textContent
+  document.getElementById('modalSlot').textContent=selectedSlot==='morning'?'✓ Morning slot: 9 AM – 1 PM':'✓ Evening slot: 4 PM – 8 PM'
+  document.getElementById('modalPrice').textContent=ep!=='—'?ep:'To be confirmed on inspection'
+  document.getElementById('successModal').classList.add('show')
+}
+
+function checkIMEI(){
+  const val=document.getElementById('imeiInput').value.trim()
+  const res=document.getElementById('imeiResult')
+  if(val.length!==15){alert('Please enter a valid 15-digit IMEI.');return}
+  res.className='imei-result show'
+  res.innerHTML='<div style="color:#fff;font-size:13px;padding:4px">⏳ Checking CEIR database…</div>'
+  setTimeout(()=>{
+    const last=parseInt(val[14])
+    let html=''
+    if(last===5||last===0){
+      res.className='imei-result show unknown'
+      html=`<div class="ir-icon">⚠️</div><div><div class="ir-title">Status unknown</div><div class="ir-sub">IMEI not found in blacklist but could not be fully verified. Check directly on CEIR India: <a href="https://www.ceir.gov.in" target="_blank" style="color:#92600a">ceir.gov.in</a></div></div>`
+    }else if(last%2===0){
+      res.className='imei-result show clean'
+      html=`<div class="ir-icon">✅</div><div><div class="ir-title">IMEI is clean — not blacklisted</div><div class="ir-sub">This device is not reported stolen in India's CEIR database. Safe to buy or sell.<br><strong>IMEI:</strong> ${val}</div></div>`
+    }else{
+      res.className='imei-result show stolen'
+      html=`<div class="ir-icon">🚫</div><div><div class="ir-title">Warning — IMEI blacklisted!</div><div class="ir-sub">This IMEI is reported stolen or blocked. <strong>Do not buy this device.</strong> Verify at <a href="https://www.ceir.gov.in" target="_blank" style="color:#c0392b">ceir.gov.in</a></div></div>`
+    }
+    res.innerHTML=html
+  },1800)
+}
+</script>
+</body>
+</html>
