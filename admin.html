@@ -215,9 +215,9 @@ tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
     <div class="login-err" id="loginErr">❌ Wrong username or password</div>
     <div class="login-users">
       <p>Team accounts</p>
-      <div class="user-chip"><div class="user-av" style="background:#FF4C1C">AS</div><div><h4>Amrik Singh</h4><p>Owner · amrik / amrik@1234</p></div></div>
-      <div class="user-chip"><div class="user-av" style="background:#1560BD">M1</div><div><h4>Manager 1</h4><p>Manager · manager1 / manager@1234</p></div></div>
-      <div class="user-chip"><div class="user-av" style="background:#1a7a45">E1</div><div><h4>Executive 1</h4><p>Field executive · exec1 / exec@1234</p></div></div>
+      <div class="user-chip"><div class="user-av" style="background:#FF4C1C">AS</div><div><h4>Amrik Singh</h4><p>Owner · amrik / amrik1234</p></div></div>
+      <div class="user-chip"><div class="user-av" style="background:#1560BD">M1</div><div><h4>Manager 1</h4><p>Manager · manager1 / manager1234</p></div></div>
+      <div class="user-chip"><div class="user-av" style="background:#1a7a45">E1</div><div><h4>Executive 1</h4><p>Field executive · exec1 / exec1234</p></div></div>
     </div>
   </div>
 </div>
@@ -415,7 +415,7 @@ tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
       <span class="role role-owner">Owner</span>
       <p>Full access to all leads, bills, campaigns and team management</p>
       <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>amrik</strong></div>
-      <div style="font-size:11px;color:var(--g500)">Password: <strong>amrik@1234</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>amrik1234</strong></div>
       <div class="team-stats">
         <div class="ts"><div class="n" id="ts1leads">0</div><div class="l">Leads</div></div>
         <div class="ts"><div class="n" id="ts1done">0</div><div class="l">Closed</div></div>
@@ -428,7 +428,7 @@ tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
       <span class="role role-manager">Manager</span>
       <p>Can view all leads, update status, add notes. Cannot delete or change passwords.</p>
       <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>manager1</strong></div>
-      <div style="font-size:11px;color:var(--g500)">Password: <strong>manager@1234</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>manager1234</strong></div>
       <div style="margin-top:10px;background:var(--bs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--blue)">📋 Can do: View leads, update status, add notes, call customers</div>
       <div style="margin-top:6px;background:var(--rs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--red)">🚫 Cannot: Generate bills, delete leads, manage team</div>
     </div>
@@ -438,7 +438,7 @@ tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
       <span class="role role-executive">Field Executive</span>
       <p>Pickup executive. Can view assigned leads and update status after pickup.</p>
       <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>exec1</strong></div>
-      <div style="font-size:11px;color:var(--g500)">Password: <strong>exec@1234</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>exec1234</strong></div>
       <div style="margin-top:10px;background:var(--bs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--blue)">📋 Can do: View scheduled leads, update to completed</div>
       <div style="margin-top:6px;background:var(--rs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--red)">🚫 Cannot: Add leads, bills, team management</div>
     </div>
@@ -462,9 +462,9 @@ tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
 <script>
 // ── TEAM USERS ────────────────────────────────────────────────────
 const TEAM_USERS = [
-  {username:'amrik',    password:'amrik@1234',   name:'Amrik Singh', role:'Owner',    color:'#FF4C1C', initials:'AS', permissions:['all']},
-  {username:'manager1', password:'manager@1234', name:'Manager 1',   role:'Manager',  color:'#1560BD', initials:'M1', permissions:['view','status','notes','call']},
-  {username:'exec1',    password:'exec@1234',    name:'Executive 1', role:'Executive',color:'#1a7a45', initials:'E1', permissions:['view','status']},
+  {username:'amrik',    password:'amrik1234',   name:'Amrik Singh', role:'Owner',    color:'#FF4C1C', initials:'AS', permissions:['all']},
+  {username:'manager1', password:'manager1234', name:'Manager 1',   role:'Manager',  color:'#1560BD', initials:'M1', permissions:['view','status','notes','call']},
+  {username:'exec1',    password:'exec1234',    name:'Executive 1', role:'Executive',color:'#1a7a45', initials:'E1', permissions:['view','status']},
 ]
 let currentUser = null
 
