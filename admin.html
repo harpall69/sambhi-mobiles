@@ -943,4 +943,51 @@ function genBill(){
   doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(120,121,117)
   doc.text('Customer Signature & Thumb',M+2,sigY+4);doc.text(l.name,M+2,sigY+11)
   doc.text('For Sambhi Mobiles | Amrik Singh',W-M-58,sigY+4)
-  doc.setFont('helvetica',
+  doc.setFont('helvetica',  doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.text('GSTIN: 07BWPPS6835M1ZI',W-M-58,sigY+11)
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(150,150,148)
+  doc.text('Terms: Valid GST invoice. Non-returnable within 24hrs unless defect. IMEI verified. Delhi courts jurisdiction.',M,sigY+18)
+  doc.setFillColor(10,10,10);doc.rect(0,285,W,12,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(255,76,28);doc.text('Sambhi Mobiles',W/2,290,'center')
+  doc.setFont('helvetica','normal');doc.setTextColor(150,150,148)
+  doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi | +91 7827505579 | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',W/2,294.5,'center')
+  const fname=`Sambhi_${invNo}_${l.name.replace(/\s+/g,'_')}.pdf`
+  doc.save(fname)
+  bills.push({invNo,customer:l.name,device:l.device||'—',amount:Math.round(grand),at:new Date().toISOString(),leadId:id})
+  const lead=leads.find(x=>x.id===id);if(lead){lead.billed=true;lead.invNo=invNo}
+  invNum++;save();renderBillPage();toast('✅ Bill '+invNo+' downloaded!')
+}
+
+function sendBillWA(){
+  const id=document.getElementById('billLeadSel').value
+  const l=leads.find(x=>x.id===id);if(!l){toast('Select a lead',true);return}
+  const grand=document.getElementById('tGrand').textContent
+  const p=l.phone.replace(/\D/g,'')
+  const msg=encodeURIComponent(`Hello ${l.name}! 🙏\n\nThank you for transacting with *Sambhi Mobiles*!\n\n✅ Transaction complete\n💰 Amount: *${grand}*\n\n🏦 Bank: IDFC First Bank\nAcc: 10084177443 | IFSC: IDFB0020107\n\n📞 +91 7827505579\n\n_Sambhi Mobiles | Govind Puri, New Delhi_`)
+  window.open('https://wa.me/91'+p+'?text='+msg,'_blank')
+}
+
+function openBillFor(id){showPage('bill');setTimeout(()=>{document.getElementById('billLeadSel').value=id;fillBill()},100)}
+
+function renderTeamStats(){
+  document.getElementById('ts1leads').textContent=leads.length
+  document.getElementById('ts1done').textContent=leads.filter(l=>l.status==='completed').length
+}
+
+function seedDemo(){
+  if(leads.length)return
+  const demo=[
+    {name:'Rahul Sharma',phone:'+91 98765 43210',area:'Lajpat Nagar',devType:'iphone',device:'iPhone 14 Pro 256GB',model:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',year:'2022',battery:'84',slot:'morning',source:'website',basePrice:60000,deps:{charger:true,nobox:true},isLoyalty:false,status:'new'},
+    {name:'Priya Mehta',phone:'+91 91234 56789',area:'Saket',devType:'samsung',device:'Samsung Galaxy S23 Ultra',model:'Samsung Galaxy S23 Ultra',storage:'256GB',color:'Black',year:'2023',battery:'88',slot:'evening',source:'meta',basePrice:70000,deps:{},isLoyalty:false,status:'contacted'},
+    {name:'Amit Verma',phone:'+91 99887 76655',area:'Dwarka',devType:'playstation',device:'PS5 Disc Edition',model:'PS5 Disc Edition',storage:'',color:'White',year:'2022',battery:'',slot:'morning',source:'whatsapp',basePrice:44000,deps:{nobox:true},isLoyalty:false,status:'scheduled'},
+    {name:'Sunita Kapoor',phone:'+91 87654 32109',area:'Vasant Kunj',devType:'iphone',device:'iPhone 12 64GB Black',model:'iPhone 12',storage:'64GB',color:'Black',year:'2020',battery:'71',slot:'morning',source:'walkin',basePrice:28000,deps:{charger:true,battlow:true},isLoyalty:true,status:'completed'},
+    {name:'Dev Anand',phone:'+91 95551 12233',area:'Rohini',devType:'oneplus',device:'OnePlus 12 256GB',model:'OnePlus 12',storage:'256GB',color:'Green',year:'2024',battery:'96',slot:'evening',source:'meta',basePrice:55000,deps:{},isLoyalty:false,status:'new'},
+  ]
+  leads=demo.map(l=>({...l,id:uid(),estPrice:calcEst(l),notes:[{text:'Lead created via '+l.source,at:new Date().toISOString()}],createdAt:new Date().toISOString()}))
+  save()
+}
+
+seedDemo()
+initAddForm()
+</script>
+</body>
+</html>
