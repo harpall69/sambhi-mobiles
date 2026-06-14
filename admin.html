@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sambhi Mobiles — Admin CRM</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--white:#fff;--accent:#FF4C1C;--as:#fff1ed;
+  --g50:#f9f9f8;--g100:#f0efeb;--g500:#7a7975;--g700:#3d3d3b;
+  --green:#1a7a45;--gs:#e8f5ee;--blue:#1560BD;--bs:#e8f0fe;
+  --gold:#92600a;--golds:#fff9e6;--red:#c0392b;--rs:#fdecea;
+  --purple:#6d28d9;--ps:#ede9fe;--bdr:rgba(0,0,0,0.08);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--g50);color:var(--black);font-size:14px;min-height:100vh}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.login-box{background:#fff;border-radius:20px;padding:44px;width:100%;max-width:400px;text-align:center}
+.login-logo{font-size:24px;font-weight:800;margin-bottom:4px}.login-logo span{color:var(--accent)}
+.login-sub{font-size:13px;color:var(--g500);margin-bottom:28px}
+.login-fg{margin-bottom:14px;text-align:left}
+.login-fg label{display:block;font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.login-fg input{width:100%;background:var(--g50);border:1.5px solid var(--bdr);border-radius:9px;padding:11px 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+.login-fg input:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
+.login-btn:hover{opacity:.88}
+.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none}
+.login-users{margin-top:20px;background:var(--g50);border-radius:10px;padding:12px 14px;text-align:left}
+.login-users p{font-size:11px;font-weight:700;color:var(--g500);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.user-chip{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)}
+.user-chip:last-child{border:none}
+.user-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.user-chip h4{font-size:12px;font-weight:700}
+.user-chip p{font-size:10px;color:var(--g500)}
+
+/* TOPBAR */
+.topbar{background:var(--black);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100}
+.logo{font-size:17px;font-weight:800;color:#fff}.logo span{color:var(--accent)}
+.top-right{display:flex;align-items:center;gap:10px}
+.top-user{display:flex;align-items:center;gap:8px}
+.top-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.top-name{font-size:12px;font-weight:600;color:rgba(255,255,255,0.7)}
+.top-role{font-size:10px;color:rgba(255,255,255,0.35)}
+.logout-btn{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border:none;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+.notif-pill{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;cursor:pointer}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid var(--bdr);display:flex;padding:0 24px;overflow-x:auto}
+.ntab{padding:13px 16px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--g500);border-bottom:2.5px solid transparent;white-space:nowrap;font-family:inherit;transition:all .2s}
+.ntab.active{color:var(--black);border-bottom-color:var(--accent)}
+.ntab .nb{display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:100px;margin-left:5px;padding:0 3px}
+.ntab .nb.green{background:var(--green)}
+
+.page{display:none;padding:20px 24px}.page.active{display:block}
+
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--bdr);border-radius:12px;padding:16px}
+.stat .num{font-size:26px;font-weight:800;line-height:1;margin-bottom:3px}
+.stat .lbl{font-size:11px;color:var(--g500)}
+.stat .chg{font-size:11px;margin-top:3px;font-weight:600}
+
+/* TABLE */
+.table-wrap{background:#fff;border:1px solid var(--bdr);border-radius:14px;overflow:hidden}
+.table-toolbar{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);gap:10px;flex-wrap:wrap}
+.table-toolbar h3{font-size:14px;font-weight:700}
+.toolbar-right{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.search-in{border:1.5px solid var(--bdr);border-radius:8px;padding:7px 11px;font-size:12px;font-family:inherit;outline:none;width:190px;background:var(--g50)}
+.search-in:focus{border-color:var(--accent)}
+.filter-sel{border:1.5px solid var(--bdr);border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;outline:none;background:var(--g50);cursor:pointer}
+.add-btn{background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--g50);font-size:10px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;padding:9px 13px;text-align:left;border-bottom:1px solid var(--bdr)}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background .15s;cursor:pointer}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:var(--g50)}
+tbody td{padding:10px 13px;font-size:12px;vertical-align:middle}
+.td-name{font-weight:600;font-size:13px}
+.td-phone{color:var(--blue);font-weight:500}
+
+/* STATUS */
+.status{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px}
+.st-new{background:var(--bs);color:var(--blue)}
+.st-contacted{background:var(--golds);color:var(--gold)}
+.st-scheduled{background:var(--ps);color:var(--purple)}
+.st-completed{background:var(--gs);color:var(--green)}
+.st-cancelled{background:var(--rs);color:var(--red)}
+.slot-b{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px}
+.slot-m{background:#fef3c7;color:#92400e}
+.slot-e{background:var(--ps);color:var(--purple)}
+
+/* ACTION BTNS */
+.act-btn{font-size:10px;font-weight:600;padding:4px 9px;border-radius:6px;border:none;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.act-call{background:var(--gs);color:var(--green)}
+.act-wa{background:#e8fdf0;color:#128C7E}
+.act-bill{background:var(--accent);color:#fff}
+.act-bill:disabled{background:var(--g100);color:var(--g500);cursor:not-allowed}
+.act-view{background:var(--g100);color:var(--g700)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-head{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:#fff}
+.modal-head h2{font-size:16px;font-weight:700}
+.modal-close{background:var(--g100);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.modal-body{padding:18px 22px 22px}
+.mfg{margin-bottom:13px}
+.mfg label{display:block;font-size:10px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.mfg input,.mfg select,.mfg textarea{width:100%;background:var(--g50);border:1.5px solid var(--bdr);border-radius:9px;color:var(--black);font-size:13px;font-family:inherit;padding:9px 12px;outline:none;transition:border-color .2s}
+.mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--accent)}
+.mfg textarea{resize:none;height:60px}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.m3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stepper{display:flex;gap:0;margin-bottom:16px;border-radius:9px;overflow:hidden;border:1px solid var(--bdr)}
+.step-btn{flex:1;padding:8px 4px;border:none;background:var(--g50);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--g500);transition:all .2s;text-align:center;border-right:1px solid var(--bdr)}
+.step-btn:last-child{border-right:none}
+.step-btn.active{background:var(--black);color:#fff}
+.step-btn.done{background:var(--gs);color:var(--green)}
+.sec-lbl{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--bdr)}
+.save-btn{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;margin-top:6px}
+.wa-btn2{background:#25D366;color:#fff;border:none;padding:10px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;margin-top:6px}
+
+/* DEP CHIPS */
+.dep-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.dep-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--bdr);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:11px;font-weight:500;transition:all .2s;user-select:none}
+.dep-chip.on{border-color:var(--accent);background:var(--as);color:var(--accent);font-weight:700}
+.dep-dot{width:7px;height:7px;border-radius:50%;background:var(--bdr);transition:all .2s;flex-shrink:0}
+.dep-chip.on .dep-dot{background:var(--accent)}
+
+/* PRICE BOX */
+.price-live{background:var(--black);border-radius:11px;padding:13px 15px;margin:12px 0;display:flex;justify-content:space-between;align-items:center}
+.price-live .pl{font-size:10px;color:rgba(255,255,255,.4)}
+.price-live .pv{font-size:20px;font-weight:800;color:#fff}
+.price-live .pa{font-size:10px;color:var(--accent);margin-top:2px}
+
+/* KANBAN */
+.fu-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fu-col{background:#fff;border:1px solid var(--bdr);border-radius:14px;overflow:hidden;min-height:200px}
+.fu-col-head{padding:11px 13px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.fu-cnt{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px}
+.col-new .fu-col-head{background:var(--bs);color:var(--blue)}.col-new .fu-cnt{background:var(--blue);color:#fff}
+.col-contact .fu-col-head{background:var(--golds);color:var(--gold)}.col-contact .fu-cnt{background:#e6a817;color:#fff}
+.col-sched .fu-col-head{background:var(--ps);color:var(--purple)}.col-sched .fu-cnt{background:var(--purple);color:#fff}
+.col-done .fu-col-head{background:var(--gs);color:var(--green)}.col-done .fu-cnt{background:var(--green);color:#fff}
+.fu-col-body{padding:8px;display:flex;flex-direction:column;gap:7px}
+.fu-card{background:var(--g50);border:1px solid var(--bdr);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s}
+.fu-card:hover{border-color:var(--accent);background:var(--as)}
+.fu-card h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.fu-card .dev{font-size:11px;color:var(--g500);margin-bottom:4px}
+.fu-tags{display:flex;gap:4px;flex-wrap:wrap}
+.fu-tag{font-size:9px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--g100);color:var(--g500)}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:7px;margin-top:6px}
+.tl-item{background:var(--g50);border-radius:8px;padding:9px 11px;display:flex;gap:9px}
+.tl-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px}
+.tl-txt{font-size:11px;color:var(--g700);line-height:1.5}
+.tl-time{font-size:10px;color:var(--g500);margin-top:2px}
+.note-row{display:flex;gap:7px;margin-top:7px}
+.note-row input{flex:1;border:1.5px solid var(--bdr);border-radius:8px;padding:7px 11px;font-size:12px;font-family:inherit;outline:none}
+.note-row input:focus{border-color:var(--accent)}
+.note-row button{background:var(--accent);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* BILL PAGE */
+.bill-sel-box{background:#fff;border:1px solid var(--bdr);border-radius:14px;padding:20px}
+.bill-info{background:var(--gs);border:1px solid rgba(26,122,69,0.2);border-radius:10px;padding:11px 13px;font-size:12px;color:var(--green);margin-bottom:14px}
+.tax-box{background:var(--black);border-radius:11px;padding:13px 15px;margin:12px 0}
+.tax-row{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px}
+.tax-row span:first-child{color:rgba(255,255,255,.4)}
+.tax-row span:last-child{color:#fff;font-weight:600}
+.tax-total{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px}
+.tax-total span:first-child{font-size:13px;font-weight:700;color:var(--accent)}
+.tax-total span:last-child{font-size:18px;font-weight:800;color:#fff}
+.bill-hist-item{background:var(--g50);border-radius:10px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:#fff;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* TEAM PAGE */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.team-card{background:#fff;border:1.5px solid var(--bdr);border-radius:14px;padding:20px;text-align:center}
+.team-card.active-card{border-color:var(--green)}
+.team-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;margin:0 auto 12px}
+.team-card h3{font-size:15px;font-weight:700;margin-bottom:3px}
+.team-card .role{font-size:11px;font-weight:600;padding:2px 9px;border-radius:100px;display:inline-block;margin-bottom:8px}
+.role-owner{background:#fff9e6;color:var(--gold)}
+.role-manager{background:var(--bs);color:var(--blue)}
+.role-executive{background:var(--gs);color:var(--green)}
+.team-card p{font-size:11px;color:var(--g500);margin-bottom:10px}
+.team-stats{display:flex;justify-content:center;gap:16px;margin-top:8px}
+.ts{text-align:center}
+.ts .n{font-size:16px;font-weight:700;color:var(--accent)}
+.ts .l{font-size:10px;color:var(--g500)}
+.online-dot{width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+@media(max-width:900px){.stat-row{grid-template-columns:repeat(3,1fr)}.fu-cols{grid-template-columns:1fr 1fr}.team-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.fu-cols{grid-template-columns:1fr}.m2,.m3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Sambhi <span>Mobiles</span></div>
+    <div class="login-sub">Admin CRM — Team Login</div>
+    <div class="login-fg"><label>Username</label><input id="loginUser" placeholder="Enter your username" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-fg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Login →</button>
+    <div class="login-err" id="loginErr">❌ Wrong username or password</div>
+    <div class="login-users">
+      <p>Team accounts</p>
+      <div class="user-chip"><div class="user-av" style="background:#FF4C1C">AS</div><div><h4>Amrik Singh</h4><p>Owner · amrik / amrik@1234</p></div></div>
+      <div class="user-chip"><div class="user-av" style="background:#1560BD">M1</div><div><h4>Manager 1</h4><p>Manager · manager1 / manager@1234</p></div></div>
+      <div class="user-chip"><div class="user-av" style="background:#1a7a45">E1</div><div><h4>Executive 1</h4><p>Field executive · exec1 / exec@1234</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar" style="display:none">
+  <div class="logo">Sambhi <span>Mobiles</span> — Admin</div>
+  <div class="top-right">
+    <div class="top-user">
+      <div class="top-av" id="topAv"></div>
+      <div><div class="top-name" id="topName"></div><div class="top-role" id="topRole"></div></div>
+    </div>
+    <span class="notif-pill" onclick="showPage('leads')">🔔 <span id="notifCount">0</span> New</span>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="mainNav" style="display:none">
+  <button class="ntab active" onclick="showPage('dash',this)" id="tab-dash">📊 Dashboard</button>
+  <button class="ntab" onclick="showPage('leads',this)" id="tab-leads">📋 Leads <span class="nb" id="badgeLeads">0</span></button>
+  <button class="ntab" onclick="showPage('followup',this)" id="tab-followup">🔁 Follow-up <span class="nb" style="background:var(--gold)" id="badgeFollowup">0</span></button>
+  <button class="ntab" onclick="showPage('bill',this)" id="tab-bill">🧾 Bill</button>
+  <button class="ntab" onclick="showPage('add',this)" id="tab-add">➕ Add Lead</button>
+  <button class="ntab" onclick="showPage('team',this)" id="tab-team">👥 Team</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dash">
+  <div class="stat-row">
+    <div class="stat"><div class="num" style="color:var(--blue)" id="sNew">0</div><div class="lbl">New Today</div><div class="chg" style="color:var(--blue)">Awaiting contact</div></div>
+    <div class="stat"><div class="num" style="color:var(--gold)" id="sPend">0</div><div class="lbl">Pending Follow-up</div><div class="chg" style="color:var(--gold)">Need action</div></div>
+    <div class="stat"><div class="num" style="color:var(--purple)" id="sSched">0</div><div class="lbl">Scheduled</div><div class="chg" style="color:var(--purple)">Slots booked</div></div>
+    <div class="stat"><div class="num" style="color:var(--green)" id="sDone">0</div><div class="lbl">Completed</div><div class="chg" style="color:var(--green)">Bills generated</div></div>
+    <div class="stat"><div class="num" style="color:var(--accent)" id="sRev">₹0</div><div class="lbl">Total Paid Out</div><div class="chg" style="color:var(--accent)">This month</div></div>
+  </div>
+  <div class="table-wrap">
+    <div class="table-toolbar"><h3>Recent Leads</h3><button class="add-btn" onclick="showPage('add')">+ Add Lead</button></div>
+    <table><thead><tr><th>Customer</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Est. Price</th><th>Actions</th></tr></thead>
+    <tbody id="dashTable"></tbody></table>
+  </div>
+</div>
+
+<!-- ALL LEADS -->
+<div class="page" id="page-leads">
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <h3>All Leads</h3>
+      <div class="toolbar-right">
+        <input class="search-in" placeholder="🔍 Search…" oninput="renderLeads(this.value,document.getElementById('sf').value)">
+        <select class="filter-sel" id="sf" onchange="renderLeads(document.querySelector('.search-in').value,this.value)">
+          <option value="">All Status</option>
+          <option value="new">New</option><option value="contacted">Contacted</option>
+          <option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option>
+        </select>
+        <button class="add-btn" onclick="showPage('add')">+ Add Lead</button>
+      </div>
+    </div>
+    <table><thead><tr><th>Date</th><th>Customer</th><th>Phone</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Est. Price</th><th>Actions</th></tr></thead>
+    <tbody id="leadsTable"></tbody></table>
+  </div>
+</div>
+
+<!-- FOLLOW-UP KANBAN -->
+<div class="page" id="page-followup">
+  <div style="margin-bottom:14px"><h2 style="font-size:17px;font-weight:700">Follow-up Tracker</h2><p style="font-size:12px;color:var(--g500);margin-top:3px">Click any card to update status, call, or add notes</p></div>
+  <div class="fu-cols">
+    <div class="fu-col col-new"><div class="fu-col-head">🆕 New <span class="fu-cnt" id="cn-new">0</span></div><div class="fu-col-body" id="col-new"></div></div>
+    <div class="fu-col col-contact"><div class="fu-col-head">📞 Contacted <span class="fu-cnt" id="cn-contacted">0</span></div><div class="fu-col-body" id="col-contacted"></div></div>
+    <div class="fu-col col-sched"><div class="fu-col-head">📅 Scheduled <span class="fu-cnt" id="cn-scheduled">0</span></div><div class="fu-col-body" id="col-scheduled"></div></div>
+    <div class="fu-col col-done"><div class="fu-col-head">✅ Completed <span class="fu-cnt" id="cn-completed">0</span></div><div class="fu-col-body" id="col-completed"></div></div>
+  </div>
+</div>
+
+<!-- BILL PAGE -->
+<div class="page" id="page-bill">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+    <div class="bill-sel-box">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:13px">🧾 Generate GST Bill</h3>
+      <div class="mfg"><label>Select Completed Lead</label>
+        <select id="billLeadSel" onchange="fillBill()"><option value="">— Choose completed lead —</option></select>
+      </div>
+      <div class="bill-info">✅ Bills only for leads marked <strong>Completed</strong>. Update status first.</div>
+      <div id="billForm" style="display:none">
+        <div class="m2">
+          <div class="mfg"><label>Final Amount (₹)</label><input type="number" id="bAmt" placeholder="35000" oninput="calcTax()"></div>
+          <div class="mfg"><label>Transaction</label><select id="bTx"><option value="PURCHASE">We Purchased</option><option value="SALE">We Sold</option></select></div>
+        </div>
+        <div class="mfg"><label>IMEI Number</label><input id="bIMEI" placeholder="15-digit IMEI"></div>
+        <div class="m2">
+          <div class="mfg"><label>Invoice No</label><input id="bInvNo" readonly style="background:var(--g100)"></div>
+          <div class="mfg"><label>Date</label><input id="bDate" readonly style="background:var(--g100)"></div>
+        </div>
+        <div class="tax-box">
+          <div class="tax-row"><span>Taxable Value</span><span id="tTaxable">—</span></div>
+          <div class="tax-row"><span>CGST @ 9%</span><span id="tCGST">—</span></div>
+          <div class="tax-row"><span>SGST @ 9%</span><span id="tSGST">—</span></div>
+          <div class="tax-total"><span>Grand Total</span><span id="tGrand">—</span></div>
+        </div>
+        <button class="save-btn" onclick="genBill()">📄 Download GST Bill PDF</button>
+        <button class="wa-btn2" onclick="sendBillWA()">📲 Send via WhatsApp</button>
+      </div>
+    </div>
+    <div class="bill-sel-box"><h3 style="font-size:15px;font-weight:700;margin-bottom:13px">📜 Bill History</h3><div id="billHist"><p style="font-size:12px;color:var(--g500)">No bills yet.</p></div></div>
+  </div>
+</div>
+
+<!-- ADD LEAD -->
+<div class="page" id="page-add">
+  <div style="max-width:680px">
+    <div class="bill-sel-box">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:3px">Add New Lead</h3>
+      <p style="font-size:12px;color:var(--g500);margin-bottom:0">Website form, WhatsApp, walk-in, or Meta ad</p>
+      <div class="sec-lbl">Customer Details</div>
+      <div class="m2">
+        <div class="mfg"><label>Full Name *</label><input id="aName" placeholder="Customer name"></div>
+        <div class="mfg"><label>WhatsApp *</label><input id="aPhone" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="mfg"><label>Delhi Area</label><input id="aArea" placeholder="Lajpat Nagar, Dwarka…"></div>
+      <div class="mfg"><label>Full Address</label><input id="aAddr" placeholder="House no, street…"></div>
+      <div class="sec-lbl">Device Details</div>
+      <div class="m2">
+        <div class="mfg"><label>Brand *</label>
+          <select id="aBrand" onchange="updateBrandModels()">
+            <option value="">Select brand</option>
+            <optgroup label="Apple">
+              <option value="iphone">iPhone</option>
+              <option value="airpods">AirPods</option>
+              <option value="applewatch">Apple Watch</option>
+            </optgroup>
+            <optgroup label="Gaming">
+              <option value="playstation">PlayStation</option>
+            </optgroup>
+            <optgroup label="Android">
+              <option value="samsung">Samsung</option>
+              <option value="oneplus">OnePlus</option>
+              <option value="realme">Realme</option>
+              <option value="oppo">Oppo</option>
+              <option value="vivo">Vivo</option>
+              <option value="xiaomi">Xiaomi / Redmi</option>
+              <option value="pixel">Google Pixel</option>
+              <option value="nothing">Nothing Phone</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="mfg"><label>Model</label><select id="aModel" onchange="setAddBase()"><option value="">Select model</option></select></div>
+      </div>
+      <div class="m3">
+        <div class="mfg"><label>Storage</label><input id="aStorage" placeholder="128GB"></div>
+        <div class="mfg"><label>Colour</label><input id="aColor" placeholder="Black"></div>
+        <div class="mfg"><label>Year</label>
+          <select id="aYear" onchange="calcAddDep()">
+            <option value="">Year</option>
+            <option>2024</option><option>2023</option><option>2022</option>
+            <option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option>
+          </select>
+        </div>
+      </div>
+      <div class="m2">
+        <div class="mfg"><label>Battery %</label><input id="aBatt" type="number" min="1" max="100" placeholder="84" oninput="calcAddDep()"></div>
+        <div class="mfg"><label>IMEI</label><input id="aIMEI" placeholder="15-digit IMEI" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+      </div>
+      <div class="sec-lbl">Condition Issues</div>
+      <div class="dep-chips" id="addDepChips"></div>
+      <div class="sec-lbl">Pickup & Source</div>
+      <div class="m2">
+        <div class="mfg"><label>Slot</label><select id="aSlot"><option value="morning">🌅 Morning (9AM–1PM)</option><option value="evening">🌆 Evening (4PM–8PM)</option></select></div>
+        <div class="mfg"><label>Source</label><select id="aSource"><option value="website">Website Form</option><option value="whatsapp">WhatsApp</option><option value="meta">Meta Ad</option><option value="walkin">Walk-in</option><option value="call">Phone Call</option></select></div>
+      </div>
+      <div class="mfg"><label>Loyalty member?</label>
+        <div style="background:var(--golds);border:1.5px solid #fbbf24;border-radius:9px;padding:11px 13px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="document.getElementById('aLoyalty').click()">
+          <input type="checkbox" id="aLoyalty" style="width:16px;height:16px;accent-color:var(--accent)">
+          <div><div style="font-size:12px;font-weight:700;color:var(--gold)">🏆 Returning customer — apply 10% loyalty bonus</div><div style="font-size:10px;color:#b45309;margin-top:1px">Tick if sold to us before</div></div>
+        </div>
+      </div>
+      <div class="mfg"><label>Notes</label><textarea id="aNotes" placeholder="Any extra details…"></textarea></div>
+      <div id="addPriceBox" style="display:none" class="price-live">
+        <div><div class="pl">Estimated payout</div><div class="pv" id="addEstAmt">—</div><div class="pa" id="addRetain"></div></div>
+        <div style="text-align:right;font-size:10px;color:rgba(255,255,255,.3)">Final on<br>inspection</div>
+      </div>
+      <button class="save-btn" onclick="saveLead()">✅ Save Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM PAGE -->
+<div class="page" id="page-team">
+  <div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+    <div><h2 style="font-size:17px;font-weight:700">Team Access</h2><p style="font-size:12px;color:var(--g500);margin-top:3px">Manage who can access the CRM</p></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card active-card">
+      <div class="team-av" style="background:var(--accent)">AS</div>
+      <h3>Amrik Singh</h3>
+      <span class="role role-owner">Owner</span>
+      <p>Full access to all leads, bills, campaigns and team management</p>
+      <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>amrik</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>amrik@1234</strong></div>
+      <div class="team-stats">
+        <div class="ts"><div class="n" id="ts1leads">0</div><div class="l">Leads</div></div>
+        <div class="ts"><div class="n" id="ts1done">0</div><div class="l">Closed</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--green)"><span class="online-dot"></span>Active now</div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:var(--blue)">M1</div>
+      <h3>Manager 1</h3>
+      <span class="role role-manager">Manager</span>
+      <p>Can view all leads, update status, add notes. Cannot delete or change passwords.</p>
+      <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>manager1</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>manager@1234</strong></div>
+      <div style="margin-top:10px;background:var(--bs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--blue)">📋 Can do: View leads, update status, add notes, call customers</div>
+      <div style="margin-top:6px;background:var(--rs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--red)">🚫 Cannot: Generate bills, delete leads, manage team</div>
+    </div>
+    <div class="team-card">
+      <div class="team-av" style="background:var(--green)">E1</div>
+      <h3>Executive 1</h3>
+      <span class="role role-executive">Field Executive</span>
+      <p>Pickup executive. Can view assigned leads and update status after pickup.</p>
+      <div style="font-size:11px;color:var(--g500);margin-bottom:4px">Username: <strong>exec1</strong></div>
+      <div style="font-size:11px;color:var(--g500)">Password: <strong>exec@1234</strong></div>
+      <div style="margin-top:10px;background:var(--bs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--blue)">📋 Can do: View scheduled leads, update to completed</div>
+      <div style="margin-top:6px;background:var(--rs);border-radius:8px;padding:8px 10px;font-size:11px;color:var(--red)">🚫 Cannot: Add leads, bills, team management</div>
+    </div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--bdr);border-radius:14px;padding:18px;margin-top:4px">
+    <h3 style="font-size:14px;font-weight:700;margin-bottom:10px">🔐 How to change passwords</h3>
+    <p style="font-size:12px;color:var(--g500);line-height:1.7">Currently passwords are stored in the file. To change: open the HTML file in VS Code → search for <code style="background:var(--g100);padding:2px 5px;border-radius:4px">TEAM_USERS</code> → update the password field → save → re-upload to GitHub. When you connect Supabase, passwords will be managed securely in the database.</p>
+  </div>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="modal-bg" id="leadModal">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modalTitle">Lead</h2><button class="modal-close" onclick="closeModal('leadModal')">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── TEAM USERS ────────────────────────────────────────────────────
+const TEAM_USERS = [
+  {username:'amrik',    password:'amrik@1234',   name:'Amrik Singh', role:'Owner',    color:'#FF4C1C', initials:'AS', permissions:['all']},
+  {username:'manager1', password:'manager@1234', name:'Manager 1',   role:'Manager',  color:'#1560BD', initials:'M1', permissions:['view','status','notes','call']},
+  {username:'exec1',    password:'exec@1234',    name:'Executive 1', role:'Executive',color:'#1a7a45', initials:'E1', permissions:['view','status']},
+]
+let currentUser = null
+
+// ── LOGIN ─────────────────────────────────────────────────────────
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim().toLowerCase()
+  const p=document.getElementById('loginPass').value.trim()
+  const user = TEAM_USERS.find(x=>x.username===u && x.password===p)
+  if(!user){ document.getElementById('loginErr').style.display='block'; return }
+  currentUser = user
+  document.getElementById('loginScreen').style.display='none'
+  document.getElementById('topbar').style.display='flex'
+  document.getElementById('mainNav').style.display='flex'
+  document.getElementById('topAv').textContent=user.initials
+  document.getElementById('topAv').style.background=user.color
+  document.getElementById('topName').textContent=user.name
+  document.getElementById('topRole').textContent=user.role
+  renderDash(); renderLeads('',''); renderKanban(); renderBillPage(); initAddForm(); renderTeamStats()
+}
+function doLogout(){
+  currentUser=null
+  document.getElementById('loginScreen').style.display='flex'
+  document.getElementById('topbar').style.display='none'
+  document.getElementById('mainNav').style.display='none'
+  document.getElementById('loginUser').value=''
+  document.getElementById('loginPass').value=''
+  document.getElementById('loginErr').style.display='none'
+}
+function canDo(perm){ return currentUser && (currentUser.permissions.includes('all') || currentUser.permissions.includes(perm)) }
+
+// ── MODELS DATA ───────────────────────────────────────────────────
+const MODELS={
+  iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone SE (2020)':14000,'iPhone XR':12000},
+  airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000,'AirPods 2nd Gen':6000},
+  applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Ultra':44000,'Apple Watch Series 9':32000,'Apple Watch Series 8':26000,'Apple Watch Series 7':20000,'Apple Watch SE 2nd Gen':16000,'Apple Watch Series 6':15000},
+  playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000},
+  samsung:{'Samsung Galaxy S24 Ultra':95000,'Samsung Galaxy S24+':80000,'Samsung Galaxy S24':65000,'Samsung Galaxy S23 Ultra':70000,'Samsung Galaxy S23':50000,'Samsung Galaxy S22':38000,'Samsung Galaxy A55':28000,'Samsung Galaxy A35':20000,'Samsung Galaxy A15':10000,'Samsung Galaxy M55':18000,'Samsung Galaxy M35':13000,'Samsung Galaxy F55':16000},
+  oneplus:{'OnePlus 12':55000,'OnePlus 12R':35000,'OnePlus 11':45000,'OnePlus Nord 4':28000,'OnePlus Nord CE4':20000,'OnePlus Nord 3':22000,'OnePlus 10 Pro':35000,'OnePlus 10T':28000,'OnePlus 9 Pro':22000},
+  realme:{'Realme GT 6':32000,'Realme GT 5':28000,'Realme GT Neo 6':22000,'Realme 13 Pro+':25000,'Realme 13 Pro':20000,'Realme 12 Pro+':22000,'Realme Narzo 70 Pro':16000,'Realme 11 Pro+':18000},
+  oppo:{'Oppo Find X7 Pro':55000,'Oppo Reno 12 Pro':30000,'Oppo Reno 12':22000,'Oppo Reno 11 Pro':25000,'Oppo F27 Pro':20000,'Oppo F25 Pro':18000,'Oppo A3 Pro':14000,'Oppo A60':10000},
+  vivo:{'Vivo X100 Pro':65000,'Vivo X100':50000,'Vivo V40 Pro':35000,'Vivo V40':27000,'Vivo V30 Pro':30000,'Vivo V30':22000,'Vivo Y200 Pro':18000,'Vivo Y200':14000,'Vivo T3x':10000},
+  xiaomi:{'Xiaomi 14 Ultra':75000,'Xiaomi 14':55000,'Redmi Note 13 Pro+':25000,'Redmi Note 13 Pro':20000,'Redmi Note 13':14000,'Redmi Note 12 Pro+':18000,'POCO X6 Pro':22000,'POCO F6':28000,'POCO M6 Pro':14000,'Redmi 13C':8000},
+  pixel:{'Google Pixel 9 Pro XL':90000,'Google Pixel 9 Pro':75000,'Google Pixel 9':60000,'Google Pixel 8 Pro':55000,'Google Pixel 8':45000,'Google Pixel 7a':28000,'Google Pixel 7':32000,'Google Pixel 6a':20000},
+  nothing:{'Nothing Phone (2a) Plus':25000,'Nothing Phone (2a)':22000,'Nothing Phone (2)':35000,'Nothing Phone (1)':18000},
+}
+const DEP_DEFS=[
+  {id:'charger',label:'No charger',pct:0.05},{id:'screen',label:'Screen cracked',pct:0.18},
+  {id:'body',label:'Body damage',pct:0.10},{id:'battlow',label:'Battery <80%',pct:0.12},
+  {id:'nobox',label:'No original box',pct:0.03},{id:'faceid',label:'Face ID broken',pct:0.10},
+]
+const SL={new:'st-new',contacted:'st-contacted',scheduled:'st-scheduled',completed:'st-completed',cancelled:'st-cancelled'}
+const SN={new:'New',contacted:'Contacted',scheduled:'Scheduled',completed:'Completed',cancelled:'Cancelled'}
+
+// ── STATE ─────────────────────────────────────────────────────────
+let leads=JSON.parse(localStorage.getItem('smb_leads')||'[]')
+let bills=JSON.parse(localStorage.getItem('smb_bills')||'[]')
+let invNum=parseInt(localStorage.getItem('smb_inv')||'1')
+let addDepState={}
+let addBasePrice=0
+
+function save(){localStorage.setItem('smb_leads',JSON.stringify(leads));localStorage.setItem('smb_bills',JSON.stringify(bills));localStorage.setItem('smb_inv',invNum)}
+function fmtInv(n){return 'SMB-2025-'+String(n).padStart(4,'0')}
+function fmtD(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
+function fmtT(d){return new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}
+function Rs(n){return n?'₹'+parseInt(n).toLocaleString('en-IN'):'—'}
+function uid(){return Date.now()+Math.random().toString(36).slice(2,6)}
+function toast(msg,err){const t=document.getElementById('toast');t.textContent=msg;t.style.background=err?'#c0392b':'#1a7a45';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+
+function numWords(n){
+  const o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen']
+  const t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety']
+  function b(n){if(n<20)return o[n];if(n<100)return t[~~(n/10)]+(n%10?' '+o[n%10]:'');return o[~~(n/100)]+' Hundred'+(n%100?' and '+b(n%100):'')}
+  n=~~n;if(!n)return'Zero';if(n<1000)return b(n);
+  if(n<100000)return b(~~(n/1000))+' Thousand'+(n%1000?' '+b(n%1000):'');
+  if(n<10000000)return b(~~(n/100000))+' Lakh'+(n%100000?' '+numWords(n%100000):'');
+  return b(~~(n/10000000))+' Crore'+(n%10000000?' '+numWords(n%10000000):'')
+}
+
+function calcEst(l){
+  const bp=l.basePrice||0;if(!bp)return 0
+  const yr=parseInt(l.year)||0
+  const ageD=yr?Math.round(bp*Math.min((2025-yr)*0.07,0.42)):0
+  const b=parseInt(l.battery)||100
+  const battD=b<80?Math.round(bp*Math.min((80-b)*0.007,0.20)):0
+  const condD=DEP_DEFS.reduce((s,d)=>s+((l.deps||{})[d.id]?Math.round(bp*d.pct):0),0)
+  const base=Math.max(bp-ageD-battD-condD,Math.round(bp*0.15))
+  return base+(l.isLoyalty?Math.round(base*0.10):0)
+}
+
+// ── PAGE NAV ──────────────────────────────────────────────────────
+function showPage(p,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'))
+  document.querySelectorAll('.ntab').forEach(x=>x.classList.remove('active'))
+  document.getElementById('page-'+p).classList.add('active')
+  if(btn)btn.classList.add('active')
+  else{const t=document.getElementById('tab-'+p);if(t)t.classList.add('active')}
+  if(p==='dash')renderDash()
+  if(p==='leads')renderLeads('','')
+  if(p==='followup')renderKanban()
+  if(p==='bill')renderBillPage()
+  if(p==='team')renderTeamStats()
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────
+function renderDash(){
+  const today=new Date().toDateString()
+  const newT=leads.filter(l=>l.status==='new'&&new Date(l.createdAt).toDateString()===today).length
+  const pend=leads.filter(l=>['new','contacted'].includes(l.status)).length
+  const sched=leads.filter(l=>l.status==='scheduled').length
+  const done=leads.filter(l=>l.status==='completed').length
+  const rev=bills.reduce((s,b)=>s+(parseInt(b.amount)||0),0)
+  document.getElementById('sNew').textContent=newT
+  document.getElementById('sPend').textContent=pend
+  document.getElementById('sSched').textContent=sched
+  document.getElementById('sDone').textContent=done
+  document.getElementById('sRev').textContent='₹'+rev.toLocaleString('en-IN')
+  document.getElementById('notifCount').textContent=newT
+  document.getElementById('badgeLeads').textContent=leads.length
+  document.getElementById('badgeFollowup').textContent=pend+sched
+  const tb=document.getElementById('dashTable')
+  const recent=[...leads].reverse().slice(0,8)
+  tb.innerHTML=recent.length?recent.map(l=>lRow(l,true)).join(''):'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g500)">No leads yet. <a href="#" onclick="showPage(\'add\')" style="color:var(--accent)">Add first lead →</a></td></tr>'
+}
+
+// ── LEADS TABLE ───────────────────────────────────────────────────
+function renderLeads(q,status){
+  let f=[...leads].reverse()
+  if(q)f=f.filter(l=>(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().includes(q.toLowerCase()))
+  if(status)f=f.filter(l=>l.status===status)
+  const tb=document.getElementById('leadsTable')
+  tb.innerHTML=f.length?f.map(l=>lRow(l,false)).join(''):'<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--g500)">No leads found.</td></tr>'
+}
+
+function lRow(l,compact){
+  const est=calcEst(l)
+  const sb=l.slot==='morning'?'<span class="slot-b slot-m">🌅 Morning</span>':'<span class="slot-b slot-e">🌆 Evening</span>'
+  const billBtn=canDo('all')?(l.status==='completed'?`<button class="act-btn act-bill" onclick="event.stopPropagation();openBillFor('${l.id}')">🧾</button>`:`<button class="act-btn act-bill" disabled>🧾</button>`):'';
+  if(compact)return`<tr onclick="openModal('${l.id}')">
+    <td><div class="td-name">${l.name}</div><div class="td-phone">${l.phone}</div></td>
+    <td style="font-size:11px">${l.device||'—'}</td>
+    <td style="font-size:11px;color:var(--g500)">${l.area||'—'}</td>
+    <td>${sb}</td>
+    <td><span class="status ${SL[l.status]||'st-new'}">${SN[l.status]||l.status}</span></td>
+    <td>${est?Rs(est):'—'}</td>
+    <td onclick="event.stopPropagation()" style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="act-btn act-call" onclick="window.open('tel:${l.phone}')">📞</button>
+      <button class="act-btn act-wa" onclick="waMsg('${l.phone}','${l.name}')">💬</button>
+      ${billBtn}
+    </td></tr>`
+  return`<tr onclick="openModal('${l.id}')">
+    <td style="font-size:10px;color:var(--g500)">${fmtD(l.createdAt)}<br>${fmtT(l.createdAt)}</td>
+    <td><div class="td-name">${l.name}</div></td>
+    <td><div class="td-phone">${l.phone}</div></td>
+    <td style="font-size:11px">${l.device||'—'}<br><span style="color:var(--g500);font-size:10px">${[l.storage,l.color].filter(Boolean).join(' · ')}</span></td>
+    <td style="font-size:11px;color:var(--g500)">${l.area||'—'}</td>
+    <td>${sb}</td>
+    <td><span class="status ${SL[l.status]||'st-new'}">${SN[l.status]||l.status}</span></td>
+    <td>${est?Rs(est):'—'}</td>
+    <td onclick="event.stopPropagation()" style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="act-btn act-call" onclick="window.open('tel:${l.phone}')">📞</button>
+      <button class="act-btn act-wa" onclick="waMsg('${l.phone}','${l.name}')">💬</button>
+      ${billBtn}
+    </td></tr>`
+}
+
+// ── KANBAN ────────────────────────────────────────────────────────
+function renderKanban(){
+  ['new','contacted','scheduled','completed'].forEach(st=>{
+    const items=leads.filter(l=>l.status===st)
+    document.getElementById('cn-'+st).textContent=items.length
+    document.getElementById('col-'+st).innerHTML=items.length
+      ?items.map(l=>`<div class="fu-card" onclick="openModal('${l.id}')">
+          <h4>${l.name}</h4><div class="dev">${l.device||'No device'}</div>
+          <div class="fu-tags">
+            <span class="fu-tag">${l.phone}</span>
+            <span class="fu-tag">${l.area||'Delhi'}</span>
+            ${l.slot==='morning'?'<span class="fu-tag" style="background:#fef3c7;color:#92400e">🌅</span>':'<span class="fu-tag" style="background:var(--ps);color:var(--purple)">🌆</span>'}
+            ${calcEst(l)?`<span class="fu-tag" style="background:var(--gs);color:var(--green)">${Rs(calcEst(l))}</span>`:''}
+            ${l.isLoyalty?'<span class="fu-tag" style="background:var(--golds);color:var(--gold)">🏆</span>':''}
+          </div>
+        </div>`).join('')
+      :'<p style="font-size:11px;color:var(--g500);text-align:center;padding:16px 8px">No leads</p>'
+  })
+}
+
+// ── LEAD MODAL ────────────────────────────────────────────────────
+function openModal(id){
+  const l=leads.find(x=>x.id===id);if(!l)return
+  const est=calcEst(l)
+  document.getElementById('modalTitle').textContent=l.name+' — '+(l.device||'Lead')
+  const steps=['new','contacted','scheduled','completed','cancelled']
+  const stepHtml=steps.map(s=>`<button class="step-btn ${l.status===s?'active':''} ${steps.indexOf(s)<steps.indexOf(l.status)?'done':''}" onclick="${canDo('status')?`updateStatus('${id}','${s}')`:'alert(\'You do not have permission to change status.\')'}">${SN[s]}</button>`).join('')
+  const depLabels=DEP_DEFS.filter(d=>(l.deps||{})[d.id]).map(d=>d.label).join(', ')||'None'
+  const timeline=(l.notes||[]).map(n=>`<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-txt">${n.text}</div><div class="tl-time">${fmtD(n.at)} ${fmtT(n.at)}</div></div></div>`).join('')
+  document.getElementById('modalBody').innerHTML=`
+    <div class="stepper">${stepHtml}</div>
+    <div class="m2" style="margin-bottom:12px">
+      <div style="background:var(--g50);border-radius:10px;padding:11px">
+        <div style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase">Customer</div>
+        <div style="font-size:14px;font-weight:700">${l.name}</div>
+        <div style="font-size:12px;color:var(--blue);margin:3px 0">${l.phone}</div>
+        <div style="font-size:11px;color:var(--g500)">${l.area||''}</div>
+        <div style="margin-top:7px;display:flex;gap:6px">
+          <button class="act-btn act-call" onclick="window.open('tel:${l.phone}')">📞 Call</button>
+          <button class="act-btn act-wa" onclick="waMsg('${l.phone}','${l.name}')">💬 WhatsApp</button>
+        </div>
+      </div>
+      <div style="background:var(--g50);border-radius:10px;padding:11px">
+        <div style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase">Device</div>
+        <div style="font-size:13px;font-weight:700">${l.device||'—'}</div>
+        <div style="font-size:11px;color:var(--g500);margin-top:2px">${[l.storage,l.color].filter(Boolean).join(' · ')||''}</div>
+        <div style="font-size:11px;color:var(--g500)">Year: ${l.year||'—'} · Battery: ${l.battery||'?'}%</div>
+        <div style="font-size:11px;color:var(--g500)">Issues: ${depLabels}</div>
+        <div style="font-size:11px;color:var(--g500)">Slot: ${l.slot==='morning'?'🌅 Morning':'🌆 Evening'} · ${l.source||'—'}</div>
+        ${l.isLoyalty?'<div style="margin-top:5px;background:var(--golds);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--gold)">🏆 Loyalty — 10% bonus applied</div>':''}
+      </div>
+    </div>
+    ${est?`<div class="price-live" style="margin-bottom:12px"><div><div class="pl">Est. Payout</div><div class="pv">${Rs(est)}</div></div><div style="font-size:10px;color:rgba(255,255,255,.3)">Final on inspection</div></div>`:''}
+    ${canDo('all')&&l.status==='completed'?`<button class="act-btn act-bill" style="width:100%;padding:10px;font-size:13px;margin-bottom:10px" onclick="openBillFor('${id}');closeModal('leadModal')">🧾 Generate GST Bill</button>`:''}
+    <div style="font-size:10px;font-weight:700;color:var(--g500);text-transform:uppercase;margin-bottom:6px">Activity & Notes</div>
+    <div class="timeline">${timeline||'<div style="font-size:11px;color:var(--g500);text-align:center;padding:10px">No notes yet</div>'}</div>
+    ${canDo('notes')?`<div class="note-row"><input id="noteIn" placeholder="Add a note…" onkeydown="if(event.key==='Enter')addNote('${id}')"><button onclick="addNote('${id}')">Add</button></div>`:'<p style="font-size:11px;color:var(--g500);margin-top:6px">You do not have permission to add notes.</p>'}`
+  document.getElementById('leadModal').classList.add('show')
+}
+
+function updateStatus(id,status){
+  const l=leads.find(x=>x.id===id);if(!l)return
+  l.status=status
+  l.notes=l.notes||[]
+  l.notes.push({text:`Status changed to ${SN[status]} by ${currentUser.name}`,at:new Date().toISOString()})
+  save();renderDash();renderKanban();renderLeads('','');openModal(id)
+  toast('✅ Status → '+SN[status])
+}
+
+function addNote(id){
+  const inp=document.getElementById('noteIn');if(!inp.value.trim())return
+  const l=leads.find(x=>x.id===id);if(!l)return
+  l.notes=l.notes||[]
+  l.notes.push({text:inp.value.trim()+' ('+currentUser.name+')',at:new Date().toISOString()})
+  save();inp.value='';openModal(id);toast('Note saved')
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+
+// ── WHATSAPP ──────────────────────────────────────────────────────
+function waMsg(phone,name){
+  const p=phone.replace(/\D/g,'')
+  const msg=encodeURIComponent(`Hello ${name}! 👋\n\nThis is Sambhi Mobiles, Govind Puri, Delhi.\n\nWe received your request to sell your device. We offer the best price with instant cash/UPI at your doorstep.\n\nPlease confirm your pickup slot:\n🌅 Morning (9AM–1PM)\n🌆 Evening (4PM–8PM)\n\nWe call just once — no spam.\n\n📞 +91 7827505579`)
+  window.open('https://wa.me/91'+p+'?text='+msg,'_blank')
+}
+
+// ── ADD LEAD ──────────────────────────────────────────────────────
+function initAddForm(){
+  addDepState={};addBasePrice=0
+  DEP_DEFS.forEach(d=>{addDepState[d.id]=false})
+  const chips=document.getElementById('addDepChips')
+  chips.innerHTML=DEP_DEFS.map(d=>`<div class="dep-chip" id="adc_${d.id}" onclick="toggleAddDep('${d.id}')"><div class="dep-dot"></div>${d.label} (-${(d.pct*100).toFixed(0)}%)</div>`).join('')
+  document.getElementById('addPriceBox').style.display='none'
+}
+
+function updateBrandModels(){
+  const dt=document.getElementById('aBrand').value
+  const ms=document.getElementById('aModel')
+  ms.innerHTML='<option value="">Select model</option>'
+  addBasePrice=0
+  if(!dt||!MODELS[dt])return
+  Object.keys(MODELS[dt]).forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o)})
+}
+
+function setAddBase(){
+  const dt=document.getElementById('aBrand').value
+  const m=document.getElementById('aModel').value
+  addBasePrice=(dt&&m&&MODELS[dt]&&MODELS[dt][m])?MODELS[dt][m]:0
+  calcAddDep()
+}
+
+function toggleAddDep(id){
+  addDepState[id]=!addDepState[id]
+  document.getElementById('adc_'+id).classList.toggle('on',addDepState[id])
+  calcAddDep()
+}
+
+function calcAddDep(){
+  if(!addBasePrice){document.getElementById('addPriceBox').style.display='none';return}
+  const yr=parseInt(document.getElementById('aYear').value)||0
+  const ageD=yr?Math.round(addBasePrice*Math.min((2025-yr)*0.07,0.42)):0
+  const b=parseInt(document.getElementById('aBatt').value)||100
+  const battD=b<80?Math.round(addBasePrice*Math.min((80-b)*0.007,0.20)):0
+  const condD=DEP_DEFS.reduce((s,d)=>s+(addDepState[d.id]?Math.round(addBasePrice*d.pct):0),0)
+  const isLoy=document.getElementById('aLoyalty').checked
+  const base=Math.max(addBasePrice-ageD-battD-condD,Math.round(addBasePrice*0.15))
+  const est=base+(isLoy?Math.round(base*0.10):0)
+  document.getElementById('addPriceBox').style.display='flex'
+  document.getElementById('addEstAmt').textContent=Rs(est)
+  document.getElementById('addRetain').textContent=Math.round((est/addBasePrice)*100)+'% of base retained'
+}
+
+function saveLead(){
+  if(!canDo('all')&&!canDo('add')){toast('No permission to add leads',true);return}
+  const name=document.getElementById('aName').value.trim()
+  const phone=document.getElementById('aPhone').value.trim()
+  if(!name||!phone){toast('Name and phone required',true);return}
+  const dt=document.getElementById('aBrand').value
+  const dm=document.getElementById('aModel').value
+  const yr=document.getElementById('aYear').value
+  const batt=document.getElementById('aBatt').value
+  const isLoy=document.getElementById('aLoyalty').checked
+  const bp=addBasePrice
+  const ageD=yr?Math.round(bp*Math.min((2025-parseInt(yr))*0.07,0.42)):0
+  const b=parseInt(batt)||100
+  const battD=b<80?Math.round(bp*Math.min((80-b)*0.007,0.20)):0
+  const condD=DEP_DEFS.reduce((s,d)=>s+(addDepState[d.id]?Math.round(bp*d.pct):0),0)
+  const base=bp?Math.max(bp-ageD-battD-condD,Math.round(bp*0.15)):0
+  const est=base+(isLoy?Math.round(base*0.10):0)
+  const deviceStr=[dm,document.getElementById('aStorage').value,document.getElementById('aColor').value].filter(Boolean).join(' ')
+  leads.push({
+    id:uid(),name,phone,
+    area:document.getElementById('aArea').value.trim(),
+    address:document.getElementById('aAddr').value.trim(),
+    devType:dt,device:deviceStr,model:dm,
+    storage:document.getElementById('aStorage').value,
+    color:document.getElementById('aColor').value,
+    year:yr,battery:batt,imei:document.getElementById('aIMEI').value,
+    slot:document.getElementById('aSlot').value,
+    source:document.getElementById('aSource').value,
+    basePrice:bp,deps:{...addDepState},isLoyalty:isLoy,estPrice:est,
+    notes:[{text:`Lead created via ${document.getElementById('aSource').value} by ${currentUser.name}`,at:new Date().toISOString()}],
+    status:'new',createdAt:new Date().toISOString()
+  })
+  save();toast('✅ Lead saved for '+name)
+  ;['aName','aPhone','aArea','aAddr','aStorage','aColor','aIMEI','aBatt','aNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''})
+  document.getElementById('aBrand').value=''
+  document.getElementById('aModel').innerHTML='<option>Select model</option>'
+  document.getElementById('aLoyalty').checked=false
+  initAddForm();renderDash()
+  setTimeout(()=>showPage('leads'),600)
+}
+
+// ── BILL PAGE ─────────────────────────────────────────────────────
+function renderBillPage(){
+  if(!canDo('all')){document.getElementById('page-bill').innerHTML='<div style="padding:40px;text-align:center;color:var(--g500)"><div style="font-size:40px;margin-bottom:12px">🔒</div><h3>Bill generation is restricted to Owner only.</h3></div>';return}
+  const sel=document.getElementById('billLeadSel')
+  sel.innerHTML='<option value="">— Choose completed lead —</option>'+
+    leads.filter(l=>l.status==='completed').map(l=>`<option value="${l.id}">${l.name} — ${l.device||'Device'} — ${l.phone}</option>`).join('')
+  document.getElementById('billForm').style.display='none'
+  document.getElementById('bInvNo').value=fmtInv(invNum)
+  document.getElementById('bDate').value=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})
+  const bh=document.getElementById('billHist')
+  bh.innerHTML=bills.length?bills.slice().reverse().map(b=>`<div class="bill-hist-item"><div><div style="font-size:13px;font-weight:700">${b.invNo}</div><div style="font-size:11px;color:var(--g500)">${b.customer} · ${b.device}</div><div style="font-size:10px;color:var(--g500)">${fmtD(b.at)}</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--accent)">${Rs(b.amount)}</div><span style="font-size:10px;font-weight:600;background:var(--gs);color:var(--green);padding:2px 7px;border-radius:100px">✓ Billed</span></div></div>`).join(''):'<p style="font-size:12px;color:var(--g500)">No bills yet.</p>'
+}
+
+function fillBill(){
+  const id=document.getElementById('billLeadSel').value
+  if(!id){document.getElementById('billForm').style.display='none';return}
+  const l=leads.find(x=>x.id===id);if(!l)return
+  document.getElementById('billForm').style.display='block'
+  document.getElementById('bAmt').value=calcEst(l)||''
+  document.getElementById('bIMEI').value=l.imei||''
+  calcTax()
+}
+
+function calcTax(){
+  const amt=parseFloat(document.getElementById('bAmt').value)||0
+  if(!amt){['tTaxable','tCGST','tSGST','tGrand'].forEach(id=>document.getElementById(id).textContent='—');return}
+  const tax=Math.round(amt/1.18*100)/100
+  const cgst=Math.round(tax*0.09*100)/100
+  document.getElementById('tTaxable').textContent=Rs(tax)
+  document.getElementById('tCGST').textContent=Rs(cgst)
+  document.getElementById('tSGST').textContent=Rs(cgst)
+  document.getElementById('tGrand').textContent=Rs(Math.round((tax+cgst*2)*100)/100)
+}
+
+function genBill(){
+  const id=document.getElementById('billLeadSel').value
+  const l=leads.find(x=>x.id===id);if(!l){toast('Select a lead',true);return}
+  const amt=parseFloat(document.getElementById('bAmt').value)||0
+  if(!amt){toast('Enter amount',true);return}
+  const tax=Math.round(amt/1.18*100)/100
+  const cgst=Math.round(tax*0.09*100)/100
+  const grand=Math.round((tax+cgst*2)*100)/100
+  const imei=document.getElementById('bIMEI').value
+  const txType=document.getElementById('bTx').value
+  const invNo=fmtInv(invNum)
+  const today=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})
+  const {jsPDF}=window.jspdf||{}
+  if(!jsPDF){
+    const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+    s.onload=()=>genBill();document.head.appendChild(s);return
+  }
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'})
+  const W=210,M=18
+  doc.setFillColor(10,10,10);doc.rect(0,0,W,38,'F')
+  doc.setFillColor(255,76,28);doc.rect(0,0,W,2,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(255,76,28)
+  doc.text('Sambhi Mobiles',M,13)
+  doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(150,150,148)
+  doc.text('Prop: Amrik Singh | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',M,19)
+  doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019 | Ph: +91 7827505579',M,24)
+  doc.setFillColor(255,76,28);doc.roundedRect(W-M-42,8,42,11,2,2,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(255,255,255)
+  doc.text('TAX INVOICE',W-M-21,15.5,'center')
+  doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(150,150,148)
+  doc.text('No: '+invNo,W-M,24,'right');doc.text('Date: '+today,W-M,29,'right')
+  const bTop=42,bH=30,half=(W-2*M-4)/2
+  doc.setFillColor(245,245,243)
+  doc.roundedRect(M,bTop,half,bH,3,3,'F');doc.roundedRect(M+half+4,bTop,half,bH,3,3,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(255,76,28)
+  doc.text('SELLER DETAILS',M+3,bTop+5)
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(10,10,10)
+  doc.text('Sambhi Mobiles',M+3,bTop+11)
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(61,61,59)
+  doc.text('Amrik Singh (Proprietor)',M+3,bTop+17)
+  doc.text('1498, Bhagat Niwas, 13, Govind Puri',M+3,bTop+22)
+  doc.setFont('helvetica','bold');doc.setFontSize(7)
+  doc.text('GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',M+3,bTop+28)
+  const bx2=M+half+4
+  doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(255,76,28)
+  doc.text('CUSTOMER DETAILS',bx2+3,bTop+5)
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(10,10,10)
+  doc.text(l.name,bx2+3,bTop+11)
+  doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(61,61,59)
+  doc.text('Ph: '+l.phone,bx2+3,bTop+17)
+  doc.text((l.area||'Delhi').substring(0,36),bx2+3,bTop+22)
+  doc.text('Place of Supply: Delhi (07)',bx2+3,bTop+27)
+  const badY=bTop+bH+3
+  doc.setFillColor(txType==='PURCHASE'?26:255,txType==='PURCHASE'?122:76,txType==='PURCHASE'?69:28)
+  doc.roundedRect(M,badY,70,7,2,2,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(255,255,255)
+  doc.text(txType==='PURCHASE'?'DEVICE PURCHASED FROM CUSTOMER':'DEVICE SOLD TO CUSTOMER',M+35,badY+4.5,'center')
+  if(imei){doc.setFillColor(232,240,254);doc.roundedRect(M+73,badY,100,7,2,2,'F');doc.setFontSize(6.5);doc.setTextColor(21,96,189);doc.text('IMEI VERIFIED (CEIR): '+imei,M+75,badY+4.5)}
+  const tTop=badY+11,tW=W-2*M
+  doc.setFillColor(10,10,10);doc.rect(M,tTop,tW,7,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255)
+  const cols=[6,52,12,8,18,20,10,18,13];const colX=[M];cols.slice(0,-1).forEach(w=>colX.push(colX[colX.length-1]+w))
+  const hdrs=['#','Item','HSN','Qty','Rate','Taxable','GST%','GST Amt','Total']
+  hdrs.forEach((h,i)=>doc.text(h,colX[i]+cols[i]/2,tTop+4.5,'center'))
+  const rY=tTop+7
+  doc.setFillColor(255,255,255);doc.rect(M,rY,tW,12,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(10,10,10)
+  doc.text('1',colX[0]+3,rY+5);doc.text((l.device||'Device').substring(0,44),colX[1]+1,rY+5)
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(120,121,117)
+  doc.text('Batt:'+(l.battery||'?')+'% | Yr:'+(l.year||'?'),colX[1]+1,rY+9)
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(10,10,10)
+  ;['8517','1',Rs(amt).replace('₹',''),Rs(tax).replace('₹',''),'18%',Rs(cgst*2).replace('₹',''),Rs(grand).replace('₹','')].forEach((v,i)=>doc.text(v,colX[i+2]+cols[i+2]/2,rY+7,'center'))
+  doc.setDrawColor(224,223,219);doc.setLineWidth(0.3);doc.line(M,rY+12,M+tW,rY+12)
+  const totY=rY+16,rw=78,rx=W-M-rw
+  ;[['Taxable Value',Rs(tax)],['CGST @ 9%',Rs(cgst)],['SGST @ 9%',Rs(cgst)]].forEach(([lb,v],i)=>{
+    doc.setFillColor(i%2===0?245:255,i%2===0?245:255,i%2===0?243:255);doc.rect(rx,totY+i*6,rw,6,'F')
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(61,61,59)
+    doc.text(lb,rx+2,totY+i*6+4);doc.setFont('helvetica','bold');doc.text(v,rx+rw-2,totY+i*6+4,'right')
+  })
+  const gtY=totY+3*6+1
+  doc.setFillColor(10,10,10);doc.roundedRect(rx,gtY,rw,9,2,2,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,76,28);doc.text('GRAND TOTAL',rx+3,gtY+5.5)
+  doc.setFontSize(11);doc.setTextColor(255,255,255);doc.text(Rs(grand),rx+rw-3,gtY+6,'right')
+  doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(120,121,117)
+  doc.text('Amount: '+numWords(Math.round(grand))+' Rupees Only',M,gtY+5)
+  const bkY=gtY+13
+  doc.setFillColor(232,240,254);doc.roundedRect(M,bkY,W-2*M,16,2,2,'F')
+  doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(21,96,189)
+  doc.text('PAYMENT DETAILS — BANK TRANSFER / UPI',M+3,bkY+5)
+  const bc1=M+3,bc2=M+(W-2*M)/2+3
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(61,61,59)
+  doc.text('Account Name:',bc1,bkY+10);doc.text('Account Number:',bc1,bkY+14.5)
+  doc.text('IFSC Code:',bc2,bkY+10);doc.text('Bank & Branch:',bc2,bkY+14.5)
+  doc.setFont('helvetica','normal')
+  doc.text('Sambhi Mobiles',bc1+30,bkY+10);doc.text('10084177443',bc1+30,bkY+14.5)
+  doc.text('IDFB0020107',bc2+28,bkY+10);doc.text('IDFC First Bank, Okhla Branch',bc2+28,bkY+14.5)
+  const sigY=bkY+20
+  doc.setFillColor(245,245,243)
+  doc.roundedRect(M,sigY,60,13,2,2,'F');doc.roundedRect(W-M-60,sigY,60,13,2,2,'F')
+  doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(120,121,117)
+  doc.text('Customer Signature & Thumb',M+2,sigY+4);doc.text(l.name,M+2,sigY+11)
+  doc.text('For Sambhi Mobiles | Amrik Singh',W-M-58,sigY+4)
+  doc.setFont('helvetica',
