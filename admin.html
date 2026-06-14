@@ -26,7 +26,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--g50);color:var
 .login-fg input:focus{border-color:var(--accent)}
 .login-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
 .login-btn:hover{opacity:.88}
-.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none}
+.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none;padding:8px;background:#fdecea;border-radius:6px}
 .login-users{margin-top:20px;background:var(--g50);border-radius:10px;padding:12px 14px;text-align:left}
 .login-users p{font-size:11px;font-weight:700;color:var(--g500);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
 .user-chip{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)}
@@ -473,7 +473,11 @@ function doLogin(){
   const u=document.getElementById('loginUser').value.trim().toLowerCase()
   const p=document.getElementById('loginPass').value.trim()
   const user = TEAM_USERS.find(x=>x.username===u && x.password===p)
-  if(!user){ document.getElementById('loginErr').style.display='block'; return }
+  if(!user){ 
+    document.getElementById('loginErr').style.display='block'
+    document.getElementById('loginErr').textContent = '❌ Wrong username or password. You entered: ' + u + ' / ' + p
+    return 
+  }
   currentUser = user
   document.getElementById('loginScreen').style.display='none'
   document.getElementById('topbar').style.display='flex'
