@@ -221,6 +221,9 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
 .toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .toggle-wrap input:checked~.toggle-thumb{transform:translateX(20px)}
 .camp-countdown{font-size:12px;font-weight:700;color:var(--orange);background:var(--orange-light);padding:5px 10px;border-radius:8px;display:inline-block}
+.camp-live-tag{font-size:12px;font-weight:700;color:#fff;background:var(--orange);padding:6px 12px;border-radius:8px;display:inline-block;animation:pulse 2s infinite}
+.camp-sched-tag{font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-light);padding:6px 12px;border-radius:8px;display:inline-block}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.75}}
 .camp-wa-text{font-size:11px;color:var(--gray-500);background:var(--gray-50);border-radius:8px;padding:8px;line-height:1.6}
 
 /* PRICE CONTROL */
@@ -257,6 +260,13 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
 .video-info p{font-size:11px;color:var(--gray-400)}
 .video-del{background:var(--red-light);color:var(--red);border:none;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
 
+/* INVENTORY */
+.inv-visible-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.inv-on{background:var(--green-light);color:var(--green)}
+.inv-off{background:var(--gray-100);color:var(--gray-400)}
+.inv-toggle{background:none;border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.inv-toggle:hover{border-color:var(--blue);color:var(--blue)}
+.coming-soon-badge{font-size:10px;font-weight:700;background:#F3E8FF;color:#6D28D9;padding:2px 8px;border-radius:100px}
 /* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.15)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -318,6 +328,7 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
   <button class="ntab" data-page="campaigns">🎯 Campaigns</button>
   <button class="ntab" data-page="videos">🎥 Videos</button>
   <button class="ntab" data-page="prices">💰 Prices</button>
+  <button class="ntab" data-page="inventory">📦 Inventory</button>
   <button class="ntab" data-page="team">👥 Team</button>
 </div>
 
@@ -525,6 +536,92 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
   </div>
 </div>
 
+<!-- INVENTORY -->
+<div class="page" id="page-inventory">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div><h2 style="font-size:18px;font-weight:700">Inventory Manager</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Devices you have in stock — only these show on Buy page. Others show "Coming Soon".</p></div>
+    <div style="display:flex;gap:8px">
+      <button class="add-btn" onclick="openAddInventory()">+ Add Device</button>
+    </div>
+  </div>
+  <div style="background:var(--blue-light);border:1px solid #BFDBFE;border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--blue)">
+    ℹ️ <strong>How it works:</strong> Add devices you currently have in stock. They show as "Available" on your Buy page. Devices not in inventory show as "Coming Soon — Notify me". Toggle any device off to hide it without deleting.
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-toolbar">
+      <h3>Current Stock</h3>
+      <div class="tbar-right">
+        <select class="filter-sel" id="invCatFil" onchange="renderInventory()">
+          <option value="">All Categories</option>
+          <option value="iphone">iPhone</option>
+          <option value="airpods">AirPods</option>
+          <option value="applewatch">Apple Watch</option>
+          <option value="playstation">PlayStation</option>
+        </select>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Device</th><th>Category</th><th>Grade</th><th>Storage</th><th>Battery</th><th>Colour</th><th>Price (₹)</th><th>MRP (₹)</th><th>IMEI</th><th>Visible</th><th>Actions</th></tr></thead>
+      <tbody id="invTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INVENTORY ADD/EDIT MODAL -->
+<div class="modal-bg" id="inventoryModal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-head"><h2 id="invModalTitle">Add Device to Inventory</h2><button class="modal-x" onclick="document.getElementById('inventoryModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body">
+      <div class="m2">
+        <div class="mfg"><label>Category *</label>
+          <select id="invCat">
+            <option value="iphone">iPhone</option>
+            <option value="airpods">AirPods</option>
+            <option value="applewatch">Apple Watch</option>
+            <option value="playstation">PlayStation</option>
+          </select>
+        </div>
+        <div class="mfg"><label>Device Name *</label><input id="invName" placeholder="iPhone 14 Pro, PS5 Disc Edition…"></div>
+      </div>
+      <div class="m3">
+        <div class="mfg"><label>Storage / Variant</label><input id="invStorage" placeholder="256GB"></div>
+        <div class="mfg"><label>Colour</label><input id="invColor" placeholder="Deep Purple"></div>
+        <div class="mfg"><label>Grade</label>
+          <select id="invGrade"><option value="A+">A+ (Like New)</option><option value="A">A (Excellent)</option><option value="B">B (Good)</option><option value="C">C (Fair)</option></select>
+        </div>
+      </div>
+      <div class="m2">
+        <div class="mfg"><label>Battery Health %</label><input type="number" id="invBatt" placeholder="89" min="1" max="100"></div>
+        <div class="mfg"><label>Year</label><select id="invYear"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select></div>
+      </div>
+      <div class="m2">
+        <div class="mfg"><label>Our Price (₹) *</label><input type="number" id="invPrice" placeholder="45000"></div>
+        <div class="mfg"><label>MRP / Original Price (₹)</label><input type="number" id="invMRP" placeholder="70000"></div>
+      </div>
+      <div class="mfg"><label>IMEI Number</label><input id="invIMEI" placeholder="15-digit IMEI — leave blank if not verified yet" maxlength="15"></div>
+      <div class="mfg"><label>Description / Features (one per line)</label><textarea id="invDesc" placeholder="Face ID working&#10;Original box included&#10;All accessories present" style="height:80px"></textarea></div>
+      <div class="mfg">
+        <div style="display:flex;align-items:center;gap:10px;background:var(--green-light);border:1.5px solid rgba(22,163,74,.2);border-radius:10px;padding:12px 14px;cursor:pointer" onclick="document.getElementById('invVisible').click()">
+          <input type="checkbox" id="invVisible" checked style="width:16px;height:16px;accent-color:var(--green)">
+          <div><div style="font-size:13px;font-weight:700;color:var(--green)">✅ Show as Available on Buy page</div><div style="font-size:11px;color:#166534;margin-top:1px">Uncheck to mark as "Coming Soon" without deleting</div></div>
+        </div>
+      </div>
+      <input type="hidden" id="invEditId">
+      <button class="save-btn" id="saveInvBtn">Save to Inventory</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY NOTIFY MODAL -->
+<div class="modal-bg" id="notifyModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><h2>Coming Soon Notifications</h2><button class="modal-x" onclick="document.getElementById('notifyModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body" id="notifyBody"></div>
+  </div>
+</div>
+
+<!-- INVENTORY PAGE (for buy.html - added via JS) -->
+
 <!-- TEAM -->
 <div class="page" id="page-team">
   <div style="margin-bottom:20px"><h2 style="font-size:18px;font-weight:700">Team Management</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Manage login credentials and permissions for all team members</p></div>
@@ -658,7 +755,7 @@ function showCRM(found){
 })();
 
 // ── STATE ─────────────────────────────────────────────────────────
-var leads=[],bills=[],riders=[],campaigns=[],videos=[];
+var leads=[],bills=[],riders=[],campaigns=[],videos=[],inventory=[],notifications=[];
 var invNum=1,addDeps={},addBasePrice=0,editRiderId=null;
 
 function load(){
@@ -667,6 +764,8 @@ function load(){
   riders=JSON.parse(localStorage.getItem('smb_riders')||'[]');
   videos=JSON.parse(localStorage.getItem('smb_videos')||'[]');
   invNum=parseInt(localStorage.getItem('smb_inv')||'1');
+  inventory=JSON.parse(localStorage.getItem('smb_inventory')||'[]');
+  notifications=JSON.parse(localStorage.getItem('smb_notifications')||'[]');
   var dc=JSON.parse(localStorage.getItem('smb_camps')||'null');
   if(!dc){
     campaigns=[
@@ -682,7 +781,18 @@ function load(){
 }
 function save(){localStorage.setItem('smb_leads',JSON.stringify(leads));localStorage.setItem('smb_bills',JSON.stringify(bills));localStorage.setItem('smb_inv',String(invNum));}
 function saveRiders(){localStorage.setItem('smb_riders',JSON.stringify(riders));}
-function saveCamps(){localStorage.setItem('smb_camps',JSON.stringify(campaigns));}
+function saveCamps(){
+  localStorage.setItem('smb_camps',JSON.stringify(campaigns));
+  // Write simple active camp for website banner to read
+  var active=campaigns.find(function(c){
+    if(!c.active)return false;
+    var now=new Date();
+    if(c.schedFrom&&new Date(c.schedFrom)>now)return false;
+    if(c.schedTo&&new Date(c.schedTo)<now)return false;
+    return true;
+  });
+  localStorage.setItem('smb_active_camp',active?JSON.stringify(active):'');
+}
 function saveVideos(){localStorage.setItem('smb_videos',JSON.stringify(videos));}
 function saveTeam(){localStorage.setItem('smb_team',JSON.stringify(TEAM));}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
@@ -727,6 +837,7 @@ function goPage(p,btn){
   if(p==='videos')renderVideos();
   if(p==='prices')renderPrices();
   if(p==='team')renderTeam();
+  if(p==='inventory')renderInventory();
 }
 document.getElementById('notifBtn').addEventListener('click',function(){goPage('leads');});
 document.getElementById('modalCloseBtn').addEventListener('click',function(){document.getElementById('leadModal').classList.remove('show');});
@@ -734,9 +845,24 @@ document.getElementById('modalCloseBtn').addEventListener('click',function(){doc
 // ── INIT ──────────────────────────────────────────────────────────
 function initAll(){
   load();seedDemo();
-  renderDash();initAddForm();renderRiders();renderCampaigns();renderVideos();renderPrices();renderTeam();
-  // populate rider dropdown in add form
+  renderDash();initAddForm();renderRiders();renderCampaigns();renderVideos();renderPrices();renderTeam();renderInventory();
   populateRiderDropdown();
+  // If rider role — restrict view
+  if(currentUser&&currentUser.role==='Rider'){applyRiderView();}
+}
+
+function applyRiderView(){
+  // Hide tabs rider should not see
+  var hideTabs=['bill','add','riders','campaigns','videos','prices','team','inventory'];
+  hideTabs.forEach(function(p){
+    var t=document.querySelector('.ntab[data-page="'+p+'"]');
+    if(t)t.style.display='none';
+  });
+  // Rename followup tab
+  var ft=document.querySelector('.ntab[data-page="followup"]');
+  if(ft)ft.textContent='📋 My Pickups';
+  // Show only assigned leads
+  goPage('followup');
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────
@@ -1233,22 +1359,50 @@ document.getElementById('saveRiderBtn').addEventListener('click',function(){
 // ── CAMPAIGNS ─────────────────────────────────────────────────────
 function renderCampaigns(){
   var g=document.getElementById('campGrid');
+  var now=new Date();
   g.innerHTML=campaigns.map(function(c,i){
-    return'<div class="camp-card'+(c.active?' active-camp':'')+'">'
+    var isLive=c.active&&(!c.schedFrom||new Date(c.schedFrom)<=now)&&(!c.schedTo||new Date(c.schedTo)>=now);
+    var isScheduled=c.active&&c.schedFrom&&new Date(c.schedFrom)>now;
+    var statusHtml=isLive
+      ?'<div class="camp-live-tag">🔥 LIVE ON WEBSITE NOW</div>'
+      :isScheduled
+      ?'<div class="camp-sched-tag">⏰ Scheduled — starts '+fmtD(c.schedFrom)+'</div>'
+      :'<div style="font-size:12px;color:var(--gray-400)">⚪ Inactive</div>';
+    var histHtml='';
+    if(c.startedAt) histHtml+='<div style="font-size:11px;color:var(--gray-400)">Last activated: '+fmtD(c.startedAt)+' '+fmtT(c.startedAt)+'</div>';
+    if(c.endedAt)   histHtml+='<div style="font-size:11px;color:var(--gray-400)">Last ended: '+fmtD(c.endedAt)+' '+fmtT(c.endedAt)+'</div>';
+    return'<div class="camp-card'+(isLive?' active-camp':'')+'">'
       +'<div class="camp-header">'
       +'<div><div class="camp-title">'+c.title+'</div><div class="camp-desc" style="margin-top:4px">'+c.desc+'</div></div>'
       +'<label class="toggle-wrap"><input type="checkbox"'+(c.active?' checked':'')+'onchange="toggleCamp('+i+',this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>'
       +'</div>'
-      +(c.active?'<div class="camp-countdown">🔥 Currently ACTIVE — showing on website</div>':'<div style="font-size:12px;color:var(--gray-400)">⚪ Inactive — not showing on website</div>')
-      +'<div class="camp-wa-text">📲 WA message: '+c.waMsg+'</div>'
-      +'<button onclick="sendCampWA('+i+')" style="background:var(--green-light);color:var(--green);border:none;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📲 Share on WhatsApp</button>'
+      +statusHtml
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">'
+      +'<div><div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">Start date & time</div>'
+      +'<input type="datetime-local" value="'+(c.schedFrom?c.schedFrom.slice(0,16):'')+'" onchange="setCampSched('+i+','from',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;outline:none;background:var(--gray-50)"></div>'
+      +'<div><div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">End date & time</div>'
+      +'<input type="datetime-local" value="'+(c.schedTo?c.schedTo.slice(0,16):'')+'" onchange="setCampSched('+i+','to',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;outline:none;background:var(--gray-50)"></div>'
+      +'</div>'
+      +'<div class="camp-wa-text">📲 '+c.waMsg+'</div>'
+      +histHtml
+      +'<button onclick="sendCampWA('+i+')" style="background:var(--green-light);color:var(--green);border:none;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px">📲 Share on WhatsApp</button>'
       +'</div>';
   }).join('');
 }
-function toggleCamp(i,val){campaigns[i].active=val;saveCamps();renderCampaigns();toast(val?'🔥 Campaign activated on website':'Campaign deactivated');
-// Update website banner
-var campObj={};campaigns.forEach(function(c){if(c.active)campObj[c.id]=c;});
-localStorage.setItem('smb_camps',JSON.stringify(campaigns));
+function toggleCamp(i,val){
+  // Deactivate all first if turning one on (only 1 active at a time)
+  if(val) campaigns.forEach(function(c,idx){if(idx!==i)c.active=false;});
+  campaigns[i].active=val;
+  if(val){campaigns[i].startedAt=new Date().toISOString();}
+  else{campaigns[i].endedAt=new Date().toISOString();}
+  saveCamps();renderCampaigns();
+  toast(val?'🔥 Campaign LIVE on website now':'Campaign deactivated');
+}
+function setCampSched(i,dir,val){
+  if(dir==='from') campaigns[i].schedFrom=val?new Date(val).toISOString():'';
+  else campaigns[i].schedTo=val?new Date(val).toISOString():'';
+  saveCamps();
+  toast(dir==='from'?'Start time set':'End time set','info');
 }
 function sendCampWA(i){
   var msg=encodeURIComponent(campaigns[i].waMsg);
@@ -1346,6 +1500,20 @@ document.getElementById('saveTeamBtn').addEventListener('click',function(){
 // ── SEED DEMO DATA ────────────────────────────────────────────────
 function seedDemo(){
   if(leads.length)return;
+  // Seed default inventory
+  if(!inventory.length){
+    inventory=[
+      {id:uid(),cat:'iphone',name:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',grade:'A+',battery:'89',year:'2022',price:55000,mrp:75000,imei:'',features:['Face ID working','Original box','All accessories'],visible:true,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'iphone',name:'iPhone 13',storage:'128GB',color:'Midnight',grade:'A',battery:'84',year:'2021',price:32000,mrp:45000,imei:'',features:['Face ID working','Charger included'],visible:true,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'iphone',name:'iPhone 12',storage:'64GB',color:'Black',grade:'B',battery:'79',year:'2020',price:20000,mrp:32000,imei:'',features:['Good condition','Minor scratches'],visible:true,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'playstation',name:'PlayStation 5 Disc Edition',storage:'',color:'White',grade:'A+',battery:'',year:'2022',price:38000,mrp:55000,imei:'',features:['2 controllers','All cables','Working perfectly'],visible:true,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'airpods',name:'AirPods Pro 2nd Gen',storage:'',color:'White',grade:'A+',battery:'',year:'2023',price:14500,mrp:22000,imei:'',features:['ANC working','MagSafe case'],visible:true,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'iphone',name:'iPhone 15 Pro',storage:'256GB',color:'Natural Titanium',grade:'A+',battery:'96',year:'2023',price:78000,mrp:95000,imei:'',features:['Like new','All accessories'],visible:false,addedAt:new Date().toISOString()},
+      {id:uid(),cat:'applewatch',name:'Apple Watch Series 9',storage:'',color:'Midnight',grade:'A+',battery:'',year:'2023',price:28000,mrp:45000,imei:'',features:['All sensors working','New band'],visible:false,addedAt:new Date().toISOString()},
+    ];
+    saveInventory();
+  }
+
   leads=[
     {id:uid(),name:'Rahul Sharma',phone:'+91 98765 43210',area:'Lajpat Nagar',devType:'iphone',device:'iPhone 14 Pro 256GB Deep Purple',model:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',year:'2022',battery:'84',slot:'morning',source:'website',basePrice:60000,deps:{charger:true,nobox:true},isLoyalty:false,estPrice:48000,notes:[{text:'Lead from website',at:new Date().toISOString()}],status:'new',createdAt:new Date(Date.now()-86400000*2).toISOString()},
     {id:uid(),name:'Priya Mehta',phone:'+91 91234 56789',area:'Saket',devType:'samsung',device:'Galaxy S23 Ultra 256GB Black',model:'Galaxy S23 Ultra',storage:'256GB',color:'Black',year:'2023',battery:'88',slot:'evening',source:'meta',basePrice:70000,deps:{},isLoyalty:false,estPrice:59500,notes:[{text:'Meta ad lead',at:new Date().toISOString()}],status:'contacted',createdAt:new Date(Date.now()-86400000).toISOString()},
