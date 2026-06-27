@@ -357,14 +357,25 @@ function renderVideos(){
 }
 renderVideos();
 
-// Campaign banner
-const camps=JSON.parse(localStorage.getItem('smb_camps')||'{}');
-const active=Object.values(camps).find(c=>c.active);
-if(active){
-  const b=document.getElementById('campBanner');
-  b.textContent='🔥 '+active.title+' — Limited time offer!';
-  b.classList.add('show');
-}
+// Campaign banner — reads from smb_camps array
+(function(){
+  var camps=JSON.parse(localStorage.getItem('smb_camps')||'[]');
+  var now=new Date();
+  var active=null;
+  if(Array.isArray(camps)){
+    active=camps.find(function(c){
+      if(!c.active)return false;
+      if(c.schedFrom&&new Date(c.schedFrom)>now)return false;
+      if(c.schedTo&&new Date(c.schedTo)<now)return false;
+      return true;
+    });
+  }
+  if(active){
+    var b=document.getElementById('campBanner');
+    b.textContent='🔥 '+active.title+' — Limited time offer! Call +91 7827505579';
+    b.classList.add('show');
+  }
+})();
 </script>
 </body>
 </html>
