@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sambhi Mobiles — Admin CRM</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-dark:#1d4ed8;--blue-light:#EFF6FF;
+  --orange:#F97316;--orange-light:#FFF7ED;
+  --green:#16A34A;--green-light:#F0FDF4;
+  --red:#DC2626;--red-light:#FEF2F2;
+  --gold:#D97706;--gold-light:#FFFBEB;
+  --purple:#7C3AED;--purple-light:#EDE9FE;
+  --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+  --gray-400:#94A3B8;--gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;
+  --white:#fff;--border:#E2E8F0;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gray-50);color:var(--gray-900);font-size:14px;min-height:100vh}
+
+/* LOGIN */
+.login-wrap{position:fixed;inset:0;background:linear-gradient(135deg,#1e3a8a,#1e40af);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.login-card{background:#fff;border-radius:24px;padding:48px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+.ll-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.ll-text{font-size:22px;font-weight:800;color:var(--gray-900)}
+.ll-text span{color:var(--blue)}
+.login-sub{text-align:center;font-size:13px;color:var(--gray-400);margin-bottom:32px}
+.lfg{margin-bottom:16px}
+.lfg label{display:block;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.lfg input{width:100%;background:var(--gray-50);border:1.5px solid var(--border);border-radius:11px;padding:12px 15px;font-size:14px;font-family:inherit;outline:none;transition:all .2s;color:var(--gray-900)}
+.lfg input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.login-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:13px;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.login-btn:hover{background:var(--blue-dark)}
+.login-err{background:var(--red-light);border:1px solid rgba(220,38,38,.2);color:var(--red);font-size:13px;padding:10px 14px;border-radius:9px;margin-top:12px;display:none;text-align:center}
+.login-accounts{margin-top:24px;background:var(--gray-50);border-radius:12px;padding:14px}
+.login-accounts p{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.lac{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.lac:last-child{border:none}
+.lac-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.lac h4{font-size:12px;font-weight:700;color:var(--gray-700)}
+.lac p{font-size:11px;color:var(--gray-400)}
+
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.tb-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;color:var(--gray-900)}
+.tb-logo span{color:var(--blue)}
+.tb-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.tb-right{display:flex;align-items:center;gap:10px}
+.tb-user{display:flex;align-items:center;gap:8px}
+.tb-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.tb-name{font-size:13px;font-weight:600;color:var(--gray-700)}
+.tb-role{font-size:10px;color:var(--gray-400)}
+.notif-btn{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:5px 11px;border-radius:100px;cursor:pointer;border:none;font-family:inherit}
+.logout-btn{background:var(--gray-100);color:var(--gray-500);border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* NAV TABS */
+.nav-tabs{background:#fff;border-bottom:1px solid var(--border);display:flex;padding:0 24px;overflow-x:auto;gap:0}
+.ntab{padding:13px 16px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--gray-400);border-bottom:2.5px solid transparent;white-space:nowrap;font-family:inherit;transition:all .2s}
+.ntab:hover{color:var(--gray-700)}
+.ntab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.nb{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:100px;margin-left:5px;padding:0 4px}
+.nb.blue{background:var(--blue)}.nb.gold{background:var(--gold)}
+
+/* PAGES */
+.page{display:none;padding:24px}.page.active{display:block}
+
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;cursor:pointer}
+.stat:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-2px)}
+.stat .num{font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.stat .lbl{font-size:11px;color:var(--gray-400);font-weight:500}
+.stat .sub{font-size:11px;margin-top:4px;font-weight:600}
+
+/* TABLE */
+.tbl-wrap{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.tbl-toolbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.tbl-toolbar h3{font-size:15px;font-weight:700}
+.tbar-right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search-in{border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;font-size:13px;font-family:inherit;outline:none;background:var(--gray-50);width:200px;transition:all .2s}
+.search-in:focus{border-color:var(--blue);background:#fff}
+.filter-sel{border:1.5px solid var(--border);border-radius:9px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:var(--gray-50);cursor:pointer}
+.add-btn{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.add-btn:hover{background:var(--blue-dark)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--gray-50);font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:var(--blue-light)}
+tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
+.td-name{font-weight:700;font-size:13px;color:var(--gray-900)}
+.td-phone{color:var(--blue);font-weight:500;font-size:12px}
+
+/* STATUS BADGES */
+.status{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px}
+.st-new{background:var(--blue-light);color:var(--blue)}
+.st-contacted{background:var(--gold-light);color:var(--gold)}
+.st-scheduled{background:var(--purple-light);color:var(--purple)}
+.st-completed{background:var(--green-light);color:var(--green)}
+.st-cancelled{background:var(--red-light);color:var(--red)}
+.slot-m{font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;background:#FEF3C7;color:#92400E}
+.slot-e{font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px;background:var(--purple-light);color:var(--purple)}
+
+/* ACTION BUTTONS */
+.act-btn{font-size:11px;font-weight:600;padding:5px 10px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.act-call{background:var(--green-light);color:var(--green)}.act-call:hover{background:var(--green);color:#fff}
+.act-wa{background:#DCFCE7;color:#166534}.act-wa:hover{background:#16A34A;color:#fff}
+.act-bill{background:var(--blue);color:#fff}.act-bill:hover{background:var(--blue-dark)}
+.act-bill:disabled{background:var(--gray-100);color:var(--gray-400);cursor:not-allowed}
+.loyalty-badge{display:inline-flex;align-items:center;gap:3px;background:var(--gold-light);color:var(--gold);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;margin-left:4px}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-head{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1}
+.modal-head h2{font-size:16px;font-weight:700}
+.modal-x{background:var(--gray-100);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.modal-body{padding:20px 22px 24px}
+.stepper{display:flex;gap:0;margin-bottom:18px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.step-btn{flex:1;padding:9px 4px;border:none;background:var(--gray-50);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--gray-400);border-right:1px solid var(--border);text-align:center;transition:all .2s}
+.step-btn:last-child{border-right:none}
+.step-btn:hover{background:var(--gray-100)}
+.step-btn.active{background:var(--blue);color:#fff}
+.step-btn.done{background:var(--green-light);color:var(--green)}
+
+/* FORM */
+.mfg{margin-bottom:14px}
+.mfg label{display:block;font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.mfg input,.mfg select,.mfg textarea{width:100%;background:var(--gray-50);border:1.5px solid var(--border);border-radius:10px;color:var(--gray-900);font-size:13px;font-family:inherit;padding:10px 13px;outline:none;transition:all .2s}
+.mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.mfg textarea{resize:none;height:64px}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.sec-lbl-sm{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.save-btn{background:var(--blue);color:#fff;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;margin-top:6px;transition:all .2s}
+.save-btn:hover{background:var(--blue-dark)}
+.wa-btn{background:#16A34A;color:#fff;border:none;padding:11px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;font-family:inherit;margin-top:8px}
+
+/* DEP CHIPS */
+.dep-chips{display:flex;flex-wrap:wrap;gap:7px}
+.dep-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:500;color:var(--gray-600);transition:all .2s;user-select:none}
+.dep-chip:hover{border-color:var(--red);color:var(--red)}
+.dep-chip.on{border-color:var(--red);background:var(--red-light);color:var(--red);font-weight:700}
+.dep-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0}
+.dep-chip.on .dep-dot{background:var(--red)}
+
+/* PRICE BOX */
+.price-box-dark{background:var(--gray-900);border-radius:12px;padding:14px 16px;margin:12px 0;display:flex;justify-content:space-between;align-items:center}
+.pbd-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.pbd-val{font-size:22px;font-weight:800;color:#fff}
+.pbd-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:2px}
+
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kan-col{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;min-height:200px}
+.kan-head{padding:12px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.kan-cnt{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px}
+.kc-new .kan-head{background:var(--blue-light);color:var(--blue)}.kc-new .kan-cnt{background:var(--blue);color:#fff}
+.kc-cont .kan-head{background:var(--gold-light);color:var(--gold)}.kc-cont .kan-cnt{background:var(--gold);color:#fff}
+.kc-sched .kan-head{background:var(--purple-light);color:var(--purple)}.kc-sched .kan-cnt{background:var(--purple);color:#fff}
+.kc-done .kan-head{background:var(--green-light);color:var(--green)}.kc-done .kan-cnt{background:var(--green);color:#fff}
+.kan-body{padding:10px;display:flex;flex-direction:column;gap:8px}
+.kan-card{background:var(--gray-50);border:1px solid var(--border);border-radius:10px;padding:11px;cursor:pointer;transition:all .2s}
+.kan-card:hover{border-color:var(--blue);background:var(--blue-light)}
+.kan-card h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.kan-card .dev{font-size:11px;color:var(--gray-400);margin-bottom:5px}
+.kan-tags{display:flex;gap:4px;flex-wrap:wrap}
+.kan-tag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--gray-100);color:var(--gray-500)}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:8px}
+.tl-item{background:var(--gray-50);border-radius:9px;padding:10px 12px;display:flex;gap:10px}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px}
+.tl-txt{font-size:12px;color:var(--gray-700);line-height:1.5}
+.tl-time{font-size:10px;color:var(--gray-400);margin-top:2px}
+.note-row{display:flex;gap:8px;margin-top:8px}
+.note-row input{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none}
+.note-row input:focus{border-color:var(--blue)}
+.note-row button{background:var(--blue);color:#fff;border:none;padding:9px 14px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* BILL PAGE */
+.bill-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px}
+.bill-info{background:var(--green-light);border:1px solid rgba(22,163,74,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--green);margin-bottom:16px}
+.tax-box{background:var(--gray-900);border-radius:12px;padding:14px 16px;margin:14px 0}
+.tax-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px}
+.tax-lbl{color:rgba(255,255,255,.4)}.tax-val{color:#fff;font-weight:600}
+.tax-grand{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);padding-top:10px;margin-top:4px}
+.tax-grand .tg-l{font-size:13px;font-weight:700;color:var(--orange)}
+.tax-grand .tg-v{font-size:20px;font-weight:800;color:#fff}
+.bill-hist-item{background:var(--gray-50);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border:1px solid var(--border)}
+
+/* RIDER DIRECTORY */
+.rider-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.rider-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:18px;position:relative}
+.rider-card.active-rider{border-color:var(--green)}
+.rider-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;margin:0 auto 10px}
+.rider-card h3{font-size:15px;font-weight:700;text-align:center;margin-bottom:3px}
+.rider-card .rider-phone{font-size:12px;color:var(--blue);text-align:center;margin-bottom:6px}
+.rider-card .rider-email{font-size:11px;color:var(--gray-400);text-align:center;margin-bottom:10px}
+.rider-stats{display:flex;justify-content:center;gap:16px;margin-bottom:12px}
+.rs{text-align:center}.rs .rn{font-size:16px;font-weight:700;color:var(--blue)}.rs .rl{font-size:10px;color:var(--gray-400)}
+.rider-btns{display:flex;gap:6px}
+.rider-edit-btn{flex:1;background:var(--gray-100);color:var(--gray-700);border:none;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.rider-assign-btn{flex:1;background:var(--blue);color:#fff;border:none;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.online-dot{width:10px;height:10px;border-radius:50%;background:var(--green);position:absolute;top:14px;right:14px}
+
+/* CAMPAIGN */
+.camp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.camp-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.camp-card.active-camp{border-color:var(--orange)}
+.camp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.camp-title{font-size:15px;font-weight:700}
+.camp-desc{font-size:12px;color:var(--gray-500)}
+.toggle-wrap{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-wrap input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:1;margin:0}
+.toggle-track{position:absolute;inset:0;background:var(--gray-200);border-radius:100px;transition:background .2s}
+.toggle-wrap input:checked+.toggle-track{background:var(--orange)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-wrap input:checked~.toggle-thumb{transform:translateX(20px)}
+.camp-countdown{font-size:12px;font-weight:700;color:var(--orange);background:var(--orange-light);padding:5px 10px;border-radius:8px;display:inline-block}
+.camp-wa-text{font-size:11px;color:var(--gray-500);background:var(--gray-50);border-radius:8px;padding:8px;line-height:1.6}
+
+/* PRICE CONTROL */
+.price-ctrl{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.price-ctrl h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.price-ctrl p{font-size:13px;color:var(--gray-500);margin-bottom:20px}
+.multiplier-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.multiplier-row input[type=range]{flex:1;accent-color:var(--blue)}
+.mult-val{font-size:18px;font-weight:800;color:var(--blue);min-width:60px}
+.mult-example{background:var(--blue-light);border-radius:10px;padding:12px;font-size:13px;color:var(--blue);margin-bottom:14px}
+.mult-btn{background:var(--blue);color:#fff;border:none;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* TEAM PAGE */
+.team-grid-crm{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.team-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.team-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;margin:0 auto 10px}
+.team-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.role-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px}
+.rb-owner{background:var(--gold-light);color:var(--gold)}
+.rb-manager{background:var(--blue-light);color:var(--blue)}
+.rb-exec{background:var(--green-light);color:var(--green)}
+.team-info{font-size:11px;color:var(--gray-500);margin-bottom:3px}
+.perm-item{font-size:12px;color:var(--gray-500);padding:2px 0;display:flex;align-items:center;gap:6px;text-align:left}
+.perm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.edit-user-btn{width:100%;background:var(--gray-100);color:var(--gray-700);border:none;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px}
+.edit-user-btn:hover{background:var(--blue);color:#fff}
+
+/* VIDEO SECTION */
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.video-item{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.video-thumb{width:100%;aspect-ratio:16/9;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:32px}
+.video-info{padding:12px}
+.video-info h4{font-size:13px;font-weight:700;margin-bottom:2px}
+.video-info p{font-size:11px;color:var(--gray-400)}
+.video-del{background:var(--red-light);color:var(--red);border:none;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--green);color:#fff}
+.toast.error{background:var(--red);color:#fff}
+.toast.info{background:var(--blue);color:#fff}
+
+@media(max-width:900px){.stat-row{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:1fr 1fr}.team-grid-crm,.rider-grid{grid-template-columns:1fr}.camp-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.kanban{grid-template-columns:1fr}.m2,.m3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="ll-icon">📱</div>
+      <div class="ll-text">Sambhi <span>Mobiles</span></div>
+    </div>
+    <div class="login-sub">Admin CRM — Team Login</div>
+    <div class="lfg"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="username"></div>
+    <div class="lfg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password"></div>
+    <button class="login-btn" id="loginBtn">Login →</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-accounts">
+      <p>Team accounts</p>
+      <div class="lac"><div class="lac-av" style="background:#F97316">AS</div><div><h4>Amrik Singh — Owner</h4><p>amrik / amrik1234</p></div></div>
+      <div class="lac"><div class="lac-av" style="background:#2563EB">M1</div><div><h4>Manager 1</h4><p>manager1 / manager1234</p></div></div>
+      <div class="lac"><div class="lac-av" style="background:#16A34A">E1</div><div><h4>Executive 1</h4><p>exec1 / exec1234</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar" id="mainTopbar" style="display:none">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="tb-logo-icon">📱</div>
+    <div class="tb-logo">Sambhi <span>Mobiles</span> — Admin</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-user">
+      <div class="tb-av" id="tbAv"></div>
+      <div><div class="tb-name" id="tbName"></div><div class="tb-role" id="tbRole"></div></div>
+    </div>
+    <button class="notif-btn" id="notifBtn">🔔 0 New</button>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs" id="mainNav" style="display:none">
+  <button class="ntab active" data-page="dash">📊 Dashboard</button>
+  <button class="ntab" data-page="leads">📋 Leads <span class="nb" id="nb-leads">0</span></button>
+  <button class="ntab" data-page="followup">🔁 Follow-up <span class="nb gold" id="nb-fu">0</span></button>
+  <button class="ntab" data-page="bill">🧾 Bill</button>
+  <button class="ntab" data-page="add">➕ Add Lead</button>
+  <button class="ntab" data-page="riders">🏍️ Riders</button>
+  <button class="ntab" data-page="campaigns">🎯 Campaigns</button>
+  <button class="ntab" data-page="videos">🎥 Videos</button>
+  <button class="ntab" data-page="prices">💰 Prices</button>
+  <button class="ntab" data-page="team">👥 Team</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dash">
+  <div class="stat-row">
+    <div class="stat" onclick="goPage('leads')"><div class="num" id="s-new" style="color:var(--blue)">0</div><div class="lbl">New Today</div><div class="sub" style="color:var(--blue)">Awaiting contact</div></div>
+    <div class="stat" onclick="goPage('followup')"><div class="num" id="s-pend" style="color:var(--gold)">0</div><div class="lbl">Pending Follow-up</div><div class="sub" style="color:var(--gold)">Need action</div></div>
+    <div class="stat" onclick="goPage('followup')"><div class="num" id="s-sched" style="color:var(--purple)">0</div><div class="lbl">Scheduled</div><div class="sub" style="color:var(--purple)">Slots booked</div></div>
+    <div class="stat" onclick="goPage('leads')"><div class="num" id="s-done" style="color:var(--green)">0</div><div class="lbl">Completed</div><div class="sub" style="color:var(--green)">Bills generated</div></div>
+    <div class="stat"><div class="num" id="s-rev" style="color:var(--orange)">₹0</div><div class="lbl">Total Paid Out</div><div class="sub" style="color:var(--orange)">This month</div></div>
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-toolbar"><h3>Recent Leads</h3><button class="add-btn" onclick="goPage('add')">+ Add Lead</button></div>
+    <table><thead><tr><th>Customer</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Rider</th><th>Est. Price</th><th>Actions</th></tr></thead>
+    <tbody id="dashTbody"></tbody></table>
+  </div>
+</div>
+
+<!-- ALL LEADS -->
+<div class="page" id="page-leads">
+  <div class="tbl-wrap">
+    <div class="tbl-toolbar">
+      <h3>All Leads</h3>
+      <div class="tbar-right">
+        <input class="search-in" id="searchIn" placeholder="🔍 Search name, phone, device…">
+        <select class="filter-sel" id="statusFil">
+          <option value="">All Status</option>
+          <option value="new">New</option><option value="contacted">Contacted</option>
+          <option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option>
+        </select>
+        <select class="filter-sel" id="slotFil">
+          <option value="">All Slots</option>
+          <option value="morning">🌅 Morning</option>
+          <option value="evening">🌆 Evening</option>
+        </select>
+        <button class="add-btn" onclick="goPage('add')">+ Add Lead</button>
+      </div>
+    </div>
+    <table><thead><tr><th>Date</th><th>Customer</th><th>Phone</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Rider</th><th>Est. Price</th><th>Actions</th></tr></thead>
+    <tbody id="leadsTbody"></tbody></table>
+  </div>
+</div>
+
+<!-- FOLLOW-UP KANBAN -->
+<div class="page" id="page-followup">
+  <div style="margin-bottom:16px"><h2 style="font-size:18px;font-weight:700">Follow-up Tracker</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Morning slots shown first. Click any card to update status or add notes.</p></div>
+  <div class="kanban">
+    <div class="kan-col kc-new"><div class="kan-head">🆕 New <span class="kan-cnt" id="kc-new">0</span></div><div class="kan-body" id="kb-new"></div></div>
+    <div class="kan-col kc-cont"><div class="kan-head">📞 Contacted <span class="kan-cnt" id="kc-contacted">0</span></div><div class="kan-body" id="kb-contacted"></div></div>
+    <div class="kan-col kc-sched"><div class="kan-head">📅 Scheduled <span class="kan-cnt" id="kc-scheduled">0</span></div><div class="kan-body" id="kb-scheduled"></div></div>
+    <div class="kan-col kc-done"><div class="kan-head">✅ Completed <span class="kan-cnt" id="kc-completed">0</span></div><div class="kan-body" id="kb-completed"></div></div>
+  </div>
+</div>
+
+<!-- BILL PAGE -->
+<div class="page" id="page-bill">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+    <div class="bill-card">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">🧾 Generate GST Bill</h3>
+      <div class="mfg"><label>Select Completed Lead</label><select id="billSel"><option value="">— Choose completed lead —</option></select></div>
+      <div class="bill-info">✅ Bills can only be generated for <strong>Completed</strong> leads. Go to Leads → update status first.</div>
+      <div id="billForm" style="display:none">
+        <div class="m2">
+          <div class="mfg"><label>Final Amount (₹)</label><input type="number" id="bAmt" placeholder="35000"></div>
+          <div class="mfg"><label>Transaction type</label><select id="bTx"><option value="PURCHASE">We Purchased</option><option value="SALE">We Sold</option></select></div>
+        </div>
+        <div class="mfg"><label>IMEI Number</label><input id="bIMEI" placeholder="15-digit IMEI"></div>
+        <div class="m2">
+          <div class="mfg"><label>Invoice No</label><input id="bInvNo" readonly style="background:var(--gray-100)"></div>
+          <div class="mfg"><label>Date</label><input id="bDate" readonly style="background:var(--gray-100)"></div>
+        </div>
+        <div class="tax-box">
+          <div class="tax-row"><span class="tax-lbl">Taxable Value (excl. GST)</span><span class="tax-val" id="tTax">—</span></div>
+          <div class="tax-row"><span class="tax-lbl">CGST @ 9%</span><span class="tax-val" id="tCGST">—</span></div>
+          <div class="tax-row"><span class="tax-lbl">SGST @ 9%</span><span class="tax-val" id="tSGST">—</span></div>
+          <div class="tax-grand"><span class="tg-l">Grand Total</span><span class="tg-v" id="tGrand">—</span></div>
+        </div>
+        <button class="save-btn" id="genBillBtn">📄 Download GST Bill PDF</button>
+        <button class="wa-btn" id="sendBillWABtn">📲 Send bill details via WhatsApp</button>
+      </div>
+    </div>
+    <div class="bill-card"><h3 style="font-size:15px;font-weight:700;margin-bottom:14px">📜 Bill History</h3><div id="billHist"><p style="font-size:13px;color:var(--gray-400)">No bills yet.</p></div></div>
+  </div>
+</div>
+
+<!-- ADD LEAD -->
+<div class="page" id="page-add">
+  <div style="max-width:720px">
+    <div class="bill-card">
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:4px">Add New Lead</h3>
+      <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px">From website, WhatsApp, walk-in, or Meta ad</p>
+      <div class="sec-lbl-sm">Customer Details</div>
+      <div class="m2">
+        <div class="mfg"><label>Full Name *</label><input id="aName" placeholder="Customer name"></div>
+        <div class="mfg"><label>WhatsApp *</label><input id="aPhone" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="m2">
+        <div class="mfg"><label>Delhi Area</label><input id="aArea" placeholder="Lajpat Nagar, Dwarka…"></div>
+        <div class="mfg"><label>Full Address</label><input id="aAddr" placeholder="House no, street…"></div>
+      </div>
+      <div class="sec-lbl-sm">Device Details</div>
+      <div class="m2">
+        <div class="mfg"><label>Brand *</label>
+          <select id="aBrand">
+            <option value="">Select brand</option>
+            <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
+            <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
+            <optgroup label="Android">
+              <option value="samsung">Samsung</option><option value="oneplus">OnePlus</option>
+              <option value="realme">Realme</option><option value="oppo">Oppo</option>
+              <option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option>
+              <option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="mfg"><label>Model</label><select id="aModel"><option value="">Select model</option></select></div>
+      </div>
+      <div class="m3">
+        <div class="mfg"><label>Storage</label><input id="aStorage" placeholder="128GB"></div>
+        <div class="mfg"><label>Colour</label><input id="aColor" placeholder="Black"></div>
+        <div class="mfg"><label>Year</label>
+          <select id="aYear"><option value="">Year</option>
+            <option>2024</option><option>2023</option><option>2022</option>
+            <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+          </select>
+        </div>
+      </div>
+      <div class="m2">
+        <div class="mfg"><label>Battery %</label><input id="aBatt" type="number" min="1" max="100" placeholder="84"></div>
+        <div class="mfg"><label>IMEI</label><input id="aIMEI" placeholder="15-digit IMEI" maxlength="15"></div>
+      </div>
+      <div class="sec-lbl-sm">Condition Issues</div>
+      <div class="dep-chips" id="addDepChips"></div>
+      <div class="sec-lbl-sm">Pickup & Assignment</div>
+      <div class="m3">
+        <div class="mfg"><label>Slot</label>
+          <select id="aSlot"><option value="morning">🌅 Morning (9AM–1PM)</option><option value="evening">🌆 Evening (4PM–8PM)</option></select>
+        </div>
+        <div class="mfg"><label>Assign Rider</label>
+          <select id="aRider"><option value="">— Unassigned —</option></select>
+        </div>
+        <div class="mfg"><label>Source</label>
+          <select id="aSource"><option value="website">Website</option><option value="whatsapp">WhatsApp</option><option value="meta">Meta Ad</option><option value="walkin">Walk-in</option><option value="call">Phone Call</option></select>
+        </div>
+      </div>
+      <div class="mfg">
+        <div style="background:var(--gold-light);border:1.5px solid #FCD34D;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer" id="loyaltyToggle">
+          <input type="checkbox" id="aLoyalty" style="width:16px;height:16px;accent-color:var(--blue)">
+          <div><div style="font-size:13px;font-weight:700;color:var(--gold)">🏆 Returning customer — apply 10% loyalty bonus</div><div style="font-size:11px;color:#B45309;margin-top:1px">Tick if customer has sold to us before</div></div>
+        </div>
+      </div>
+      <div class="mfg"><label>Notes</label><textarea id="aNotes" placeholder="Any extra details…"></textarea></div>
+      <div id="addPricePreview" style="display:none" class="price-box-dark">
+        <div><div class="pbd-lbl">Estimated payout</div><div class="pbd-val" id="addEstAmt">—</div><div class="pbd-sub" id="addRetain"></div></div>
+        <div style="text-align:right;font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div>
+      </div>
+      <button class="save-btn" id="saveLeadBtn">✅ Save Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- RIDERS -->
+<div class="page" id="page-riders">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div><h2 style="font-size:18px;font-weight:700">Rider Directory</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Manage pickup executives — passwords, contact details</p></div>
+    <button class="add-btn" onclick="openAddRider()">+ Add Rider</button>
+  </div>
+  <div class="rider-grid" id="riderGrid"></div>
+</div>
+
+<!-- CAMPAIGNS -->
+<div class="page" id="page-campaigns">
+  <div style="margin-bottom:20px"><h2 style="font-size:18px;font-weight:700">Campaign Manager</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Toggle limited-time offers — active campaigns show automatically on your website</p></div>
+  <div class="camp-grid" id="campGrid"></div>
+</div>
+
+<!-- VIDEOS -->
+<div class="page" id="page-videos">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div><h2 style="font-size:18px;font-weight:700">Customer Video Reviews</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Add YouTube video links — they appear on your homepage automatically</p></div>
+    <button class="add-btn" onclick="openAddVideo()">+ Add Video</button>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+</div>
+
+<!-- PRICES -->
+<div class="page" id="page-prices">
+  <div style="max-width:600px">
+    <div class="price-ctrl">
+      <h3>💰 Global Price Control</h3>
+      <p>Increase or decrease all device prices across the sell form and CRM. Changes apply immediately to all customers visiting the website.</p>
+      <div class="multiplier-row">
+        <input type="range" min="0.5" max="1.5" step="0.01" value="1.0" id="multSlider" oninput="updateMult(this.value)">
+        <span class="mult-val" id="multVal">1.00×</span>
+      </div>
+      <div class="mult-example" id="multExample">Example: iPhone 14 Pro base ₹60,000 → Current quote ₹60,000</div>
+      <button class="mult-btn" onclick="saveMult()">Save Price Multiplier</button>
+    </div>
+    <div class="bill-card">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">Current price multiplier</h3>
+      <p style="font-size:13px;color:var(--gray-400)">Multiplier: <strong id="currentMult">1.00× (standard)</strong></p>
+      <p style="font-size:13px;color:var(--gray-400);margin-top:8px">Use this to quickly adjust all prices up or down without editing each model individually. Set to 1.10× to add 10% to all prices. Set to 0.90× to reduce 10%.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="page" id="page-team">
+  <div style="margin-bottom:20px"><h2 style="font-size:18px;font-weight:700">Team Management</h2><p style="font-size:13px;color:var(--gray-400);margin-top:3px">Manage login credentials and permissions for all team members</p></div>
+  <div class="team-grid-crm" id="teamGrid"></div>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="modal-bg" id="leadModal">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modalTitle">Lead</h2><button class="modal-x" id="modalCloseBtn">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- RIDER MODAL -->
+<div class="modal-bg" id="riderModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><h2 id="riderModalTitle">Add Rider</h2><button class="modal-x" onclick="document.getElementById('riderModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body">
+      <div class="m2"><div class="mfg"><label>Full Name *</label><input id="rName" placeholder="Rider name"></div><div class="mfg"><label>Phone *</label><input id="rPhone" placeholder="+91 98765 43210"></div></div>
+      <div class="m2"><div class="mfg"><label>Email</label><input id="rEmail" placeholder="rider@email.com"></div><div class="mfg"><label>ID Proof No.</label><input id="rId" placeholder="Aadhaar / DL number"></div></div>
+      <div class="m2"><div class="mfg"><label>Username</label><input id="rUser" placeholder="rider1"></div><div class="mfg"><label>Password</label><input type="password" id="rPass" placeholder="Set password"></div></div>
+      <div class="mfg"><label>Area / Zone</label><input id="rZone" placeholder="North Delhi, South Delhi…"></div>
+      <button class="save-btn" id="saveRiderBtn">Save Rider</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-bg" id="videoModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><h2>Add Customer Video</h2><button class="modal-x" onclick="document.getElementById('videoModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body">
+      <div class="mfg"><label>YouTube Video ID</label><input id="vYtId" placeholder="e.g. dQw4w9WgXcQ (from youtube.com/watch?v=...)"></div>
+      <div class="m2"><div class="mfg"><label>Customer Name</label><input id="vName" placeholder="Rahul S."></div><div class="mfg"><label>Area</label><input id="vArea" placeholder="Lajpat Nagar"></div></div>
+      <div class="mfg"><label>Rating (1-5)</label><select id="vRating"><option value="5">⭐⭐⭐⭐⭐ 5 stars</option><option value="4">⭐⭐⭐⭐ 4 stars</option><option value="3">⭐⭐⭐ 3 stars</option></select></div>
+      <div class="mfg"><label>Comment</label><textarea id="vComment" placeholder="Customer's feedback…"></textarea></div>
+      <button class="save-btn" id="saveVideoBtn">Add to Website</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM EDIT MODAL -->
+<div class="modal-bg" id="teamModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><h2>Edit Team Member</h2><button class="modal-x" onclick="document.getElementById('teamModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body">
+      <div class="mfg"><label>Full Name</label><input id="tmName" placeholder="Name"></div>
+      <div class="mfg"><label>Phone / WhatsApp</label><input id="tmPhone" placeholder="+91 98765 43210"></div>
+      <div class="mfg"><label>Email</label><input id="tmEmail" placeholder="email@example.com"></div>
+      <div class="m2"><div class="mfg"><label>New Username</label><input id="tmUser" placeholder="Username"></div><div class="mfg"><label>New Password</label><input type="password" id="tmPass" placeholder="New password"></div></div>
+      <input type="hidden" id="tmIndex">
+      <button class="save-btn" id="saveTeamBtn">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── MODELS ───────────────────────────────────────────────────────
+var MODELS={iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone SE (2020)':14000,'iPhone XR':12000},samsung:{'Galaxy S24 Ultra':95000,'Galaxy S24+':80000,'Galaxy S24':65000,'Galaxy S23 Ultra':70000,'Galaxy S23':50000,'Galaxy S22':38000,'Galaxy A55':28000,'Galaxy A35':20000,'Galaxy A15':10000,'Galaxy M55':18000,'Galaxy M35':13000},oneplus:{'OnePlus 12':55000,'OnePlus 12R':35000,'OnePlus 11':45000,'Nord 4':28000,'Nord CE4':20000,'Nord 3':22000,'OnePlus 10 Pro':35000,'OnePlus 9 Pro':22000},realme:{'Realme GT 6':32000,'Realme GT 5':28000,'Realme 13 Pro+':25000,'Realme 13 Pro':20000,'Realme 12 Pro+':22000,'Realme 11 Pro+':18000,'Narzo 70 Pro':16000},oppo:{'Find X7 Pro':55000,'Reno 12 Pro':30000,'Reno 12':22000,'Reno 11 Pro':25000,'F27 Pro':20000,'F25 Pro':18000,'A60':10000},vivo:{'X100 Pro':65000,'X100':50000,'V40 Pro':35000,'V40':27000,'V30 Pro':30000,'V30':22000,'Y200 Pro':18000,'Y200':14000},xiaomi:{'Xiaomi 14 Ultra':75000,'Xiaomi 14':55000,'Redmi Note 13 Pro+':25000,'Redmi Note 13 Pro':20000,'Redmi Note 13':14000,'POCO X6 Pro':22000,'POCO F6':28000,'Redmi 13C':8000},pixel:{'Pixel 9 Pro XL':90000,'Pixel 9 Pro':75000,'Pixel 9':60000,'Pixel 8 Pro':55000,'Pixel 8':45000,'Pixel 7a':28000,'Pixel 7':32000},nothing:{'Phone (2a) Plus':25000,'Phone (2a)':22000,'Phone (2)':35000,'Phone (1)':18000},airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000,'AirPods 2nd Gen':6000},applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Ultra':44000,'Apple Watch Series 9':32000,'Apple Watch Series 8':26000,'Apple Watch Series 7':20000,'Apple Watch SE 2nd Gen':16000},playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000}};
+var DEP_DEFS=[{id:'charger',label:'No charger',pct:0.05},{id:'screen',label:'Screen cracked',pct:0.18},{id:'body',label:'Body damage',pct:0.10},{id:'battlow',label:'Battery <80%',pct:0.12},{id:'nobox',label:'No original box',pct:0.03},{id:'faceid',label:'Face ID broken',pct:0.10}];
+var SL={new:'st-new',contacted:'st-contacted',scheduled:'st-scheduled',completed:'st-completed',cancelled:'st-cancelled'};
+var SN={new:'New',contacted:'Contacted',scheduled:'Scheduled',completed:'Completed',cancelled:'Cancelled'};
+
+// ── TEAM ─────────────────────────────────────────────────────────
+var TEAM=JSON.parse(localStorage.getItem('smb_team')||JSON.stringify([
+  {username:'amrik',    password:'amrik1234',   name:'Amrik Singh',color:'#F97316',initials:'AS',role:'Owner',phone:'',email:''},
+  {username:'manager1', password:'manager1234', name:'Manager 1',  color:'#2563EB',initials:'M1',role:'Manager',phone:'',email:''},
+  {username:'exec1',    password:'exec1234',    name:'Executive 1',color:'#16A34A',initials:'E1',role:'Executive',phone:'',email:''}
+]));
+var currentUser=null;
+
+// ── LOGIN ─────────────────────────────────────────────────────────
+document.getElementById('loginBtn').addEventListener('click',function(){
+  var u=document.getElementById('loginUser').value.trim().toLowerCase();
+  var p=document.getElementById('loginPass').value.trim();
+  var errEl=document.getElementById('loginErr');
+  var found=null;
+  for(var i=0;i<TEAM.length;i++){if(TEAM[i].username===u&&TEAM[i].password===p){found=TEAM[i];break;}}
+  if(!found){errEl.textContent='❌ Wrong username or password';errEl.style.display='block';return;}
+  currentUser=found;errEl.style.display='none';
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('mainTopbar').style.display='flex';
+  document.getElementById('mainNav').style.display='flex';
+  document.getElementById('tbAv').textContent=found.initials;
+  document.getElementById('tbAv').style.background=found.color;
+  document.getElementById('tbName').textContent=found.name;
+  document.getElementById('tbRole').textContent=found.role;
+  initAll();
+});
+document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginBtn').click();});
+document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginPass').focus();});
+document.getElementById('logoutBtn').addEventListener('click',function(){
+  currentUser=null;
+  document.getElementById('loginWrap').style.display='flex';
+  document.getElementById('mainTopbar').style.display='none';
+  document.getElementById('mainNav').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
+});
+
+// ── STATE ─────────────────────────────────────────────────────────
+var leads=[],bills=[],riders=[],campaigns=[],videos=[];
+var invNum=1,addDeps={},addBasePrice=0,editRiderId=null;
+
+function load(){
+  leads=JSON.parse(localStorage.getItem('smb_leads')||'[]');
+  bills=JSON.parse(localStorage.getItem('smb_bills')||'[]');
+  riders=JSON.parse(localStorage.getItem('smb_riders')||'[]');
+  videos=JSON.parse(localStorage.getItem('smb_videos')||'[]');
+  invNum=parseInt(localStorage.getItem('smb_inv')||'1');
+  var dc=JSON.parse(localStorage.getItem('smb_camps')||'null');
+  if(!dc){
+    campaigns=[
+      {id:'no_charger',title:'No deduction — charger missing',desc:'Waive the 5% charger deduction for this period',active:false,waMsg:'🔥 Special offer: Missing charger? No problem! Zero deduction on charger. Limited time only. Call +91 7827505579'},
+      {id:'no_battery',title:'No deduction — low battery health',desc:'Waive battery deduction for devices with battery below 80%',active:false,waMsg:'🔥 Battery below 80%? No deduction this week! Sell your device at full price. Call +91 7827505579'},
+      {id:'no_screen',title:'No deduction — minor scratches',desc:'Waive minor scratch deductions',active:false,waMsg:'🔥 Minor scratches? No deduction now! Get full price for your device. Call +91 7827505579'},
+      {id:'loyalty_20',title:'Double loyalty — 20% bonus',desc:'Returning customers get 20% instead of 10%',active:false,waMsg:'🏆 DOUBLE LOYALTY this week! Returning customers get 20% extra on every device. Call +91 7827505579'},
+      {id:'free_pickup',title:'Express pickup — within 30 min',desc:'Promise 30-minute pickup for all new leads',active:false,waMsg:'⚡ 30-MINUTE PICKUP today! Submit your request now and we arrive in 30 minutes. Call +91 7827505579'},
+      {id:'all_in',title:'Zero deductions — all accessories',desc:'No deductions for any missing accessories',active:false,waMsg:'🎁 ZERO deductions offer! Sell your device at BASE price regardless of condition. Today only! Call +91 7827505579'},
+    ];
+    saveCamps();
+  } else {campaigns=dc;}
+}
+function save(){localStorage.setItem('smb_leads',JSON.stringify(leads));localStorage.setItem('smb_bills',JSON.stringify(bills));localStorage.setItem('smb_inv',String(invNum));}
+function saveRiders(){localStorage.setItem('smb_riders',JSON.stringify(riders));}
+function saveCamps(){localStorage.setItem('smb_camps',JSON.stringify(campaigns));}
+function saveVideos(){localStorage.setItem('smb_videos',JSON.stringify(videos));}
+function saveTeam(){localStorage.setItem('smb_team',JSON.stringify(TEAM));}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function Rs(n){return n?'₹'+parseInt(n).toLocaleString('en-IN'):'—';}
+function fmtD(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
+function fmtT(d){return new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function fmtInv(n){return 'SMB-2025-'+('000'+n).slice(-4);}
+function toast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(type||'success');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+function getRiderName(id){var r=riders.find(function(x){return x.id===id;});return r?r.name:'';}
+
+function calcEst(l){
+  var bp=l.basePrice||0;if(!bp)return 0;
+  var mult=parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  var adj=Math.round(bp*mult);
+  var yr=parseInt(l.year)||0;
+  var ageD=yr?Math.round(adj*Math.min((2025-yr)*0.07,0.42)):0;
+  var b=parseInt(l.battery)||100;
+  var battD=b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  var deps=l.deps||{};
+  var condD=DEP_DEFS.reduce(function(s,d){return s+(deps[d.id]?Math.round(adj*d.pct):0);},0);
+  var base=Math.max(adj-ageD-battD-condD,Math.round(adj*0.15));
+  return base+(l.isLoyalty?Math.round(base*0.10):0);
+}
+function numWords(n){var o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];function b(n){if(n<20)return o[n];if(n<100)return t[Math.floor(n/10)]+(n%10?' '+o[n%10]:'');return o[Math.floor(n/100)]+' Hundred'+(n%100?' and '+b(n%100):'');}n=Math.floor(n);if(!n)return'Zero';if(n<1000)return b(n);if(n<100000)return b(Math.floor(n/1000))+' Thousand'+(n%1000?' '+b(n%1000):'');if(n<10000000)return b(Math.floor(n/100000))+' Lakh'+(n%100000?' '+numWords(n%100000):'');return b(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+numWords(n%10000000):'');}
+
+// ── PAGE NAV ──────────────────────────────────────────────────────
+document.querySelectorAll('.ntab').forEach(function(btn){
+  btn.addEventListener('click',function(){goPage(this.dataset.page,this);});
+});
+function goPage(p,btn){
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active');});
+  document.querySelectorAll('.ntab').forEach(function(x){x.classList.remove('active');});
+  document.getElementById('page-'+p).classList.add('active');
+  var t=btn||document.querySelector('.ntab[data-page="'+p+'"]');
+  if(t)t.classList.add('active');
+  if(p==='dash')renderDash();
+  if(p==='leads')renderLeads();
+  if(p==='followup')renderKanban();
+  if(p==='bill')renderBillPage();
+  if(p==='riders')renderRiders();
+  if(p==='campaigns')renderCampaigns();
+  if(p==='videos')renderVideos();
+  if(p==='prices')renderPrices();
+  if(p==='team')renderTeam();
+}
+document.getElementById('notifBtn').addEventListener('click',function(){goPage('leads');});
+document.getElementById('modalCloseBtn').addEventListener('click',function(){document.getElementById('leadModal').classList.remove('show');});
+
+// ── INIT ──────────────────────────────────────────────────────────
+function initAll(){
+  load();seedDemo();
+  renderDash();initAddForm();renderRiders();renderCampaigns();renderVideos();renderPrices();renderTeam();
+  // populate rider dropdown in add form
+  populateRiderDropdown();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────
+function renderDash(){
+  var today=new Date().toDateString();
+  var newT=leads.filter(function(l){return l.status==='new'&&new Date(l.createdAt).toDateString()===today;}).length;
+  var pend=leads.filter(function(l){return['new','contacted'].indexOf(l.status)>-1;}).length;
+  var sched=leads.filter(function(l){return l.status==='scheduled';}).length;
+  var done=leads.filter(function(l){return l.status==='completed';}).length;
+  var rev=bills.reduce(function(s,b){return s+(parseInt(b.amount)||0);},0);
+  document.getElementById('s-new').textContent=newT;
+  document.getElementById('s-pend').textContent=pend;
+  document.getElementById('s-sched').textContent=sched;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-rev').textContent='₹'+rev.toLocaleString('en-IN');
+  document.getElementById('notifBtn').textContent='🔔 '+newT+' New';
+  document.getElementById('nb-leads').textContent=leads.length;
+  document.getElementById('nb-fu').textContent=pend+sched;
+  // Sort morning before evening, then by date
+  var recent=leads.slice().sort(function(a,b){
+    if(a.slot==='morning'&&b.slot!=='morning')return -1;
+    if(b.slot==='morning'&&a.slot!=='morning')return 1;
+    return new Date(b.createdAt)-new Date(a.createdAt);
+  }).slice(0,8);
+  document.getElementById('dashTbody').innerHTML=recent.length?recent.map(function(l){return lRow(l,true);}).join(''):'<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--gray-400)">No leads yet. <a href="#" onclick="goPage(\'add\')" style="color:var(--blue)">Add first lead →</a></td></tr>';
+}
+
+// ── LEADS TABLE ───────────────────────────────────────────────────
+function renderLeads(){
+  var q=document.getElementById('searchIn').value.toLowerCase();
+  var st=document.getElementById('statusFil').value;
+  var sl=document.getElementById('slotFil').value;
+  // Sort: morning first, then by date desc
+  var f=leads.slice().sort(function(a,b){
+    if(a.slot==='morning'&&b.slot!=='morning')return -1;
+    if(b.slot==='morning'&&a.slot!=='morning')return 1;
+    return new Date(b.createdAt)-new Date(a.createdAt);
+  });
+  if(q)f=f.filter(function(l){return(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().indexOf(q)>-1;});
+  if(st)f=f.filter(function(l){return l.status===st;});
+  if(sl)f=f.filter(function(l){return l.slot===sl;});
+  document.getElementById('leadsTbody').innerHTML=f.length?f.map(function(l){return lRow(l,false);}).join(''):'<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--gray-400)">No leads found.</td></tr>';
+}
+document.getElementById('searchIn').addEventListener('input',renderLeads);
+document.getElementById('statusFil').addEventListener('change',renderLeads);
+document.getElementById('slotFil').addEventListener('change',renderLeads);
+
+function lRow(l,compact){
+  var est=calcEst(l);
+  var sb=l.slot==='morning'?'<span class="slot-m">🌅 Morning</span>':'<span class="slot-e">🌆 Evening</span>';
+  var canBill=currentUser&&currentUser.role==='Owner';
+  var billBtn=canBill?(l.status==='completed'?'<button class="act-btn act-bill" onclick="event.stopPropagation();openBillFor(\''+l.id+'\')">🧾</button>':'<button class="act-btn act-bill" disabled>🧾</button>'):'';
+  var loyBadge=l.isLoyalty?'<span class="loyalty-badge">🏆</span>':'';
+  var riderName=l.riderId?getRiderName(l.riderId):'—';
+  if(compact)return'<tr onclick="openLeadModal(\''+l.id+'\')">'
+    +'<td><div class="td-name">'+l.name+loyBadge+'</div><div class="td-phone">'+l.phone+'</div></td>'
+    +'<td style="font-size:12px;max-width:160px">'+((l.device||'—').substring(0,30))+'</td>'
+    +'<td style="font-size:12px;color:var(--gray-500)">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td>'
+    +'<td><span class="status '+(SL[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span></td>'
+    +'<td style="font-size:12px;color:var(--gray-500)">'+riderName+'</td>'
+    +'<td style="font-weight:700;color:var(--green)">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:4px">'
+    +'<button class="act-btn act-call" onclick="callAndUpdateStatus(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
+    +'<button class="act-btn act-wa" onclick="waMsg(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
+    +billBtn+'</td></tr>';
+  return'<tr onclick="openLeadModal(\''+l.id+'\')">'
+    +'<td style="font-size:11px;color:var(--gray-400)">'+fmtD(l.createdAt)+'<br>'+fmtT(l.createdAt)+'</td>'
+    +'<td><div class="td-name">'+l.name+loyBadge+'</div></td>'
+    +'<td><div class="td-phone">'+l.phone+'</div></td>'
+    +'<td style="font-size:12px;max-width:160px">'+((l.device||'—').substring(0,30))+'<br><span style="color:var(--gray-400);font-size:11px">'+[l.storage,l.color].filter(Boolean).join(' · ')+'</span></td>'
+    +'<td style="font-size:12px;color:var(--gray-500)">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td>'
+    +'<td><span class="status '+(SL[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span></td>'
+    +'<td style="font-size:12px;color:var(--gray-500)">'+riderName+'</td>'
+    +'<td style="font-weight:700;color:var(--green)">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:4px;flex-wrap:wrap">'
+    +'<button class="act-btn act-call" onclick="callAndUpdateStatus(\''+l.id+'\',\''+l.phone+'\')">📞 Call</button>'
+    +'<button class="act-btn act-wa" onclick="waMsg(\''+l.phone+'\',\''+l.name+'\')">💬 WA</button>'
+    +billBtn+'</td></tr>';
+}
+
+// Auto-update status to Contacted when call button clicked
+function callAndUpdateStatus(id,phone){
+  var l=leads.find(function(x){return x.id===id;});
+  if(l&&l.status==='new'){
+    l.status='contacted';
+    l.notes=l.notes||[];
+    l.notes.push({text:'📞 Call initiated — status auto-changed to Contacted',at:new Date().toISOString()});
+    save();renderDash();renderLeads();renderKanban();
+    toast('📞 Calling '+phone+' — Status → Contacted','info');
+  }
+  window.open('tel:'+phone);
+}
+
+// ── KANBAN ────────────────────────────────────────────────────────
+function renderKanban(){
+  ['new','contacted','scheduled','completed'].forEach(function(st){
+    // Morning first in each column
+    var items=leads.filter(function(l){return l.status===st;}).sort(function(a,b){
+      if(a.slot==='morning'&&b.slot!=='morning')return -1;
+      if(b.slot==='morning'&&a.slot!=='morning')return 1;
+      return new Date(b.createdAt)-new Date(a.createdAt);
+    });
+    document.getElementById('kc-'+st).textContent=items.length;
+    document.getElementById('kb-'+st).innerHTML=items.length
+      ?items.map(function(l){
+        var riderName=l.riderId?'🏍️ '+getRiderName(l.riderId):'';
+        return'<div class="kan-card" onclick="openLeadModal(\''+l.id+'\')">'
+          +'<h4>'+l.name+(l.isLoyalty?' 🏆':'')+'</h4>'
+          +'<div class="dev">'+(l.device||'No device')+'</div>'
+          +'<div class="kan-tags">'
+          +(l.slot==='morning'?'<span class="kan-tag" style="background:#FEF3C7;color:#92400E">🌅 Morning</span>':'<span class="kan-tag" style="background:var(--purple-light);color:var(--purple)">🌆 Evening</span>')
+          +'<span class="kan-tag">'+l.phone+'</span>'
+          +(calcEst(l)?'<span class="kan-tag" style="background:var(--green-light);color:var(--green)">'+Rs(calcEst(l))+'</span>':'')
+          +(riderName?'<span class="kan-tag" style="background:var(--blue-light);color:var(--blue)">'+riderName+'</span>':'')
+          +'</div></div>';
+      }).join('')
+      :'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:20px 10px">No leads</p>';
+  });
+}
+
+// ── LEAD MODAL ────────────────────────────────────────────────────
+function openLeadModal(id){
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  var est=calcEst(l);
+  document.getElementById('modalTitle').textContent=l.name+' — '+(l.device||'Lead');
+  var steps=['new','contacted','scheduled','completed','cancelled'];
+  var stepHtml=steps.map(function(s){
+    var cls=l.status===s?'active':(steps.indexOf(s)<steps.indexOf(l.status)?'done':'');
+    return'<button class="step-btn '+cls+'" onclick="updateStatus(\''+id+'\',\''+s+'\')">'+SN[s]+'</button>';
+  }).join('');
+  var depLabels=DEP_DEFS.filter(function(d){return(l.deps||{})[d.id];}).map(function(d){return d.label;}).join(', ')||'None';
+  var riderOpts=riders.map(function(r){return'<option value="'+r.id+'"'+(l.riderId===r.id?' selected':'')+'>'+r.name+'</option>';}).join('');
+  var timeline=(l.notes||[]).map(function(n){return'<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-txt">'+n.text+'</div><div class="tl-time">'+fmtD(n.at)+' '+fmtT(n.at)+'</div></div></div>';}).join('');
+  var billBtn=(currentUser&&currentUser.role==='Owner'&&l.status==='completed')
+    ?'<button class="save-btn" style="margin-bottom:10px" onclick="openBillFor(\''+id+'\');document.getElementById(\'leadModal\').classList.remove(\'show\')">🧾 Generate GST Bill</button>':'';
+  document.getElementById('modalBody').innerHTML=
+    '<div class="stepper">'+stepHtml+'</div>'
+    +'<div class="m2" style="margin-bottom:14px">'
+    +'<div style="background:var(--gray-50);border-radius:12px;padding:13px">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:7px">Customer</div>'
+    +'<div style="font-size:15px;font-weight:700">'+l.name+(l.isLoyalty?' 🏆':'')+'</div>'
+    +'<a href="tel:'+l.phone+'" style="font-size:13px;color:var(--blue);display:block;margin:3px 0">'+l.phone+'</a>'
+    +'<div style="font-size:12px;color:var(--gray-400)">'+(l.area||'')+(l.address?'<br>'+l.address:'')+'</div>'
+    +'<div style="margin-top:8px;display:flex;gap:6px">'
+    +'<button class="act-btn act-call" onclick="callAndUpdateStatus(\''+id+'\',\''+l.phone+'\')">📞 Call</button>'
+    +'<button class="act-btn act-wa" onclick="waMsg(\''+l.phone+'\',\''+l.name+'\')">💬 WhatsApp</button>'
+    +'</div></div>'
+    +'<div style="background:var(--gray-50);border-radius:12px;padding:13px">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;margin-bottom:7px">Device</div>'
+    +'<div style="font-size:14px;font-weight:700">'+(l.device||'—')+'</div>'
+    +'<div style="font-size:12px;color:var(--gray-400)">Year: '+(l.year||'—')+' · Battery: '+(l.battery||'?')+'%</div>'
+    +'<div style="font-size:12px;color:var(--gray-400)">Issues: '+depLabels+'</div>'
+    +'<div style="font-size:12px;color:var(--gray-400)">Slot: '+(l.slot==='morning'?'🌅 Morning':'🌆 Evening')+' · Source: '+(l.source||'—')+'</div>'
+    +'<div style="margin-top:8px"><label style="font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;display:block;margin-bottom:4px">Assign Rider</label>'
+    +'<select onchange="assignRider(\''+id+'\',this.value)" style="width:100%;background:var(--gray-50);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;outline:none">'
+    +'<option value="">— Unassigned —</option>'+riderOpts+'</select></div>'
+    +'</div></div>'
+    +(est?'<div class="price-box-dark" style="margin-bottom:14px"><div><div class="pbd-lbl">Est. Payout</div><div class="pbd-val">'+Rs(est)+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.3)">Final on inspection</div></div>':'')
+    +billBtn
+    +'<div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px;margin-top:4px">Activity Log</div>'
+    +'<div class="timeline">'+(timeline||'<div style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px">No activity yet</div>')+'</div>'
+    +'<div class="note-row"><input id="noteIn" placeholder="Add a note…"><button onclick="addNote(\''+id+'\')">Add</button></div>';
+  document.getElementById('leadModal').classList.add('show');
+}
+
+function updateStatus(id,status){
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  l.status=status;l.notes=l.notes||[];
+  l.notes.push({text:'Status → '+SN[status]+(currentUser?' by '+currentUser.name:''),at:new Date().toISOString()});
+  save();renderDash();renderKanban();renderLeads();openLeadModal(id);toast('✅ Status → '+SN[status]);
+}
+
+function assignRider(id,riderId){
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  l.riderId=riderId;l.notes=l.notes||[];
+  var rName=riderId?getRiderName(riderId):'Unassigned';
+  l.notes.push({text:'Rider assigned: '+rName+(currentUser?' by '+currentUser.name:''),at:new Date().toISOString()});
+  save();toast('Rider assigned: '+rName,'info');
+}
+
+function addNote(id){
+  var inp=document.getElementById('noteIn');if(!inp.value.trim())return;
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  l.notes=l.notes||[];
+  l.notes.push({text:inp.value.trim()+(currentUser?' ('+currentUser.name+')':''),at:new Date().toISOString()});
+  save();inp.value='';openLeadModal(id);toast('Note saved');
+}
+
+function waMsg(phone,name){
+  var p=phone.replace(/\D/g,'');
+  var msg=encodeURIComponent('Hello '+name+'! 👋\n\nThis is Sambhi Mobiles, Govind Puri, Delhi.\n\nWe received your sell request. We offer the best price with instant cash/UPI at your doorstep.\n\nConfirm your pickup slot:\n🌅 Morning (9AM–1PM)\n🌆 Evening (4PM–8PM)\n\nOne call only — no spam. 📞 +91 7827505579');
+  window.open('https://wa.me/91'+p+'?text='+msg,'_blank');
+}
+
+// ── ADD LEAD ──────────────────────────────────────────────────────
+function initAddForm(){
+  addDeps={};addBasePrice=0;
+  DEP_DEFS.forEach(function(d){addDeps[d.id]=false;});
+  var chips=document.getElementById('addDepChips');
+  chips.innerHTML=DEP_DEFS.map(function(d){
+    return'<div class="dep-chip" id="adc_'+d.id+'" onclick="toggleAddDep(\''+d.id+'\')">'
+      +'<div class="dep-dot"></div>'+d.label+' (-'+(d.pct*100).toFixed(0)+'%)</div>';
+  }).join('');
+  document.getElementById('addPricePreview').style.display='none';
+  document.getElementById('aModel').innerHTML='<option value="">Select model</option>';
+}
+function populateRiderDropdown(){
+  var sel=document.getElementById('aRider');
+  sel.innerHTML='<option value="">— Unassigned —</option>';
+  riders.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name+' ('+r.zone+')';sel.appendChild(o);});
+}
+document.getElementById('aBrand').addEventListener('change',function(){
+  var dt=this.value;var ms=document.getElementById('aModel');
+  ms.innerHTML='<option value="">Select model</option>';addBasePrice=0;
+  if(dt&&MODELS[dt])Object.keys(MODELS[dt]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});
+  calcAddDep();
+});
+document.getElementById('aModel').addEventListener('change',function(){
+  var dt=document.getElementById('aBrand').value,m=this.value;
+  addBasePrice=(dt&&m&&MODELS[dt]&&MODELS[dt][m])?MODELS[dt][m]:0;calcAddDep();
+});
+document.getElementById('aYear').addEventListener('change',calcAddDep);
+document.getElementById('aBatt').addEventListener('input',calcAddDep);
+document.getElementById('aLoyalty').addEventListener('change',calcAddDep);
+function toggleAddDep(id){
+  addDeps[id]=!addDeps[id];
+  document.getElementById('adc_'+id).classList.toggle('on',addDeps[id]);
+  calcAddDep();
+}
+function calcAddDep(){
+  if(!addBasePrice){document.getElementById('addPricePreview').style.display='none';return;}
+  var mult=parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  var adj=Math.round(addBasePrice*mult);
+  var yr=parseInt(document.getElementById('aYear').value)||0;
+  var ageD=yr?Math.round(adj*Math.min((2025-yr)*0.07,0.42)):0;
+  var b=parseInt(document.getElementById('aBatt').value)||100;
+  var battD=b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  var condD=DEP_DEFS.reduce(function(s,d){return s+(addDeps[d.id]?Math.round(adj*d.pct):0);},0);
+  var isLoy=document.getElementById('aLoyalty').checked;
+  var base=Math.max(adj-ageD-battD-condD,Math.round(adj*0.15));
+  var est=base+(isLoy?Math.round(base*0.10):0);
+  document.getElementById('addPricePreview').style.display='flex';
+  document.getElementById('addEstAmt').textContent=Rs(est);
+  document.getElementById('addRetain').textContent=Math.round((est/adj)*100)+'% of base'+(isLoy?' incl. 10% loyalty bonus':'');
+}
+document.getElementById('saveLeadBtn').addEventListener('click',function(){
+  var name=document.getElementById('aName').value.trim();
+  var phone=document.getElementById('aPhone').value.trim();
+  if(!name||!phone){toast('Name and phone are required','error');return;}
+  var dt=document.getElementById('aBrand').value,dm=document.getElementById('aModel').value;
+  var yr=document.getElementById('aYear').value,batt=document.getElementById('aBatt').value;
+  var isLoy=document.getElementById('aLoyalty').checked;
+  var deps={};DEP_DEFS.forEach(function(d){if(addDeps[d.id])deps[d.id]=true;});
+  var mult=parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  var adj=Math.round(addBasePrice*mult);
+  var yr2=parseInt(yr)||0,ageD=yr2?Math.round(adj*Math.min((2025-yr2)*0.07,0.42)):0;
+  var b=parseInt(batt)||100,battD=b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  var condD=DEP_DEFS.reduce(function(s,d){return s+(deps[d.id]?Math.round(adj*d.pct):0);},0);
+  var base=adj?Math.max(adj-ageD-battD-condD,Math.round(adj*0.15)):0;
+  var est=base+(isLoy?Math.round(base*0.10):0);
+  var riderId=document.getElementById('aRider').value;
+  leads.push({
+    id:uid(),name:name,phone:phone,
+    area:document.getElementById('aArea').value.trim(),address:document.getElementById('aAddr').value.trim(),
+    devType:dt,device:[dm,document.getElementById('aStorage').value,document.getElementById('aColor').value].filter(Boolean).join(' ')||dt,
+    model:dm,storage:document.getElementById('aStorage').value,color:document.getElementById('aColor').value,
+    year:yr,battery:batt,imei:document.getElementById('aIMEI').value,
+    basePrice:addBasePrice,deps:deps,isLoyalty:isLoy,estPrice:est,
+    slot:document.getElementById('aSlot').value,source:document.getElementById('aSource').value,
+    riderId:riderId,
+    notes:[{text:'Lead added by '+(currentUser?currentUser.name:'admin')+' via CRM',at:new Date().toISOString()}],
+    status:'new',createdAt:new Date().toISOString()
+  });
+  save();toast('✅ Lead saved for '+name);
+  ['aName','aPhone','aArea','aAddr','aStorage','aColor','aIMEI','aBatt','aNotes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('aBrand').value='';document.getElementById('aModel').innerHTML='<option>Select model</option>';
+  document.getElementById('aLoyalty').checked=false;document.getElementById('aRider').value='';
+  initAddForm();renderDash();
+  setTimeout(function(){goPage('leads');},600);
+});
+
+// ── BILL PAGE ─────────────────────────────────────────────────────
+function renderBillPage(){
+  if(!currentUser||currentUser.role!=='Owner'){
+    document.getElementById('page-bill').innerHTML='<div style="padding:60px;text-align:center;color:var(--gray-400)"><div style="font-size:48px;margin-bottom:16px">🔒</div><h3>Bill generation is restricted to Owner only.</h3></div>';return;
+  }
+  var sel=document.getElementById('billSel');
+  var comp=leads.filter(function(l){return l.status==='completed';});
+  sel.innerHTML='<option value="">— Choose completed lead —</option>'+comp.map(function(l){return'<option value="'+l.id+'">'+l.name+' — '+(l.device||'Device')+' — '+l.phone+'</option>';}).join('');
+  document.getElementById('billForm').style.display='none';
+  document.getElementById('bInvNo').value=fmtInv(invNum);
+  document.getElementById('bDate').value=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  var bh=document.getElementById('billHist');
+  bh.innerHTML=bills.length?bills.slice().reverse().map(function(b){
+    return'<div class="bill-hist-item"><div><div style="font-size:13px;font-weight:700">'+b.invNo+'</div><div style="font-size:12px;color:var(--gray-400)">'+b.customer+' · '+(b.device||'—')+'</div><div style="font-size:11px;color:var(--gray-400)">'+fmtD(b.at)+'</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:var(--green)">'+Rs(b.amount)+'</div><span style="font-size:10px;font-weight:700;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:100px">✓ Billed</span></div></div>';
+  }).join(''):'<p style="font-size:13px;color:var(--gray-400)">No bills yet.</p>';
+}
+document.getElementById('billSel').addEventListener('change',function(){
+  var id=this.value;var form=document.getElementById('billForm');
+  if(!id){form.style.display='none';return;}
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  form.style.display='block';
+  document.getElementById('bAmt').value=calcEst(l)||'';
+  document.getElementById('bIMEI').value=l.imei||'';
+  calcBillTax();
+});
+document.getElementById('bAmt').addEventListener('input',calcBillTax);
+function calcBillTax(){
+  var amt=parseFloat(document.getElementById('bAmt').value)||0;
+  if(!amt){['tTax','tCGST','tSGST','tGrand'].forEach(function(id){document.getElementById(id).textContent='—';});return;}
+  var tax=Math.round(amt/1.18*100)/100;var cgst=Math.round(tax*0.09*100)/100;
+  var grand=Math.round((tax+cgst*2)*100)/100;
+  document.getElementById('tTax').textContent=Rs(tax);document.getElementById('tCGST').textContent=Rs(cgst);
+  document.getElementById('tSGST').textContent=Rs(cgst);document.getElementById('tGrand').textContent=Rs(grand);
+}
+document.getElementById('genBillBtn').addEventListener('click',function(){
+  var id=document.getElementById('billSel').value;
+  var l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a lead','error');return;}
+  var amt=parseFloat(document.getElementById('bAmt').value)||0;if(!amt){toast('Enter the final amount','error');return;}
+  var tax=Math.round(amt/1.18*100)/100,cgst=Math.round(tax*0.09*100)/100,grand=Math.round((tax+cgst*2)*100)/100;
+  var imei=document.getElementById('bIMEI').value,txType=document.getElementById('bTx').value;
+  var invNo=fmtInv(invNum),today=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  var script=document.createElement('script');
+  script.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+  script.onload=function(){
+    var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var W=210,M=18;
+    // Header
+    doc.setFillColor(15,23,42);doc.rect(0,0,W,38,'F');
+    doc.setFillColor(37,99,235);doc.rect(0,0,W,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',M,13);
+    doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(150,150,148);
+    doc.text('Prop: Amrik Singh | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',M,19);
+    doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019 | +91 7827505579',M,24);
+    doc.setFillColor(37,99,235);doc.roundedRect(W-M-40,7,40,11,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(255,255,255);doc.text('TAX INVOICE',W-M-20,14,'center');
+    doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(150,150,148);
+    doc.text('No: '+invNo,W-M,22,'right');doc.text('Date: '+today,W-M,27,'right');
+    // Seller & Customer boxes
+    var bTop=42,bH=28,half=(W-2*M-4)/2;
+    doc.setFillColor(248,250,252);doc.roundedRect(M,bTop,half,bH,2,2,'F');doc.roundedRect(M+half+4,bTop,half,bH,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('SELLER',M+3,bTop+5);
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text('Sambhi Mobiles',M+3,bTop+11);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);
+    doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',M+3,bTop+17);doc.text('PAN: BWPPS6835M | +91 7827505579',M+3,bTop+22);doc.text('1498 Bhagat Niwas, Govind Puri, Delhi',M+3,bTop+27);
+    var bx2=M+half+4;
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('CUSTOMER',bx2+3,bTop+5);
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text(l.name,bx2+3,bTop+11);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);
+    doc.text('Ph: '+l.phone,bx2+3,bTop+17);doc.text((l.area||'Delhi'),bx2+3,bTop+22);doc.text('Place of Supply: Delhi (07) | Reverse Charge: No',bx2+3,bTop+27);
+    // Transaction badge
+    var badY=bTop+bH+3;
+    doc.setFillColor(txType==='PURCHASE'?22:37,txType==='PURCHASE'?163:99,txType==='PURCHASE'?74:235);
+    doc.roundedRect(M,badY,72,7,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(255,255,255);
+    doc.text(txType==='PURCHASE'?'DEVICE PURCHASED FROM CUSTOMER':'DEVICE SOLD TO CUSTOMER',M+36,badY+4.5,'center');
+    if(imei){doc.setFillColor(239,246,255);doc.roundedRect(M+75,badY,105,7,2,2,'F');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('IMEI VERIFIED (CEIR): '+imei,M+77,badY+4.5);}
+    // Item table
+    var tTop=badY+11,tW=W-2*M;
+    doc.setFillColor(15,23,42);doc.rect(M,tTop,tW,7,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
+    var cols=[6,52,12,8,18,20,10,18,13],colX=[M];cols.slice(0,-1).forEach(function(w){colX.push(colX[colX.length-1]+w);});
+    ['#','Item / Device','HSN','Qty','Rate (₹)','Taxable (₹)','GST %','GST Amt','Total (₹)'].forEach(function(h,i){doc.text(h,colX[i]+cols[i]/2,tTop+4.5,'center');});
+    var rY=tTop+7;
+    doc.setFillColor(255,255,255);doc.rect(M,rY,tW,12,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(15,23,42);
+    doc.text('1',colX[0]+3,rY+5);doc.text((l.device||'Mobile Device').substring(0,44),colX[1]+1,rY+5);
+    doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);
+    doc.text('Batt:'+(l.battery||'?')+'% | Year:'+(l.year||'?')+(imei?'':''),colX[1]+1,rY+9);
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(15,23,42);
+    ['8517','1',Rs(amt).replace('₹',''),Rs(tax).replace('₹',''),'18%',Rs(cgst*2).replace('₹',''),Rs(grand).replace('₹','')].forEach(function(v,i){doc.text(v,colX[i+2]+cols[i+2]/2,rY+7,'center');});
+    doc.setDrawColor(226,232,240);doc.setLineWidth(0.3);doc.line(M,rY+12,M+tW,rY+12);
+    // Tax summary
+    var totY=rY+16,rw=80,rx=W-M-rw;
+    [['Taxable Value',Rs(tax)],['CGST @ 9%',Rs(cgst)],['SGST @ 9%',Rs(cgst)]].forEach(function(pair,i){
+      doc.setFillColor(i%2===0?248:255,i%2===0?250:255,i%2===0?252:255);doc.rect(rx,totY+i*6,rw,6,'F');
+      doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(100,116,139);
+      doc.text(pair[0],rx+2,totY+i*6+4);doc.setFont('helvetica','bold');doc.setTextColor(15,23,42);doc.text(pair[1],rx+rw-2,totY+i*6+4,'right');
+    });
+    var gtY=totY+18+1;
+    doc.setFillColor(15,23,42);doc.roundedRect(rx,gtY,rw,9,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(249,115,22);doc.text('GRAND TOTAL',rx+3,gtY+5.5);
+    doc.setFontSize(11);doc.setTextColor(255,255,255);doc.text(Rs(grand),rx+rw-3,gtY+6,'right');
+    // Amount in words
+    doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(148,163,184);
+    doc.text('Amount in words: '+numWords(Math.round(grand))+' Rupees Only',M,gtY+5);
+    // Bank details
+    var bkY=gtY+13;
+    doc.setFillColor(239,246,255);doc.roundedRect(M,bkY,W-2*M,16,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(37,99,235);doc.text('PAYMENT DETAILS — BANK TRANSFER / UPI',M+3,bkY+5);
+    var bc1=M+3,bc2=M+(W-2*M)/2+3;
+    doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(51,65,85);
+    doc.text('Account Name:',bc1,bkY+10);doc.text('Account Number:',bc1,bkY+14.5);
+    doc.text('IFSC Code:',bc2,bkY+10);doc.text('Bank & Branch:',bc2,bkY+14.5);
+    doc.setFont('helvetica','normal');
+    doc.text('Sambhi Mobiles',bc1+30,bkY+10);doc.text('10084177443',bc1+30,bkY+14.5);
+    doc.text('IDFB0020107',bc2+28,bkY+10);doc.text('IDFC First Bank, Okhla Branch',bc2+28,bkY+14.5);
+    // Signatures
+    var sigY=bkY+20;
+    doc.setFillColor(248,250,252);
+    doc.roundedRect(M,sigY,58,13,2,2,'F');doc.roundedRect(W-M-58,sigY,58,13,2,2,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);
+    doc.text('Customer Signature',M+2,sigY+4);doc.text(l.name,M+2,sigY+11);
+    doc.text('For Sambhi Mobiles',W-M-56,sigY+4);
+    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',W-M-56,sigY+11);
+    // Footer
+    doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);
+    doc.text('Terms: Valid GST invoice. Non-returnable within 24 hours. IMEI verified. Delhi courts jurisdiction only.',M,sigY+18);
+    doc.setFillColor(15,23,42);doc.rect(0,285,W,12,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',W/2,290,'center');
+    doc.setFont('helvetica','normal');doc.setTextColor(148,163,184);
+    doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi | +91 7827505579 | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',W/2,294.5,'center');
+    doc.save('Sambhi_'+invNo+'_'+l.name.replace(/\s+/g,'_')+'.pdf');
+    bills.push({invNo:invNo,customer:l.name,device:l.device||'—',amount:Math.round(grand),at:new Date().toISOString(),leadId:id});
+    var lead=leads.find(function(x){return x.id===id;});if(lead){lead.billed=true;lead.invNo=invNo;}
+    invNum++;save();renderBillPage();toast('✅ Bill '+invNo+' downloaded!');
+  };
+  document.head.appendChild(script);
+});
+document.getElementById('sendBillWABtn').addEventListener('click',function(){
+  var id=document.getElementById('billSel').value;
+  var l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a lead','error');return;}
+  var grand=document.getElementById('tGrand').textContent;
+  var p=l.phone.replace(/\D/g,'');
+  var msg=encodeURIComponent('Hello '+l.name+'! 🙏\n\nThank you for transacting with *Sambhi Mobiles*!\n\n✅ Transaction complete\n💰 Amount: *'+grand+'*\n\n🏦 *Bank Transfer / UPI:*\nAccount: Sambhi Mobiles\nAcc No: 10084177443\nIFSC: IDFB0020107\nBank: IDFC First Bank, Okhla Branch\n\nFor queries: 📞 +91 7827505579\n\n_Sambhi Mobiles | 1498, Govind Puri, New Delhi_\n_GSTIN: 07BWPPS6835M1ZI_');
+  window.open('https://wa.me/91'+p+'?text='+msg,'_blank');
+});
+function openBillFor(id){goPage('bill');setTimeout(function(){document.getElementById('billSel').value=id;document.getElementById('billSel').dispatchEvent(new Event('change'));},200);}
+
+// ── RIDERS ───────────────────────────────────────────────────────
+var RIDER_COLORS=['#2563EB','#16A34A','#D97706','#7C3AED','#DC2626','#0891B2'];
+function renderRiders(){
+  var g=document.getElementById('riderGrid');
+  if(!riders.length){g.innerHTML='<p style="font-size:14px;color:var(--gray-400);padding:20px">No riders added yet. Click "+ Add Rider" to get started.</p>';return;}
+  g.innerHTML=riders.map(function(r,i){
+    var assignedLeads=leads.filter(function(l){return l.riderId===r.id;});
+    var completedLeads=assignedLeads.filter(function(l){return l.status==='completed';});
+    var col=RIDER_COLORS[i%RIDER_COLORS.length];
+    return'<div class="rider-card">'
+      +'<div class="online-dot"></div>'
+      +'<div class="rider-av" style="background:'+col+'">'+r.name.charAt(0).toUpperCase()+'</div>'
+      +'<h3>'+r.name+'</h3>'
+      +'<div class="rider-phone"><a href="tel:'+r.phone+'" style="color:var(--blue);text-decoration:none">'+r.phone+'</a></div>'
+      +(r.email?'<div class="rider-email">'+r.email+'</div>':'')
+      +(r.zone?'<div style="font-size:11px;color:var(--gray-400);text-align:center;margin-bottom:8px">📍 '+r.zone+'</div>':'')
+      +'<div class="rider-stats">'
+      +'<div class="rs"><div class="rn">'+assignedLeads.length+'</div><div class="rl">Assigned</div></div>'
+      +'<div class="rs"><div class="rn">'+completedLeads.length+'</div><div class="rl">Completed</div></div>'
+      +'</div>'
+      +'<div class="rider-btns">'
+      +'<button class="rider-edit-btn" onclick="openEditRider(\''+r.id+'\')">✏️ Edit</button>'
+      +'<button class="rider-assign-btn" onclick="openCallRider(\''+r.phone+'\')">📞 Call</button>'
+      +'</div>'
+      +'<div style="font-size:10px;color:var(--gray-400);margin-top:8px;text-align:center">User: '+r.username+' · Pass: '+r.password+'</div>'
+      +'</div>';
+  }).join('');
+}
+function openAddRider(){editRiderId=null;document.getElementById('riderModalTitle').textContent='Add Rider';['rName','rPhone','rEmail','rId','rUser','rPass','rZone'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('riderModal').classList.add('show');}
+function openEditRider(id){
+  var r=riders.find(function(x){return x.id===id;});if(!r)return;
+  editRiderId=id;document.getElementById('riderModalTitle').textContent='Edit Rider';
+  document.getElementById('rName').value=r.name||'';document.getElementById('rPhone').value=r.phone||'';
+  document.getElementById('rEmail').value=r.email||'';document.getElementById('rId').value=r.idProof||'';
+  document.getElementById('rUser').value=r.username||'';document.getElementById('rPass').value=r.password||'';
+  document.getElementById('rZone').value=r.zone||'';
+  document.getElementById('riderModal').classList.add('show');
+}
+function openCallRider(phone){window.open('tel:'+phone);}
+document.getElementById('saveRiderBtn').addEventListener('click',function(){
+  var name=document.getElementById('rName').value.trim();var phone=document.getElementById('rPhone').value.trim();
+  if(!name||!phone){toast('Name and phone required','error');return;}
+  var data={id:editRiderId||uid(),name:name,phone:phone,email:document.getElementById('rEmail').value.trim(),idProof:document.getElementById('rId').value.trim(),username:document.getElementById('rUser').value.trim(),password:document.getElementById('rPass').value.trim(),zone:document.getElementById('rZone').value.trim()};
+  if(editRiderId){var idx=riders.findIndex(function(x){return x.id===editRiderId;});if(idx>-1)riders[idx]=data;}
+  else{riders.push(data);}
+  saveRiders();renderRiders();populateRiderDropdown();document.getElementById('riderModal').classList.remove('show');toast('✅ Rider saved');
+});
+
+// ── CAMPAIGNS ─────────────────────────────────────────────────────
+function renderCampaigns(){
+  var g=document.getElementById('campGrid');
+  g.innerHTML=campaigns.map(function(c,i){
+    return'<div class="camp-card'+(c.active?' active-camp':'')+'">'
+      +'<div class="camp-header">'
+      +'<div><div class="camp-title">'+c.title+'</div><div class="camp-desc" style="margin-top:4px">'+c.desc+'</div></div>'
+      +'<label class="toggle-wrap"><input type="checkbox"'+(c.active?' checked':'')+'onchange="toggleCamp('+i+',this.checked)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>'
+      +'</div>'
+      +(c.active?'<div class="camp-countdown">🔥 Currently ACTIVE — showing on website</div>':'<div style="font-size:12px;color:var(--gray-400)">⚪ Inactive — not showing on website</div>')
+      +'<div class="camp-wa-text">📲 WA message: '+c.waMsg+'</div>'
+      +'<button onclick="sendCampWA('+i+')" style="background:var(--green-light);color:var(--green);border:none;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📲 Share on WhatsApp</button>'
+      +'</div>';
+  }).join('');
+}
+function toggleCamp(i,val){campaigns[i].active=val;saveCamps();renderCampaigns();toast(val?'🔥 Campaign activated on website':'Campaign deactivated');
+// Update website banner
+var campObj={};campaigns.forEach(function(c){if(c.active)campObj[c.id]=c;});
+localStorage.setItem('smb_camps',JSON.stringify(campaigns));
+}
+function sendCampWA(i){
+  var msg=encodeURIComponent(campaigns[i].waMsg);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+
+// ── VIDEOS ───────────────────────────────────────────────────────
+function renderVideos(){
+  var g=document.getElementById('videoGrid');
+  if(!videos.length){g.innerHTML='<p style="font-size:14px;color:var(--gray-400);padding:20px">No videos yet. Add customer testimonial YouTube links — they appear on your homepage automatically.</p>';return;}
+  g.innerHTML=videos.map(function(v,i){
+    var thumb=v.ytId?'https://img.youtube.com/vi/'+v.ytId+'/mqdefault.jpg':'';
+    return'<div class="video-item">'
+      +(thumb?'<img src="'+thumb+'" style="width:100%;aspect-ratio:16/9;object-fit:cover">':'<div class="video-thumb">🎥</div>')
+      +'<div class="video-info">'
+      +'<div style="color:#F59E0B;font-size:13px;margin-bottom:2px">'+'★'.repeat(v.rating||5)+'</div>'
+      +'<h4>'+v.name+' — '+v.area+'</h4>'
+      +'<p>'+v.comment+'</p>'
+      +(v.ytId?'<a href="https://youtube.com/watch?v='+v.ytId+'" target="_blank" style="font-size:11px;color:var(--blue)">View on YouTube →</a>':'')
+      +'<br><button class="video-del" onclick="deleteVideo('+i+')">🗑 Remove</button>'
+      +'</div></div>';
+  }).join('');
+}
+function openAddVideo(){document.getElementById('videoModal').classList.add('show');}
+function deleteVideo(i){videos.splice(i,1);saveVideos();renderVideos();toast('Video removed');}
+document.getElementById('saveVideoBtn').addEventListener('click',function(){
+  var ytId=document.getElementById('vYtId').value.trim();
+  var name=document.getElementById('vName').value.trim()||'Customer';
+  var area=document.getElementById('vArea').value.trim()||'Delhi';
+  var rating=parseInt(document.getElementById('vRating').value)||5;
+  var comment=document.getElementById('vComment').value.trim()||'Great service!';
+  videos.push({ytId:ytId,name:name,area:area,rating:rating,comment:comment});
+  saveVideos();renderVideos();document.getElementById('videoModal').classList.remove('show');toast('✅ Video added to website');
+  ['vYtId','vName','vArea','vComment'].forEach(function(id){document.getElementById(id).value='';});
+});
+
+// ── PRICE CONTROL ─────────────────────────────────────────────────
+function renderPrices(){
+  var saved=parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  document.getElementById('multSlider').value=saved;
+  updateMult(saved);
+  document.getElementById('currentMult').textContent=saved.toFixed(2)+'× ('+(saved===1?'standard':saved>1?'+'+(((saved-1)*100).toFixed(0))+'% increase':((1-saved)*100).toFixed(0)+'% decrease')+')';
+}
+function updateMult(v){
+  v=parseFloat(v);
+  document.getElementById('multVal').textContent=v.toFixed(2)+'×';
+  var example=Math.round(60000*v);
+  document.getElementById('multExample').textContent='Example: iPhone 14 Pro base ₹60,000 → Current quote ₹'+example.toLocaleString('en-IN');
+}
+function saveMult(){
+  var v=parseFloat(document.getElementById('multSlider').value);
+  localStorage.setItem('smb_price_multiplier',v.toFixed(2));
+  document.getElementById('currentMult').textContent=v.toFixed(2)+'× ('+(v===1?'standard':v>1?'+'+(((v-1)*100).toFixed(0))+'% increase':((1-v)*100).toFixed(0)+'% decrease')+')';
+  toast('✅ Price multiplier saved — all quotes updated');
+}
+
+// ── TEAM MANAGEMENT ───────────────────────────────────────────────
+function renderTeam(){
+  var g=document.getElementById('teamGrid');
+  g.innerHTML=TEAM.map(function(u,i){
+    var myLeads=leads.filter(function(l){return l.source&&l.source!=='website';});
+    return'<div class="team-card">'
+      +'<div class="team-av" style="background:'+u.color+'">'+u.initials+'</div>'
+      +'<h3>'+u.name+'</h3>'
+      +'<span class="role-badge '+(u.role==='Owner'?'rb-owner':u.role==='Manager'?'rb-manager':'rb-exec')+'">'+u.role+'</span>'
+      +(u.phone?'<div class="team-info">📞 '+u.phone+'</div>':'')
+      +(u.email?'<div class="team-info">✉️ '+u.email+'</div>':'')
+      +'<div class="team-info" style="margin-top:4px">User: <strong>'+u.username+'</strong></div>'
+      +'<div class="team-info">Pass: <strong>'+u.password+'</strong></div>'
+      +(currentUser&&currentUser.role==='Owner'?'<button class="edit-user-btn" onclick="openEditTeam('+i+')">✏️ Edit details & password</button>':'')
+      +'</div>';
+  }).join('');
+}
+function openEditTeam(i){
+  var u=TEAM[i];
+  document.getElementById('tmName').value=u.name||'';document.getElementById('tmPhone').value=u.phone||'';
+  document.getElementById('tmEmail').value=u.email||'';document.getElementById('tmUser').value=u.username||'';
+  document.getElementById('tmPass').value='';document.getElementById('tmIndex').value=i;
+  document.getElementById('teamModal').classList.add('show');
+}
+document.getElementById('saveTeamBtn').addEventListener('click',function(){
+  var i=parseInt(document.getElementById('tmIndex').value);
+  if(isNaN(i))return;
+  TEAM[i].name=document.getElementById('tmName').value.trim()||TEAM[i].name;
+  TEAM[i].phone=document.getElementById('tmPhone').value.trim();
+  TEAM[i].email=document.getElementById('tmEmail').value.trim();
+  var newUser=document.getElementById('tmUser').value.trim();
+  var newPass=document.getElementById('tmPass').value.trim();
+  if(newUser)TEAM[i].username=newUser;
+  if(newPass)TEAM[i].password=newPass;
+  TEAM[i].initials=TEAM[i].name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+  saveTeam();renderTeam();document.getElementById('teamModal').classList.remove('show');toast('✅ Team member updated');
+});
+
+// ── SEED DEMO DATA ────────────────────────────────────────────────
+function seedDemo(){
+  if(leads.length)return;
+  leads=[
+    {id:uid(),name:'Rahul Sharma',phone:'+91 98765 43210',area:'Lajpat Nagar',devType:'iphone',device:'iPhone 14 Pro 256GB Deep Purple',model:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',year:'2022',battery:'84',slot:'morning',source:'website',basePrice:60000,deps:{charger:true,nobox:true},isLoyalty:false,estPrice:48000,notes:[{text:'Lead from website',at:new Date().toISOString()}],status:'new',createdAt:new Date(Date.now()-86400000*2).toISOString()},
+    {id:uid(),name:'Priya Mehta',phone:'+91 91234 56789',area:'Saket',devType:'samsung',device:'Galaxy S23 Ultra 256GB Black',model:'Galaxy S23 Ultra',storage:'256GB',color:'Black',year:'2023',battery:'88',slot:'evening',source:'meta',basePrice:70000,deps:{},isLoyalty:false,estPrice:59500,notes:[{text:'Meta ad lead',at:new Date().toISOString()}],status:'contacted',createdAt:new Date(Date.now()-86400000).toISOString()},
+    {id:uid(),name:'Amit Verma',phone:'+91 99887 76655',area:'Dwarka',devType:'playstation',device:'PS5 Disc Edition',model:'PS5 Disc Edition',storage:'',color:'White',year:'2022',battery:'',slot:'morning',source:'whatsapp',basePrice:44000,deps:{nobox:true},isLoyalty:false,estPrice:40000,notes:[{text:'WhatsApp lead',at:new Date().toISOString()}],status:'scheduled',createdAt:new Date(Date.now()-3600000).toISOString()},
+    {id:uid(),name:'Sunita Kapoor',phone:'+91 87654 32109',area:'Vasant Kunj',devType:'iphone',device:'iPhone 12 64GB Black',model:'iPhone 12',storage:'64GB',color:'Black',year:'2020',battery:'71',slot:'morning',source:'walkin',basePrice:28000,deps:{charger:true,battlow:true},isLoyalty:true,estPrice:20000,notes:[{text:'Walk-in customer — loyalty applied',at:new Date().toISOString()}],status:'completed',createdAt:new Date(Date.now()-86400000*3).toISOString()},
+    {id:uid(),name:'Dev Anand',phone:'+91 95551 12233',area:'Rohini',devType:'oneplus',device:'OnePlus 12 256GB Green',model:'OnePlus 12',storage:'256GB',color:'Green',year:'2024',battery:'96',slot:'evening',source:'meta',basePrice:55000,deps:{},isLoyalty:false,estPrice:52250,notes:[{text:'Meta ad — morning requested but evening slot available',at:new Date().toISOString()}],status:'new',createdAt:new Date().toISOString()},
+  ];
+  save();
+}
+</script>
+</body>
+</html>
