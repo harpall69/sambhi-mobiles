@@ -608,6 +608,22 @@ document.getElementById('loginBtn').addEventListener('click',function(){
   for(var i=0;i<TEAM.length;i++){if(TEAM[i].username===u&&TEAM[i].password===p){found=TEAM[i];break;}}
   if(!found){errEl.textContent='❌ Wrong username or password';errEl.style.display='block';return;}
   currentUser=found;errEl.style.display='none';
+  localStorage.setItem('smb_session',JSON.stringify({username:found.username,ts:Date.now()}));
+  showCRM(found);
+  initAll();
+});
+document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginBtn').click();});
+document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginPass').focus();});
+document.getElementById('logoutBtn').addEventListener('click',function(){
+  currentUser=null;
+  localStorage.removeItem('smb_session');
+  document.getElementById('loginWrap').style.display='flex';
+  document.getElementById('mainTopbar').style.display='none';
+  document.getElementById('mainNav').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
+});
+
+function showCRM(found){
   document.getElementById('loginWrap').style.display='none';
   document.getElementById('mainTopbar').style.display='flex';
   document.getElementById('mainNav').style.display='flex';
@@ -615,17 +631,31 @@ document.getElementById('loginBtn').addEventListener('click',function(){
   document.getElementById('tbAv').style.background=found.color;
   document.getElementById('tbName').textContent=found.name;
   document.getElementById('tbRole').textContent=found.role;
-  initAll();
-});
-document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginBtn').click();});
-document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('loginPass').focus();});
-document.getElementById('logoutBtn').addEventListener('click',function(){
-  currentUser=null;
-  document.getElementById('loginWrap').style.display='flex';
-  document.getElementById('mainTopbar').style.display='none';
-  document.getElementById('mainNav').style.display='none';
-  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
-});
+}
+
+// Auto-restore session on page load
+(function(){
+  var sess=localStorage.getItem('smb_session');
+  if(!sess)return;
+  try{
+    var s=JSON.parse(sess);
+    // Session valid for 12 hours
+    if(Date.now()-s.ts > 12*60*60*1000){localStorage.removeItem('smb_session');return;}
+    var team=JSON.parse(localStorage.getItem('smb_team')||'[]');
+    // fallback to defaults if team not saved yet
+    var defaults=[
+      {username:'amrik',password:'amrik1234',name:'Amrik Singh',color:'#F97316',initials:'AS',role:'Owner',phone:'',email:''},
+      {username:'manager1',password:'manager1234',name:'Manager 1',color:'#2563EB',initials:'M1',role:'Manager',phone:'',email:''},
+      {username:'exec1',password:'exec1234',name:'Executive 1',color:'#16A34A',initials:'E1',role:'Executive',phone:'',email:''}
+    ];
+    var list=team.length?team:defaults;
+    var found=list.find(function(u){return u.username===s.username;});
+    if(!found)return;
+    currentUser=found;
+    showCRM(found);
+    initAll();
+  }catch(e){localStorage.removeItem('smb_session');}
+})();
 
 // ── STATE ─────────────────────────────────────────────────────────
 var leads=[],bills=[],riders=[],campaigns=[],videos=[];
@@ -772,7 +802,7 @@ function lRow(l,compact){
     +'<td onclick="event.stopPropagation()" style="display:flex;gap:4px">'
     +'<button class="act-btn act-call" onclick="callAndUpdateStatus(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
     +'<button class="act-btn act-wa" onclick="waMsg(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
-    +billBtn+'</td></tr>';
+    +billBtn+delBtn+'</td></tr>';
   return'<tr onclick="openLeadModal(\''+l.id+'\')">'
     +'<td style="font-size:11px;color:var(--gray-400)">'+fmtD(l.createdAt)+'<br>'+fmtT(l.createdAt)+'</td>'
     +'<td><div class="td-name">'+l.name+loyBadge+'</div></td>'
@@ -786,7 +816,7 @@ function lRow(l,compact){
     +'<td onclick="event.stopPropagation()" style="display:flex;gap:4px;flex-wrap:wrap">'
     +'<button class="act-btn act-call" onclick="callAndUpdateStatus(\''+l.id+'\',\''+l.phone+'\')">📞 Call</button>'
     +'<button class="act-btn act-wa" onclick="waMsg(\''+l.phone+'\',\''+l.name+'\')">💬 WA</button>'
-    +billBtn+'</td></tr>';
+    +billBtn+delBtn+'</td></tr>';
 }
 
 // Auto-update status to Contacted when call button clicked
@@ -897,6 +927,20 @@ function addNote(id){
   save();inp.value='';openLeadModal(id);toast('Note saved');
 }
 
+function deleteLead(id){
+  if(!currentUser||currentUser.role!=='Owner'){toast('Only Owner can delete leads','error');return;}
+  if(!confirm('Delete this lead permanently? This cannot be undone.'))return;
+  leads=leads.filter(function(x){return x.id!==id;});
+  save();renderDash();renderLeads();renderKanban();
+  document.getElementById('leadModal').classList.remove('show');
+  toast('Lead deleted');
+}
+function deleteBill(invNo){
+  if(!currentUser||currentUser.role!=='Owner'){toast('Only Owner can delete bills','error');return;}
+  if(!confirm('Delete bill '+invNo+'? This cannot be undone.'))return;
+  bills=bills.filter(function(x){return x.invNo!==invNo;});
+  save();renderBillPage();toast('Bill deleted');
+}
 function waMsg(phone,name){
   var p=phone.replace(/\D/g,'');
   var msg=encodeURIComponent('Hello '+name+'! 👋\n\nThis is Sambhi Mobiles, Govind Puri, Delhi.\n\nWe received your sell request. We offer the best price with instant cash/UPI at your doorstep.\n\nConfirm your pickup slot:\n🌅 Morning (9AM–1PM)\n🌆 Evening (4PM–8PM)\n\nOne call only — no spam. 📞 +91 7827505579');
@@ -1003,7 +1047,7 @@ function renderBillPage(){
   document.getElementById('bDate').value=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
   var bh=document.getElementById('billHist');
   bh.innerHTML=bills.length?bills.slice().reverse().map(function(b){
-    return'<div class="bill-hist-item"><div><div style="font-size:13px;font-weight:700">'+b.invNo+'</div><div style="font-size:12px;color:var(--gray-400)">'+b.customer+' · '+(b.device||'—')+'</div><div style="font-size:11px;color:var(--gray-400)">'+fmtD(b.at)+'</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:var(--green)">'+Rs(b.amount)+'</div><span style="font-size:10px;font-weight:700;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:100px">✓ Billed</span></div></div>';
+    return'<div class="bill-hist-item"><div><div style="font-size:13px;font-weight:700">'+b.invNo+'</div><div style="font-size:12px;color:var(--gray-400)">'+b.customer+' · '+(b.device||'—')+'</div><div style="font-size:11px;color:var(--gray-400)">'+fmtD(b.at)+'</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:var(--green)">'+Rs(b.amount)+'</div><span style="font-size:10px;font-weight:700;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:100px">✓ Billed</span><br><button onclick="deleteBill(''+b.invNo+'')" style="font-size:10px;background:var(--red-light);color:var(--red);border:none;padding:2px 8px;border-radius:6px;cursor:pointer;margin-top:4px;font-family:inherit">🗑 Delete</button></div></div>';
   }).join(''):'<p style="font-size:13px;color:var(--gray-400)">No bills yet.</p>';
 }
 document.getElementById('billSel').addEventListener('change',function(){
@@ -1070,31 +1114,31 @@ document.getElementById('genBillBtn').addEventListener('click',function(){
     var tTop=badY+11,tW=W-2*M;
     doc.setFillColor(15,23,42);doc.rect(M,tTop,tW,7,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
-    var cols=[6,52,12,8,18,20,10,18,13],colX=[M];cols.slice(0,-1).forEach(function(w){colX.push(colX[colX.length-1]+w);});
+    var cols=[6,50,11,8,18,20,10,20,14],colX=[M];cols.slice(0,-1).forEach(function(w){colX.push(colX[colX.length-1]+w);});
     ['#','Item / Device','HSN','Qty','Rate (₹)','Taxable (₹)','GST %','GST Amt','Total (₹)'].forEach(function(h,i){doc.text(h,colX[i]+cols[i]/2,tTop+4.5,'center');});
     var rY=tTop+7;
-    doc.setFillColor(255,255,255);doc.rect(M,rY,tW,12,'F');
+    doc.setFillColor(255,255,255);doc.rect(M,rY,tW,14,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(15,23,42);
     doc.text('1',colX[0]+3,rY+5);doc.text((l.device||'Mobile Device').substring(0,44),colX[1]+1,rY+5);
     doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);
     doc.text('Batt:'+(l.battery||'?')+'% | Year:'+(l.year||'?')+(imei?'':''),colX[1]+1,rY+9);
     doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(15,23,42);
-    ['8517','1',Rs(amt).replace('₹',''),Rs(tax).replace('₹',''),'18%',Rs(cgst*2).replace('₹',''),Rs(grand).replace('₹','')].forEach(function(v,i){doc.text(v,colX[i+2]+cols[i+2]/2,rY+7,'center');});
-    doc.setDrawColor(226,232,240);doc.setLineWidth(0.3);doc.line(M,rY+12,M+tW,rY+12);
+    [(l.devType==='playstation'?'9504':l.devType==='airpods'||l.devType==='applewatch'?'8518':'8517'),'1',Rs(amt).replace('₹',''),Rs(tax).replace('₹',''),'18%',Rs(cgst*2).replace('₹',''),Rs(grand).replace('₹','')].forEach(function(v,i){doc.text(v,colX[i+2]+cols[i+2]/2,rY+7,'center');});
+    doc.setDrawColor(226,232,240);doc.setLineWidth(0.3);doc.line(M,rY+14,M+tW,rY+14);
     // Tax summary
-    var totY=rY+16,rw=80,rx=W-M-rw;
+    var totY=rY+18,rw=82,rx=W-M-rw;
     [['Taxable Value',Rs(tax)],['CGST @ 9%',Rs(cgst)],['SGST @ 9%',Rs(cgst)]].forEach(function(pair,i){
       doc.setFillColor(i%2===0?248:255,i%2===0?250:255,i%2===0?252:255);doc.rect(rx,totY+i*6,rw,6,'F');
       doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(100,116,139);
       doc.text(pair[0],rx+2,totY+i*6+4);doc.setFont('helvetica','bold');doc.setTextColor(15,23,42);doc.text(pair[1],rx+rw-2,totY+i*6+4,'right');
     });
     var gtY=totY+18+1;
-    doc.setFillColor(15,23,42);doc.roundedRect(rx,gtY,rw,9,2,2,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(249,115,22);doc.text('GRAND TOTAL',rx+3,gtY+5.5);
-    doc.setFontSize(11);doc.setTextColor(255,255,255);doc.text(Rs(grand),rx+rw-3,gtY+6,'right');
+    doc.setFillColor(15,23,42);doc.roundedRect(rx,gtY,rw,10,2,2,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(249,115,22);doc.text('GRAND TOTAL',rx+3,gtY+6);
+    doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(Rs(grand),rx+rw-3,gtY+7,'right');
     // Amount in words
     doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(148,163,184);
-    doc.text('Amount in words: '+numWords(Math.round(grand))+' Rupees Only',M,gtY+5);
+    doc.text('Amount in words: '+numWords(Math.round(grand))+' Rupees Only',M,gtY+6);
     // Bank details
     var bkY=gtY+13;
     doc.setFillColor(239,246,255);doc.roundedRect(M,bkY,W-2*M,16,2,2,'F');
@@ -1273,7 +1317,7 @@ function renderTeam(){
       +(u.phone?'<div class="team-info">📞 '+u.phone+'</div>':'')
       +(u.email?'<div class="team-info">✉️ '+u.email+'</div>':'')
       +'<div class="team-info" style="margin-top:4px">User: <strong>'+u.username+'</strong></div>'
-      +'<div class="team-info">Pass: <strong>'+u.password+'</strong></div>'
+      +(currentUser&&currentUser.role==='Owner'?'<div class="team-info">Pass: <strong>'+u.password+'</strong></div>':'<div class="team-info" style="color:var(--gray-400)">Password: ••••••••</div>')
       +(currentUser&&currentUser.role==='Owner'?'<button class="edit-user-btn" onclick="openEditTeam('+i+')">✏️ Edit details & password</button>':'')
       +'</div>';
   }).join('');
