@@ -149,53 +149,91 @@ footer{background:#0F172A;padding:28px 24px}
 </footer>
 
 <script>
-const PRODUCTS=[
-  {id:'ip14pm',cat:'iphone',icon:'📱',title:'iPhone 14 Pro Max',specs:'256GB · Deep Purple · Battery 89%',price:68000,orig:90000,grade:'A+',verified:true,warranty:'7-day return',features:['Face ID working','All accessories','Original box']},
-  {id:'ip14p',cat:'iphone',icon:'📱',title:'iPhone 14 Pro',specs:'128GB · Space Black · Battery 87%',price:55000,orig:75000,grade:'A',verified:true,warranty:'7-day return',features:['Face ID working','Charger included','Minor scratches']},
-  {id:'ip13pm',cat:'iphone',icon:'📱',title:'iPhone 13 Pro Max',specs:'256GB · Sierra Blue · Battery 91%',price:48000,orig:65000,grade:'A+',verified:true,warranty:'7-day return',features:['Face ID working','Original box','All accessories']},
-  {id:'ip13',cat:'iphone',icon:'📱',title:'iPhone 13',specs:'128GB · Midnight · Battery 84%',price:32000,orig:45000,grade:'A',verified:true,warranty:'7-day return',features:['Face ID working','Charger included']},
-  {id:'ip12',cat:'iphone',icon:'📱',title:'iPhone 12',specs:'64GB · Black · Battery 79%',price:20000,orig:32000,grade:'B',verified:true,warranty:'7-day return',features:['Face ID working','Light scratches on back']},
-  {id:'ip11',cat:'iphone',icon:'📱',title:'iPhone 11',specs:'64GB · White · Battery 82%',price:14000,orig:22000,grade:'A',verified:true,warranty:'7-day return',features:['Face ID working','Good condition']},
-  {id:'ap2',cat:'airpods',icon:'🎧',title:'AirPods Pro 2nd Gen',specs:'With MagSafe case · 2023',price:14500,orig:22000,grade:'A+',verified:true,warranty:'7-day return',features:['Active Noise Cancellation','Both earbuds working','Case charging fine']},
-  {id:'ap1',cat:'airpods',icon:'🎧',title:'AirPods Pro 1st Gen',specs:'With Lightning case · 2021',price:8500,orig:16000,grade:'A',verified:true,warranty:'7-day return',features:['ANC working','Good battery life']},
-  {id:'aw9',cat:'applewatch',icon:'⌚',title:'Apple Watch Series 9',specs:'45mm · GPS · Midnight · 2023',price:28000,orig:45000,grade:'A+',verified:true,warranty:'7-day return',features:['Screen perfect','All health sensors working','New band included']},
-  {id:'awse',cat:'applewatch',icon:'⌚',title:'Apple Watch SE 2nd Gen',specs:'44mm · GPS · Silver · 2022',price:14000,orig:24000,grade:'A',verified:true,warranty:'7-day return',features:['Good condition','Battery 86%']},
-  {id:'ps5d',cat:'playstation',icon:'🎮',title:'PlayStation 5 Disc Edition',specs:'825GB · White · 2022',price:38000,orig:55000,grade:'A+',verified:true,warranty:'7-day return',features:['2 controllers included','All cables','Working perfectly']},
-  {id:'ps5dig',cat:'playstation',icon:'🎮',title:'PlayStation 5 Digital Edition',specs:'825GB · White · 2022',price:33000,orig:50000,grade:'A',verified:true,warranty:'7-day return',features:['1 controller included','All cables','Minor cosmetic marks']},
-  {id:'ps4p',cat:'playstation',icon:'🎮',title:'PlayStation 4 Pro',specs:'1TB · Black · 2019',price:16000,orig:28000,grade:'A',verified:true,warranty:'7-day return',features:['1 controller','All cables','Good condition']},
-];
+var INV_ICONS={iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+// Load from admin inventory (localStorage), fallback to sample data
+function loadInventory(){
+  var saved=JSON.parse(localStorage.getItem('smb_inventory')||'[]');
+  if(saved.length) return saved;
+  // fallback sample products shown until admin adds real inventory
+  return [
+    {id:'s1',cat:'iphone',name:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',grade:'A+',battery:'89',year:'2022',price:55000,mrp:75000,features:['Face ID working','Original box','All accessories'],visible:true},
+    {id:'s2',cat:'iphone',name:'iPhone 13',storage:'128GB',color:'Midnight',grade:'A',battery:'84',year:'2021',price:32000,mrp:45000,features:['Face ID working','Charger included'],visible:true},
+    {id:'s3',cat:'iphone',name:'iPhone 12',storage:'64GB',color:'Black',grade:'B',battery:'79',year:'2020',price:20000,mrp:32000,features:['Minor scratches','Face ID working'],visible:true},
+    {id:'s4',cat:'airpods',name:'AirPods Pro 2nd Gen',storage:'',color:'White',grade:'A+',battery:'',year:'2023',price:14500,mrp:22000,features:['ANC working','MagSafe case'],visible:true},
+    {id:'s5',cat:'playstation',name:'PlayStation 5 Disc Edition',storage:'',color:'White',grade:'A+',battery:'',year:'2022',price:38000,mrp:55000,features:['2 controllers','All cables'],visible:true},
+    {id:'s6',cat:'applewatch',name:'Apple Watch Series 9',storage:'',color:'Midnight',grade:'A+',battery:'',year:'2023',price:28000,mrp:45000,features:['All sensors working','New band'],visible:true},
+    {id:'s7',cat:'iphone',name:'iPhone 15 Pro',storage:'256GB',color:'Natural Titanium',grade:'A+',battery:'96',year:'2023',price:78000,mrp:95000,features:['Like new','All accessories'],visible:false},
+    {id:'s8',cat:'playstation',name:'PlayStation 4 Pro',storage:'',color:'Black',grade:'A',battery:'',year:'2019',price:16000,mrp:28000,features:['1 controller','All cables'],visible:false},
+  ];
+}
+var PRODUCTS=loadInventory();
 
 let currentFilter='all';
+function getNotifyList(){return JSON.parse(localStorage.getItem('smb_notifications')||'[]');}
+function saveNotify(list){localStorage.setItem('smb_notifications',JSON.stringify(list));}
+
 function renderProducts(){
-  const grid=document.getElementById('productsGrid');
-  const filtered=currentFilter==='all'?PRODUCTS:PRODUCTS.filter(p=>p.cat===currentFilter);
-  grid.innerHTML=filtered.map(p=>{
-    const save=Math.round((1-p.price/p.orig)*100);
-    const gradeColor=p.grade==='A+'?'pb-green':p.grade==='A'?'pb-blue':'pb-orange';
-    return`<div class="product-card" data-cat="${p.cat}">
-      <div class="prod-img">
-        <div class="prod-badge">
-          ${p.verified?'<span class="pb-tag pb-green">✓ IMEI Clean</span>':''}
-          <span class="pb-tag ${gradeColor}">Grade ${p.grade}</span>
-        </div>
-        <span style="font-size:72px">${p.icon}</span>
-      </div>
-      <div class="prod-body">
-        <div class="prod-title">${p.title}</div>
-        <div class="prod-specs">${p.specs}</div>
-        <div class="prod-price-row">
-          <span class="prod-price">₹${p.price.toLocaleString('en-IN')}</span>
-          <span class="prod-orig">₹${p.orig.toLocaleString('en-IN')}</span>
-          <span class="prod-save">Save ${save}%</span>
-        </div>
-        <div class="prod-features">
-          ${p.features.map(f=>`<div class="pf"><span>✓</span>${f}</div>`).join('')}
-          <div class="pf"><span>🚗</span>Free delivery · ${p.warranty}</div>
-        </div>
-        <button class="enquire-btn" onclick="openEnquiry('${p.id}','${p.title} — ₹${p.price.toLocaleString('en-IN')}')">Enquire & Buy →</button>
-      </div>
-    </div>`;
+  var grid=document.getElementById('productsGrid');
+  var all=loadInventory();
+  var filtered=currentFilter==='all'?all:all.filter(function(p){return p.cat===currentFilter;});
+  // Sort: visible (in stock) first, then coming soon
+  filtered.sort(function(a,b){return (b.visible?1:0)-(a.visible?1:0);});
+  grid.innerHTML=filtered.map(function(p){
+    var icon=INV_ICONS[p.cat]||'📱';
+    var specs=[p.storage,p.color,p.battery?'Battery '+p.battery+'%':'',p.year].filter(Boolean).join(' · ');
+    var gradeColor=p.grade==='A+'?'pb-green':p.grade==='A'?'pb-blue':'pb-orange';
+    var save=p.mrp?Math.round((1-p.price/p.mrp)*100):0;
+    var imeiClean=p.imei?'<span class="pb-tag pb-green">✓ IMEI Clean</span>':'';
+    var features=(p.features||[]).map(function(f){return'<div class="pf"><span>✓</span>'+f+'</div>';}).join('');
+
+    if(!p.visible){
+      // Coming Soon card
+      return'<div class="product-card" style="opacity:.85;position:relative">'
+        +'<div class="prod-img" style="position:relative">'
+        +'<div style="position:absolute;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;border-radius:0">'
+        +'<span style="font-size:14px;font-weight:800;color:#fff;background:var(--purple);padding:5px 14px;border-radius:100px">🔜 Coming Soon</span>'
+        +'</div>'
+        +'<span style="font-size:72px">'+icon+'</span>'
+        +'</div>'
+        +'<div class="prod-body">'
+        +'<div class="prod-title">'+p.name+'</div>'
+        +'<div class="prod-specs">'+(specs||'Available soon')+'</div>'
+        +'<div style="font-size:13px;color:var(--gray-400);margin:10px 0">This device will be available soon. Leave your number and we will notify you when it arrives.</div>'
+        +'<input type="text" id="nf_name_'+p.id+'" placeholder="Your name" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px">'
+        +'<input type="text" id="nf_phone_'+p.id+'" placeholder="WhatsApp number" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px">'
+        +'<button onclick="registerNotify(''+p.id+'',''+p.name+'')" style="width:100%;background:var(--purple);color:#fff;border:none;padding:10px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">🔔 Notify me when available</button>'
+        +'</div></div>';
+    }
+
+    return'<div class="product-card">'
+      +'<div class="prod-img">'
+      +'<div class="prod-badge">'+imeiClean+'<span class="pb-tag '+gradeColor+'">Grade '+p.grade+'</span></div>'
+      +'<span style="font-size:72px">'+icon+'</span>'
+      +'</div>'
+      +'<div class="prod-body">'
+      +'<div class="prod-title">'+p.name+'</div>'
+      +'<div class="prod-specs">'+(specs||'')+'</div>'
+      +'<div class="prod-price-row">'
+      +'<span class="prod-price">₹'+p.price.toLocaleString('en-IN')+'</span>'
+      +(p.mrp?'<span class="prod-orig">₹'+p.mrp.toLocaleString('en-IN')+'</span>':'')
+      +(save>0?'<span class="prod-save">Save '+save+'%</span>':'')
+      +'</div>'
+      +'<div class="prod-features">'+features+'<div class="pf"><span>🚗</span>Free delivery · 7-day return</div></div>'
+      +'<button class="enquire-btn" onclick="openEnquiry(''+p.id+'',''+p.name+' — ₹'+p.price.toLocaleString('en-IN')+'')">Enquire & Buy →</button>'
+      +'</div></div>';
   }).join('');
+}
+
+function registerNotify(devId,devName){
+  var name=document.getElementById('nf_name_'+devId).value.trim();
+  var phone=document.getElementById('nf_phone_'+devId).value.trim();
+  if(!phone){alert('Please enter your WhatsApp number.');return;}
+  var list=getNotifyList();
+  list.push({devId:devId,devName:devName,name:name||'Customer',phone:phone,at:new Date().toISOString(),notified:false});
+  saveNotify(list);
+  document.getElementById('nf_name_'+devId).value='';
+  document.getElementById('nf_phone_'+devId).value='';
+  alert('✅ We will notify you on WhatsApp when '+devName+' is available!');
 }
 
 function filterProducts(cat,btn){
