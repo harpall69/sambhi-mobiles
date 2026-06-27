@@ -1,3 +1,9 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "routes": [
+    { "src": "/sell", "dest": "/sell.html" },
+    { "src": "/buy", "dest": "/buy.html" },
+    { "src": "/about", "dest": "/about.html" },
+    { "src": "/admin", "dest": "/admin.html" }
+  ]
 }
