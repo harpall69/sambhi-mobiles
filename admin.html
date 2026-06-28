@@ -1239,7 +1239,8 @@ function openLeadModal(id){
     +billBtn+deleteBtn
     +'<div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:8px">Activity Log</div>'
     +'<div class="timeline">'+(timeline||'<p style="font-size:12px;color:var(--gray-400);text-align:center;padding:12px">No activity yet</p>')+'</div>'
-    +'<div class="note-row"><input id="noteIn" placeholder="Add a note…"><button onclick="addNote(\''+id+'\')">Add</button></div>';
+    +'<div class="note-row"><input id="noteIn" placeholder="Add a note…"><button onclick="addNote(\''+id+'\')">Add</button></div>'
+    +'<button onclick="openRequote(\''+id+'\')" style="width:100%;background:var(--purple);color:#fff;border:none;padding:11px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:10px">📋 Requote — Verify Device on Pickup</button>';
   document.getElementById('leadModal').classList.add('show');
 }
 
@@ -1954,7 +1955,7 @@ function renderInventory(){
     var devImg=getDeviceImage(d.name);
     return'<tr>'
       +'<td style="display:flex;align-items:center;gap:10px">'
-      +(devImg?'<img src="'+devImg+'" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:#f1f5f9" onerror="this.style.display='none'">':'<span style="font-size:24px">'+INV_ICONS[d.cat]+'</span>')
+      +(devImg?'<img src="'+devImg+'" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:#f1f5f9">':'<span style="font-size:24px">'+INV_ICONS[d.cat]+'</span>')
       +'<div><strong>'+d.name+'</strong>'
       +(d.qty&&d.qty>1?'<span style="font-size:10px;background:var(--blue-light);color:var(--blue);padding:1px 6px;border-radius:100px;margin-left:6px;font-weight:700">Qty: '+d.qty+'</span>':'')
       +'</div></td>'
