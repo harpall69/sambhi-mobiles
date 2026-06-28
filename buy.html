@@ -88,7 +88,7 @@ footer{background:#0F172A;padding:28px 24px}
     <a href="index.html" class="nav-logo"><div class="nl-icon">📱</div><div class="nl-text">Sambhi <span>Mobiles</span></div></a>
     <div class="nav-links">
       <a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a>
-      <a href="buy.html" class="nl active">Buy</a><a href="about.html" class="nl">About</a>
+      <a href="buy.html" class="nl active">Buy</a><a href="about.html" class="nl">About</a><a href="blog.html" class="nl">Blog</a>
       <a href="sell.html" class="nav-cta">Sell Now →</a>
     </div>
     <button class="hamburger" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">☰</button>
@@ -150,6 +150,30 @@ footer{background:#0F172A;padding:28px 24px}
 
 <script>
 var INV_ICONS={iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+var DEVICE_IMAGES={
+  'iPhone 16 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 16 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch_GEO_IN?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-7inch-sierrablue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-1inch-sierrablue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 12':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-finish-select-2021-family-purple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 11':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-select-2019-family?wid=300&hei=300&fmt=png-alpha',
+  'AirPods Pro 2nd Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=300&hei=300&fmt=png-alpha',
+  'AirPods Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202011?wid=300&hei=300&fmt=png-alpha',
+  'Apple Watch Ultra 2':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra-2-finish-unselect-gallery-1-202309?wid=300&hei=300&fmt=png-alpha',
+  'Apple Watch Series 9':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-45mm_GEO_IN?wid=300&hei=300&fmt=png-alpha',
+};
+function getDevImg(name){
+  if(!name)return'';
+  for(var k in DEVICE_IMAGES){if(name.indexOf(k)>-1)return DEVICE_IMAGES[k];}
+  return'';
+}
 // Load from admin inventory (localStorage), fallback to sample data
 function loadInventory(){
   var saved=JSON.parse(localStorage.getItem('smb_inventory')||'[]');
@@ -193,7 +217,10 @@ function renderProducts(){
         +'<div style="position:absolute;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;border-radius:0">'
         +'<span style="font-size:14px;font-weight:800;color:#fff;background:var(--purple);padding:5px 14px;border-radius:100px">🔜 Coming Soon</span>'
         +'</div>'
-        +'<span style="font-size:72px">'+icon+'</span>'
+        +(function(n,ic){var img=getDevImg(n);return img
+      ?'<img src="'+img+'" style="max-width:120px;max-height:140px;object-fit:contain" onerror="this.style.display='none';this.nextSibling.style.display='block'">'
+      +'<span style="font-size:72px;display:none">'+ic+'</span>'
+      :'<span style="font-size:72px">'+ic+'</span>';})(p.name,icon)
         +'</div>'
         +'<div class="prod-body">'
         +'<div class="prod-title">'+p.name+'</div>'
@@ -208,7 +235,10 @@ function renderProducts(){
     return'<div class="product-card">'
       +'<div class="prod-img">'
       +'<div class="prod-badge">'+imeiClean+'<span class="pb-tag '+gradeColor+'">Grade '+p.grade+'</span></div>'
-      +'<span style="font-size:72px">'+icon+'</span>'
+      +(function(n,ic){var img=getDevImg(n);return img
+      ?'<img src="'+img+'" style="max-width:120px;max-height:140px;object-fit:contain" onerror="this.style.display='none';this.nextSibling.style.display='block'">'
+      +'<span style="font-size:72px;display:none">'+ic+'</span>'
+      :'<span style="font-size:72px">'+ic+'</span>';})(p.name,icon)
       +'</div>'
       +'<div class="prod-body">'
       +'<div class="prod-title">'+p.name+'</div>'
