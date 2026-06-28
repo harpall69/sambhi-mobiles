@@ -574,32 +574,45 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
     <div class="modal-body">
       <div class="m2">
         <div class="mfg"><label>Category *</label>
-          <select id="invCat">
+          <select id="invCat" onchange="onInvCatChange()">
             <option value="iphone">iPhone</option>
             <option value="airpods">AirPods</option>
             <option value="applewatch">Apple Watch</option>
             <option value="playstation">PlayStation</option>
           </select>
         </div>
-        <div class="mfg"><label>Device Name *</label><input id="invName" placeholder="iPhone 14 Pro, PS5 Disc Edition…"></div>
-      </div>
-      <div class="m3">
-        <div class="mfg"><label>Storage / Variant</label><input id="invStorage" placeholder="256GB"></div>
-        <div class="mfg"><label>Colour</label><input id="invColor" placeholder="Deep Purple"></div>
-        <div class="mfg"><label>Grade</label>
-          <select id="invGrade"><option value="A+">A+ (Like New)</option><option value="A">A (Excellent)</option><option value="B">B (Good)</option><option value="C">C (Fair)</option></select>
+        <div class="mfg"><label>Model *</label>
+          <select id="invModel" onchange="onInvModelChange()"><option value="">Select model</option></select>
         </div>
       </div>
-      <div class="m2">
+      <div class="m3">
+        <div class="mfg"><label>Storage / GB</label>
+          <select id="invStorage"><option value="">Select storage</option></select>
+        </div>
+        <div class="mfg"><label>Colour</label>
+          <select id="invColor"><option value="">Select colour</option></select>
+        </div>
+        <div class="mfg"><label>Condition Grade</label>
+          <select id="invGrade">
+            <option value="A+">A+ — Like New (no marks)</option>
+            <option value="A">A — Excellent (tiny marks)</option>
+            <option value="B">B — Good (visible use)</option>
+            <option value="C">C — Fair (heavy use)</option>
+          </select>
+        </div>
+      </div>
+      <div class="m3">
         <div class="mfg"><label>Battery Health %</label><input type="number" id="invBatt" placeholder="89" min="1" max="100"></div>
-        <div class="mfg"><label>Year</label><select id="invYear"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select></div>
+        <div class="mfg"><label>Year</label><select id="invYear"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select></div>
+        <div class="mfg"><label>Quantity in stock</label><input type="number" id="invQty" placeholder="1" min="1" value="1"></div>
       </div>
       <div class="m2">
-        <div class="mfg"><label>Our Price (₹) *</label><input type="number" id="invPrice" placeholder="45000"></div>
-        <div class="mfg"><label>MRP / Original Price (₹)</label><input type="number" id="invMRP" placeholder="70000"></div>
+        <div class="mfg"><label>Our Selling Price (₹) *</label><input type="number" id="invPrice" placeholder="45000"></div>
+        <div class="mfg"><label>Original MRP (₹)</label><input type="number" id="invMRP" placeholder="70000"></div>
       </div>
-      <div class="mfg"><label>IMEI Number</label><input id="invIMEI" placeholder="15-digit IMEI — leave blank if not verified yet" maxlength="15"></div>
-      <div class="mfg"><label>Description / Features (one per line)</label><textarea id="invDesc" placeholder="Face ID working&#10;Original box included&#10;All accessories present" style="height:80px"></textarea></div>
+      <div class="mfg"><label>IMEI Number(s)</label><input id="invIMEI" placeholder="15-digit IMEI — add comma separated for multiple" maxlength="80"></div>
+      <div class="mfg"><label>Additional Features / Notes (one per line)</label><textarea id="invDesc" placeholder="Original box included&#10;All accessories present&#10;No scratches" style="height:72px"></textarea></div>
+      <input type="hidden" id="invName">
       <div class="mfg">
         <div style="display:flex;align-items:center;gap:10px;background:var(--green-light);border:1.5px solid rgba(22,163,74,.2);border-radius:10px;padding:12px 14px;cursor:pointer" onclick="document.getElementById('invVisible').click()">
           <input type="checkbox" id="invVisible" checked style="width:16px;height:16px;accent-color:var(--green)">
@@ -680,6 +693,44 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- REQUOTE MODAL -->
+<div class="modal-bg" id="requoteModal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-head"><h2>📋 Verify Device on Pickup</h2><button class="modal-x" onclick="document.getElementById('requoteModal').classList.remove('show')">✕</button></div>
+    <div class="modal-body">
+      <div style="background:var(--blue-light);border:1px solid #BFDBFE;border-radius:10px;padding:12px 14px;font-size:13px;color:var(--blue);margin-bottom:16px">
+        📍 Rider: verify each point physically at the customer door. Final payout adjusts automatically.
+      </div>
+      <div id="requoteCustomerInfo" style="background:var(--gray-50);border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px"></div>
+      <div class="sec-lbl-sm">Physical Condition Check</div>
+      <div id="requoteDepChips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"></div>
+      <div class="m2">
+        <div class="mfg"><label>Battery health % (check in Settings)</label><input type="number" id="rqBatt" min="1" max="100" placeholder="84"></div>
+        <div class="mfg"><label>IMEI verified (dial *#06#)</label><input id="rqIMEI" placeholder="15-digit IMEI" maxlength="15"></div>
+      </div>
+      <div class="mfg"><label>Actual colour & storage confirmed</label>
+        <select id="rqStorageOk" style="width:100%;background:var(--gray-50);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:13px;font-family:inherit;outline:none">
+          <option value="yes">✅ Yes — matches what customer entered</option>
+          <option value="no">❌ No — different (add note below)</option>
+        </select>
+      </div>
+      <div class="mfg"><label>Additional notes from physical check</label>
+        <textarea id="rqNote" style="width:100%;background:var(--gray-50);border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-size:13px;font-family:inherit;outline:none;resize:none;height:64px" placeholder="Any extra issues found…"></textarea>
+      </div>
+      <div id="requotePriceBox" style="background:var(--gray-900);border-radius:12px;padding:16px 18px;margin:14px 0;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Revised payout after physical check</div>
+          <div style="font-size:28px;font-weight:800;color:#fff" id="rqFinalPrice">—</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:2px" id="rqPriceNote"></div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:rgba(255,255,255,.25)">Customer must<br>agree before<br>proceeding</div>
+      </div>
+      <button class="save-btn" style="background:var(--green)" onclick="confirmRequote()">✅ Customer Agreed — Confirm Pickup</button>
+      <button class="save-btn" style="background:var(--red);margin-top:8px" onclick="cancelRequote()">❌ Customer Declined — Cancel Lead</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // =================================================================
@@ -1772,14 +1823,141 @@ function saveTeamMember(){
 }
 
 // ── INVENTORY ────────────────────────────────────────────────────
+// ── INVENTORY DROPDOWN DATA ──────────────────────────────────────
+var INV_MODELS = {
+  iphone: {
+    'iPhone 16 Pro Max': {storage:['256GB','512GB','1TB'], colors:['Black Titanium','White Titanium','Desert Titanium','Natural Titanium'], mrp:179900},
+    'iPhone 16 Pro':     {storage:['128GB','256GB','512GB','1TB'], colors:['Black Titanium','White Titanium','Desert Titanium','Natural Titanium'], mrp:159900},
+    'iPhone 16 Plus':    {storage:['128GB','256GB','512GB'], colors:['Black','White','Pink','Teal','Ultramarine'], mrp:109900},
+    'iPhone 16':         {storage:['128GB','256GB','512GB'], colors:['Black','White','Pink','Teal','Ultramarine'], mrp:99900},
+    'iPhone 15 Pro Max': {storage:['256GB','512GB','1TB'], colors:['Black Titanium','White Titanium','Blue Titanium','Natural Titanium'], mrp:159900},
+    'iPhone 15 Pro':     {storage:['128GB','256GB','512GB','1TB'], colors:['Black Titanium','White Titanium','Blue Titanium','Natural Titanium'], mrp:134900},
+    'iPhone 15 Plus':    {storage:['128GB','256GB','512GB'], colors:['Black','Blue','Green','Yellow','Pink'], mrp:99900},
+    'iPhone 15':         {storage:['128GB','256GB','512GB'], colors:['Black','Blue','Green','Yellow','Pink'], mrp:79900},
+    'iPhone 14 Pro Max': {storage:['128GB','256GB','512GB','1TB'], colors:['Deep Purple','Gold','Silver','Space Black'], mrp:139900},
+    'iPhone 14 Pro':     {storage:['128GB','256GB','512GB','1TB'], colors:['Deep Purple','Gold','Silver','Space Black'], mrp:129900},
+    'iPhone 14 Plus':    {storage:['128GB','256GB','512GB'], colors:['Blue','Purple','Midnight','Starlight','Product Red'], mrp:99900},
+    'iPhone 14':         {storage:['128GB','256GB','512GB'], colors:['Blue','Purple','Midnight','Starlight','Product Red'], mrp:79900},
+    'iPhone 13 Pro Max': {storage:['128GB','256GB','512GB','1TB'], colors:['Alpine Green','Sierra Blue','Gold','Silver','Graphite'], mrp:129900},
+    'iPhone 13 Pro':     {storage:['128GB','256GB','512GB','1TB'], colors:['Alpine Green','Sierra Blue','Gold','Silver','Graphite'], mrp:119900},
+    'iPhone 13':         {storage:['128GB','256GB','512GB'], colors:['Blue','Midnight','Pink','Starlight','Product Red'], mrp:69900},
+    'iPhone 13 Mini':    {storage:['128GB','256GB','512GB'], colors:['Blue','Midnight','Pink','Starlight','Product Red'], mrp:59900},
+    'iPhone 12':         {storage:['64GB','128GB','256GB'], colors:['Black','White','Blue','Green','Product Red','Purple'], mrp:65900},
+    'iPhone 11':         {storage:['64GB','128GB','256GB'], colors:['Black','White','Red','Yellow','Purple','Green'], mrp:49900},
+    'iPhone SE (2022)':  {storage:['64GB','128GB','256GB'], colors:['Midnight','Starlight','Product Red'], mrp:49900},
+    'iPhone XR':         {storage:['64GB','128GB','256GB'], colors:['Black','White','Blue','Yellow','Coral','Product Red'], mrp:44900},
+  },
+  samsung: {
+    'Galaxy S24 Ultra':  {storage:['256GB','512GB','1TB'], colors:['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow'], mrp:139999},
+    'Galaxy S24+':       {storage:['256GB','512GB'], colors:['Cobalt Violet','Onyx Black','Jade Green','Marble Gray'], mrp:109999},
+    'Galaxy S24':        {storage:['128GB','256GB'], colors:['Cobalt Violet','Onyx Black','Marble Gray','Amber Yellow'], mrp:79999},
+    'Galaxy S23 Ultra':  {storage:['256GB','512GB','1TB'], colors:['Phantom Black','Cream','Green','Lavender'], mrp:124999},
+    'Galaxy S23':        {storage:['128GB','256GB'], colors:['Phantom Black','Cream','Green','Lavender'], mrp:79999},
+    'Galaxy A55':        {storage:['128GB','256GB'], colors:['Awesome Iceblue','Awesome Lilac','Awesome Navy'], mrp:37999},
+    'Galaxy A35':        {storage:['128GB','256GB'], colors:['Awesome Iceblue','Awesome Lilac','Awesome Navy'], mrp:26999},
+  },
+  oneplus: {
+    'OnePlus 12':        {storage:['256GB','512GB'], colors:['Silky Black','Flowy Emerald'], mrp:69999},
+    'OnePlus 12R':       {storage:['128GB','256GB'], colors:['Iron Gray','Cool Blue'], mrp:42999},
+    'OnePlus 11':        {storage:['128GB','256GB'], colors:['Titan Black','Eternal Green'], mrp:61999},
+    'OnePlus Nord 4':    {storage:['128GB','256GB'], colors:['Mercurial Silver','Oasis Green'], mrp:29999},
+    'OnePlus Nord CE4':  {storage:['128GB','256GB'], colors:['Dark Chrome','Celadon Marble'], mrp:24999},
+  },
+  airpods: {
+    'AirPods Pro 2nd Gen': {storage:['MagSafe Case'], colors:['White'], mrp:24900},
+    'AirPods Pro 1st Gen': {storage:['MagSafe Case','Lightning Case'], colors:['White'], mrp:18900},
+    'AirPods Max':         {storage:['Over-ear'], colors:['Space Gray','Silver','Sky Blue','Green','Pink'], mrp:59900},
+    'AirPods 3rd Gen':     {storage:['Lightning Case','MagSafe Case'], colors:['White'], mrp:16900},
+    'AirPods 2nd Gen':     {storage:['Lightning Case'], colors:['White'], mrp:12900},
+  },
+  applewatch: {
+    'Apple Watch Ultra 2':     {storage:['49mm'], colors:['Natural Titanium','Black Titanium'], mrp:89900},
+    'Apple Watch Series 9 45mm':{storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Pink','Product Red','Silver'], mrp:49900},
+    'Apple Watch Series 9 41mm':{storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Pink','Product Red','Silver'], mrp:41900},
+    'Apple Watch SE 2 44mm':   {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Silver'], mrp:29900},
+    'Apple Watch SE 2 40mm':   {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Silver'], mrp:24900},
+  },
+  playstation: {
+    'PS5 Disc Edition':    {storage:['825GB SSD'], colors:['White','Black'], mrp:54990},
+    'PS5 Digital Edition': {storage:['825GB SSD'], colors:['White','Black'], mrp:44990},
+    'PS5 Slim Disc':       {storage:['1TB SSD'], colors:['White','Black'], mrp:54990},
+    'PS4 Pro':             {storage:['1TB','2TB'], colors:['Black','White'], mrp:39990},
+    'PS4 Slim':            {storage:['500GB','1TB'], colors:['Black','White'], mrp:29990},
+    'PS4':                 {storage:['500GB','1TB'], colors:['Black','White'], mrp:24990},
+  }
+};
+
+// Official device image URLs
+var DEVICE_IMAGES = {
+  'iPhone 16 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 16 Pro':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 15 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 15 Pro':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 15':      'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch_GEO_IN?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 14 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 14 Pro':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 14':      'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 13':      'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 12':      'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-finish-select-2021-family-purple?wid=400&hei=400&fmt=png-alpha',
+  'iPhone 11':      'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-select-2019-family?wid=400&hei=400&fmt=png-alpha',
+  'AirPods Pro 2nd Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=400&hei=400&fmt=png-alpha',
+  'AirPods Max':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202011?wid=400&hei=400&fmt=png-alpha',
+  'Apple Watch Ultra 2':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra-2-finish-unselect-gallery-1-202309?wid=400&hei=400&fmt=png-alpha',
+  'PS5 Disc Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
+  'default':        ''
+};
+
+function getDeviceImage(name) {
+  if(!name) return '';
+  for(var key in DEVICE_IMAGES) {
+    if(name.indexOf(key) > -1) return DEVICE_IMAGES[key];
+  }
+  return '';
+}
+
+function onInvCatChange() {
+  var cat = document.getElementById('invCat').value;
+  var modelSel = document.getElementById('invModel');
+  modelSel.innerHTML = '<option value="">Select model</option>';
+  document.getElementById('invStorage').innerHTML = '<option value="">Select storage</option>';
+  document.getElementById('invColor').innerHTML = '<option value="">Select colour</option>';
+  document.getElementById('invName').value = '';
+  if(!cat || !INV_MODELS[cat]) return;
+  Object.keys(INV_MODELS[cat]).forEach(function(m) {
+    var o = document.createElement('option'); o.value = m; o.textContent = m; modelSel.appendChild(o);
+  });
+}
+
+function onInvModelChange() {
+  var cat = document.getElementById('invCat').value;
+  var model = document.getElementById('invModel').value;
+  document.getElementById('invName').value = model;
+  var storageSel = document.getElementById('invStorage');
+  var colorSel = document.getElementById('invColor');
+  storageSel.innerHTML = '<option value="">Select storage</option>';
+  colorSel.innerHTML = '<option value="">Select colour</option>';
+  if(!cat || !model || !INV_MODELS[cat] || !INV_MODELS[cat][model]) return;
+  var data = INV_MODELS[cat][model];
+  data.storage.forEach(function(s) {var o=document.createElement('option');o.value=s;o.textContent=s;storageSel.appendChild(o);});
+  data.colors.forEach(function(c) {var o=document.createElement('option');o.value=c;o.textContent=c;colorSel.appendChild(o);});
+  // Auto-fill MRP
+  var mrpEl = document.getElementById('invMRP');
+  if(mrpEl && data.mrp) mrpEl.value = data.mrp;
+}
+
 function renderInventory(){
   var g=document.getElementById('invTbody');if(!g)return;
   var cat=(document.getElementById('invCatFil')||{}).value||'';
   var items=cat?inventory.filter(function(x){return x.cat===cat;}):inventory;
   g.innerHTML=items.length?items.map(function(d){
     var notifCount=notifications.filter(function(n){return n.devId===d.id;}).length;
+    var devImg=getDeviceImage(d.name);
     return'<tr>'
-      +'<td><strong>'+INV_ICONS[d.cat]+' '+d.name+'</strong></td>'
+      +'<td style="display:flex;align-items:center;gap:10px">'
+      +(devImg?'<img src="'+devImg+'" style="width:36px;height:36px;object-fit:contain;border-radius:6px;background:#f1f5f9" onerror="this.style.display='none'">':'<span style="font-size:24px">'+INV_ICONS[d.cat]+'</span>')
+      +'<div><strong>'+d.name+'</strong>'
+      +(d.qty&&d.qty>1?'<span style="font-size:10px;background:var(--blue-light);color:var(--blue);padding:1px 6px;border-radius:100px;margin-left:6px;font-weight:700">Qty: '+d.qty+'</span>':'')
+      +'</div></td>'
       +'<td><span style="font-size:11px;background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:100px;font-weight:600">'+d.cat+'</span></td>'
       +'<td><span style="font-size:11px;font-weight:700;color:var(--green)">'+d.grade+'</span></td>'
       +'<td style="font-size:12px;color:var(--gray-500)">'+(d.storage||'—')+'</td>'
@@ -1801,30 +1979,39 @@ function renderInventory(){
 function openAddInventory(){
   editInvId=null;
   document.getElementById('invModalTitle').textContent='Add Device to Inventory';
-  ['invName','invStorage','invColor','invBatt','invIMEI','invDesc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['invBatt','invIMEI','invDesc','invPrice','invMRP','invName'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var qel=document.getElementById('invQty');if(qel)qel.value='1';
   document.getElementById('invCat').value='iphone';
   document.getElementById('invGrade').value='A+';
   document.getElementById('invYear').value='';
-  document.getElementById('invPrice').value='';
-  document.getElementById('invMRP').value='';
   document.getElementById('invVisible').checked=true;
   document.getElementById('invEditId').value='';
+  onInvCatChange();
   document.getElementById('inventoryModal').classList.add('show');
 }
 
 function openEditInventory(id){
   var d=inventory.find(function(x){return x.id===id;});if(!d)return;
   editInvId=id;
-  document.getElementById('invModalTitle').textContent='Edit Device';
+  document.getElementById('invModalTitle').textContent='Edit — '+d.name;
   document.getElementById('invCat').value=d.cat||'iphone';
+  onInvCatChange();
+  setTimeout(function(){
+    var ms=document.getElementById('invModel');
+    if(ms)ms.value=d.name||'';
+    onInvModelChange();
+    setTimeout(function(){
+      var ss=document.getElementById('invStorage');if(ss)ss.value=d.storage||'';
+      var cs=document.getElementById('invColor');if(cs)cs.value=d.color||'';
+    },50);
+  },50);
   document.getElementById('invName').value=d.name||'';
-  document.getElementById('invStorage').value=d.storage||'';
-  document.getElementById('invColor').value=d.color||'';
   document.getElementById('invGrade').value=d.grade||'A+';
   document.getElementById('invBatt').value=d.battery||'';
   document.getElementById('invYear').value=d.year||'';
   document.getElementById('invPrice').value=d.price||'';
   document.getElementById('invMRP').value=d.mrp||'';
+  var qel=document.getElementById('invQty');if(qel)qel.value=d.qty||1;
   document.getElementById('invIMEI').value=d.imei||'';
   document.getElementById('invDesc').value=(d.features||[]).join('\n');
   document.getElementById('invVisible').checked=!!d.visible;
@@ -1833,7 +2020,9 @@ function openEditInventory(id){
 }
 
 function saveInvItem(){
-  var name=(document.getElementById('invName').value||'').trim();
+  // Get name from model dropdown OR hidden field
+  var modelSel=document.getElementById('invModel');
+  var name=(modelSel&&modelSel.value?modelSel.value:(document.getElementById('invName').value||'')).trim();
   var price=parseInt(document.getElementById('invPrice').value)||0;
   if(!name||!price){toast('Device name and price required','error');return;}
   var data={
@@ -1848,6 +2037,7 @@ function saveInvItem(){
     price:price,
     mrp:parseInt(document.getElementById('invMRP').value)||0,
     imei:(document.getElementById('invIMEI').value||'').trim(),
+    qty:parseInt((document.getElementById('invQty')||{}).value)||1,
     features:(document.getElementById('invDesc').value||'').split('\n').filter(function(l){return l.trim();}),
     visible:document.getElementById('invVisible').checked,
     addedAt:new Date().toISOString()
@@ -1903,6 +2093,103 @@ function waNotify(phone,name,device){
   var p=phone.replace(/[^0-9]/g,'');
   var msg=encodeURIComponent('Hello '+name+'! 👋\n\nGreat news! *'+device+'* is now available at Sambhi Mobiles.\n\nReply to enquire or call +91 7827505579.\n\n_Sambhi Mobiles | Govind Puri, Delhi_');
   window.open('https://wa.me/91'+p+'?text='+msg,'_blank');
+}
+
+// ── REQUOTE (RIDER PHYSICAL CHECK) ──────────────────────────────
+var requoteLeadId = null;
+var requoteDeps = {};
+
+function openRequote(id) {
+  var l = leads.find(function(x){return x.id===id;});if(!l)return;
+  requoteLeadId = id;
+  requoteDeps = {};
+  DEP_DEFS.forEach(function(d){requoteDeps[d.id] = !!(l.deps&&l.deps[d.id]);});
+  // Customer info
+  var ci = document.getElementById('requoteCustomerInfo');
+  if(ci) ci.innerHTML = '<strong>'+l.name+'</strong> · '+l.phone+'<br>'
+    +'<strong>Device:</strong> '+(l.device||'—')+'<br>'
+    +'<strong>Customer stated:</strong> Battery '+( l.battery||'?')+'% · Year '+(l.year||'?')
+    +'<br><strong>Est. payout (customer quote):</strong> <span style="color:var(--green);font-weight:700">'+Rs(calcEst(l))+'</span>';
+  // Dep chips
+  var dc = document.getElementById('requoteDepChips');
+  if(dc) dc.innerHTML = DEP_DEFS.map(function(d){
+    var on = requoteDeps[d.id];
+    return '<div class="dep-chip'+(on?' on':'')+'" id="rqc_'+d.id+'" onclick="toggleRqDep(''+d.id+'')">'
+      +'<div class="dep-dot"></div>'+d.label+' (-'+(d.pct*100).toFixed(0)+'%)</div>';
+  }).join('');
+  // Pre-fill battery
+  var rb = document.getElementById('rqBatt');if(rb){rb.value=l.battery||'';rb.oninput=calcRequote;}
+  var ri = document.getElementById('rqIMEI');if(ri)ri.value=l.imei||'';
+  calcRequote();
+  document.getElementById('requoteModal').classList.add('show');
+}
+
+function toggleRqDep(id) {
+  requoteDeps[id] = !requoteDeps[id];
+  var el = document.getElementById('rqc_'+id);
+  if(el) el.classList.toggle('on', requoteDeps[id]);
+  calcRequote();
+}
+
+function calcRequote() {
+  var l = leads.find(function(x){return x.id===requoteLeadId;});if(!l||!l.basePrice)return;
+  var mult = parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  var adj = Math.round(l.basePrice*mult);
+  var b = parseInt((document.getElementById('rqBatt')||{}).value)||100;
+  var battD = b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  var yr = parseInt(l.year)||0;
+  var ageD = yr?Math.round(adj*Math.min((2025-yr)*0.07,0.42)):0;
+  var condD = DEP_DEFS.reduce(function(s,d){return s+(requoteDeps[d.id]?Math.round(adj*d.pct):0);},0);
+  var base = Math.max(adj-ageD-battD-condD, Math.round(adj*0.15));
+  var est = base+(l.isLoyalty?Math.round(base*0.10):0);
+  var origEst = calcEst(l);
+  var diff = est - origEst;
+  var fp = document.getElementById('rqFinalPrice');
+  var fn = document.getElementById('rqPriceNote');
+  if(fp) fp.textContent = Rs(est);
+  if(fn) fn.textContent = diff===0?'Same as quoted':diff>0?'↑ '+Rs(Math.abs(diff))+' more than quoted':'↓ '+Rs(Math.abs(diff))+' less than quoted';
+  if(fp) fp.style.color = diff<0?'#FCA5A5':'#fff';
+}
+
+function confirmRequote() {
+  var l = leads.find(function(x){return x.id===requoteLeadId;});if(!l)return;
+  var b = parseInt((document.getElementById('rqBatt')||{}).value)||parseInt(l.battery)||100;
+  var imei = (document.getElementById('rqIMEI')||{}).value||l.imei||'';
+  var note = (document.getElementById('rqNote')||{}).value||'';
+  var storageOk = (document.getElementById('rqStorageOk')||{}).value==='yes';
+  // Update lead
+  l.battery = b; l.imei = imei; l.deps = requoteDeps;
+  var mult = parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  var adj = Math.round(l.basePrice*mult);
+  var ageD = (parseInt(l.year)||0)?Math.round(adj*Math.min((2025-(parseInt(l.year)||0))*0.07,0.42)):0;
+  var battD = b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  var condD = DEP_DEFS.reduce(function(s,d){return s+(requoteDeps[d.id]?Math.round(adj*d.pct):0);},0);
+  var base = Math.max(adj-ageD-battD-condD,Math.round(adj*0.15));
+  l.estPrice = base+(l.isLoyalty?Math.round(base*0.10):0);
+  l.finalPrice = l.estPrice;
+  l.status = 'completed';
+  l.notes = l.notes||[];
+  l.notes.push({text:'📋 Device verified on pickup by '+(currentUser?currentUser.name:'rider')
+    +'. Battery: '+b+'%. IMEI: '+(imei||'not checked')+'. Storage match: '+(storageOk?'Yes':'No')
+    +(note?'. Notes: '+note:'')
+    +'. Final payout: '+Rs(l.estPrice),
+    at:new Date().toISOString()});
+  save(); renderDash(); renderKanban(); renderLeads();
+  document.getElementById('requoteModal').classList.remove('show');
+  document.getElementById('leadModal').classList.remove('show');
+  toast('✅ Pickup confirmed — lead marked Completed. Final: '+Rs(l.estPrice));
+}
+
+function cancelRequote() {
+  if(!confirm('Cancel this lead? Customer declined the revised price.'))return;
+  var l = leads.find(function(x){return x.id===requoteLeadId;});if(!l)return;
+  l.status = 'cancelled';
+  l.notes = l.notes||[];
+  l.notes.push({text:'❌ Customer declined revised quote at door — cancelled by '+(currentUser?currentUser.name:'rider'),at:new Date().toISOString()});
+  save(); renderDash(); renderKanban(); renderLeads();
+  document.getElementById('requoteModal').classList.remove('show');
+  document.getElementById('leadModal').classList.remove('show');
+  toast('Lead cancelled — customer declined');
 }
 
 // ── SEED DEMO DATA ────────────────────────────────────────────────
