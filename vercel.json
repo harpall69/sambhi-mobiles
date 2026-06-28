@@ -4,6 +4,7 @@
     { "src": "/sell", "dest": "/sell.html" },
     { "src": "/buy", "dest": "/buy.html" },
     { "src": "/about", "dest": "/about.html" },
-    { "src": "/admin", "dest": "/admin.html" }
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/blog", "dest": "/blog.html" }
   ]
 }
