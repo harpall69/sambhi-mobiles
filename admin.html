@@ -288,9 +288,9 @@ tbody td{padding:11px 14px;font-size:13px;vertical-align:middle}
       <div class="ll-text">Sambhi <span>Mobiles</span></div>
     </div>
     <div class="login-sub">Admin CRM — Team Login</div>
-    <div class="lfg"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="username"></div>
-    <div class="lfg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password"></div>
-    <button class="login-btn" id="loginBtn">Login →</button>
+    <div class="lfg"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()"></div>
+    <div class="lfg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">Login →</button>
     <div class="login-err" id="loginErr"></div>
     <div class="login-accounts">
       <p>Team accounts</p>
@@ -864,13 +864,9 @@ document.addEventListener('DOMContentLoaded', function() {
   tryRestoreSession();
 
   // Login button
-  document.getElementById('loginBtn').addEventListener('click', doLogin);
-  document.getElementById('loginPass').addEventListener('keydown', function(e){
-    if(e.key==='Enter') doLogin();
-  });
-  document.getElementById('loginUser').addEventListener('keydown', function(e){
-    if(e.key==='Enter') document.getElementById('loginPass').focus();
-  });
+  // login handled by onclick
+  // Enter handled inline
+  // handled inline
 
   // Logout
   document.getElementById('logoutBtn').addEventListener('click', function(){
