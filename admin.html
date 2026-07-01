@@ -450,20 +450,32 @@ td{padding:10px 12px;font-size:13px;vertical-align:middle}
 <div class="mbg" id="im2"><div class="modal" style="max-width:540px"><div class="mh"><h2 id="imt">Add Device</h2><button class="mx" onclick="cm('im2')">✕</button></div><div class="mb">
   <div class="g2">
     <div class="fg"><label>Category *</label>
-      <select id="ic">
+      <select id="ic" onchange="onICat()">
         <option value="iphone">iPhone</option>
         <option value="samsung">Samsung</option>
         <option value="oneplus">OnePlus</option>
+        <option value="realme">Realme</option>
+        <option value="oppo">Oppo</option>
+        <option value="vivo">Vivo</option>
+        <option value="xiaomi">Xiaomi/Redmi</option>
+        <option value="pixel">Google Pixel</option>
+        <option value="nothing">Nothing Phone</option>
         <option value="airpods">AirPods</option>
         <option value="applewatch">Apple Watch</option>
         <option value="playstation">PlayStation</option>
       </select>
     </div>
-    <div class="fg"><label>Device Name *</label><input type="text" id="imod" placeholder="e.g. iPhone 14 Pro Max"></div>
+    <div class="fg"><label>Model *</label>
+      <select id="imod" onchange="onIMod()"><option value="">— Select model —</option></select>
+    </div>
   </div>
   <div class="g3">
-    <div class="fg"><label>Storage</label><input type="text" id="ist" placeholder="256GB"></div>
-    <div class="fg"><label>Colour</label><input type="text" id="ico" placeholder="Deep Purple"></div>
+    <div class="fg"><label>Storage</label>
+      <select id="ist"><option value="">— Storage —</option></select>
+    </div>
+    <div class="fg"><label>Colour</label>
+      <select id="ico"><option value="">— Colour —</option></select>
+    </div>
     <div class="fg"><label>Grade</label>
       <select id="igr">
         <option value="A+">A+ Like New</option>
@@ -475,7 +487,7 @@ td{padding:10px 12px;font-size:13px;vertical-align:middle}
   </div>
   <div class="g3">
     <div class="fg"><label>Battery %</label><input type="number" id="iba" placeholder="89" min="1" max="100"></div>
-    <div class="fg"><label>Year</label><input type="text" id="iyr" placeholder="2022"></div>
+    <div class="fg"><label>Year</label><select id="iyr"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select></div>
     <div class="fg"><label>Qty in stock</label><input type="number" id="iqt" value="1" min="1"></div>
   </div>
   <div class="g2">
@@ -1280,30 +1292,28 @@ function ri() {
   }).join('');
 }
 
-function oIC() {
-  var cat = rn('ic'), ms = document.getElementById('imod');
-  ms.innerHTML = '<option value="">Select model</option>';
-  document.getElementById('ist').innerHTML = '<option value="">Select</option>';
-  document.getElementById('ico').innerHTML = '<option value="">Select</option>';
-  if (IMS[cat]) Object.keys(IMS[cat]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});
-}
-
-function oIM() {
-  var cat = rn('ic'), mod = rn('imod');
-  var ss = document.getElementById('ist'), cs = document.getElementById('ico');
-  ss.innerHTML = '<option value="">Select</option>';
-  cs.innerHTML = '<option value="">Select</option>';
-  if (IMS[cat]&&IMS[cat][mod]) IMS[cat][mod].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ss.appendChild(o);});
-  (ICO[cat]||[]).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
-}
+// oIC and oIM replaced by onICat and onIMod
 
 function openIM(id) {
   editI = id || null;
   document.getElementById('imt').textContent = id ? 'Edit Device' : 'Add Device';
   var d = id ? inv.find(function(x){return x.id===id;}) : null;
   document.getElementById('ied').value = id || '';
+  // Set category first
   document.getElementById('ic').value = d ? d.cat : 'iphone';
-  document.getElementById('imod').value = d ? d.name || '' : '';
+  // Populate model dropdown for this category
+  onICat();
+  // For existing items, set all values after dropdowns populate
+  if (d) {
+    setTimeout(function(){
+      document.getElementById('imod').value = d.name || '';
+      onIMod();
+      setTimeout(function(){
+        document.getElementById('ist').value = d.storage || '';
+        document.getElementById('ico').value = d.color || '';
+      }, 80);
+    }, 80);
+  }
   document.getElementById('ist').value = d ? d.storage || '' : '';
   document.getElementById('ico').value = d ? d.color || '' : '';
   document.getElementById('igr').value = d ? d.grade : 'A+';
@@ -1318,40 +1328,241 @@ function openIM(id) {
   document.getElementById('im2').classList.add('on');
 }
 
+
+// ── INVENTORY DROPDOWN DATA ──────────────────────────────────────
+var IDATA = {
+  iphone: {
+    models: {
+      'iPhone 16 Pro Max':  {storage:['256GB','512GB','1TB'],       colors:['Black Titanium','White Titanium','Desert Titanium','Natural Titanium']},
+      'iPhone 16 Pro':      {storage:['128GB','256GB','512GB','1TB'],colors:['Black Titanium','White Titanium','Desert Titanium','Natural Titanium']},
+      'iPhone 16 Plus':     {storage:['128GB','256GB','512GB'],      colors:['Black','White','Pink','Teal','Ultramarine']},
+      'iPhone 16':          {storage:['128GB','256GB','512GB'],      colors:['Black','White','Pink','Teal','Ultramarine']},
+      'iPhone 15 Pro Max':  {storage:['256GB','512GB','1TB'],       colors:['Black Titanium','White Titanium','Blue Titanium','Natural Titanium']},
+      'iPhone 15 Pro':      {storage:['128GB','256GB','512GB','1TB'],colors:['Black Titanium','White Titanium','Blue Titanium','Natural Titanium']},
+      'iPhone 15 Plus':     {storage:['128GB','256GB','512GB'],      colors:['Black','Blue','Green','Yellow','Pink']},
+      'iPhone 15':          {storage:['128GB','256GB','512GB'],      colors:['Black','Blue','Green','Yellow','Pink']},
+      'iPhone 14 Pro Max':  {storage:['128GB','256GB','512GB','1TB'],colors:['Deep Purple','Gold','Silver','Space Black']},
+      'iPhone 14 Pro':      {storage:['128GB','256GB','512GB','1TB'],colors:['Deep Purple','Gold','Silver','Space Black']},
+      'iPhone 14 Plus':     {storage:['128GB','256GB','512GB'],      colors:['Blue','Purple','Midnight','Starlight','Red']},
+      'iPhone 14':          {storage:['128GB','256GB','512GB'],      colors:['Blue','Purple','Midnight','Starlight','Red']},
+      'iPhone 13 Pro Max':  {storage:['128GB','256GB','512GB','1TB'],colors:['Alpine Green','Sierra Blue','Gold','Silver','Graphite']},
+      'iPhone 13 Pro':      {storage:['128GB','256GB','512GB','1TB'],colors:['Alpine Green','Sierra Blue','Gold','Silver','Graphite']},
+      'iPhone 13':          {storage:['128GB','256GB','512GB'],      colors:['Blue','Midnight','Pink','Starlight','Red']},
+      'iPhone 13 Mini':     {storage:['128GB','256GB'],             colors:['Blue','Midnight','Pink','Starlight','Red']},
+      'iPhone 12 Pro Max':  {storage:['128GB','256GB','512GB'],      colors:['Pacific Blue','Gold','Silver','Graphite']},
+      'iPhone 12 Pro':      {storage:['128GB','256GB','512GB'],      colors:['Pacific Blue','Gold','Silver','Graphite']},
+      'iPhone 12':          {storage:['64GB','128GB','256GB'],       colors:['Black','White','Blue','Green','Red','Purple']},
+      'iPhone 12 Mini':     {storage:['64GB','128GB','256GB'],       colors:['Black','White','Blue','Green','Red','Purple']},
+      'iPhone 11 Pro Max':  {storage:['64GB','256GB','512GB'],       colors:['Space Grey','Silver','Gold','Midnight Green']},
+      'iPhone 11 Pro':      {storage:['64GB','256GB','512GB'],       colors:['Space Grey','Silver','Gold','Midnight Green']},
+      'iPhone 11':          {storage:['64GB','128GB','256GB'],       colors:['Black','White','Red','Yellow','Purple','Green']},
+      'iPhone SE (2022)':   {storage:['64GB','128GB','256GB'],       colors:['Midnight','Starlight','Red']},
+      'iPhone SE (2020)':   {storage:['64GB','128GB','256GB'],       colors:['Black','White','Red']},
+      'iPhone XR':          {storage:['64GB','128GB','256GB'],       colors:['Black','White','Blue','Yellow','Coral','Red']},
+      'iPhone XS Max':      {storage:['64GB','256GB','512GB'],       colors:['Space Grey','Silver','Gold']},
+      'iPhone XS':          {storage:['64GB','256GB','512GB'],       colors:['Space Grey','Silver','Gold']},
+      'iPhone X':           {storage:['64GB','256GB'],               colors:['Space Grey','Silver']}
+    }
+  },
+  samsung: {
+    models: {
+      'Galaxy S24 Ultra':   {storage:['256GB','512GB','1TB'],  colors:['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow']},
+      'Galaxy S24+':        {storage:['256GB','512GB'],         colors:['Cobalt Violet','Onyx Black','Jade Green','Marble Gray']},
+      'Galaxy S24':         {storage:['128GB','256GB'],         colors:['Cobalt Violet','Onyx Black','Marble Gray','Amber Yellow']},
+      'Galaxy S23 Ultra':   {storage:['256GB','512GB','1TB'],  colors:['Phantom Black','Cream','Green','Lavender']},
+      'Galaxy S23+':        {storage:['256GB','512GB'],         colors:['Phantom Black','Cream','Green','Lavender']},
+      'Galaxy S23':         {storage:['128GB','256GB'],         colors:['Phantom Black','Cream','Green','Lavender']},
+      'Galaxy S22 Ultra':   {storage:['128GB','256GB','512GB'],  colors:['Phantom Black','White','Burgundy','Green']},
+      'Galaxy S22+':        {storage:['128GB','256GB'],         colors:['Phantom Black','White','Gold','Green']},
+      'Galaxy S22':         {storage:['128GB','256GB'],         colors:['Phantom Black','White','Pink Gold','Green']},
+      'Galaxy A55':         {storage:['128GB','256GB'],         colors:['Awesome Iceblue','Awesome Lilac','Awesome Navy']},
+      'Galaxy A54':         {storage:['128GB','256GB'],         colors:['Awesome Black','Awesome White','Awesome Violet','Awesome Lime']},
+      'Galaxy A35':         {storage:['128GB','256GB'],         colors:['Awesome Iceblue','Awesome Lilac','Awesome Navy']},
+      'Galaxy A34':         {storage:['128GB','256GB'],         colors:['Awesome Black','Awesome Silver','Awesome Violet','Awesome Lime']},
+      'Galaxy A15':         {storage:['128GB','256GB'],         colors:['Blue Black','Light Blue','Yellow']},
+      'Galaxy M55':         {storage:['128GB','256GB'],         colors:['Emerald Brown','Port Blue']},
+      'Galaxy M35':         {storage:['128GB','256GB'],         colors:['Thunder Grey','Dusty Orange']}
+    }
+  },
+  oneplus: {
+    models: {
+      'OnePlus 12':         {storage:['256GB','512GB'],   colors:['Silky Black','Flowy Emerald']},
+      'OnePlus 12R':        {storage:['128GB','256GB'],   colors:['Iron Gray','Cool Blue']},
+      'OnePlus 11':         {storage:['128GB','256GB'],   colors:['Titan Black','Eternal Green']},
+      'OnePlus 11R':        {storage:['128GB','256GB'],   colors:['Galactic Silver','Sonic Black']},
+      'OnePlus Nord 4':     {storage:['128GB','256GB'],   colors:['Mercurial Silver','Oasis Green']},
+      'OnePlus Nord CE4':   {storage:['128GB','256GB'],   colors:['Dark Chrome','Celadon Marble']},
+      'OnePlus Nord 3':     {storage:['128GB','256GB'],   colors:['Misty Green','Tempest Gray']},
+      'OnePlus 10 Pro':     {storage:['128GB','256GB'],   colors:['Emerald Forest','Volcanic Black','Sky Blue']}
+    }
+  },
+  realme: {
+    models: {
+      'Realme GT 6':        {storage:['256GB','512GB'],  colors:['Fluid Silver','Razor Green']},
+      'Realme GT 5':        {storage:['128GB','256GB'],  colors:['Core Black','Blazing Red']},
+      'Realme 13 Pro+':     {storage:['256GB','512GB'],  colors:['Emerald Green','Monet Purple']},
+      'Realme 13 Pro':      {storage:['128GB','256GB'],  colors:['Emerald Green','Monet Purple']},
+      'Realme 12 Pro+':     {storage:['128GB','256GB'],  colors:['Submarine Blue','Navigation Orange']},
+      'Realme 12 Pro':      {storage:['128GB','256GB'],  colors:['Submarine Blue','Coral Purple']}
+    }
+  },
+  oppo: {
+    models: {
+      'Oppo Find X7 Pro':   {storage:['256GB','512GB'],  colors:['Comet Grey','Starlight White']},
+      'Oppo Reno 12 Pro':   {storage:['256GB'],          colors:['Sunset Gold','Space Brown']},
+      'Oppo Reno 12':       {storage:['256GB'],          colors:['Sunset Gold','Matte Brown']},
+      'Oppo F27 Pro':       {storage:['128GB','256GB'],  colors:['Sea Green','Midnight Purple']}
+    }
+  },
+  vivo: {
+    models: {
+      'Vivo X100 Pro':      {storage:['256GB','512GB'],  colors:['Asteroid Black','Breeze Blue']},
+      'Vivo X100':          {storage:['256GB','512GB'],  colors:['Asteroid Black','Startrail Blue','Mocha Brown']},
+      'Vivo V40 Pro':       {storage:['256GB'],          colors:['Starry Purple','Titanium Grey']},
+      'Vivo V40':           {storage:['128GB','256GB'],  colors:['Starry Purple','Ganges Blue']},
+      'Vivo V30':           {storage:['128GB','256GB'],  colors:['Noble Black','Peacock Green']}
+    }
+  },
+  xiaomi: {
+    models: {
+      'Xiaomi 14 Ultra':    {storage:['256GB','512GB'],  colors:['Black','White','Titanium Special Edition']},
+      'Xiaomi 14':          {storage:['256GB','512GB'],  colors:['Black','White','Jade Green']},
+      'Redmi Note 13 Pro+': {storage:['256GB','512GB'],  colors:['Aurora Purple','Fusion Black','Fusion White']},
+      'Redmi Note 13 Pro':  {storage:['128GB','256GB'],  colors:['Arctic White','Coral Purple','Midnight Black']},
+      'Redmi Note 13':      {storage:['128GB','256GB'],  colors:['Arctic White','Coral Purple','Graphite Black']},
+      'POCO X6 Pro':        {storage:['256GB','512GB'],  colors:['Black','Grey','Yellow']},
+      'POCO F6':            {storage:['256GB','512GB'],  colors:['Titanium Black','Titanium White','Titanium Blue']},
+      'POCO M6 Pro':        {storage:['128GB','256GB'],  colors:['Black','Blue','Purple']}
+    }
+  },
+  pixel: {
+    models: {
+      'Pixel 9 Pro XL':     {storage:['128GB','256GB','512GB'],  colors:['Obsidian','Porcelain','Hazel','Rose Quartz']},
+      'Pixel 9 Pro':        {storage:['128GB','256GB','512GB'],  colors:['Obsidian','Porcelain','Hazel','Rose Quartz']},
+      'Pixel 9':            {storage:['128GB','256GB'],          colors:['Obsidian','Porcelain','Wintergreen','Peony']},
+      'Pixel 8 Pro':        {storage:['128GB','256GB','1TB'],    colors:['Obsidian','Porcelain','Bay','Mint']},
+      'Pixel 8':            {storage:['128GB','256GB'],          colors:['Obsidian','Hazel','Rose']},
+      'Pixel 7a':           {storage:['128GB'],                  colors:['Charcoal','Snow','Sea','Coral']},
+      'Pixel 7 Pro':        {storage:['128GB','256GB','512GB'],  colors:['Obsidian','Snow','Hazel']},
+      'Pixel 7':            {storage:['128GB','256GB'],          colors:['Obsidian','Snow','Lemongrass']}
+    }
+  },
+  nothing: {
+    models: {
+      'Nothing Phone (2a) Plus': {storage:['256GB'],         colors:['Black','White']},
+      'Nothing Phone (2a)':      {storage:['128GB','256GB'], colors:['Black','White','Blue Special Edition']},
+      'Nothing Phone (2)':       {storage:['256GB','512GB'], colors:['White','Dark Grey']},
+      'Nothing Phone (1)':       {storage:['128GB','256GB'], colors:['White','Black']}
+    }
+  },
+  airpods: {
+    models: {
+      'AirPods Pro 2nd Gen (USB-C)':  {storage:['With Case'], colors:['White']},
+      'AirPods Pro 2nd Gen (Lightning)':{storage:['With Case'],colors:['White']},
+      'AirPods Pro 1st Gen':           {storage:['With Case'], colors:['White']},
+      'AirPods Max (USB-C)':           {storage:['Over-ear'],  colors:['Midnight','Blue','Purple','Starlight','Orange']},
+      'AirPods Max (Lightning)':       {storage:['Over-ear'],  colors:['Space Grey','Silver','Sky Blue','Green','Pink']},
+      'AirPods 4 (ANC)':               {storage:['With Case'], colors:['White']},
+      'AirPods 4':                     {storage:['With Case'], colors:['White']},
+      'AirPods 3rd Gen':               {storage:['With Case'], colors:['White']},
+      'AirPods 2nd Gen':               {storage:['With Case'], colors:['White']}
+    }
+  },
+  applewatch: {
+    models: {
+      'Apple Watch Ultra 2':          {storage:['49mm GPS+Cellular'],  colors:['Natural Titanium','Black Titanium']},
+      'Apple Watch Series 9 45mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Pink','Red','Silver']},
+      'Apple Watch Series 9 41mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Pink','Red','Silver']},
+      'Apple Watch Series 8 45mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Red','Silver']},
+      'Apple Watch Series 8 41mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Red','Silver']},
+      'Apple Watch SE 2 44mm':        {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Silver']},
+      'Apple Watch SE 2 40mm':        {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Silver']},
+      'Apple Watch Series 7 45mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Green','Blue','Red']},
+      'Apple Watch Series 7 41mm':    {storage:['GPS','GPS+Cellular'], colors:['Midnight','Starlight','Green','Blue','Red']}
+    }
+  },
+  playstation: {
+    models: {
+      'PS5 Disc Edition':             {storage:['825GB SSD'],  colors:['White','Black (Midnight Black)']},
+      'PS5 Digital Edition':          {storage:['825GB SSD'],  colors:['White','Black (Midnight Black)']},
+      'PS5 Slim Disc Edition':        {storage:['1TB SSD'],    colors:['White','Black']},
+      'PS5 Slim Digital Edition':     {storage:['1TB SSD'],    colors:['White','Black']},
+      'PS4 Pro':                      {storage:['1TB','2TB'],  colors:['Black','White']},
+      'PS4 Slim':                     {storage:['500GB','1TB'],colors:['Black','White']},
+      'PS4':                          {storage:['500GB','1TB'],colors:['Black','White']},
+      'PS5 Controller (DualSense)':   {storage:['N/A'],        colors:['White','Midnight Black','Cosmic Red','Starlight Blue','Nova Pink','Galactic Purple']}
+    }
+  }
+};
+
+function onICat() {
+  var cat = document.getElementById('ic').value;
+  var ms  = document.getElementById('imod');
+  var ss  = document.getElementById('ist');
+  var cs  = document.getElementById('ico');
+  ms.innerHTML = '<option value="">— Select model —</option>';
+  ss.innerHTML = '<option value="">— Storage —</option>';
+  cs.innerHTML = '<option value="">— Colour —</option>';
+  if (!IDATA[cat]) return;
+  Object.keys(IDATA[cat].models).forEach(function(m) {
+    var o = document.createElement('option'); o.value = m; o.textContent = m; ms.appendChild(o);
+  });
+}
+
+function onIMod() {
+  var cat = document.getElementById('ic').value;
+  var mod = document.getElementById('imod').value;
+  var ss  = document.getElementById('ist');
+  var cs  = document.getElementById('ico');
+  ss.innerHTML = '<option value="">— Storage —</option>';
+  cs.innerHTML = '<option value="">— Colour —</option>';
+  if (!cat || !mod || !IDATA[cat] || !IDATA[cat].models[mod]) return;
+  var data = IDATA[cat].models[mod];
+  data.storage.forEach(function(s) { var o=document.createElement('option');o.value=s;o.textContent=s;ss.appendChild(o); });
+  data.colors.forEach(function(c)  { var o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o); });
+}
+
 function saveI() {
-  var mod = (document.getElementById('imod').value||'').trim();
-  if (!mod) { alert('Please enter device name'); return; }
-  var price = parseInt((document.getElementById('ipr').value||'0'))||0;
-  if (!price) { alert('Please enter our selling price'); return; }
+  var modEl = document.getElementById('imod');
+  var prEl  = document.getElementById('ipr');
+  if (!modEl || !prEl) { alert('Form error - please refresh page'); return; }
+  var mod = modEl.value.trim();
+  if (!mod) { alert('Please enter the device name'); modEl.focus(); return; }
+  var price = parseInt(prEl.value) || 0;
+  if (!price) { alert('Please enter selling price'); prEl.focus(); return; }
   var id = (document.getElementById('ied').value||'').trim() || null;
-  var d = {
-    id: id || uid(),
-    cat: document.getElementById('ic').value || 'iphone',
-    name: mod,
-    storage: (document.getElementById('ist').value||'').trim(),
-    color: (document.getElementById('ico').value||'').trim(),
-    grade: document.getElementById('igr').value || 'A+',
-    battery: (document.getElementById('iba').value||'').trim(),
-    year: (document.getElementById('iyr').value||'').trim(),
-    qty: parseInt(document.getElementById('iqt').value)||1,
-    price: price,
-    mrp: parseInt(document.getElementById('imr').value)||0,
-    imei: (document.getElementById('iim').value||'').trim(),
-    features: (document.getElementById('ife').value||'').split('\n').filter(function(l){return l.trim();}),
-    visible: document.getElementById('ivi').checked,
-    addedAt: new Date().toISOString()
+  var newItem = {
+    id:       id || uid(),
+    cat:      document.getElementById('ic').value || 'iphone',
+    name:     mod,
+    storage:  document.getElementById('ist').value.trim(),
+    color:    document.getElementById('ico').value.trim(),
+    grade:    document.getElementById('igr').value || 'A+',
+    battery:  document.getElementById('iba').value.trim(),
+    year:     document.getElementById('iyr').value.trim(),
+    qty:      parseInt(document.getElementById('iqt').value) || 1,
+    price:    price,
+    mrp:      parseInt(document.getElementById('imr').value) || 0,
+    imei:     document.getElementById('iim').value.trim(),
+    features: document.getElementById('ife').value.split('\n').filter(function(x){return x.trim();}),
+    visible:  document.getElementById('ivi').checked,
+    addedAt:  new Date().toISOString()
   };
   if (id) {
-    var idx = inv.findIndex(function(x){return x.id===id;});
-    if (idx > -1) inv[idx] = d;
+    var pos = inv.findIndex(function(x){return x.id===id;});
+    if (pos > -1) { inv[pos] = newItem; } else { inv.push(newItem); }
   } else {
-    inv.push(d);
+    inv.push(newItem);
   }
-  localStorage.setItem('smb_inv', JSON.stringify(inv));
-  localStorage.setItem('smb_notifs', JSON.stringify(notifs));
+  try {
+    localStorage.setItem('smb_inv', JSON.stringify(inv));
+  } catch(e) {
+    alert('Storage error: ' + e.message);
+    return;
+  }
   document.getElementById('im2').classList.remove('on');
-  ri();
-  alert('Device saved successfully! ' + mod + ' added to inventory.');
+  gt('inv');
+  toast(newItem.name + ' saved to inventory!');
 }
 
 function tI(id) { var d=inv.find(function(x){return x.id===id;}); if(!d)return; d.visible=!d.visible; savI(); ri(); toast(d.visible?'Now on Buy page':'Hidden — Coming Soon'); }
