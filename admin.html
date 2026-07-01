@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sambhi Mobiles — Admin CRM</title>
+<style>
+
+#LS{position:fixed;inset:0;background:linear-gradient(135deg,#1e3a8a,#2563EB);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.lcard{background:#fff;border-radius:20px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.lcard h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:4px;color:#0F172A}
+.lcard h1 span{color:#2563EB}
+.lcard p{text-align:center;color:#94A3B8;font-size:13px;margin-bottom:24px}
+.lf{margin-bottom:13px}
+.lf label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.lf input{width:100%;border:2px solid #E2E8F0;border-radius:10px;padding:12px 14px;font-size:14px;outline:none;font-family:inherit;color:#0F172A}
+.lf input:focus{border-color:#2563EB}
+#lbtn{width:100%;background:#2563EB;color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+#lbtn:hover{background:#1d4ed8}
+#lerr{background:#FEF2F2;color:#DC2626;border-radius:8px;padding:9px 12px;margin-top:10px;font-size:13px;text-align:center;display:none}
+.laccs{margin-top:18px;background:#F8FAFC;border-radius:10px;padding:12px}
+.laccs p{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;margin-bottom:8px}
+.lacc{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #E2E8F0}
+.lacc:last-child{border:none}
+.lav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.lacc h4{font-size:12px;font-weight:700;color:#334155}
+.lacc p{font-size:11px;color:#94A3B8}
+
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--b:#2563EB;--g:#16A34A;--r:#DC2626;--o:#F97316;--p:#7C3AED;--y:#D97706;--gray:#F8FAFC;--border:#E2E8F0;--text:#0F172A;--muted:#64748B}
+body{font-family:system-ui,sans-serif;background:var(--gray);color:var(--text);font-size:14px}
+/* TOP */
+#top{background:#fff;border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.tlogo{font-size:16px;font-weight:800}
+.tlogo span{color:var(--b)}
+.tright{display:flex;align-items:center;gap:10px}
+.tav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.tname{font-size:13px;font-weight:600;color:#334155}
+.trole{font-size:10px;color:#94A3B8}
+#newbadge{background:var(--r);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;border:none;cursor:pointer;font-family:inherit}
+#logoutbtn{background:#F1F5F9;color:#64748B;border:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+/* TABS */
+#tabs{background:#fff;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 16px}
+.tb{padding:12px 13px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:#94A3B8;border-bottom:2.5px solid transparent;white-space:nowrap;font-family:inherit}
+.tb.on{color:var(--b);border-bottom-color:var(--b)}
+.nb{display:inline-flex;align-items:center;justify-content:center;background:var(--r);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:100px;margin-left:4px;padding:0 3px}
+/* PAGES */
+.pg{display:none;padding:18px;max-width:1300px;margin:0 auto}.pg.on{display:block}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:11px;padding:15px;cursor:pointer}
+.stat:hover{box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.stat .n{font-size:26px;font-weight:800;line-height:1;margin-bottom:3px}
+.stat .l{font-size:11px;color:#94A3B8}
+/* TABLE */
+.tw{background:#fff;border:1px solid var(--border);border-radius:13px;overflow:hidden}
+.ttop{padding:11px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.ttop h3{font-size:14px;font-weight:700}
+.tbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.si{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;outline:none;background:#F8FAFC}
+.si:focus{border-color:var(--b)}
+.ab{background:var(--b);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+table{width:100%;border-collapse:collapse}
+thead th{background:#F8FAFC;font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+tbody tr:last-child{border:none}
+tbody tr:hover{background:#EFF6FF}
+td{padding:10px 12px;font-size:13px;vertical-align:middle}
+.badge{display:inline-flex;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.st-new{background:#EFF6FF;color:var(--b)}.st-contacted{background:#FFFBEB;color:var(--y)}.st-scheduled{background:#EDE9FE;color:var(--p)}.st-completed{background:#F0FDF4;color:var(--g)}.st-cancelled{background:#FEF2F2;color:var(--r)}
+.sm{font-size:11px;font-weight:600;padding:2px 7px;border-radius:100px;background:#FEF3C7;color:#92400E}
+.se{font-size:11px;font-weight:600;padding:2px 7px;border-radius:100px;background:#EDE9FE;color:var(--p)}
+.act{font-size:11px;font-weight:600;padding:5px 8px;border-radius:6px;border:none;cursor:pointer;font-family:inherit}
+.ac{background:#F0FDF4;color:var(--g)}.ac:hover{background:var(--g);color:#fff}
+.aw{background:#DCFCE7;color:#166534}.aw:hover{background:var(--g);color:#fff}
+.ad{background:#FEF2F2;color:var(--r)}.ad:hover{background:var(--r);color:#fff}
+.abi{background:var(--b);color:#fff}.abi:hover{background:#1d4ed8}.abi:disabled{background:#F1F5F9;color:#94A3B8;cursor:not-allowed}
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+.mbg.on{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,.2)}
+.mh{padding:15px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1}
+.mh h2{font-size:15px;font-weight:700}
+.mx{background:#F1F5F9;border:none;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:13px;font-family:inherit}
+.mb{padding:16px 18px 20px}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:inherit;outline:none;background:#F8FAFC;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--b);background:#fff}
+.fg textarea{resize:none;height:58px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.sb{width:100%;background:var(--b);color:#fff;border:none;padding:11px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+.sb:hover{background:#1d4ed8}
+.sl{font-size:10px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:.7px;margin:13px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border);display:block}
+.pb{background:#0F172A;border-radius:10px;padding:12px 15px;margin:11px 0;display:flex;justify-content:space-between;align-items:center}
+.pbv{font-size:21px;font-weight:800;color:#fff}
+.pbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:2px}
+.pbs{font-size:10px;color:rgba(255,255,255,.3);margin-top:1px}
+.dc{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:7px;padding:6px 10px;cursor:pointer;font-size:12px;color:#64748B;background:#fff;user-select:none;transition:all .12s}
+.chip:hover{border-color:var(--r);color:var(--r)}
+.chip.on{border-color:var(--r);background:#FEF2F2;color:var(--r);font-weight:700}
+.cd{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0}
+.chip.on .cd{background:var(--r)}
+.stpr{display:flex;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px}
+.sp{flex:1;padding:8px 4px;border:none;background:#F8FAFC;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;color:#94A3B8;border-right:1px solid var(--border);text-align:center}
+.sp:last-child{border-right:none}
+.sp:hover{background:#F1F5F9}
+.sp.active{background:var(--b);color:#fff}
+.sp.done{background:#F0FDF4;color:var(--g)}
+.tl{display:flex;flex-direction:column;gap:7px;margin-bottom:9px}
+.tli{background:#F8FAFC;border-radius:7px;padding:8px 10px;display:flex;gap:8px}
+.tld{width:7px;height:7px;border-radius:50%;background:var(--b);flex-shrink:0;margin-top:4px}
+.tlt{font-size:12px;color:#334155}
+.tlm{font-size:10px;color:#94A3B8;margin-top:1px}
+.nr{display:flex;gap:6px;margin-top:8px}
+.nr input{flex:1;border:1.5px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none}
+.nr input:focus{border-color:var(--b)}
+.nr button{background:var(--b);color:#fff;border:none;padding:8px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+/* KANBAN */
+.kan{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.kc{background:#fff;border:1px solid var(--border);border-radius:11px;overflow:hidden;min-height:140px}
+.kh{padding:9px 11px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.kn{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px}
+.kc-new .kh{background:#EFF6FF;color:var(--b)}.kc-new .kn{background:var(--b);color:#fff}
+.kc-con .kh{background:#FFFBEB;color:var(--y)}.kc-con .kn{background:var(--y);color:#fff}
+.kc-sch .kh{background:#EDE9FE;color:var(--p)}.kc-sch .kn{background:var(--p);color:#fff}
+.kc-don .kh{background:#F0FDF4;color:var(--g)}.kc-don .kn{background:var(--g);color:#fff}
+.kb{padding:8px;display:flex;flex-direction:column;gap:6px}
+.kcard{background:#F8FAFC;border:1px solid var(--border);border-radius:9px;padding:9px;cursor:pointer}
+.kcard:hover{border-color:var(--b);background:#EFF6FF}
+.kcard h4{font-size:12px;font-weight:700;margin-bottom:2px}
+.kdev{font-size:11px;color:#94A3B8;margin-bottom:5px}
+.ktags{display:flex;gap:3px;flex-wrap:wrap}
+.ktag{font-size:10px;font-weight:600;padding:2px 6px;border-radius:100px;background:#F1F5F9;color:#64748B}
+/* RIDERS */
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rc{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.rav{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin:0 auto 9px}
+/* CAMPAIGNS */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cc{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:16px}
+.cc.live{border-color:var(--o)}
+.che{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}
+.ctit{font-size:14px;font-weight:700}
+.cdesc{font-size:12px;color:#64748B;margin-top:2px}
+.tog{position:relative;width:44px;height:24px;flex-shrink:0}
+.tog input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer;z-index:1;margin:0}
+.tt{position:absolute;inset:0;background:#E2E8F0;border-radius:100px;transition:background .2s}
+.tog input:checked+.tt{background:var(--o)}
+.th{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog input:checked~.th{transform:translateX(20px)}
+.clive{font-size:12px;font-weight:700;color:#fff;background:var(--o);padding:4px 10px;border-radius:7px;display:inline-block;margin-bottom:7px}
+.cdates{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:7px 0}
+.cdates label{font-size:10px;font-weight:700;color:#94A3B8;display:block;margin-bottom:3px}
+.cdates input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none}
+.cwa{font-size:11px;color:#64748B;background:#F8FAFC;border-radius:7px;padding:7px;margin-bottom:7px;line-height:1.5}
+/* INVENTORY */
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.ic{background:#fff;border:1.5px solid var(--border);border-radius:13px;overflow:hidden;transition:all .2s}
+.ic:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.ith{height:130px;background:#F8FAFC;display:flex;align-items:center;justify-content:center;position:relative}
+.ith .iem{font-size:52px}
+.ibadges{position:absolute;top:7px;left:7px;display:flex;gap:4px;flex-wrap:wrap}
+.ibadges span{font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px}
+.ga{background:#F0FDF4;color:var(--g)}.gb{background:#EFF6FF;color:var(--b)}.gc{background:#FFFBEB;color:var(--y)}
+.invis{background:#EDE9FE;color:var(--p)}
+.cso{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+.cstag{background:var(--p);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:100px}
+.ibo{padding:13px}
+.ic h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.isp{font-size:12px;color:#94A3B8;margin-bottom:7px}
+.ipr{font-size:19px;font-weight:800;color:var(--b)}
+.imrp{font-size:12px;color:#CBD5E1;text-decoration:line-through;margin-left:5px}
+.ibt{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.ib{font-size:11px;font-weight:600;padding:4px 9px;border-radius:6px;border:none;cursor:pointer;font-family:inherit}
+.ibs{background:#F0FDF4;color:var(--g)}.ibh{background:#F8FAFC;color:#64748B;border:1px solid var(--border)}.ibe{background:#EFF6FF;color:var(--b)}.ibd{background:#FEF2F2;color:var(--r)}
+.nform{padding:11px 13px;background:#F3E8FF;border-top:1px solid var(--border)}
+.nform input{width:100%;border:1.5px solid #DDD6FE;border-radius:7px;padding:7px 9px;font-size:12px;font-family:inherit;outline:none;margin-bottom:5px;background:#fff}
+.nform button{width:100%;background:var(--p);color:#fff;border:none;padding:7px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+/* PRICES */
+.pcard{background:#fff;border:1px solid var(--border);border-radius:13px;padding:20px;max-width:520px;margin-bottom:14px}
+.pcard h3{font-size:15px;font-weight:700;margin-bottom:5px}
+.pcard p{font-size:13px;color:#64748B;margin-bottom:16px}
+.psr{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.psr input{flex:1;accent-color:var(--b)}
+.psv{font-size:17px;font-weight:800;color:var(--b);min-width:52px}
+.pex{background:#EFF6FF;border-radius:8px;padding:10px;font-size:13px;color:var(--b);margin-bottom:13px}
+/* TEAM */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.tc{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:18px;text-align:center}
+.tav2{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;color:#fff;margin:0 auto 9px}
+.tc h3{font-size:14px;font-weight:700;margin-bottom:3px}
+.tr{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:9px}
+.tro{background:#FFFBEB;color:var(--y)}.trm{background:#EFF6FF;color:var(--b)}.tre{background:#F0FDF4;color:var(--g)}
+.ti{font-size:11px;color:#64748B;margin-bottom:2px}
+.teb{width:100%;background:#F1F5F9;color:#334155;border:none;padding:7px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:7px}
+.teb:hover{background:var(--b);color:#fff}
+/* BILL */
+.bc2{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:start}
+.bcard{background:#fff;border:1px solid var(--border);border-radius:13px;padding:18px}
+.bcard h3{font-size:14px;font-weight:700;margin-bottom:13px}
+.binfo{background:#F0FDF4;border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--g);margin-bottom:11px}
+.txbox{background:#0F172A;border-radius:10px;padding:12px 14px;margin:11px 0}
+.txr{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px}
+.txl{color:rgba(255,255,255,.4)}.txv{color:#fff;font-weight:600}
+.txg{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);padding-top:9px;margin-top:3px}
+.txgl{font-size:13px;font-weight:700;color:var(--o)}
+.txgv{font-size:20px;font-weight:800;color:#fff}
+.bhi{background:#F8FAFC;border-radius:9px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;border:1px solid var(--border)}
+/* LOYALTY */
+.loybox{background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;margin-bottom:11px}
+.loybox h4{font-size:13px;font-weight:700;color:var(--y);margin-bottom:1px}
+.loybox p{font-size:11px;color:#B45309}
+#toast{position:fixed;bottom:18px;right:18px;padding:9px 15px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;transform:translateY(50px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.on{transform:translateY(0);opacity:1}
+#toast.s{background:var(--g);color:#fff}
+#toast.e{background:var(--r);color:#fff}
+#toast.i{background:var(--b);color:#fff}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.kan{grid-template-columns:1fr 1fr}.bc2,.cg,.tg,.rg{grid-template-columns:1fr}.ig{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.kan{grid-template-columns:1fr}.ig{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+
+/* Hide CRM until logged in */
+#top{display:none}
+#tabs{display:none}
+</style>
+</head>
+<body>
+
+
+<div id="LS">
+  <div class="lcard">
+    <h1>Sambhi <span>Mobiles</span></h1>
+    <p>Admin CRM — Team Login</p>
+    <div class="lf"><label>Username</label><input type="text" id="lu" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
+    <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button id="lbtn" onclick="doLogin()">Login →</button>
+    <div id="lerr"></div>
+    <div class="laccs">
+      <p>Team accounts</p>
+      <div class="lacc"><div class="lav" style="background:#F97316">AS</div><div><h4>Amrik Singh — Owner</h4><p>amrik / amrik1234</p></div></div>
+      <div class="lacc"><div class="lav" style="background:#2563EB">M1</div><div><h4>Manager 1</h4><p>manager1 / manager1234</p></div></div>
+      <div class="lacc"><div class="lav" style="background:#16A34A">E1</div><div><h4>Executive 1</h4><p>exec1 / exec1234</p></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CRM TOPBAR -->
+<div id="TOP">
+
+  <div class="tlogo">Sambhi <span>Mobiles</span> — Admin
+</div>
+
+<!-- FULL CRM BODY -->
+
+<div id="top">
+  <div class="tlogo">Sambhi <span>Mobiles</span> — Admin</div>
+  <div class="tright">
+    <div class="tav" id="tav"></div>
+    <div><div class="tname" id="tname"></div><div class="trole" id="trole"></div></div>
+    <button id="newbadge" onclick="gt('leads')">🔔 0 New</button>
+    <button id="logoutbtn" onclick="doLogout()">Logout</button>
+  </div>
+</div>
+<div id="tabs">
+  <button class="tb on" data-pg="dash">📊 Dashboard</button>
+  <button class="tb" data-pg="leads">📋 Leads <span class="nb" id="nbl">0</span></button>
+  <button class="tb" data-pg="fu">🔁 Follow-up</button>
+  <button class="tb" data-pg="bill">🧾 Bill</button>
+  <button class="tb" data-pg="add">➕ Add Lead</button>
+  <button class="tb" data-pg="riders">🏍️ Riders</button>
+  <button class="tb" data-pg="camps">🎯 Campaigns</button>
+  <button class="tb" data-pg="inv">📦 Inventory</button>
+  <button class="tb" data-pg="prices">💰 Prices</button>
+  <button class="tb" data-pg="team">👥 Team</button>
+</div>
+<!-- PAGES -->
+<div class="pg on" id="pg-dash">
+  <div class="stats">
+    <div class="stat" onclick="gt('leads')"><div class="n" id="s0" style="color:var(--b)">0</div><div class="l">New Today</div></div>
+    <div class="stat" onclick="gt('fu')"><div class="n" id="s1" style="color:var(--y)">0</div><div class="l">Pending</div></div>
+    <div class="stat" onclick="gt('fu')"><div class="n" id="s2" style="color:var(--p)">0</div><div class="l">Scheduled</div></div>
+    <div class="stat" onclick="gt('leads')"><div class="n" id="s3" style="color:var(--g)">0</div><div class="l">Completed</div></div>
+    <div class="stat"><div class="n" id="s4" style="color:var(--o)">₹0</div><div class="l">Paid Out</div></div>
+  </div>
+  <div class="tw">
+    <div class="ttop"><h3>Recent Leads</h3><button class="ab" onclick="gt('add')">+ Add Lead</button></div>
+    <table><thead><tr><th>Customer</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Est.</th><th>Actions</th></tr></thead>
+    <tbody id="dtb"></tbody></table>
+  </div>
+</div>
+<div class="pg" id="pg-leads">
+  <div class="tw">
+    <div class="ttop"><h3>All Leads</h3>
+      <div class="tbar">
+        <input class="si" id="src" placeholder="🔍 Search…" oninput="rl()">
+        <select class="si" id="sst" onchange="rl()"><option value="">All Status</option><option value="new">New</option><option value="contacted">Contacted</option><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+        <select class="si" id="ssl" onchange="rl()"><option value="">All Slots</option><option value="morning">Morning</option><option value="evening">Evening</option></select>
+        <button class="ab" onclick="gt('add')">+ Add Lead</button>
+      </div>
+    </div>
+    <table><thead><tr><th>Date</th><th>Customer</th><th>Phone</th><th>Device</th><th>Area</th><th>Slot</th><th>Status</th><th>Est.</th><th>Actions</th></tr></thead>
+    <tbody id="ltb"></tbody></table>
+  </div>
+</div>
+<div class="pg" id="pg-fu">
+  <div style="margin-bottom:13px"><h2 style="font-size:16px;font-weight:700">Follow-up Tracker</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Morning first. Click any card to open.</p></div>
+  <div class="kan">
+    <div class="kc kc-new"><div class="kh">🆕 New <span class="kn" id="kn-new">0</span></div><div class="kb" id="kb-new"></div></div>
+    <div class="kc kc-con"><div class="kh">📞 Contacted <span class="kn" id="kn-contacted">0</span></div><div class="kb" id="kb-contacted"></div></div>
+    <div class="kc kc-sch"><div class="kh">📅 Scheduled <span class="kn" id="kn-scheduled">0</span></div><div class="kb" id="kb-scheduled"></div></div>
+    <div class="kc kc-don"><div class="kh">✅ Done <span class="kn" id="kn-completed">0</span></div><div class="kb" id="kb-completed"></div></div>
+  </div>
+</div>
+<div class="pg" id="pg-bill">
+  <div class="bc2">
+    <div class="bcard">
+      <h3>🧾 Generate GST Bill</h3>
+      <div class="fg"><label>Select Completed Lead</label><select id="bsel" onchange="obs()"></select></div>
+      <div class="binfo">✅ Only Completed leads can be billed</div>
+      <div id="bform" style="display:none">
+        <div class="g2"><div class="fg"><label>Final Amount (₹)</label><input type="number" id="bamt" oninput="cbt()"></div><div class="fg"><label>Type</label><select id="btype"><option value="PURCHASE">Purchased from customer</option><option value="SALE">Sold to customer</option></select></div></div>
+        <div class="fg"><label>IMEI</label><input id="bimei" placeholder="15-digit IMEI"></div>
+        <div class="g2"><div class="fg"><label>Invoice No</label><input id="bino" readonly style="background:#F1F5F9"></div><div class="fg"><label>Date</label><input id="bdat" readonly style="background:#F1F5F9"></div></div>
+        <div class="txbox">
+          <div class="txr"><span class="txl">Taxable Value</span><span class="txv" id="ttax">—</span></div>
+          <div class="txr"><span class="txl">CGST @ 9%</span><span class="txv" id="tcg">—</span></div>
+          <div class="txr"><span class="txl">SGST @ 9%</span><span class="txv" id="tsg">—</span></div>
+          <div class="txg"><span class="txgl">GRAND TOTAL</span><span class="txgv" id="tgr">—</span></div>
+        </div>
+        <button class="sb" onclick="genB()">📄 Download PDF Bill</button>
+        <button class="sb" style="background:var(--g);margin-top:7px" onclick="waB()">📲 Send via WhatsApp</button>
+      </div>
+    </div>
+    <div class="bcard"><h3>📜 Bill History</h3><div id="bhist"><p style="font-size:13px;color:#94A3B8">No bills yet.</p></div></div>
+  </div>
+</div>
+<div class="pg" id="pg-add">
+  <div style="max-width:660px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:15px;padding:22px">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:3px">Add New Lead</h3>
+      <p style="font-size:13px;color:#94A3B8;margin-bottom:16px">Website · WhatsApp · Walk-in · Meta</p>
+      <span class="sl">Customer Details</span>
+      <div class="g2"><div class="fg"><label>Full Name *</label><input id="an" placeholder="Customer name"></div><div class="fg"><label>WhatsApp *</label><input id="ap" placeholder="+91 98765 43210"></div></div>
+      <div class="g2"><div class="fg"><label>Area</label><input id="aa" placeholder="Lajpat Nagar…"></div><div class="fg"><label>Address</label><input id="aad" placeholder="House no, street…"></div></div>
+      <span class="sl">Device Details</span>
+      <div class="g2">
+        <div class="fg"><label>Brand *</label>
+          <select id="abr" onchange="onABr()">
+            <option value="">Select brand</option>
+            <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
+            <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
+            <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi/Redmi</option><option value="pixel">Pixel</option><option value="nothing">Nothing</option></optgroup>
+          </select>
+        </div>
+        <div class="fg"><label>Model</label><select id="amo" onchange="onAMo()"><option value="">Select model</option></select></div>
+      </div>
+      <div class="g3"><div class="fg"><label>Storage</label><input id="ast" placeholder="128GB"></div><div class="fg"><label>Colour</label><input id="aco" placeholder="Black"></div><div class="fg"><label>Year</label><select id="ayr"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option></select></div></div>
+      <div class="g2"><div class="fg"><label>Battery %</label><input type="number" id="aba" min="1" max="100" placeholder="84" oninput="ca()"></div><div class="fg"><label>IMEI</label><input id="aim" placeholder="15-digit IMEI" maxlength="15"></div></div>
+      <span class="sl">Condition Issues</span>
+      <div class="dc" id="achips"></div>
+      <span class="sl">Pickup & Source</span>
+      <div class="g3">
+        <div class="fg"><label>Slot</label><select id="asl"><option value="morning">🌅 Morning (9AM–1PM)</option><option value="evening">🌆 Evening (4PM–8PM)</option></select></div>
+        <div class="fg"><label>Rider</label><select id="ari"><option value="">Unassigned</option></select></div>
+        <div class="fg"><label>Source</label><select id="aso"><option value="website">Website</option><option value="whatsapp">WhatsApp</option><option value="meta">Meta Ad</option><option value="walkin">Walk-in</option><option value="call">Phone Call</option></select></div>
+      </div>
+      <div class="loybox" onclick="document.getElementById('alo').click();ca()">
+        <input type="checkbox" id="alo" style="width:15px;height:15px;accent-color:var(--b)">
+        <div><h4>🏆 Returning customer — 10% loyalty bonus</h4><p>Tick if customer has sold to us before</p></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea id="ano" placeholder="Extra details…"></textarea></div>
+      <div class="pb" id="apb" style="display:none"><div><div class="pbl">Estimated payout</div><div class="pbv" id="apbv">—</div><div class="pbs" id="apbs"></div></div><div style="font-size:10px;color:rgba(255,255,255,.25);text-align:right">Final on<br>inspection</div></div>
+      <button class="sb" onclick="saveLead()">✅ Save Lead</button>
+    </div>
+  </div>
+</div>
+<div class="pg" id="pg-riders">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><h2 style="font-size:16px;font-weight:700">Rider Directory</h2></div><button class="ab" onclick="openRM()">+ Add Rider</button></div>
+  <div class="rg" id="rgrid"></div>
+</div>
+<div class="pg" id="pg-camps">
+  <div style="margin-bottom:14px"><h2 style="font-size:16px;font-weight:700">Campaign Manager</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Active campaigns show on your website banner automatically</p></div>
+  <div class="cg" id="cgrid"></div>
+</div>
+<div class="pg" id="pg-inv">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:9px">
+    <div><h2 style="font-size:16px;font-weight:700">Inventory</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Available → shows on Buy page. Hidden → shows as Coming Soon</p></div>
+    <div style="display:flex;gap:7px"><select class="si" id="ifl" onchange="ri()"><option value="">All</option><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select><button class="ab" onclick="openIM()">+ Add Device</button></div>
+  </div>
+  <div class="ig" id="igrid"></div>
+</div>
+<div class="pg" id="pg-prices">
+  <div class="pcard">
+    <h3>💰 Global Price Control</h3>
+    <p>Adjust all device quotes instantly across the website.</p>
+    <div class="psr"><input type="range" min="0.5" max="1.5" step="0.01" value="1" id="msl" oninput="um(this.value)"><span class="psv" id="msv">1.00×</span></div>
+    <div class="pex" id="mex">iPhone 14 Pro base ₹60,000 → Quote ₹60,000</div>
+    <button class="ab" onclick="sm()">Save Multiplier</button>
+  </div>
+</div>
+<div class="pg" id="pg-team">
+  <div style="margin-bottom:14px"><h2 style="font-size:16px;font-weight:700">Team Management</h2></div>
+  <div class="tg" id="tgrid"></div>
+</div>
+<!-- LEAD MODAL -->
+<div class="mbg" id="lm"><div class="modal"><div class="mh"><h2 id="lmt">Lead</h2><button class="mx" onclick="cm('lm')">✕</button></div><div class="mb" id="lmb"></div></div></div>
+<!-- RIDER MODAL -->
+<div class="mbg" id="rm2"><div class="modal" style="max-width:440px"><div class="mh"><h2 id="rmt">Add Rider</h2><button class="mx" onclick="cm('rm2')">✕</button></div><div class="mb">
+  <div class="g2"><div class="fg"><label>Name *</label><input id="rn" placeholder="Rider name"></div><div class="fg"><label>Phone *</label><input id="rph" placeholder="+91…"></div></div>
+  <div class="g2"><div class="fg"><label>Email</label><input id="rem" placeholder="email@…"></div><div class="fg"><label>Zone</label><input id="rzo" placeholder="South Delhi…"></div></div>
+  <div class="g2"><div class="fg"><label>Username</label><input id="rus" placeholder="rider1"></div><div class="fg"><label>Password</label><input type="password" id="rps" placeholder="Set password"></div></div>
+  <input type="hidden" id="reid"><button class="sb" onclick="saveR()">Save Rider</button>
+</div></div></div>
+<!-- INV MODAL -->
+<div class="mbg" id="im2"><div class="modal" style="max-width:540px"><div class="mh"><h2 id="imt">Add Device</h2><button class="mx" onclick="cm('im2')">✕</button></div><div class="mb">
+  <div class="g2"><div class="fg"><label>Category *</label><select id="ic" onchange="oIC()"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select></div><div class="fg"><label>Model *</label><select id="im" onchange="oIM()"><option value="">Select model</option></select></div></div>
+  <div class="g3"><div class="fg"><label>Storage</label><select id="ist"><option value="">Select</option></select></div><div class="fg"><label>Colour</label><select id="ico"><option value="">Select</option></select></div><div class="fg"><label>Grade</label><select id="igr"><option value="A+">A+ Like New</option><option value="A">A Excellent</option><option value="B">B Good</option><option value="C">C Fair</option></select></div></div>
+  <div class="g3"><div class="fg"><label>Battery %</label><input type="number" id="iba" placeholder="89"></div><div class="fg"><label>Year</label><select id="iyr"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select></div><div class="fg"><label>Qty</label><input type="number" id="iqt" value="1" min="1"></div></div>
+  <div class="g2"><div class="fg"><label>Our Price (₹) *</label><input type="number" id="ipr" placeholder="45000"></div><div class="fg"><label>MRP (₹)</label><input type="number" id="imr" placeholder="70000"></div></div>
+  <div class="fg"><label>IMEI</label><input id="iim" placeholder="15-digit IMEI"></div>
+  <div class="fg"><label>Features (one per line)</label><textarea id="ife" placeholder="Original box&#10;All accessories"></textarea></div>
+  <div class="loybox" onclick="document.getElementById('ivi').click()" style="background:#F0FDF4;border-color:rgba(22,163,74,.3)"><input type="checkbox" id="ivi" checked style="width:15px;height:15px;accent-color:var(--g)"><div><h4 style="color:var(--g)">✅ Show as Available on Buy page</h4><p style="color:#166534">Uncheck = Coming Soon</p></div></div>
+  <input type="hidden" id="ied"><button class="sb" onclick="saveI()">Save Device</button>
+</div></div></div>
+<!-- TEAM MODAL -->
+<div class="mbg" id="tm2"><div class="modal" style="max-width:400px"><div class="mh"><h2>Edit Team Member</h2><button class="mx" onclick="cm('tm2')">✕</button></div><div class="mb">
+  <div class="fg"><label>Name</label><input id="ttn"></div><div class="fg"><label>Phone</label><input id="ttp"></div><div class="fg"><label>Email</label><input id="tte"></div>
+  <div class="g2"><div class="fg"><label>New Username</label><input id="ttu"></div><div class="fg"><label>New Password</label><input type="password" id="ttw"></div></div>
+  <input type="hidden" id="tti"><button class="sb" onclick="saveTM()">Save Changes</button>
+</div></div></div>
+<div id="toast"></div>
+<script>
+// ── DATA ─────────────────────────────────────────────────────────
+var MDS={iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone XR':12000},samsung:{'Galaxy S24 Ultra':95000,'Galaxy S24+':80000,'Galaxy S24':65000,'Galaxy S23 Ultra':70000,'Galaxy S23':50000,'Galaxy S22':38000,'Galaxy A55':28000,'Galaxy A35':20000,'Galaxy A15':10000},oneplus:{'OnePlus 12':55000,'OnePlus 12R':35000,'OnePlus 11':45000,'Nord 4':28000,'Nord 3':22000},realme:{'Realme GT 6':32000,'Realme 13 Pro+':25000,'Realme 13 Pro':20000},oppo:{'Find X7 Pro':55000,'Reno 12 Pro':30000,'F27 Pro':20000},vivo:{'X100 Pro':65000,'V40 Pro':35000,'V40':27000,'Y200':14000},xiaomi:{'Xiaomi 14 Ultra':75000,'Xiaomi 14':55000,'Redmi Note 13 Pro+':25000,'Redmi Note 13':14000,'POCO F6':28000},pixel:{'Pixel 9 Pro':75000,'Pixel 9':60000,'Pixel 8 Pro':55000,'Pixel 8':45000},nothing:{'Phone (2a)':22000,'Phone (2)':35000,'Phone (1)':18000},airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000},applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Series 9':32000,'Apple Watch SE 2nd Gen':16000},playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000}};
+var IMS={iphone:{'iPhone 16 Pro Max':['256GB','512GB','1TB'],'iPhone 16 Pro':['128GB','256GB','512GB','1TB'],'iPhone 16':['128GB','256GB','512GB'],'iPhone 15 Pro Max':['256GB','512GB','1TB'],'iPhone 15 Pro':['128GB','256GB','512GB','1TB'],'iPhone 15':['128GB','256GB','512GB'],'iPhone 14 Pro Max':['128GB','256GB','512GB','1TB'],'iPhone 14 Pro':['128GB','256GB','512GB','1TB'],'iPhone 14':['128GB','256GB','512GB'],'iPhone 13 Pro Max':['128GB','256GB','512GB','1TB'],'iPhone 13 Pro':['128GB','256GB','512GB','1TB'],'iPhone 13':['128GB','256GB','512GB'],'iPhone 12':['64GB','128GB','256GB'],'iPhone 11':['64GB','128GB','256GB'],'iPhone SE (2022)':['64GB','128GB','256GB'],'iPhone XR':['64GB','128GB','256GB']},samsung:{'Galaxy S24 Ultra':['256GB','512GB'],'Galaxy S24':['128GB','256GB'],'Galaxy S23 Ultra':['256GB','512GB'],'Galaxy A55':['128GB','256GB']},oneplus:{'OnePlus 12':['256GB','512GB'],'OnePlus 12R':['128GB','256GB'],'Nord 4':['128GB','256GB']},airpods:{'AirPods Pro 2nd Gen':['MagSafe Case'],'AirPods Pro 1st Gen':['Lightning Case'],'AirPods Max':['Over-ear'],'AirPods 3rd Gen':['Lightning Case']},applewatch:{'Apple Watch Ultra 2':['49mm'],'Apple Watch Series 9':['41mm GPS','45mm GPS','41mm GPS+Cellular','45mm GPS+Cellular'],'Apple Watch SE 2nd Gen':['40mm GPS','44mm GPS']},playstation:{'PS5 Disc Edition':['825GB'],'PS5 Digital Edition':['825GB'],'PS4 Pro':['1TB'],'PS4 Slim':['500GB','1TB'],'PS4':['500GB']}};
+var ICO={iphone:['Black Titanium','White Titanium','Natural Titanium','Desert Titanium','Deep Purple','Gold','Silver','Midnight','Starlight','Blue','Pink','Product Red','Green'],samsung:['Titanium Black','Onyx Black','Cream','Lavender','Green'],oneplus:['Silky Black','Flowy Emerald','Iron Gray'],airpods:['White'],applewatch:['Midnight','Starlight','Silver','Product Red','Pink','Natural Titanium','Black Titanium'],playstation:['White','Black']};
+var DEPS=[{id:'charger',l:'No charger',p:.05},{id:'screen',l:'Screen cracked',p:.18},{id:'body',l:'Body damage',p:.10},{id:'battlow',l:'Battery <80%',p:.12},{id:'nobox',l:'No original box',p:.03},{id:'faceid',l:'Face ID broken',p:.10}];
+var SL={new:'st-new',contacted:'st-contacted',scheduled:'st-scheduled',completed:'st-completed',cancelled:'st-cancelled'};
+var SN={new:'New',contacted:'Contacted',scheduled:'Scheduled',completed:'Completed',cancelled:'Cancelled'};
+// ── STATE ────────────────────────────────────────────────────────
+var CU=null,leads=[],bills=[],riders=[],camps=[],inv=[],notifs=[],addDeps={},addBase=0,editR=null,editI=null;
+var invN=1;
+function load(){
+  leads=JSON.parse(localStorage.getItem('smb_leads')||'[]');
+  bills=JSON.parse(localStorage.getItem('smb_bills')||'[]');
+  riders=JSON.parse(localStorage.getItem('smb_riders')||'[]');
+  inv=JSON.parse(localStorage.getItem('smb_inv')||'[]');
+  notifs=JSON.parse(localStorage.getItem('smb_notifs')||'[]');
+  invN=parseInt(localStorage.getItem('smb_invn')||'1');
+  var sc=localStorage.getItem('smb_camps');
+  camps=sc?JSON.parse(sc):dCamps();if(!sc)savC();
+}
+function savL(){localStorage.setItem('smb_leads',JSON.stringify(leads));localStorage.setItem('smb_bills',JSON.stringify(bills));localStorage.setItem('smb_invn',String(invN));}
+function savR(){localStorage.setItem('smb_riders',JSON.stringify(riders));}
+function savC(){localStorage.setItem('smb_camps',JSON.stringify(camps));var now=new Date();var ac=camps.find(function(c){if(!c.on)return false;if(c.fr&&new Date(c.fr)>now)return false;if(c.to&&new Date(c.to)<now)return false;return true;});localStorage.setItem('smb_active_camp',ac?JSON.stringify(ac):'');}
+function savI(){localStorage.setItem('smb_inv',JSON.stringify(inv));localStorage.setItem('smb_notifs',JSON.stringify(notifs));}
+function gT(){var s=localStorage.getItem('smb_team');if(s){try{var t=JSON.parse(s);if(t&&t.length)return t;}catch(e){}}return[{u:'amrik',pw:'amrik1234',name:'Amrik Singh',color:'#F97316',init:'AS',role:'Owner',ph:'',em:''},{u:'manager1',pw:'manager1234',name:'Manager 1',color:'#2563EB',init:'M1',role:'Manager',ph:'',em:''},{u:'exec1',pw:'exec1234',name:'Executive 1',color:'#16A34A',init:'E1',role:'Executive',ph:'',em:''}];}
+function savT(t){localStorage.setItem('smb_team',JSON.stringify(t));}
+function dCamps(){return[{id:'c1',t:'No deduction — charger missing',d:'Waive 5% charger deduction',on:false,wa:'Missing charger? Zero deduction! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c2',t:'No deduction — low battery',d:'Waive battery deduction below 80%',on:false,wa:'Battery below 80%? No deduction this week! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c3',t:'No screen deduction',d:'Waive screen crack deductions',on:false,wa:'Cracked screen? No deduction today! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c4',t:'Double loyalty — 20% bonus',d:'Returning customers get 20%',on:false,wa:'DOUBLE LOYALTY this week! 20% extra. Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c5',t:'Express pickup — 30 min',d:'Promise 30-minute pickup',on:false,wa:'30-MINUTE PICKUP today! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c6',t:'Zero deductions offer',d:'No deductions at all',on:false,wa:'ZERO deductions today! Full price guaranteed. Sambhi Mobiles +91 7827505579',fr:'',to:''}];}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function Rs(n){return n?'₹'+parseInt(n).toLocaleString('en-IN'):'—';}
+function fd(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short'});}
+function ft(d){return new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function fi(n){return'SMB-2025-'+('000'+n).slice(-4);}
+function toast(m,t){var e=document.getElementById('toast');e.textContent=m;e.className='on '+(t||'s');setTimeout(function(){e.className='';},3000);}
+function cm(id){document.getElementById(id).classList.remove('on');}
+function rn(id){return(document.getElementById(id)||{}).value||'';}
+function gRN(id){var r=riders.find(function(x){return x.id===id;});return r?r.name:'';}
+function cE(l){var bp=l.basePrice||0;if(!bp)return 0;var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(bp*m);var yr=parseInt(l.year)||0;var aD=yr?Math.round(adj*Math.min((2025-yr)*.07,.42)):0;var b=parseInt(l.battery)||100;var bD=b<80?Math.round(adj*Math.min((80-b)*.007,.20)):0;var ds=l.deps||{};var cD=DEPS.reduce(function(s,d){return s+(ds[d.id]?Math.round(adj*d.p):0);},0);var base=Math.max(adj-aD-bD-cD,Math.round(adj*.15));return base+(l.isLoyalty?Math.round(base*.10):0);}
+function nw(n){var o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];function b(n){if(n<20)return o[n];if(n<100)return t[Math.floor(n/10)]+(n%10?' '+o[n%10]:'');return o[Math.floor(n/100)]+' Hundred'+(n%100?' and '+b(n%100):'');}n=Math.floor(n);if(!n)return'Zero';if(n<1000)return b(n);if(n<100000)return b(Math.floor(n/1000))+' Thousand'+(n%1000?' '+b(n%1000):'');if(n<10000000)return b(Math.floor(n/100000))+' Lakh'+(n%100000?' '+nw(n%100000):'');return b(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+nw(n%10000000):'');}
+// ── TABS ─────────────────────────────────────────────────────────
+document.querySelectorAll('.tb').forEach(function(b){b.onclick=function(){gt(this.dataset.pg);};});
+function gt(pg){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tb').forEach(function(t){t.classList.remove('on');});
+  var el=document.getElementById('pg-'+pg);if(el)el.classList.add('on');
+  var tb=document.querySelector('.tb[data-pg="'+pg+'"]');if(tb)tb.classList.add('on');
+  if(pg==='dash')rd();if(pg==='leads')rl();if(pg==='fu')rk();if(pg==='bill')rBill();
+  if(pg==='riders')rRid();if(pg==='camps')rCamp();if(pg==='inv')ri();if(pg==='prices')rPr();if(pg==='team')rTm();
+}
+// ── INIT ──────────────────────────────────────────────────────────
+function initCRM_load(){
+  // Called after successful login
+  load();seedD();rd();iAF();rRid();rCamp();ri();rPr();rTm();popR();
+}
+// ── DASHBOARD ─────────────────────────────────────────────────────
+function rd(){
+  var td=new Date().toDateString();
+  var n0=leads.filter(function(l){return l.status==='new'&&new Date(l.createdAt).toDateString()===td;}).length;
+  var n1=leads.filter(function(l){return['new','contacted'].indexOf(l.status)>-1;}).length;
+  var n2=leads.filter(function(l){return l.status==='scheduled';}).length;
+  var n3=leads.filter(function(l){return l.status==='completed';}).length;
+  var n4=bills.reduce(function(s,b){return s+(parseInt(b.a)||0);},0);
+  document.getElementById('s0').textContent=n0;document.getElementById('s1').textContent=n1;
+  document.getElementById('s2').textContent=n2;document.getElementById('s3').textContent=n3;
+  document.getElementById('s4').textContent='₹'+n4.toLocaleString('en-IN');
+  document.getElementById('newbadge').textContent='🔔 '+n0+' New';
+  document.getElementById('nbl').textContent=leads.length;
+  var rec=leads.slice().sort(srt).slice(0,8);
+  document.getElementById('dtb').innerHTML=rec.length?rec.map(function(l){return lr(l,true);}).join(''):'<tr><td colspan="7" style="text-align:center;padding:22px;color:#94A3B8">No leads yet.</td></tr>';
+}
+function srt(a,b){if(a.slot==='morning'&&b.slot!=='morning')return -1;if(b.slot==='morning'&&a.slot!=='morning')return 1;return new Date(b.createdAt)-new Date(a.createdAt);}
+// ── LEADS ─────────────────────────────────────────────────────────
+function rl(){
+  var q=rn('src').toLowerCase(),st=rn('sst'),sl=rn('ssl');
+  var f=leads.slice().sort(srt);
+  if(q)f=f.filter(function(l){return(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().indexOf(q)>-1;});
+  if(st)f=f.filter(function(l){return l.status===st;});
+  if(sl)f=f.filter(function(l){return l.slot===sl;});
+  document.getElementById('ltb').innerHTML=f.length?f.map(function(l){return lr(l,false);}).join(''):'<tr><td colspan="9" style="text-align:center;padding:22px;color:#94A3B8">No leads.</td></tr>';
+}
+function lr(l,c){
+  var est=cE(l);
+  var sb=l.slot==='morning'?'<span class="sm">🌅</span>':'<span class="se">🌆</span>';
+  var st='<span class="badge '+(SL[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span>';
+  var lo=l.isLoyalty?'<span style="font-size:10px;background:#FFFBEB;color:#D97706;padding:1px 6px;border-radius:100px;margin-left:3px">🏆</span>':'';
+  var isO=CU&&CU.role==='Owner';
+  var bb=isO?(l.status==='completed'?'<button class="act abi" onclick="event.stopPropagation();oBF(\''+l.id+'\')">🧾</button>':'<button class="act abi" disabled>🧾</button>'):'';
+  var db=isO?'<button class="act ad" onclick="event.stopPropagation();dL(\''+l.id+'\')">🗑</button>':'';
+  if(c)return'<tr onclick="oL(\''+l.id+'\')">'
+    +'<td><strong>'+l.name+lo+'</strong><br><span style="font-size:11px;color:#2563EB">'+l.phone+'</span></td>'
+    +'<td style="font-size:12px;max-width:130px">'+((l.device||'—').substring(0,24))+'</td>'
+    +'<td style="font-size:12px;color:#64748B">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td><td>'+st+'</td>'
+    +'<td style="font-weight:700;color:#16A34A">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:3px">'
+    +'<button class="act ac" onclick="cL(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
+    +bb+db+'</td></tr>';
+  return'<tr onclick="oL(\''+l.id+'\')">'
+    +'<td style="font-size:11px;color:#94A3B8">'+fd(l.createdAt)+'<br>'+ft(l.createdAt)+'</td>'
+    +'<td><strong>'+l.name+lo+'</strong></td>'
+    +'<td style="color:#2563EB;font-size:12px">'+l.phone+'</td>'
+    +'<td style="font-size:12px;max-width:130px">'+((l.device||'—').substring(0,24))+'</td>'
+    +'<td style="font-size:12px;color:#64748B">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td><td>'+st+'</td>'
+    +'<td style="font-weight:700;color:#16A34A">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:3px;flex-wrap:wrap">'
+    +'<button class="act ac" onclick="cL(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
+    +bb+db+'</td></tr>';
+}
+function cL(id,ph){
+  var l=leads.find(function(x){return x.id===id;});
+  if(l&&l.status==='new'){l.status='contacted';aN(l,'📞 Called — status updated');savL();rd();rl();rk();toast('📞 Status → Contacted','i');}
+  window.open('tel:'+ph);
+}
+function waM(ph,nm){var p=ph.replace(/[^0-9]/g,'');window.open('https://wa.me/91'+p+'?text='+encodeURIComponent('Hello '+nm+'! Sambhi Mobiles here. Please confirm your pickup slot.\n🌅 Morning (9AM–1PM) or 🌆 Evening (4PM–8PM)\n📞 +91 7827505579'),'_blank');}
+function dL(id){if(!confirm('Delete this lead?'))return;leads=leads.filter(function(x){return x.id!==id;});savL();rd();rl();rk();cm('lm');toast('Lead deleted');}
+function aN(l,t){l.notes=l.notes||[];l.notes.push({t:t+(CU?' ('+CU.name+')':''),at:new Date().toISOString()});}
+// ── LEAD MODAL ────────────────────────────────────────────────────
+function oL(id){
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  document.getElementById('lmt').textContent=l.name;
+  var steps=['new','contacted','scheduled','completed','cancelled'];
+  var sh=steps.map(function(s){var cls=l.status===s?'active':(steps.indexOf(s)<steps.indexOf(l.status)?'done':'');return'<button class="sp '+cls+'" onclick="uS(\''+id+'\',\''+s+'\')" >'+SN[s]+'</button>';}).join('');
+  var dL2=DEPS.filter(function(d){return(l.deps||{})[d.id];}).map(function(d){return d.l;}).join(', ')||'None';
+  var ro='<option value="">Unassigned</option>'+riders.map(function(r){return'<option value="'+r.id+'"'+(l.riderId===r.id?' selected':'')+'>'+r.name+'</option>';}).join('');
+  var tl=(l.notes||[]).slice().reverse().map(function(n){return'<div class="tli"><div class="tld"></div><div><div class="tlt">'+n.t+'</div><div class="tlm">'+fd(n.at)+' '+ft(n.at)+'</div></div></div>';}).join('');
+  var est=cE(l);
+  var isO=CU&&CU.role==='Owner';
+  var bb=isO&&l.status==='completed'?'<button class="sb" style="margin-bottom:7px" onclick="oBF(\''+id+'\');cm(\'lm\')">🧾 Generate GST Bill</button>':'';
+  var db=isO?'<button class="sb" style="background:var(--r);margin-bottom:7px" onclick="dL(\''+id+'\')">🗑 Delete Lead</button>':'';
+  document.getElementById('lmb').innerHTML=
+    '<div class="stpr">'+sh+'</div>'
+    +'<div class="g2" style="margin-bottom:11px">'
+    +'<div style="background:#F8FAFC;border-radius:10px;padding:11px"><div style="font-size:10px;font-weight:700;color:#2563EB;margin-bottom:5px">CUSTOMER</div>'
+    +'<div style="font-size:15px;font-weight:700">'+l.name+(l.isLoyalty?' 🏆':'')+'</div>'
+    +'<a href="tel:'+l.phone+'" style="font-size:13px;color:#2563EB;display:block;margin:3px 0">'+l.phone+'</a>'
+    +'<div style="font-size:12px;color:#94A3B8">'+(l.area||'')+'</div>'
+    +'<div style="margin-top:7px;display:flex;gap:5px">'
+    +'<button class="act ac" onclick="cL(\''+id+'\',\''+l.phone+'\')">📞 Call</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬 WA</button>'
+    +'</div></div>'
+    +'<div style="background:#F8FAFC;border-radius:10px;padding:11px"><div style="font-size:10px;font-weight:700;color:#2563EB;margin-bottom:5px">DEVICE</div>'
+    +'<div style="font-size:14px;font-weight:700">'+(l.device||'—')+'</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Year: '+(l.year||'—')+' · Battery: '+(l.battery||'?')+'%</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Issues: '+dL2+'</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Slot: '+(l.slot==='morning'?'🌅 Morning':'🌆 Evening')+'</div>'
+    +'<div style="margin-top:8px"><label style="font-size:10px;font-weight:700;color:#94A3B8;display:block;margin-bottom:3px">ASSIGN RIDER</label>'
+    +'<select onchange="aR(\''+id+'\',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none;background:#F8FAFC">'+ro+'</select></div>'
+    +'</div></div>'
+    +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
+    +bb+db
+    +'<div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:7px">ACTIVITY LOG</div>'
+    +'<div class="tl">'+(tl||'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:9px">No activity yet</p>')+'</div>'
+    +'<div class="nr"><input id="nin" placeholder="Add a note…"><button onclick="sN(\''+id+'\')">Add</button></div>';
+  document.getElementById('lm').classList.add('on');
+}
+function uS(id,s){var l=leads.find(function(x){return x.id===id;});if(!l)return;l.status=s;aN(l,'Status → '+SN[s]);savL();rd();rl();rk();oL(id);toast('✅ Status → '+SN[s]);}
+function aR(id,rid){var l=leads.find(function(x){return x.id===id;});if(!l)return;l.riderId=rid;aN(l,'Rider: '+(rid?gRN(rid):'Unassigned'));savL();toast('Rider assigned','i');}
+function sN(id){var inp=document.getElementById('nin');if(!inp||!inp.value.trim())return;var l=leads.find(function(x){return x.id===id;});if(!l)return;aN(l,inp.value.trim());savL();inp.value='';oL(id);toast('Note saved');}
+// ── KANBAN ────────────────────────────────────────────────────────
+function rk(){
+  ['new','contacted','scheduled','completed'].forEach(function(st){
+    var items=leads.filter(function(l){return l.status===st;}).sort(srt);
+    document.getElementById('kn-'+st).textContent=items.length;
+    document.getElementById('kb-'+st).innerHTML=items.length?items.map(function(l){
+      return'<div class="kcard" onclick="oL(\''+l.id+'\')">'
+        +'<h4>'+l.name+(l.isLoyalty?' 🏆':'')+'</h4>'
+        +'<div class="kdev">'+(l.device||'No device')+'</div>'
+        +'<div class="ktags">'
+        +(l.slot==='morning'?'<span class="ktag" style="background:#FEF3C7;color:#92400E">🌅</span>':'<span class="ktag" style="background:#EDE9FE;color:#7C3AED">🌆</span>')
+        +'<span class="ktag">'+l.phone+'</span>'
+        +(cE(l)?'<span class="ktag" style="background:#F0FDF4;color:#16A34A">'+Rs(cE(l))+'</span>':'')
+        +(l.riderId?'<span class="ktag" style="background:#EFF6FF;color:#2563EB">🏍 '+gRN(l.riderId)+'</span>':'')
+        +'</div></div>';
+    }).join(''):'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:14px">No leads</p>';
+  });
+}
+// ── ADD LEAD ──────────────────────────────────────────────────────
+function iAF(){addDeps={};addBase=0;DEPS.forEach(function(d){addDeps[d.id]=false;});var ch=document.getElementById('achips');ch.innerHTML=DEPS.map(function(d){return'<div class="chip" id="ach_'+d.id+'" onclick="tD(\''+d.id+'\')">'+'<div class="cd"></div>'+d.l+' (-'+(d.p*100).toFixed(0)+'%)</div>';}).join('');var pb=document.getElementById('apb');if(pb)pb.style.display='none';var am=document.getElementById('amo');if(am)am.innerHTML='<option value="">Select model</option>';}
+function popR(){var s=document.getElementById('ari');s.innerHTML='<option value="">Unassigned</option>';riders.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name+(r.zone?' ('+r.zone+')':'');s.appendChild(o);});}
+function onABr(){var dt=rn('abr'),ms=document.getElementById('amo');ms.innerHTML='<option value="">Select model</option>';addBase=0;if(dt&&MDS[dt])Object.keys(MDS[dt]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});ca();}
+function onAMo(){var dt=rn('abr'),m=rn('amo');addBase=(dt&&m&&MDS[dt]&&MDS[dt][m])?MDS[dt][m]:0;ca();}
+function tD(id){addDeps[id]=!addDeps[id];document.getElementById('ach_'+id).classList.toggle('on',addDeps[id]);ca();}
+function ca(){var pb=document.getElementById('apb');if(!addBase){pb.style.display='none';return;}var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(addBase*m);var yr=parseInt(rn('ayr'))||0;var aD=yr?Math.round(adj*Math.min((2025-yr)*.07,.42)):0;var b=parseInt(rn('aba'))||100;var bD=b<80?Math.round(adj*Math.min((80-b)*.007,.20)):0;var cD=DEPS.reduce(function(s,d){return s+(addDeps[d.id]?Math.round(adj*d.p):0);},0);var lo=document.getElementById('alo').checked;var base=Math.max(adj-aD-bD-cD,Math.round(adj*.15));var est=base+(lo?Math.round(base*.10):0);pb.style.display='flex';document.getElementById('apbv').textContent=Rs(est);document.getElementById('apbs').textContent=Math.round((est/adj)*100)+'% of base'+(lo?' + 10% loyalty':'');}
+function saveLead(){var n=rn('an').trim(),p=rn('ap').trim();if(!n||!p){toast('Name and phone required','e');return;}var dt=rn('abr'),dm=rn('amo'),yr=rn('ayr'),ba=rn('aba'),lo=document.getElementById('alo').checked,rid=rn('ari'),st=rn('ast').trim(),co=rn('aco').trim();var deps={};DEPS.forEach(function(d){if(addDeps[d.id])deps[d.id]=true;});var dev=[dm,st,co].filter(Boolean).join(' ')||dt||'Unknown';var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(addBase*m);var yr2=parseInt(yr)||0,aD2=yr2?Math.round(adj*Math.min((2025-yr2)*.07,.42)):0;var b2=parseInt(ba)||100,bD2=b2<80?Math.round(adj*Math.min((80-b2)*.007,.20)):0;var cD2=DEPS.reduce(function(s,d){return s+(deps[d.id]?Math.round(adj*d.p):0);},0);var base=adj?Math.max(adj-aD2-bD2-cD2,Math.round(adj*.15)):0;var est=base+(lo?Math.round(base*.10):0);leads.push({id:uid(),name:n,phone:p,area:rn('aa').trim(),address:rn('aad').trim(),devType:dt,device:dev,model:dm,storage:st,color:co,year:yr,battery:ba,imei:rn('aim').trim(),basePrice:addBase,deps:deps,isLoyalty:lo,estPrice:est,slot:rn('asl'),source:rn('aso'),riderId:rid,notes:[{t:'Added by '+(CU?CU.name:'admin'),at:new Date().toISOString()}],status:'new',createdAt:new Date().toISOString()});savL();toast('Lead saved for '+n);['an','ap','aa','aad','ast','aco','aim','aba','ano'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});document.getElementById('abr').value='';document.getElementById('amo').innerHTML='<option>Select model</option>';document.getElementById('alo').checked=false;document.getElementById('ari').value='';iAF();rd();setTimeout(function(){gt('leads');},500);}
+// ── BILL ──────────────────────────────────────────────────────────
+function rBill(){if(!CU||CU.role!=='Owner'){document.getElementById('pg-bill').innerHTML='<div style="padding:50px;text-align:center;color:#94A3B8"><div style="font-size:40px;margin-bottom:12px">🔒</div><h3>Owner only</h3></div>';return;}var comp=leads.filter(function(l){return l.status==='completed';});document.getElementById('bsel').innerHTML='<option value="">— Choose completed lead —</option>'+comp.map(function(l){return'<option value="'+l.id+'">'+l.name+' — '+(l.device||'Device')+'</option>';}).join('');document.getElementById('bform').style.display='none';document.getElementById('bino').value=fi(invN);document.getElementById('bdat').value=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});rBH();}
+function rBH(){var bh=document.getElementById('bhist');bh.innerHTML=bills.length?bills.slice().reverse().map(function(b){return'<div class="bhi"><div><div style="font-size:13px;font-weight:700">'+b.i+'</div><div style="font-size:12px;color:#94A3B8">'+b.c+' · '+(b.d||'—')+'</div></div><div style="text-align:right"><div style="color:#16A34A;font-weight:700">'+Rs(b.a)+'</div><button onclick="dB(\''+b.i+'\')" style="font-size:10px;background:#FEF2F2;color:#DC2626;border:none;padding:2px 7px;border-radius:5px;cursor:pointer;margin-top:3px;font-family:inherit">🗑</button></div></div>';}).join(''):'<p style="font-size:13px;color:#94A3B8">No bills yet.</p>';}
+function dB(inv){if(!confirm('Delete bill '+inv+'?'))return;bills=bills.filter(function(x){return x.i!==inv;});savL();rBH();toast('Bill deleted');}
+function obs(){var id=rn('bsel'),bf=document.getElementById('bform');if(!id){bf.style.display='none';return;}var l=leads.find(function(x){return x.id===id;});if(!l)return;bf.style.display='block';document.getElementById('bamt').value=cE(l)||'';document.getElementById('bimei').value=l.imei||'';cbt();}
+function cbt(){var amt=parseFloat(rn('bamt'))||0;if(!amt){['ttax','tcg','tsg','tgr'].forEach(function(id){document.getElementById(id).textContent='—';});return;}var tax=Math.round(amt/1.18*100)/100,cgst=Math.round(tax*.09*100)/100,grand=Math.round((tax+cgst*2)*100)/100;document.getElementById('ttax').textContent=Rs(tax);document.getElementById('tcg').textContent=Rs(cgst);document.getElementById('tsg').textContent=Rs(cgst);document.getElementById('tgr').textContent=Rs(grand);}
+function oBF(id){gt('bill');setTimeout(function(){document.getElementById('bsel').value=id;obs();},200);}
+function waB(){var id=rn('bsel'),l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a lead','e');return;}var g=document.getElementById('tgr').textContent,p=l.phone.replace(/[^0-9]/g,'');window.open('https://wa.me/91'+p+'?text='+encodeURIComponent('Hello '+l.name+'!\n\nTransaction complete with Sambhi Mobiles.\nAmount: '+g+'\n\nBank: IDFC First Bank | Acc: 10084177443 | IFSC: IDFB0020107\n\n+91 7827505579 | GSTIN: 07BWPPS6835M1ZI'),'_blank');}
+function genB(){var id=rn('bsel'),l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a completed lead','e');return;}var amt=parseFloat(rn('bamt'))||0;if(!amt){toast('Enter the final amount','e');return;}var tax=Math.round(amt/1.18*100)/100,cgst=Math.round(tax*.09*100)/100,grand=Math.round((tax+cgst*2)*100)/100;var imei=rn('bimei'),ty=rn('btype'),invNo=fi(invN),tod=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),hsn=l.devType==='playstation'?'9504':l.devType==='airpods'||l.devType==='applewatch'?'8518':'8517';var scr=document.createElement('script');scr.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';scr.onload=function(){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});var W=210,M=16;doc.setFillColor(15,23,42);doc.rect(0,0,W,36,'F');doc.setFillColor(37,99,235);doc.rect(0,0,W,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',M,13);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(180,180,180);doc.text('Prop: Amrik Singh | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',M,19);doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi 110019 | +91 7827505579',M,24);doc.setFillColor(37,99,235);doc.roundedRect(148,8,44,12,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(255,255,255);doc.text('TAX INVOICE',170,15,'center');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(180,180,180);doc.text('No: '+invNo,W-M,23,'right');doc.text('Date: '+tod,W-M,28,'right');var bT=40,bH=25,hw=(W-2*M-4)/2;doc.setFillColor(248,250,252);doc.roundedRect(M,bT,hw,bH,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('SELLER',M+3,bT+5);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text('Sambhi Mobiles',M+3,bT+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',M+3,bT+17);doc.text('1498 Bhagat Niwas, Govind Puri, Delhi',M+3,bT+22);var bx2=M+hw+4;doc.setFillColor(248,250,252);doc.roundedRect(bx2,bT,hw,bH,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('CUSTOMER',bx2+3,bT+5);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text(l.name,bx2+3,bT+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text('Ph: '+l.phone,bx2+3,bT+17);doc.text((l.area||'Delhi')+' | Delhi (07)',bx2+3,bT+22);var bY=bT+bH+4;doc.setFillColor(ty==='PURCHASE'?22:37,ty==='PURCHASE'?163:99,ty==='PURCHASE'?74:235);doc.roundedRect(M,bY,68,7,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(255,255,255);doc.text(ty==='PURCHASE'?'DEVICE PURCHASED FROM CUSTOMER':'DEVICE SOLD TO CUSTOMER',M+34,bY+4.5,'center');if(imei){doc.setFillColor(239,246,255);doc.roundedRect(M+71,bY,108,7,2,2,'F');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('IMEI VERIFIED: '+imei,M+73,bY+4.5);}var tT=bY+11,tW=W-2*M;doc.setFillColor(15,23,42);doc.rect(M,tT,tW,7,'F');doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);var cols=[6,54,11,8,18,22,10,21,18],cx=[M];for(var i=0;i<cols.length-1;i++)cx.push(cx[i]+cols[i]);['#','Item / Device','HSN','Qty','Rate','Taxable','GST%','GST Amt','Total'].forEach(function(h,i){doc.text(h,cx[i]+cols[i]/2,tT+4.5,'center');});var rY=tT+7;doc.setFillColor(255,255,255);doc.rect(M,rY,tW,14,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(15,23,42);doc.text('1',cx[0]+3,rY+5.5);doc.text((l.device||'Mobile Device').substring(0,46),cx[1]+1,rY+5.5);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);doc.text('Battery:'+(l.battery||'?')+'% Year:'+(l.year||'?'),cx[1]+1,rY+10);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(15,23,42);[hsn,'1',String(Math.round(amt)),String(Math.round(tax)),'18%',String(Math.round(cgst*2)),String(Math.round(grand))].forEach(function(v,i){doc.text(v,cx[i+2]+cols[i+2]/2,rY+7,'center');});doc.setDrawColor(226,232,240);doc.setLineWidth(.3);doc.line(M,rY+14,M+tW,rY+14);var totY=rY+18,rw=88,rx=W-M-rw;[['Taxable Value',String(Math.round(tax))],['CGST @ 9%',String(Math.round(cgst))],['SGST @ 9%',String(Math.round(cgst))]].forEach(function(pair,i){doc.setFillColor(i%2===0?248:255,i%2===0?250:255,i%2===0?252:255);doc.rect(rx,totY+i*7,rw,7,'F');doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,116,139);doc.text(pair[0],rx+3,totY+i*7+4.5);doc.setFont('helvetica','bold');doc.setTextColor(15,23,42);doc.text('Rs '+pair[1],rx+rw-3,totY+i*7+4.5,'right');});var gtY=totY+22;doc.setFillColor(15,23,42);doc.roundedRect(rx,gtY,rw,11,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(249,115,22);doc.text('GRAND TOTAL',rx+4,gtY+7);doc.setFontSize(13);doc.setTextColor(255,255,255);doc.text('Rs '+String(Math.round(grand)),rx+rw-4,gtY+7.5,'right');doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(148,163,184);doc.text('In words: '+nw(Math.round(grand))+' Rupees Only',M,gtY+6);var bkY=gtY+16;doc.setFillColor(239,246,255);doc.roundedRect(M,bkY,tW,16,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(37,99,235);doc.text('PAYMENT — BANK / UPI',M+3,bkY+5.5);var c1=M+3,c2=M+tW/2+4;[['Account Name:','Sambhi Mobiles'],['Account No:','10084177443']].forEach(function(r,i){doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(51,65,85);doc.text(r[0],c1,bkY+10+i*5);doc.setFont('helvetica','normal');doc.setTextColor(15,23,42);doc.text(r[1],c1+32,bkY+10+i*5);});[['IFSC:','IDFB0020107'],['Bank:','IDFC First Bank, Okhla Branch']].forEach(function(r,i){doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(51,65,85);doc.text(r[0],c2,bkY+10+i*5);doc.setFont('helvetica','normal');doc.setTextColor(15,23,42);doc.text(r[1],c2+20,bkY+10+i*5);});var sY=bkY+20;doc.setFillColor(248,250,252);doc.roundedRect(M,sY,60,13,2,2,'F');doc.roundedRect(W-M-60,sY,60,13,2,2,'F');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);doc.text('Customer Signature',M+2,sY+5);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(15,23,42);doc.text(l.name,M+2,sY+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);doc.text('Authorised Signatory',W-M-58,sY+5);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(15,23,42);doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',W-M-58,sY+11);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);doc.text('Valid GST invoice. Non-returnable 24hrs. IMEI verified. Delhi courts jurisdiction.',M,sY+19);doc.setFillColor(15,23,42);doc.rect(0,283,W,14,'F');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',W/2,289,'center');doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(180,180,180);doc.text('1498 Bhagat Niwas, 13, Govind Puri, Delhi | +91 7827505579 | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',W/2,294,'center');doc.save('Sambhi_'+invNo+'_'+l.name.replace(/\s+/g,'_')+'.pdf');bills.push({i:invNo,c:l.name,d:l.device||'—',a:Math.round(grand),at:new Date().toISOString()});invN++;savL();rBH();toast('Bill '+invNo+' downloaded!');};document.head.appendChild(scr);}
+// ── RIDERS ────────────────────────────────────────────────────────
+var RC=['#2563EB','#16A34A','#D97706','#7C3AED','#DC2626'];
+function rRid(){var g=document.getElementById('rgrid');if(!riders.length){g.innerHTML='<p style="font-size:14px;color:#94A3B8">No riders yet.</p>';return;}g.innerHTML=riders.map(function(r,i){var al=leads.filter(function(l){return l.riderId===r.id;}).length,cl=leads.filter(function(l){return l.riderId===r.id&&l.status==='completed';}).length,col=RC[i%RC.length];return'<div class="rc"><div class="rav" style="background:'+col+'">'+r.name.charAt(0)+'</div><h3 style="font-size:14px;font-weight:700;margin-bottom:2px">'+r.name+'</h3><div style="font-size:13px;color:#2563EB;margin-bottom:3px"><a href="tel:'+r.phone+'" style="color:#2563EB;text-decoration:none">'+r.phone+'</a></div>'+(r.zone?'<div style="font-size:11px;color:#94A3B8;margin-bottom:9px">📍 '+r.zone+'</div>':'<div style="margin-bottom:9px"></div>')+'<div style="display:flex;gap:14px;justify-content:center;margin-bottom:9px"><div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#2563EB">'+al+'</div><div style="font-size:10px;color:#94A3B8">Assigned</div></div><div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#16A34A">'+cl+'</div><div style="font-size:10px;color:#94A3B8">Done</div></div></div><div style="display:flex;gap:6px;justify-content:center"><button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="openRM(\''+r.id+'\')">✏️ Edit</button><button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'tel:'+r.phone+'\')">📞 Call</button></div><div style="font-size:10px;color:#94A3B8;margin-top:8px">'+r.username+' / '+r.password+'</div></div>';}).join('');}
+function openRM(id){editR=id||null;document.getElementById('rmt').textContent=id?'Edit Rider':'Add Rider';var r=id?riders.find(function(x){return x.id===id;}):null;document.getElementById('rn').value=r?r.name:'';document.getElementById('rph').value=r?r.phone:'';document.getElementById('rem').value=r?r.email||'':'';document.getElementById('rzo').value=r?r.zone||'':'';document.getElementById('rus').value=r?r.username||'':'';document.getElementById('rps').value=r?r.password||'':'';document.getElementById('reid').value=id||'';document.getElementById('rm2').classList.add('on');}
+function saveR(){var n=rn('rn').trim(),p=rn('rph').trim();if(!n||!p){toast('Name and phone required','e');return;}var id=rn('reid')||null;var d={id:id||uid(),name:n,phone:p,email:rn('rem').trim(),zone:rn('rzo').trim(),username:rn('rus').trim(),password:rn('rps').trim()};if(id){var idx=riders.findIndex(function(x){return x.id===id;});if(idx>-1)riders[idx]=d;}else riders.push(d);savR();rRid();popR();cm('rm2');toast('Rider saved');}
+// ── CAMPAIGNS ─────────────────────────────────────────────────────
+function rCamp(){var now=new Date(),g=document.getElementById('cgrid');g.innerHTML=camps.map(function(c,i){var isL=c.on&&(!c.fr||new Date(c.fr)<=now)&&(!c.to||new Date(c.to)>=now);return'<div class="cc'+(isL?' live':'')+'">'+'<div class="che"><div><div class="ctit">'+c.t+'</div><div class="cdesc">'+c.d+'</div></div>'+'<label class="tog"><input type="checkbox"'+(c.on?' checked':'')+' onchange="tC('+i+',this.checked)"><div class="tt"></div><div class="th"></div></label></div>'+(isL?'<div class="clive">🔥 LIVE ON WEBSITE</div>':c.on?'<div style="font-size:12px;color:#7C3AED;background:#EDE9FE;padding:4px 9px;border-radius:7px;display:inline-block;margin-bottom:7px">⏰ Scheduled</div>':'<div style="font-size:12px;color:#94A3B8;margin-bottom:7px">⚪ Inactive</div>')+'<div class="cdates"><div><label>Start date & time</label><input type="datetime-local" value="'+(c.fr?c.fr.slice(0,16):'')+'" onchange="sCS('+i+',\'fr\',this.value)"></div><div><label>End date & time</label><input type="datetime-local" value="'+(c.to?c.to.slice(0,16):'')+'" onchange="sCS('+i+',\'to\',this.value)"></div></div>'+'<div class="cwa">'+c.wa+'</div>'+'<button style="background:#F0FDF4;color:#16A34A;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(camps['+i+'].wa),\'_blank\')">📲 WhatsApp Broadcast</button>'+'</div>';}).join('');}
+function tC(i,v){camps.forEach(function(c,j){if(j!==i)c.on=false;});camps[i].on=v;savC();rCamp();toast(v?'🔥 Campaign LIVE!':'Deactivated');}
+function sCS(i,dir,v){camps[i][dir]=v?new Date(v).toISOString():'';savC();}
+// ── INVENTORY ─────────────────────────────────────────────────────
+var II2={iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮',samsung:'🌟',oneplus:'⚡'};
+function ri(){var cat=rn('ifl'),items=cat?inv.filter(function(x){return x.cat===cat;}):inv,g=document.getElementById('igrid');if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:36px;color:#94A3B8"><div style="font-size:40px;margin-bottom:10px">📦</div><p>No inventory yet. Click + Add Device</p></div>';return;}g.innerHTML=items.map(function(d){var gc=d.grade==='A+'?'ga':d.grade==='A'?'gb':'gc',sp=[d.storage,d.color,d.battery?'Battery '+d.battery+'%':'',d.year].filter(Boolean).join(' · '),sv=d.mrp?Math.round((1-d.price/d.mrp)*100):0;return'<div class="ic'+(d.visible?'':' invis')+'">'+'<div class="ith"><div class="ibadges"><span class="'+gc+'">'+d.grade+'</span>'+(d.qty&&d.qty>1?'<span style="background:#EFF6FF;color:#2563EB">Qty:'+d.qty+'</span>':'')+(d.visible?'':'<span class="invis">Hidden</span>')+'</div>'+(d.visible?'':'<div class="cso"><span class="cstag">🔜 Coming Soon</span></div>')+'<div class="iem">'+(II2[d.cat]||'📱')+'</div></div>'+'<div class="ibo"><h4>'+d.name+'</h4><div class="isp">'+(sp||'—')+'</div><div style="margin-bottom:7px"><span class="ipr">'+Rs(d.price)+'</span>'+(d.mrp?'<span class="imrp">'+Rs(d.mrp)+'</span>':'')+(sv>0?'<span style="font-size:11px;font-weight:700;color:#16A34A;background:#F0FDF4;padding:1px 6px;border-radius:100px;margin-left:4px">-'+sv+'%</span>':'')+'</div>'+(d.features&&d.features.length?'<ul style="font-size:11px;color:#64748B;padding-left:13px;margin-bottom:9px">'+d.features.slice(0,3).map(function(f){return'<li>'+f+'</li>';}).join('')+'</ul>':'')+'<div class="ibt"><button class="ib '+(d.visible?'ibh':'ibs')+'" onclick="tI(\''+d.id+'\')">'+(d.visible?'🙈 Hide':'✅ Show')+'</button><button class="ib ibe" onclick="openIM(\''+d.id+'\')">✏️</button><button class="ib ibd" onclick="delI(\''+d.id+'\')">🗑</button></div></div>'+(d.visible?'':'<div class="nform"><input id="nfn_'+d.id+'" placeholder="Your name"><input id="nfp_'+d.id+'" placeholder="WhatsApp number"><button onclick="regN(\''+d.id+'\',\''+d.name+'\')">🔔 Notify when available</button></div>')+'</div>';}).join('');}
+function oIC(){var cat=rn('ic'),ms=document.getElementById('im');ms.innerHTML='<option value="">Select model</option>';document.getElementById('ist').innerHTML='<option value="">Select</option>';document.getElementById('ico').innerHTML='<option value="">Select</option>';if(IMS[cat])Object.keys(IMS[cat]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});}
+function oIM(){var cat=rn('ic'),mod=rn('im'),ss=document.getElementById('ist'),cs=document.getElementById('ico');ss.innerHTML='<option value="">Select</option>';cs.innerHTML='<option value="">Select</option>';if(IMS[cat]&&IMS[cat][mod])IMS[cat][mod].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ss.appendChild(o);});(ICO[cat]||[]).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});}
+function openIM(id){editI=id||null;document.getElementById('imt').textContent=id?'Edit Device':'Add Device';var d=id?inv.find(function(x){return x.id===id;}):null;document.getElementById('ied').value=id||'';document.getElementById('ic').value=d?d.cat:'iphone';oIC();if(d){setTimeout(function(){document.getElementById('im').value=d.name||'';oIM();setTimeout(function(){document.getElementById('ist').value=d.storage||'';document.getElementById('ico').value=d.color||'';},60);},60);}document.getElementById('igr').value=d?d.grade:'A+';document.getElementById('iba').value=d?d.battery||'':'';document.getElementById('iyr').value=d?d.year||'':'';document.getElementById('iqt').value=d?d.qty||1:1;document.getElementById('ipr').value=d?d.price||'':'';document.getElementById('imr').value=d?d.mrp||'':'';document.getElementById('iim').value=d?d.imei||'':'';document.getElementById('ife').value=d?(d.features||[]).join('\n'):'';document.getElementById('ivi').checked=d?!!d.visible:true;document.getElementById('im2').classList.add('on');}
+function saveI(){var mod=rn('im');if(!mod){toast('Select a model','e');return;}var price=parseInt(rn('ipr'))||0;if(!price){toast('Enter a price','e');return;}var id=rn('ied')||null;var d={id:id||uid(),cat:rn('ic'),name:mod,storage:rn('ist'),color:rn('ico'),grade:rn('igr'),battery:rn('iba'),year:rn('iyr'),qty:parseInt(rn('iqt'))||1,price:price,mrp:parseInt(rn('imr'))||0,imei:rn('iim'),features:(rn('ife')||'').split('\n').filter(function(l){return l.trim();}),visible:document.getElementById('ivi').checked,addedAt:new Date().toISOString()};if(id){var idx=inv.findIndex(function(x){return x.id===id;});if(idx>-1)inv[idx]=d;}else inv.push(d);savI();ri();cm('im2');toast('Device saved');}
+function tI(id){var d=inv.find(function(x){return x.id===id;});if(!d)return;d.visible=!d.visible;savI();ri();toast(d.visible?'Now on Buy page':'Hidden — Coming Soon');}
+function delI(id){if(!confirm('Delete?'))return;inv=inv.filter(function(x){return x.id!==id;});savI();ri();toast('Removed');}
+function regN(devId,devName){var n=rn('nfn_'+devId),p=rn('nfp_'+devId);if(!p){toast('Enter WhatsApp number','e');return;}notifs.push({devId:devId,devName:devName,name:n||'Customer',phone:p,at:new Date().toISOString()});savI();toast('Will notify when available!');}
+// ── PRICES ────────────────────────────────────────────────────────
+function rPr(){var s=parseFloat(localStorage.getItem('smb_mult')||'1');document.getElementById('msl').value=s;um(s);}
+function um(v){v=parseFloat(v);document.getElementById('msv').textContent=v.toFixed(2)+'×';document.getElementById('mex').textContent='iPhone 14 Pro base Rs60,000 → Quote Rs'+Math.round(60000*v).toLocaleString('en-IN');}
+function sm(){var v=parseFloat(document.getElementById('msl').value);localStorage.setItem('smb_mult',v.toFixed(2));toast('Price multiplier saved — all quotes updated');}
+// ── TEAM ──────────────────────────────────────────────────────────
+function rTm(){var team=gT(),isO=CU&&CU.role==='Owner';document.getElementById('tgrid').innerHTML=team.map(function(u,i){return'<div class="tc"><div class="tav2" style="background:'+u.color+'">'+u.init+'</div><h3>'+u.name+'</h3><span class="tr '+(u.role==='Owner'?'tro':u.role==='Manager'?'trm':'tre')+'">'+u.role+'</span>'+(u.ph?'<div class="ti">📞 '+u.ph+'</div>':'')+(u.em?'<div class="ti">✉️ '+u.em+'</div>':'')+'<div class="ti">Username: <strong>'+u.u+'</strong></div>'+(isO?'<div class="ti">Password: <strong>'+u.pw+'</strong></div>':'<div class="ti" style="color:#CBD5E1">Password: ••••••••</div>')+(isO?'<button class="teb" onclick="oTE('+i+')">✏️ Edit</button>':'')+'</div>';}).join('');}
+function oTE(i){var team=gT(),u=team[i];if(!u)return;document.getElementById('ttn').value=u.name||'';document.getElementById('ttp').value=u.ph||'';document.getElementById('tte').value=u.em||'';document.getElementById('ttu').value=u.u||'';document.getElementById('ttw').value='';document.getElementById('tti').value=i;document.getElementById('tm2').classList.add('on');}
+function saveTM(){var i=parseInt(rn('tti'));if(isNaN(i))return;var team=gT();if(!team[i])return;team[i].name=rn('ttn').trim()||team[i].name;team[i].ph=rn('ttp').trim();team[i].em=rn('tte').trim();var nu=rn('ttu').trim(),np=rn('ttw').trim();if(nu)team[i].u=nu;if(np)team[i].pw=np;team[i].init=team[i].name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();savT(team);rTm();cm('tm2');toast('Updated');}
+// ── SEED ──────────────────────────────────────────────────────────
+function seedD(){if(leads.length)return;leads=[{id:uid(),name:'Rahul Sharma',phone:'+91 98765 43210',area:'Lajpat Nagar',devType:'iphone',device:'iPhone 14 Pro 256GB Deep Purple',model:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',year:'2022',battery:'84',slot:'morning',source:'website',basePrice:60000,deps:{charger:true,nobox:true},isLoyalty:false,estPrice:48000,notes:[{t:'Lead from website',at:new Date().toISOString()}],status:'new',createdAt:new Date(Date.now()-172800000).toISOString()},{id:uid(),name:'Priya Mehta',phone:'+91 91234 56789',area:'Saket',devType:'samsung',device:'Galaxy S23 Ultra 256GB',model:'Galaxy S23 Ultra',storage:'256GB',color:'Black',year:'2023',battery:'88',slot:'evening',source:'meta',basePrice:70000,deps:{},isLoyalty:false,estPrice:59500,notes:[{t:'Meta ad lead',at:new Date().toISOString()}],status:'contacted',createdAt:new Date(Date.now()-86400000).toISOString()},{id:uid(),name:'Amit Verma',phone:'+91 99887 76655',area:'Dwarka',devType:'playstation',device:'PS5 Disc Edition',model:'PS5 Disc Edition',storage:'',color:'White',year:'2022',battery:'',slot:'morning',source:'whatsapp',basePrice:44000,deps:{nobox:true},isLoyalty:false,estPrice:40000,notes:[{t:'WhatsApp lead',at:new Date().toISOString()}],status:'scheduled',createdAt:new Date(Date.now()-3600000).toISOString()},{id:uid(),name:'Sunita Kapoor',phone:'+91 87654 32109',area:'Vasant Kunj',devType:'iphone',device:'iPhone 12 64GB Black',model:'iPhone 12',storage:'64GB',color:'Black',year:'2020',battery:'71',slot:'morning',source:'walkin',basePrice:28000,deps:{charger:true,battlow:true},isLoyalty:true,estPrice:20000,notes:[{t:'Walk-in — loyalty applied',at:new Date().toISOString()}],status:'completed',createdAt:new Date(Date.now()-259200000).toISOString()}];savL();}
+// ── BOOT ──────────────────────────────────────────────────────────
+init();
+</script>
+
+
+<script>
+
+var TEAM_DEF=[
+  {u:'amrik',    pw:'amrik1234',   name:'Amrik Singh',color:'#F97316',init:'AS',role:'Owner',ph:'',em:''},
+  {u:'manager1', pw:'manager1234', name:'Manager 1',  color:'#2563EB',init:'M1',role:'Manager',ph:'',em:''},
+  {u:'exec1',    pw:'exec1234',    name:'Executive 1',color:'#16A34A',init:'E1',role:'Executive',ph:'',em:''}
+];
+var CU=null;
+
+function getTeam(){
+  var s=localStorage.getItem('smb_team');
+  if(s){try{var t=JSON.parse(s);if(t&&t.length)return t;}catch(e){}}
+  return TEAM_DEF.map(function(x){return Object.assign({},x);});
+}
+function saveTeam(t){localStorage.setItem('smb_team',JSON.stringify(t));}
+
+function doLogin(){
+  var u=(document.getElementById('lu').value||'').trim().toLowerCase();
+  var p=(document.getElementById('lp').value||'').trim();
+  var err=document.getElementById('lerr');
+  if(!u||!p){err.textContent='Enter username and password';err.style.display='block';return;}
+  var team=getTeam();
+  var found=null;
+  for(var i=0;i<team.length;i++){
+    if(team[i].u===u&&team[i].pw===p){found=team[i];break;}
+  }
+  if(!found){err.textContent='Wrong credentials. Try: amrik / amrik1234';err.style.display='block';return;}
+  err.style.display='none';
+  CU=found;
+  localStorage.setItem('smb_sess',JSON.stringify({u:found.u,name:found.name,role:found.role,ts:Date.now()}));
+  document.getElementById('LS').style.display='none';
+  showCRM(found);
+  initCRM();
+}
+
+function trySession(){
+  try{
+    var s=localStorage.getItem('smb_sess');
+    if(!s)return false;
+    var j=JSON.parse(s);
+    if(!j||!j.u)return false;
+    if(Date.now()-j.ts>43200000){localStorage.removeItem('smb_sess');return false;}
+    var team=getTeam();
+    var found=team.find(function(x){return x.u===j.u;});
+    if(!found)return false;
+    CU=found;
+    document.getElementById('LS').style.display='none';
+    showCRM(found);
+    initCRM();
+    return true;
+  }catch(e){localStorage.removeItem('smb_sess');return false;}
+}
+
+function doLogout(){
+  CU=null;
+  localStorage.removeItem('smb_sess');
+  document.getElementById('LS').style.display='flex';
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
+  // Hide CRM
+  document.getElementById('top').style.display='none';
+  document.getElementById('tabs').style.display='none';
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+}
+
+function showCRM(u){
+  document.getElementById('top').style.display='flex';
+  document.getElementById('tabs').style.display='block';
+  document.getElementById('tav').textContent=u.init;
+  document.getElementById('tav').style.background=u.color;
+  document.getElementById('tname').textContent=u.name;
+  document.getElementById('trole').textContent=u.role;
+  // show first page
+  document.getElementById('pg-dash').classList.add('on');
+  document.querySelector('.tb[data-pg="dash"]').classList.add('on');
+}
+
+// Try session on load
+window.onload=function(){trySession();};
+
+
+// ── DATA ─────────────────────────────────────────────────────────
+var MDS={iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone XR':12000},samsung:{'Galaxy S24 Ultra':95000,'Galaxy S24+':80000,'Galaxy S24':65000,'Galaxy S23 Ultra':70000,'Galaxy S23':50000,'Galaxy S22':38000,'Galaxy A55':28000,'Galaxy A35':20000,'Galaxy A15':10000},oneplus:{'OnePlus 12':55000,'OnePlus 12R':35000,'OnePlus 11':45000,'Nord 4':28000,'Nord 3':22000},realme:{'Realme GT 6':32000,'Realme 13 Pro+':25000,'Realme 13 Pro':20000},oppo:{'Find X7 Pro':55000,'Reno 12 Pro':30000,'F27 Pro':20000},vivo:{'X100 Pro':65000,'V40 Pro':35000,'V40':27000,'Y200':14000},xiaomi:{'Xiaomi 14 Ultra':75000,'Xiaomi 14':55000,'Redmi Note 13 Pro+':25000,'Redmi Note 13':14000,'POCO F6':28000},pixel:{'Pixel 9 Pro':75000,'Pixel 9':60000,'Pixel 8 Pro':55000,'Pixel 8':45000},nothing:{'Phone (2a)':22000,'Phone (2)':35000,'Phone (1)':18000},airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000},applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Series 9':32000,'Apple Watch SE 2nd Gen':16000},playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000}};
+var IMS={iphone:{'iPhone 16 Pro Max':['256GB','512GB','1TB'],'iPhone 16 Pro':['128GB','256GB','512GB','1TB'],'iPhone 16':['128GB','256GB','512GB'],'iPhone 15 Pro Max':['256GB','512GB','1TB'],'iPhone 15 Pro':['128GB','256GB','512GB','1TB'],'iPhone 15':['128GB','256GB','512GB'],'iPhone 14 Pro Max':['128GB','256GB','512GB','1TB'],'iPhone 14 Pro':['128GB','256GB','512GB','1TB'],'iPhone 14':['128GB','256GB','512GB'],'iPhone 13 Pro Max':['128GB','256GB','512GB','1TB'],'iPhone 13 Pro':['128GB','256GB','512GB','1TB'],'iPhone 13':['128GB','256GB','512GB'],'iPhone 12':['64GB','128GB','256GB'],'iPhone 11':['64GB','128GB','256GB'],'iPhone SE (2022)':['64GB','128GB','256GB'],'iPhone XR':['64GB','128GB','256GB']},samsung:{'Galaxy S24 Ultra':['256GB','512GB'],'Galaxy S24':['128GB','256GB'],'Galaxy S23 Ultra':['256GB','512GB'],'Galaxy A55':['128GB','256GB']},oneplus:{'OnePlus 12':['256GB','512GB'],'OnePlus 12R':['128GB','256GB'],'Nord 4':['128GB','256GB']},airpods:{'AirPods Pro 2nd Gen':['MagSafe Case'],'AirPods Pro 1st Gen':['Lightning Case'],'AirPods Max':['Over-ear'],'AirPods 3rd Gen':['Lightning Case']},applewatch:{'Apple Watch Ultra 2':['49mm'],'Apple Watch Series 9':['41mm GPS','45mm GPS','41mm GPS+Cellular','45mm GPS+Cellular'],'Apple Watch SE 2nd Gen':['40mm GPS','44mm GPS']},playstation:{'PS5 Disc Edition':['825GB'],'PS5 Digital Edition':['825GB'],'PS4 Pro':['1TB'],'PS4 Slim':['500GB','1TB'],'PS4':['500GB']}};
+var ICO={iphone:['Black Titanium','White Titanium','Natural Titanium','Desert Titanium','Deep Purple','Gold','Silver','Midnight','Starlight','Blue','Pink','Product Red','Green'],samsung:['Titanium Black','Onyx Black','Cream','Lavender','Green'],oneplus:['Silky Black','Flowy Emerald','Iron Gray'],airpods:['White'],applewatch:['Midnight','Starlight','Silver','Product Red','Pink','Natural Titanium','Black Titanium'],playstation:['White','Black']};
+var DEPS=[{id:'charger',l:'No charger',p:.05},{id:'screen',l:'Screen cracked',p:.18},{id:'body',l:'Body damage',p:.10},{id:'battlow',l:'Battery <80%',p:.12},{id:'nobox',l:'No original box',p:.03},{id:'faceid',l:'Face ID broken',p:.10}];
+var SL={new:'st-new',contacted:'st-contacted',scheduled:'st-scheduled',completed:'st-completed',cancelled:'st-cancelled'};
+var SN={new:'New',contacted:'Contacted',scheduled:'Scheduled',completed:'Completed',cancelled:'Cancelled'};
+// ── STATE ────────────────────────────────────────────────────────
+var CU=null,leads=[],bills=[],riders=[],camps=[],inv=[],notifs=[],addDeps={},addBase=0,editR=null,editI=null;
+var invN=1;
+function load(){
+  leads=JSON.parse(localStorage.getItem('smb_leads')||'[]');
+  bills=JSON.parse(localStorage.getItem('smb_bills')||'[]');
+  riders=JSON.parse(localStorage.getItem('smb_riders')||'[]');
+  inv=JSON.parse(localStorage.getItem('smb_inv')||'[]');
+  notifs=JSON.parse(localStorage.getItem('smb_notifs')||'[]');
+  invN=parseInt(localStorage.getItem('smb_invn')||'1');
+  var sc=localStorage.getItem('smb_camps');
+  camps=sc?JSON.parse(sc):dCamps();if(!sc)savC();
+}
+function savL(){localStorage.setItem('smb_leads',JSON.stringify(leads));localStorage.setItem('smb_bills',JSON.stringify(bills));localStorage.setItem('smb_invn',String(invN));}
+function savR(){localStorage.setItem('smb_riders',JSON.stringify(riders));}
+function savC(){localStorage.setItem('smb_camps',JSON.stringify(camps));var now=new Date();var ac=camps.find(function(c){if(!c.on)return false;if(c.fr&&new Date(c.fr)>now)return false;if(c.to&&new Date(c.to)<now)return false;return true;});localStorage.setItem('smb_active_camp',ac?JSON.stringify(ac):'');}
+function savI(){localStorage.setItem('smb_inv',JSON.stringify(inv));localStorage.setItem('smb_notifs',JSON.stringify(notifs));}
+function gT(){var s=localStorage.getItem('smb_team');if(s){try{var t=JSON.parse(s);if(t&&t.length)return t;}catch(e){}}return[{u:'amrik',pw:'amrik1234',name:'Amrik Singh',color:'#F97316',init:'AS',role:'Owner',ph:'',em:''},{u:'manager1',pw:'manager1234',name:'Manager 1',color:'#2563EB',init:'M1',role:'Manager',ph:'',em:''},{u:'exec1',pw:'exec1234',name:'Executive 1',color:'#16A34A',init:'E1',role:'Executive',ph:'',em:''}];}
+function savT(t){localStorage.setItem('smb_team',JSON.stringify(t));}
+function dCamps(){return[{id:'c1',t:'No deduction — charger missing',d:'Waive 5% charger deduction',on:false,wa:'Missing charger? Zero deduction! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c2',t:'No deduction — low battery',d:'Waive battery deduction below 80%',on:false,wa:'Battery below 80%? No deduction this week! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c3',t:'No screen deduction',d:'Waive screen crack deductions',on:false,wa:'Cracked screen? No deduction today! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c4',t:'Double loyalty — 20% bonus',d:'Returning customers get 20%',on:false,wa:'DOUBLE LOYALTY this week! 20% extra. Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c5',t:'Express pickup — 30 min',d:'Promise 30-minute pickup',on:false,wa:'30-MINUTE PICKUP today! Sambhi Mobiles +91 7827505579',fr:'',to:''},{id:'c6',t:'Zero deductions offer',d:'No deductions at all',on:false,wa:'ZERO deductions today! Full price guaranteed. Sambhi Mobiles +91 7827505579',fr:'',to:''}];}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function Rs(n){return n?'₹'+parseInt(n).toLocaleString('en-IN'):'—';}
+function fd(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short'});}
+function ft(d){return new Date(d).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function fi(n){return'SMB-2025-'+('000'+n).slice(-4);}
+function toast(m,t){var e=document.getElementById('toast');e.textContent=m;e.className='on '+(t||'s');setTimeout(function(){e.className='';},3000);}
+function cm(id){document.getElementById(id).classList.remove('on');}
+function rn(id){return(document.getElementById(id)||{}).value||'';}
+function gRN(id){var r=riders.find(function(x){return x.id===id;});return r?r.name:'';}
+function cE(l){var bp=l.basePrice||0;if(!bp)return 0;var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(bp*m);var yr=parseInt(l.year)||0;var aD=yr?Math.round(adj*Math.min((2025-yr)*.07,.42)):0;var b=parseInt(l.battery)||100;var bD=b<80?Math.round(adj*Math.min((80-b)*.007,.20)):0;var ds=l.deps||{};var cD=DEPS.reduce(function(s,d){return s+(ds[d.id]?Math.round(adj*d.p):0);},0);var base=Math.max(adj-aD-bD-cD,Math.round(adj*.15));return base+(l.isLoyalty?Math.round(base*.10):0);}
+function nw(n){var o=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],t=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];function b(n){if(n<20)return o[n];if(n<100)return t[Math.floor(n/10)]+(n%10?' '+o[n%10]:'');return o[Math.floor(n/100)]+' Hundred'+(n%100?' and '+b(n%100):'');}n=Math.floor(n);if(!n)return'Zero';if(n<1000)return b(n);if(n<100000)return b(Math.floor(n/1000))+' Thousand'+(n%1000?' '+b(n%1000):'');if(n<10000000)return b(Math.floor(n/100000))+' Lakh'+(n%100000?' '+nw(n%100000):'');return b(Math.floor(n/10000000))+' Crore'+(n%10000000?' '+nw(n%10000000):'');}
+// ── TABS ─────────────────────────────────────────────────────────
+document.querySelectorAll('.tb').forEach(function(b){b.onclick=function(){gt(this.dataset.pg);};});
+function gt(pg){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tb').forEach(function(t){t.classList.remove('on');});
+  var el=document.getElementById('pg-'+pg);if(el)el.classList.add('on');
+  var tb=document.querySelector('.tb[data-pg="'+pg+'"]');if(tb)tb.classList.add('on');
+  if(pg==='dash')rd();if(pg==='leads')rl();if(pg==='fu')rk();if(pg==='bill')rBill();
+  if(pg==='riders')rRid();if(pg==='camps')rCamp();if(pg==='inv')ri();if(pg==='prices')rPr();if(pg==='team')rTm();
+}
+// ── INIT ──────────────────────────────────────────────────────────
+function initCRM(){
+  // CU already set by login - set up UI then load data
+  load();seedD();rd();iAF();rRid();rCamp();ri();rPr();rTm();popR();
+
+  initCRM_load();
+}
+function logout(){doLogout();}
+// ── DASHBOARD ─────────────────────────────────────────────────────
+function rd(){
+  var td=new Date().toDateString();
+  var n0=leads.filter(function(l){return l.status==='new'&&new Date(l.createdAt).toDateString()===td;}).length;
+  var n1=leads.filter(function(l){return['new','contacted'].indexOf(l.status)>-1;}).length;
+  var n2=leads.filter(function(l){return l.status==='scheduled';}).length;
+  var n3=leads.filter(function(l){return l.status==='completed';}).length;
+  var n4=bills.reduce(function(s,b){return s+(parseInt(b.a)||0);},0);
+  document.getElementById('s0').textContent=n0;document.getElementById('s1').textContent=n1;
+  document.getElementById('s2').textContent=n2;document.getElementById('s3').textContent=n3;
+  document.getElementById('s4').textContent='₹'+n4.toLocaleString('en-IN');
+  document.getElementById('newbadge').textContent='🔔 '+n0+' New';
+  document.getElementById('nbl').textContent=leads.length;
+  var rec=leads.slice().sort(srt).slice(0,8);
+  document.getElementById('dtb').innerHTML=rec.length?rec.map(function(l){return lr(l,true);}).join(''):'<tr><td colspan="7" style="text-align:center;padding:22px;color:#94A3B8">No leads yet.</td></tr>';
+}
+function srt(a,b){if(a.slot==='morning'&&b.slot!=='morning')return -1;if(b.slot==='morning'&&a.slot!=='morning')return 1;return new Date(b.createdAt)-new Date(a.createdAt);}
+// ── LEADS ─────────────────────────────────────────────────────────
+function rl(){
+  var q=rn('src').toLowerCase(),st=rn('sst'),sl=rn('ssl');
+  var f=leads.slice().sort(srt);
+  if(q)f=f.filter(function(l){return(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().indexOf(q)>-1;});
+  if(st)f=f.filter(function(l){return l.status===st;});
+  if(sl)f=f.filter(function(l){return l.slot===sl;});
+  document.getElementById('ltb').innerHTML=f.length?f.map(function(l){return lr(l,false);}).join(''):'<tr><td colspan="9" style="text-align:center;padding:22px;color:#94A3B8">No leads.</td></tr>';
+}
+function lr(l,c){
+  var est=cE(l);
+  var sb=l.slot==='morning'?'<span class="sm">🌅</span>':'<span class="se">🌆</span>';
+  var st='<span class="badge '+(SL[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span>';
+  var lo=l.isLoyalty?'<span style="font-size:10px;background:#FFFBEB;color:#D97706;padding:1px 6px;border-radius:100px;margin-left:3px">🏆</span>':'';
+  var isO=CU&&CU.role==='Owner';
+  var bb=isO?(l.status==='completed'?'<button class="act abi" onclick="event.stopPropagation();oBF(\''+l.id+'\')">🧾</button>':'<button class="act abi" disabled>🧾</button>'):'';
+  var db=isO?'<button class="act ad" onclick="event.stopPropagation();dL(\''+l.id+'\')">🗑</button>':'';
+  if(c)return'<tr onclick="oL(\''+l.id+'\')">'
+    +'<td><strong>'+l.name+lo+'</strong><br><span style="font-size:11px;color:#2563EB">'+l.phone+'</span></td>'
+    +'<td style="font-size:12px;max-width:130px">'+((l.device||'—').substring(0,24))+'</td>'
+    +'<td style="font-size:12px;color:#64748B">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td><td>'+st+'</td>'
+    +'<td style="font-weight:700;color:#16A34A">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:3px">'
+    +'<button class="act ac" onclick="cL(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
+    +bb+db+'</td></tr>';
+  return'<tr onclick="oL(\''+l.id+'\')">'
+    +'<td style="font-size:11px;color:#94A3B8">'+fd(l.createdAt)+'<br>'+ft(l.createdAt)+'</td>'
+    +'<td><strong>'+l.name+lo+'</strong></td>'
+    +'<td style="color:#2563EB;font-size:12px">'+l.phone+'</td>'
+    +'<td style="font-size:12px;max-width:130px">'+((l.device||'—').substring(0,24))+'</td>'
+    +'<td style="font-size:12px;color:#64748B">'+(l.area||'—')+'</td>'
+    +'<td>'+sb+'</td><td>'+st+'</td>'
+    +'<td style="font-weight:700;color:#16A34A">'+(est?Rs(est):'—')+'</td>'
+    +'<td onclick="event.stopPropagation()" style="display:flex;gap:3px;flex-wrap:wrap">'
+    +'<button class="act ac" onclick="cL(\''+l.id+'\',\''+l.phone+'\')">📞</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬</button>'
+    +bb+db+'</td></tr>';
+}
+function cL(id,ph){
+  var l=leads.find(function(x){return x.id===id;});
+  if(l&&l.status==='new'){l.status='contacted';aN(l,'📞 Called — status updated');savL();rd();rl();rk();toast('📞 Status → Contacted','i');}
+  window.open('tel:'+ph);
+}
+function waM(ph,nm){var p=ph.replace(/[^0-9]/g,'');window.open('https://wa.me/91'+p+'?text='+encodeURIComponent('Hello '+nm+'! Sambhi Mobiles here. Please confirm your pickup slot.\n🌅 Morning (9AM–1PM) or 🌆 Evening (4PM–8PM)\n📞 +91 7827505579'),'_blank');}
+function dL(id){if(!confirm('Delete this lead?'))return;leads=leads.filter(function(x){return x.id!==id;});savL();rd();rl();rk();cm('lm');toast('Lead deleted');}
+function aN(l,t){l.notes=l.notes||[];l.notes.push({t:t+(CU?' ('+CU.name+')':''),at:new Date().toISOString()});}
+// ── LEAD MODAL ────────────────────────────────────────────────────
+function oL(id){
+  var l=leads.find(function(x){return x.id===id;});if(!l)return;
+  document.getElementById('lmt').textContent=l.name;
+  var steps=['new','contacted','scheduled','completed','cancelled'];
+  var sh=steps.map(function(s){var cls=l.status===s?'active':(steps.indexOf(s)<steps.indexOf(l.status)?'done':'');return'<button class="sp '+cls+'" onclick="uS(\''+id+'\',\''+s+'\')" >'+SN[s]+'</button>';}).join('');
+  var dL2=DEPS.filter(function(d){return(l.deps||{})[d.id];}).map(function(d){return d.l;}).join(', ')||'None';
+  var ro='<option value="">Unassigned</option>'+riders.map(function(r){return'<option value="'+r.id+'"'+(l.riderId===r.id?' selected':'')+'>'+r.name+'</option>';}).join('');
+  var tl=(l.notes||[]).slice().reverse().map(function(n){return'<div class="tli"><div class="tld"></div><div><div class="tlt">'+n.t+'</div><div class="tlm">'+fd(n.at)+' '+ft(n.at)+'</div></div></div>';}).join('');
+  var est=cE(l);
+  var isO=CU&&CU.role==='Owner';
+  var bb=isO&&l.status==='completed'?'<button class="sb" style="margin-bottom:7px" onclick="oBF(\''+id+'\');cm(\'lm\')">🧾 Generate GST Bill</button>':'';
+  var db=isO?'<button class="sb" style="background:var(--r);margin-bottom:7px" onclick="dL(\''+id+'\')">🗑 Delete Lead</button>':'';
+  document.getElementById('lmb').innerHTML=
+    '<div class="stpr">'+sh+'</div>'
+    +'<div class="g2" style="margin-bottom:11px">'
+    +'<div style="background:#F8FAFC;border-radius:10px;padding:11px"><div style="font-size:10px;font-weight:700;color:#2563EB;margin-bottom:5px">CUSTOMER</div>'
+    +'<div style="font-size:15px;font-weight:700">'+l.name+(l.isLoyalty?' 🏆':'')+'</div>'
+    +'<a href="tel:'+l.phone+'" style="font-size:13px;color:#2563EB;display:block;margin:3px 0">'+l.phone+'</a>'
+    +'<div style="font-size:12px;color:#94A3B8">'+(l.area||'')+'</div>'
+    +'<div style="margin-top:7px;display:flex;gap:5px">'
+    +'<button class="act ac" onclick="cL(\''+id+'\',\''+l.phone+'\')">📞 Call</button>'
+    +'<button class="act aw" onclick="waM(\''+l.phone+'\',\''+l.name+'\')">💬 WA</button>'
+    +'</div></div>'
+    +'<div style="background:#F8FAFC;border-radius:10px;padding:11px"><div style="font-size:10px;font-weight:700;color:#2563EB;margin-bottom:5px">DEVICE</div>'
+    +'<div style="font-size:14px;font-weight:700">'+(l.device||'—')+'</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Year: '+(l.year||'—')+' · Battery: '+(l.battery||'?')+'%</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Issues: '+dL2+'</div>'
+    +'<div style="font-size:12px;color:#94A3B8">Slot: '+(l.slot==='morning'?'🌅 Morning':'🌆 Evening')+'</div>'
+    +'<div style="margin-top:8px"><label style="font-size:10px;font-weight:700;color:#94A3B8;display:block;margin-bottom:3px">ASSIGN RIDER</label>'
+    +'<select onchange="aR(\''+id+'\',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none;background:#F8FAFC">'+ro+'</select></div>'
+    +'</div></div>'
+    +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
+    +bb+db
+    +'<div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:7px">ACTIVITY LOG</div>'
+    +'<div class="tl">'+(tl||'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:9px">No activity yet</p>')+'</div>'
+    +'<div class="nr"><input id="nin" placeholder="Add a note…"><button onclick="sN(\''+id+'\')">Add</button></div>';
+  document.getElementById('lm').classList.add('on');
+}
+function uS(id,s){var l=leads.find(function(x){return x.id===id;});if(!l)return;l.status=s;aN(l,'Status → '+SN[s]);savL();rd();rl();rk();oL(id);toast('✅ Status → '+SN[s]);}
+function aR(id,rid){var l=leads.find(function(x){return x.id===id;});if(!l)return;l.riderId=rid;aN(l,'Rider: '+(rid?gRN(rid):'Unassigned'));savL();toast('Rider assigned','i');}
+function sN(id){var inp=document.getElementById('nin');if(!inp||!inp.value.trim())return;var l=leads.find(function(x){return x.id===id;});if(!l)return;aN(l,inp.value.trim());savL();inp.value='';oL(id);toast('Note saved');}
+// ── KANBAN ────────────────────────────────────────────────────────
+function rk(){
+  ['new','contacted','scheduled','completed'].forEach(function(st){
+    var items=leads.filter(function(l){return l.status===st;}).sort(srt);
+    document.getElementById('kn-'+st).textContent=items.length;
+    document.getElementById('kb-'+st).innerHTML=items.length?items.map(function(l){
+      return'<div class="kcard" onclick="oL(\''+l.id+'\')">'
+        +'<h4>'+l.name+(l.isLoyalty?' 🏆':'')+'</h4>'
+        +'<div class="kdev">'+(l.device||'No device')+'</div>'
+        +'<div class="ktags">'
+        +(l.slot==='morning'?'<span class="ktag" style="background:#FEF3C7;color:#92400E">🌅</span>':'<span class="ktag" style="background:#EDE9FE;color:#7C3AED">🌆</span>')
+        +'<span class="ktag">'+l.phone+'</span>'
+        +(cE(l)?'<span class="ktag" style="background:#F0FDF4;color:#16A34A">'+Rs(cE(l))+'</span>':'')
+        +(l.riderId?'<span class="ktag" style="background:#EFF6FF;color:#2563EB">🏍 '+gRN(l.riderId)+'</span>':'')
+        +'</div></div>';
+    }).join(''):'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:14px">No leads</p>';
+  });
+}
+// ── ADD LEAD ──────────────────────────────────────────────────────
+function iAF(){addDeps={};addBase=0;DEPS.forEach(function(d){addDeps[d.id]=false;});var ch=document.getElementById('achips');ch.innerHTML=DEPS.map(function(d){return'<div class="chip" id="ach_'+d.id+'" onclick="tD(\''+d.id+'\')">'+'<div class="cd"></div>'+d.l+' (-'+(d.p*100).toFixed(0)+'%)</div>';}).join('');var pb=document.getElementById('apb');if(pb)pb.style.display='none';var am=document.getElementById('amo');if(am)am.innerHTML='<option value="">Select model</option>';}
+function popR(){var s=document.getElementById('ari');s.innerHTML='<option value="">Unassigned</option>';riders.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name+(r.zone?' ('+r.zone+')':'');s.appendChild(o);});}
+function onABr(){var dt=rn('abr'),ms=document.getElementById('amo');ms.innerHTML='<option value="">Select model</option>';addBase=0;if(dt&&MDS[dt])Object.keys(MDS[dt]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});ca();}
+function onAMo(){var dt=rn('abr'),m=rn('amo');addBase=(dt&&m&&MDS[dt]&&MDS[dt][m])?MDS[dt][m]:0;ca();}
+function tD(id){addDeps[id]=!addDeps[id];document.getElementById('ach_'+id).classList.toggle('on',addDeps[id]);ca();}
+function ca(){var pb=document.getElementById('apb');if(!addBase){pb.style.display='none';return;}var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(addBase*m);var yr=parseInt(rn('ayr'))||0;var aD=yr?Math.round(adj*Math.min((2025-yr)*.07,.42)):0;var b=parseInt(rn('aba'))||100;var bD=b<80?Math.round(adj*Math.min((80-b)*.007,.20)):0;var cD=DEPS.reduce(function(s,d){return s+(addDeps[d.id]?Math.round(adj*d.p):0);},0);var lo=document.getElementById('alo').checked;var base=Math.max(adj-aD-bD-cD,Math.round(adj*.15));var est=base+(lo?Math.round(base*.10):0);pb.style.display='flex';document.getElementById('apbv').textContent=Rs(est);document.getElementById('apbs').textContent=Math.round((est/adj)*100)+'% of base'+(lo?' + 10% loyalty':'');}
+function saveLead(){var n=rn('an').trim(),p=rn('ap').trim();if(!n||!p){toast('Name and phone required','e');return;}var dt=rn('abr'),dm=rn('amo'),yr=rn('ayr'),ba=rn('aba'),lo=document.getElementById('alo').checked,rid=rn('ari'),st=rn('ast').trim(),co=rn('aco').trim();var deps={};DEPS.forEach(function(d){if(addDeps[d.id])deps[d.id]=true;});var dev=[dm,st,co].filter(Boolean).join(' ')||dt||'Unknown';var m=parseFloat(localStorage.getItem('smb_mult')||'1');var adj=Math.round(addBase*m);var yr2=parseInt(yr)||0,aD2=yr2?Math.round(adj*Math.min((2025-yr2)*.07,.42)):0;var b2=parseInt(ba)||100,bD2=b2<80?Math.round(adj*Math.min((80-b2)*.007,.20)):0;var cD2=DEPS.reduce(function(s,d){return s+(deps[d.id]?Math.round(adj*d.p):0);},0);var base=adj?Math.max(adj-aD2-bD2-cD2,Math.round(adj*.15)):0;var est=base+(lo?Math.round(base*.10):0);leads.push({id:uid(),name:n,phone:p,area:rn('aa').trim(),address:rn('aad').trim(),devType:dt,device:dev,model:dm,storage:st,color:co,year:yr,battery:ba,imei:rn('aim').trim(),basePrice:addBase,deps:deps,isLoyalty:lo,estPrice:est,slot:rn('asl'),source:rn('aso'),riderId:rid,notes:[{t:'Added by '+(CU?CU.name:'admin'),at:new Date().toISOString()}],status:'new',createdAt:new Date().toISOString()});savL();toast('Lead saved for '+n);['an','ap','aa','aad','ast','aco','aim','aba','ano'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});document.getElementById('abr').value='';document.getElementById('amo').innerHTML='<option>Select model</option>';document.getElementById('alo').checked=false;document.getElementById('ari').value='';iAF();rd();setTimeout(function(){gt('leads');},500);}
+// ── BILL ──────────────────────────────────────────────────────────
+function rBill(){if(!CU||CU.role!=='Owner'){document.getElementById('pg-bill').innerHTML='<div style="padding:50px;text-align:center;color:#94A3B8"><div style="font-size:40px;margin-bottom:12px">🔒</div><h3>Owner only</h3></div>';return;}var comp=leads.filter(function(l){return l.status==='completed';});document.getElementById('bsel').innerHTML='<option value="">— Choose completed lead —</option>'+comp.map(function(l){return'<option value="'+l.id+'">'+l.name+' — '+(l.device||'Device')+'</option>';}).join('');document.getElementById('bform').style.display='none';document.getElementById('bino').value=fi(invN);document.getElementById('bdat').value=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});rBH();}
+function rBH(){var bh=document.getElementById('bhist');bh.innerHTML=bills.length?bills.slice().reverse().map(function(b){return'<div class="bhi"><div><div style="font-size:13px;font-weight:700">'+b.i+'</div><div style="font-size:12px;color:#94A3B8">'+b.c+' · '+(b.d||'—')+'</div></div><div style="text-align:right"><div style="color:#16A34A;font-weight:700">'+Rs(b.a)+'</div><button onclick="dB(\''+b.i+'\')" style="font-size:10px;background:#FEF2F2;color:#DC2626;border:none;padding:2px 7px;border-radius:5px;cursor:pointer;margin-top:3px;font-family:inherit">🗑</button></div></div>';}).join(''):'<p style="font-size:13px;color:#94A3B8">No bills yet.</p>';}
+function dB(inv){if(!confirm('Delete bill '+inv+'?'))return;bills=bills.filter(function(x){return x.i!==inv;});savL();rBH();toast('Bill deleted');}
+function obs(){var id=rn('bsel'),bf=document.getElementById('bform');if(!id){bf.style.display='none';return;}var l=leads.find(function(x){return x.id===id;});if(!l)return;bf.style.display='block';document.getElementById('bamt').value=cE(l)||'';document.getElementById('bimei').value=l.imei||'';cbt();}
+function cbt(){var amt=parseFloat(rn('bamt'))||0;if(!amt){['ttax','tcg','tsg','tgr'].forEach(function(id){document.getElementById(id).textContent='—';});return;}var tax=Math.round(amt/1.18*100)/100,cgst=Math.round(tax*.09*100)/100,grand=Math.round((tax+cgst*2)*100)/100;document.getElementById('ttax').textContent=Rs(tax);document.getElementById('tcg').textContent=Rs(cgst);document.getElementById('tsg').textContent=Rs(cgst);document.getElementById('tgr').textContent=Rs(grand);}
+function oBF(id){gt('bill');setTimeout(function(){document.getElementById('bsel').value=id;obs();},200);}
+function waB(){var id=rn('bsel'),l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a lead','e');return;}var g=document.getElementById('tgr').textContent,p=l.phone.replace(/[^0-9]/g,'');window.open('https://wa.me/91'+p+'?text='+encodeURIComponent('Hello '+l.name+'!\n\nTransaction complete with Sambhi Mobiles.\nAmount: '+g+'\n\nBank: IDFC First Bank | Acc: 10084177443 | IFSC: IDFB0020107\n\n+91 7827505579 | GSTIN: 07BWPPS6835M1ZI'),'_blank');}
+function genB(){var id=rn('bsel'),l=leads.find(function(x){return x.id===id;});if(!l){toast('Select a completed lead','e');return;}var amt=parseFloat(rn('bamt'))||0;if(!amt){toast('Enter the final amount','e');return;}var tax=Math.round(amt/1.18*100)/100,cgst=Math.round(tax*.09*100)/100,grand=Math.round((tax+cgst*2)*100)/100;var imei=rn('bimei'),ty=rn('btype'),invNo=fi(invN),tod=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),hsn=l.devType==='playstation'?'9504':l.devType==='airpods'||l.devType==='applewatch'?'8518':'8517';var scr=document.createElement('script');scr.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';scr.onload=function(){var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});var W=210,M=16;doc.setFillColor(15,23,42);doc.rect(0,0,W,36,'F');doc.setFillColor(37,99,235);doc.rect(0,0,W,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',M,13);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(180,180,180);doc.text('Prop: Amrik Singh | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',M,19);doc.text('1498, Bhagat Niwas, 13, Govind Puri, New Delhi 110019 | +91 7827505579',M,24);doc.setFillColor(37,99,235);doc.roundedRect(148,8,44,12,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(255,255,255);doc.text('TAX INVOICE',170,15,'center');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(180,180,180);doc.text('No: '+invNo,W-M,23,'right');doc.text('Date: '+tod,W-M,28,'right');var bT=40,bH=25,hw=(W-2*M-4)/2;doc.setFillColor(248,250,252);doc.roundedRect(M,bT,hw,bH,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('SELLER',M+3,bT+5);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text('Sambhi Mobiles',M+3,bT+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',M+3,bT+17);doc.text('1498 Bhagat Niwas, Govind Puri, Delhi',M+3,bT+22);var bx2=M+hw+4;doc.setFillColor(248,250,252);doc.roundedRect(bx2,bT,hw,bH,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('CUSTOMER',bx2+3,bT+5);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,23,42);doc.text(l.name,bx2+3,bT+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,116,139);doc.text('Ph: '+l.phone,bx2+3,bT+17);doc.text((l.area||'Delhi')+' | Delhi (07)',bx2+3,bT+22);var bY=bT+bH+4;doc.setFillColor(ty==='PURCHASE'?22:37,ty==='PURCHASE'?163:99,ty==='PURCHASE'?74:235);doc.roundedRect(M,bY,68,7,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(255,255,255);doc.text(ty==='PURCHASE'?'DEVICE PURCHASED FROM CUSTOMER':'DEVICE SOLD TO CUSTOMER',M+34,bY+4.5,'center');if(imei){doc.setFillColor(239,246,255);doc.roundedRect(M+71,bY,108,7,2,2,'F');doc.setFontSize(6.5);doc.setTextColor(37,99,235);doc.text('IMEI VERIFIED: '+imei,M+73,bY+4.5);}var tT=bY+11,tW=W-2*M;doc.setFillColor(15,23,42);doc.rect(M,tT,tW,7,'F');doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);var cols=[6,54,11,8,18,22,10,21,18],cx=[M];for(var i=0;i<cols.length-1;i++)cx.push(cx[i]+cols[i]);['#','Item / Device','HSN','Qty','Rate','Taxable','GST%','GST Amt','Total'].forEach(function(h,i){doc.text(h,cx[i]+cols[i]/2,tT+4.5,'center');});var rY=tT+7;doc.setFillColor(255,255,255);doc.rect(M,rY,tW,14,'F');doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(15,23,42);doc.text('1',cx[0]+3,rY+5.5);doc.text((l.device||'Mobile Device').substring(0,46),cx[1]+1,rY+5.5);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);doc.text('Battery:'+(l.battery||'?')+'% Year:'+(l.year||'?'),cx[1]+1,rY+10);doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(15,23,42);[hsn,'1',String(Math.round(amt)),String(Math.round(tax)),'18%',String(Math.round(cgst*2)),String(Math.round(grand))].forEach(function(v,i){doc.text(v,cx[i+2]+cols[i+2]/2,rY+7,'center');});doc.setDrawColor(226,232,240);doc.setLineWidth(.3);doc.line(M,rY+14,M+tW,rY+14);var totY=rY+18,rw=88,rx=W-M-rw;[['Taxable Value',String(Math.round(tax))],['CGST @ 9%',String(Math.round(cgst))],['SGST @ 9%',String(Math.round(cgst))]].forEach(function(pair,i){doc.setFillColor(i%2===0?248:255,i%2===0?250:255,i%2===0?252:255);doc.rect(rx,totY+i*7,rw,7,'F');doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,116,139);doc.text(pair[0],rx+3,totY+i*7+4.5);doc.setFont('helvetica','bold');doc.setTextColor(15,23,42);doc.text('Rs '+pair[1],rx+rw-3,totY+i*7+4.5,'right');});var gtY=totY+22;doc.setFillColor(15,23,42);doc.roundedRect(rx,gtY,rw,11,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(249,115,22);doc.text('GRAND TOTAL',rx+4,gtY+7);doc.setFontSize(13);doc.setTextColor(255,255,255);doc.text('Rs '+String(Math.round(grand)),rx+rw-4,gtY+7.5,'right');doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(148,163,184);doc.text('In words: '+nw(Math.round(grand))+' Rupees Only',M,gtY+6);var bkY=gtY+16;doc.setFillColor(239,246,255);doc.roundedRect(M,bkY,tW,16,2,2,'F');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(37,99,235);doc.text('PAYMENT — BANK / UPI',M+3,bkY+5.5);var c1=M+3,c2=M+tW/2+4;[['Account Name:','Sambhi Mobiles'],['Account No:','10084177443']].forEach(function(r,i){doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(51,65,85);doc.text(r[0],c1,bkY+10+i*5);doc.setFont('helvetica','normal');doc.setTextColor(15,23,42);doc.text(r[1],c1+32,bkY+10+i*5);});[['IFSC:','IDFB0020107'],['Bank:','IDFC First Bank, Okhla Branch']].forEach(function(r,i){doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(51,65,85);doc.text(r[0],c2,bkY+10+i*5);doc.setFont('helvetica','normal');doc.setTextColor(15,23,42);doc.text(r[1],c2+20,bkY+10+i*5);});var sY=bkY+20;doc.setFillColor(248,250,252);doc.roundedRect(M,sY,60,13,2,2,'F');doc.roundedRect(W-M-60,sY,60,13,2,2,'F');doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);doc.text('Customer Signature',M+2,sY+5);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(15,23,42);doc.text(l.name,M+2,sY+11);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(148,163,184);doc.text('Authorised Signatory',W-M-58,sY+5);doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(15,23,42);doc.text('Amrik Singh | GSTIN: 07BWPPS6835M1ZI',W-M-58,sY+11);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(148,163,184);doc.text('Valid GST invoice. Non-returnable 24hrs. IMEI verified. Delhi courts jurisdiction.',M,sY+19);doc.setFillColor(15,23,42);doc.rect(0,283,W,14,'F');doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(37,99,235);doc.text('Sambhi Mobiles',W/2,289,'center');doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(180,180,180);doc.text('1498 Bhagat Niwas, 13, Govind Puri, Delhi | +91 7827505579 | GSTIN: 07BWPPS6835M1ZI | PAN: BWPPS6835M',W/2,294,'center');doc.save('Sambhi_'+invNo+'_'+l.name.replace(/\s+/g,'_')+'.pdf');bills.push({i:invNo,c:l.name,d:l.device||'—',a:Math.round(grand),at:new Date().toISOString()});invN++;savL();rBH();toast('Bill '+invNo+' downloaded!');};document.head.appendChild(scr);}
+// ── RIDERS ────────────────────────────────────────────────────────
+var RC=['#2563EB','#16A34A','#D97706','#7C3AED','#DC2626'];
+function rRid(){var g=document.getElementById('rgrid');if(!riders.length){g.innerHTML='<p style="font-size:14px;color:#94A3B8">No riders yet.</p>';return;}g.innerHTML=riders.map(function(r,i){var al=leads.filter(function(l){return l.riderId===r.id;}).length,cl=leads.filter(function(l){return l.riderId===r.id&&l.status==='completed';}).length,col=RC[i%RC.length];return'<div class="rc"><div class="rav" style="background:'+col+'">'+r.name.charAt(0)+'</div><h3 style="font-size:14px;font-weight:700;margin-bottom:2px">'+r.name+'</h3><div style="font-size:13px;color:#2563EB;margin-bottom:3px"><a href="tel:'+r.phone+'" style="color:#2563EB;text-decoration:none">'+r.phone+'</a></div>'+(r.zone?'<div style="font-size:11px;color:#94A3B8;margin-bottom:9px">📍 '+r.zone+'</div>':'<div style="margin-bottom:9px"></div>')+'<div style="display:flex;gap:14px;justify-content:center;margin-bottom:9px"><div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#2563EB">'+al+'</div><div style="font-size:10px;color:#94A3B8">Assigned</div></div><div style="text-align:center"><div style="font-size:15px;font-weight:700;color:#16A34A">'+cl+'</div><div style="font-size:10px;color:#94A3B8">Done</div></div></div><div style="display:flex;gap:6px;justify-content:center"><button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="openRM(\''+r.id+'\')">✏️ Edit</button><button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'tel:'+r.phone+'\')">📞 Call</button></div><div style="font-size:10px;color:#94A3B8;margin-top:8px">'+r.username+' / '+r.password+'</div></div>';}).join('');}
+function openRM(id){editR=id||null;document.getElementById('rmt').textContent=id?'Edit Rider':'Add Rider';var r=id?riders.find(function(x){return x.id===id;}):null;document.getElementById('rn').value=r?r.name:'';document.getElementById('rph').value=r?r.phone:'';document.getElementById('rem').value=r?r.email||'':'';document.getElementById('rzo').value=r?r.zone||'':'';document.getElementById('rus').value=r?r.username||'':'';document.getElementById('rps').value=r?r.password||'':'';document.getElementById('reid').value=id||'';document.getElementById('rm2').classList.add('on');}
+function saveR(){var n=rn('rn').trim(),p=rn('rph').trim();if(!n||!p){toast('Name and phone required','e');return;}var id=rn('reid')||null;var d={id:id||uid(),name:n,phone:p,email:rn('rem').trim(),zone:rn('rzo').trim(),username:rn('rus').trim(),password:rn('rps').trim()};if(id){var idx=riders.findIndex(function(x){return x.id===id;});if(idx>-1)riders[idx]=d;}else riders.push(d);savR();rRid();popR();cm('rm2');toast('Rider saved');}
+// ── CAMPAIGNS ─────────────────────────────────────────────────────
+function rCamp(){var now=new Date(),g=document.getElementById('cgrid');g.innerHTML=camps.map(function(c,i){var isL=c.on&&(!c.fr||new Date(c.fr)<=now)&&(!c.to||new Date(c.to)>=now);return'<div class="cc'+(isL?' live':'')+'">'+'<div class="che"><div><div class="ctit">'+c.t+'</div><div class="cdesc">'+c.d+'</div></div>'+'<label class="tog"><input type="checkbox"'+(c.on?' checked':'')+' onchange="tC('+i+',this.checked)"><div class="tt"></div><div class="th"></div></label></div>'+(isL?'<div class="clive">🔥 LIVE ON WEBSITE</div>':c.on?'<div style="font-size:12px;color:#7C3AED;background:#EDE9FE;padding:4px 9px;border-radius:7px;display:inline-block;margin-bottom:7px">⏰ Scheduled</div>':'<div style="font-size:12px;color:#94A3B8;margin-bottom:7px">⚪ Inactive</div>')+'<div class="cdates"><div><label>Start date & time</label><input type="datetime-local" value="'+(c.fr?c.fr.slice(0,16):'')+'" onchange="sCS('+i+',\'fr\',this.value)"></div><div><label>End date & time</label><input type="datetime-local" value="'+(c.to?c.to.slice(0,16):'')+'" onchange="sCS('+i+',\'to\',this.value)"></div></div>'+'<div class="cwa">'+c.wa+'</div>'+'<button style="background:#F0FDF4;color:#16A34A;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'https://wa.me/?text=\'+encodeURIComponent(camps['+i+'].wa),\'_blank\')">📲 WhatsApp Broadcast</button>'+'</div>';}).join('');}
+function tC(i,v){camps.forEach(function(c,j){if(j!==i)c.on=false;});camps[i].on=v;savC();rCamp();toast(v?'🔥 Campaign LIVE!':'Deactivated');}
+function sCS(i,dir,v){camps[i][dir]=v?new Date(v).toISOString():'';savC();}
+// ── INVENTORY ─────────────────────────────────────────────────────
+var II2={iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮',samsung:'🌟',oneplus:'⚡'};
+function ri(){var cat=rn('ifl'),items=cat?inv.filter(function(x){return x.cat===cat;}):inv,g=document.getElementById('igrid');if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:36px;color:#94A3B8"><div style="font-size:40px;margin-bottom:10px">📦</div><p>No inventory yet. Click + Add Device</p></div>';return;}g.innerHTML=items.map(function(d){var gc=d.grade==='A+'?'ga':d.grade==='A'?'gb':'gc',sp=[d.storage,d.color,d.battery?'Battery '+d.battery+'%':'',d.year].filter(Boolean).join(' · '),sv=d.mrp?Math.round((1-d.price/d.mrp)*100):0;return'<div class="ic'+(d.visible?'':' invis')+'">'+'<div class="ith"><div class="ibadges"><span class="'+gc+'">'+d.grade+'</span>'+(d.qty&&d.qty>1?'<span style="background:#EFF6FF;color:#2563EB">Qty:'+d.qty+'</span>':'')+(d.visible?'':'<span class="invis">Hidden</span>')+'</div>'+(d.visible?'':'<div class="cso"><span class="cstag">🔜 Coming Soon</span></div>')+'<div class="iem">'+(II2[d.cat]||'📱')+'</div></div>'+'<div class="ibo"><h4>'+d.name+'</h4><div class="isp">'+(sp||'—')+'</div><div style="margin-bottom:7px"><span class="ipr">'+Rs(d.price)+'</span>'+(d.mrp?'<span class="imrp">'+Rs(d.mrp)+'</span>':'')+(sv>0?'<span style="font-size:11px;font-weight:700;color:#16A34A;background:#F0FDF4;padding:1px 6px;border-radius:100px;margin-left:4px">-'+sv+'%</span>':'')+'</div>'+(d.features&&d.features.length?'<ul style="font-size:11px;color:#64748B;padding-left:13px;margin-bottom:9px">'+d.features.slice(0,3).map(function(f){return'<li>'+f+'</li>';}).join('')+'</ul>':'')+'<div class="ibt"><button class="ib '+(d.visible?'ibh':'ibs')+'" onclick="tI(\''+d.id+'\')">'+(d.visible?'🙈 Hide':'✅ Show')+'</button><button class="ib ibe" onclick="openIM(\''+d.id+'\')">✏️</button><button class="ib ibd" onclick="delI(\''+d.id+'\')">🗑</button></div></div>'+(d.visible?'':'<div class="nform"><input id="nfn_'+d.id+'" placeholder="Your name"><input id="nfp_'+d.id+'" placeholder="WhatsApp number"><button onclick="regN(\''+d.id+'\',\''+d.name+'\')">🔔 Notify when available</button></div>')+'</div>';}).join('');}
+function oIC(){var cat=rn('ic'),ms=document.getElementById('im');ms.innerHTML='<option value="">Select model</option>';document.getElementById('ist').innerHTML='<option value="">Select</option>';document.getElementById('ico').innerHTML='<option value="">Select</option>';if(IMS[cat])Object.keys(IMS[cat]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});}
+function oIM(){var cat=rn('ic'),mod=rn('im'),ss=document.getElementById('ist'),cs=document.getElementById('ico');ss.innerHTML='<option value="">Select</option>';cs.innerHTML='<option value="">Select</option>';if(IMS[cat]&&IMS[cat][mod])IMS[cat][mod].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ss.appendChild(o);});(ICO[cat]||[]).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});}
+function openIM(id){editI=id||null;document.getElementById('imt').textContent=id?'Edit Device':'Add Device';var d=id?inv.find(function(x){return x.id===id;}):null;document.getElementById('ied').value=id||'';document.getElementById('ic').value=d?d.cat:'iphone';oIC();if(d){setTimeout(function(){document.getElementById('im').value=d.name||'';oIM();setTimeout(function(){document.getElementById('ist').value=d.storage||'';document.getElementById('ico').value=d.color||'';},60);},60);}document.getElementById('igr').value=d?d.grade:'A+';document.getElementById('iba').value=d?d.battery||'':'';document.getElementById('iyr').value=d?d.year||'':'';document.getElementById('iqt').value=d?d.qty||1:1;document.getElementById('ipr').value=d?d.price||'':'';document.getElementById('imr').value=d?d.mrp||'':'';document.getElementById('iim').value=d?d.imei||'':'';document.getElementById('ife').value=d?(d.features||[]).join('\n'):'';document.getElementById('ivi').checked=d?!!d.visible:true;document.getElementById('im2').classList.add('on');}
+function saveI(){var mod=rn('im');if(!mod){toast('Select a model','e');return;}var price=parseInt(rn('ipr'))||0;if(!price){toast('Enter a price','e');return;}var id=rn('ied')||null;var d={id:id||uid(),cat:rn('ic'),name:mod,storage:rn('ist'),color:rn('ico'),grade:rn('igr'),battery:rn('iba'),year:rn('iyr'),qty:parseInt(rn('iqt'))||1,price:price,mrp:parseInt(rn('imr'))||0,imei:rn('iim'),features:(rn('ife')||'').split('\n').filter(function(l){return l.trim();}),visible:document.getElementById('ivi').checked,addedAt:new Date().toISOString()};if(id){var idx=inv.findIndex(function(x){return x.id===id;});if(idx>-1)inv[idx]=d;}else inv.push(d);savI();ri();cm('im2');toast('Device saved');}
+function tI(id){var d=inv.find(function(x){return x.id===id;});if(!d)return;d.visible=!d.visible;savI();ri();toast(d.visible?'Now on Buy page':'Hidden — Coming Soon');}
+function delI(id){if(!confirm('Delete?'))return;inv=inv.filter(function(x){return x.id!==id;});savI();ri();toast('Removed');}
+function regN(devId,devName){var n=rn('nfn_'+devId),p=rn('nfp_'+devId);if(!p){toast('Enter WhatsApp number','e');return;}notifs.push({devId:devId,devName:devName,name:n||'Customer',phone:p,at:new Date().toISOString()});savI();toast('Will notify when available!');}
+// ── PRICES ────────────────────────────────────────────────────────
+function rPr(){var s=parseFloat(localStorage.getItem('smb_mult')||'1');document.getElementById('msl').value=s;um(s);}
+function um(v){v=parseFloat(v);document.getElementById('msv').textContent=v.toFixed(2)+'×';document.getElementById('mex').textContent='iPhone 14 Pro base Rs60,000 → Quote Rs'+Math.round(60000*v).toLocaleString('en-IN');}
+function sm(){var v=parseFloat(document.getElementById('msl').value);localStorage.setItem('smb_mult',v.toFixed(2));toast('Price multiplier saved — all quotes updated');}
+// ── TEAM ──────────────────────────────────────────────────────────
+function rTm(){var team=gT(),isO=CU&&CU.role==='Owner';document.getElementById('tgrid').innerHTML=team.map(function(u,i){return'<div class="tc"><div class="tav2" style="background:'+u.color+'">'+u.init+'</div><h3>'+u.name+'</h3><span class="tr '+(u.role==='Owner'?'tro':u.role==='Manager'?'trm':'tre')+'">'+u.role+'</span>'+(u.ph?'<div class="ti">📞 '+u.ph+'</div>':'')+(u.em?'<div class="ti">✉️ '+u.em+'</div>':'')+'<div class="ti">Username: <strong>'+u.u+'</strong></div>'+(isO?'<div class="ti">Password: <strong>'+u.pw+'</strong></div>':'<div class="ti" style="color:#CBD5E1">Password: ••••••••</div>')+(isO?'<button class="teb" onclick="oTE('+i+')">✏️ Edit</button>':'')+'</div>';}).join('');}
+function oTE(i){var team=gT(),u=team[i];if(!u)return;document.getElementById('ttn').value=u.name||'';document.getElementById('ttp').value=u.ph||'';document.getElementById('tte').value=u.em||'';document.getElementById('ttu').value=u.u||'';document.getElementById('ttw').value='';document.getElementById('tti').value=i;document.getElementById('tm2').classList.add('on');}
+function saveTM(){var i=parseInt(rn('tti'));if(isNaN(i))return;var team=gT();if(!team[i])return;team[i].name=rn('ttn').trim()||team[i].name;team[i].ph=rn('ttp').trim();team[i].em=rn('tte').trim();var nu=rn('ttu').trim(),np=rn('ttw').trim();if(nu)team[i].u=nu;if(np)team[i].pw=np;team[i].init=team[i].name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();savT(team);rTm();cm('tm2');toast('Updated');}
+// ── SEED ──────────────────────────────────────────────────────────
+function seedD(){if(leads.length)return;leads=[{id:uid(),name:'Rahul Sharma',phone:'+91 98765 43210',area:'Lajpat Nagar',devType:'iphone',device:'iPhone 14 Pro 256GB Deep Purple',model:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',year:'2022',battery:'84',slot:'morning',source:'website',basePrice:60000,deps:{charger:true,nobox:true},isLoyalty:false,estPrice:48000,notes:[{t:'Lead from website',at:new Date().toISOString()}],status:'new',createdAt:new Date(Date.now()-172800000).toISOString()},{id:uid(),name:'Priya Mehta',phone:'+91 91234 56789',area:'Saket',devType:'samsung',device:'Galaxy S23 Ultra 256GB',model:'Galaxy S23 Ultra',storage:'256GB',color:'Black',year:'2023',battery:'88',slot:'evening',source:'meta',basePrice:70000,deps:{},isLoyalty:false,estPrice:59500,notes:[{t:'Meta ad lead',at:new Date().toISOString()}],status:'contacted',createdAt:new Date(Date.now()-86400000).toISOString()},{id:uid(),name:'Amit Verma',phone:'+91 99887 76655',area:'Dwarka',devType:'playstation',device:'PS5 Disc Edition',model:'PS5 Disc Edition',storage:'',color:'White',year:'2022',battery:'',slot:'morning',source:'whatsapp',basePrice:44000,deps:{nobox:true},isLoyalty:false,estPrice:40000,notes:[{t:'WhatsApp lead',at:new Date().toISOString()}],status:'scheduled',createdAt:new Date(Date.now()-3600000).toISOString()},{id:uid(),name:'Sunita Kapoor',phone:'+91 87654 32109',area:'Vasant Kunj',devType:'iphone',device:'iPhone 12 64GB Black',model:'iPhone 12',storage:'64GB',color:'Black',year:'2020',battery:'71',slot:'morning',source:'walkin',basePrice:28000,deps:{charger:true,battlow:true},isLoyalty:true,estPrice:20000,notes:[{t:'Walk-in — loyalty applied',at:new Date().toISOString()}],status:'completed',createdAt:new Date(Date.now()-259200000).toISOString()}];savL();}
+// ── BOOT ──────────────────────────────────────────────────────────
+
+</script>
+</body>
+</html>

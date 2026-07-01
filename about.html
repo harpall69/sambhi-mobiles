@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Sambhi Mobiles Delhi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--blue-light:#EFF6FF;--orange:#F97316;--green:#16A34A;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;--white:#fff;--border:#E2E8F0}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--gray-900);line-height:1.6}
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nl-icon{width:38px;height:38px;background:linear-gradient(135deg,#2563EB,#F97316);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nl-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0F172A}
+.nl-text span{color:#2563EB}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nl{color:#64748B;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all .2s}
+.nl:hover,.nl.active{background:#EFF6FF;color:#2563EB}
+.nav-cta{background:#2563EB;color:#fff;padding:9px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:8px}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:14px 24px;color:#334155;text-decoration:none;font-size:15px;border-bottom:1px solid #F1F5F9}
+/* HERO */
+.page-hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:72px 24px}
+.page-hero-in{max-width:1000px;margin:0 auto;text-align:center}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:800;color:#0F172A;margin-bottom:16px}
+.page-hero p{font-size:17px;color:#64748B;max-width:600px;margin:0 auto;line-height:1.75}
+/* ABOUT */
+.about-sec{max-width:1000px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about-img{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:24px;padding:48px;text-align:center;font-size:80px}
+.about-img p{font-size:14px;color:#64748B;margin-top:12px}
+.about-text .sec-lbl{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2563EB;margin-bottom:12px}
+.about-text h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,3vw,36px);font-weight:800;color:#0F172A;margin-bottom:16px;line-height:1.2}
+.about-text p{font-size:15px;color:#64748B;line-height:1.8;margin-bottom:14px}
+/* TEAM */
+.team-sec{background:#F8FAFC;padding:72px 24px}
+.team-in{max-width:1000px;margin:0 auto}
+.sec-head{text-align:center;margin-bottom:48px}
+.sec-lbl{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2563EB;margin-bottom:10px}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,3vw,36px);font-weight:800;color:#0F172A;margin-bottom:12px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.team-card{background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px;text-align:center}
+.team-av{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 14px}
+.team-card h3{font-size:17px;font-weight:700;margin-bottom:4px}
+.team-role{font-size:12px;font-weight:600;padding:3px 12px;border-radius:100px;display:inline-block;margin-bottom:10px}
+.role-owner{background:#FFFBEB;color:#D97706}
+.team-card p{font-size:13px;color:#64748B;line-height:1.6}
+/* VALUES */
+.values-sec{padding:72px 24px}
+.values-in{max-width:1000px;margin:0 auto}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.value-card{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:28px}
+.value-icon{font-size:36px;margin-bottom:14px}
+.value-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.value-card p{font-size:13px;color:#64748B;line-height:1.65}
+/* GST DETAILS */
+.gst-sec{background:#0F172A;padding:56px 24px}
+.gst-in{max-width:1000px;margin:0 auto}
+.gst-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.gst-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px}
+.gst-card h3{font-size:14px;font-weight:700;color:#F97316;text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px}
+.gst-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
+.gst-row:last-child{border:none}
+.gst-lbl{color:rgba(255,255,255,.4)}
+.gst-val{color:#fff;font-weight:600}
+/* CONTACT */
+.contact-sec{background:#F8FAFC;padding:72px 24px}
+.contact-in{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-info{display:flex;flex-direction:column;gap:20px}
+.ci-item{display:flex;gap:14px;align-items:flex-start}
+.ci-icon{width:44px;height:44px;background:#EFF6FF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ci-item h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.ci-item p{font-size:13px;color:#64748B;line-height:1.6}
+.ci-item a{color:#2563EB;text-decoration:none;font-size:13px}
+.contact-form{background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:28px}
+.contact-form h3{font-size:18px;font-weight:700;margin-bottom:20px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.fg input,.fg textarea{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;color:#0F172A;font-size:14px;font-family:inherit;padding:11px 14px;outline:none;transition:all .2s}
+.fg input:focus,.fg textarea:focus{border-color:#2563EB;background:#fff}
+.fg textarea{resize:none;height:80px}
+.send-btn{width:100%;background:#2563EB;color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.send-btn:hover{background:#1d4ed8}
+/* MAP PLACEHOLDER */
+.map-placeholder{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:12px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;margin-top:16px;border:1px solid #BFDBFE}
+.map-placeholder span{font-size:36px}
+.map-placeholder p{font-size:13px;color:#2563EB;font-weight:600}
+footer{background:#0F172A;padding:28px 24px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.25)}
+@media(max-width:900px){.about-sec,.contact-in,.gst-grid{grid-template-columns:1fr}.team-grid,.values-grid{grid-template-columns:1fr 1fr}.nav-links{display:none}.hamburger{display:block}}
+@media(max-width:600px){.team-grid,.values-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo"><div class="nl-icon">📱</div><div class="nl-text">Sambhi <span>Mobiles</span></div></a>
+    <div class="nav-links">
+      <a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a>
+      <a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl active">About</a>
+      <a href="blog.html" class="nl">Blog</a>
+      <a href="sell.html" class="nav-cta">Sell Now →</a>
+    </div>
+    <button class="hamburger" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav">
+    <a href="index.html">Home</a><a href="sell.html">Sell My Phone</a>
+    <a href="buy.html">Buy Devices</a><a href="about.html">About Us</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-in">
+    <h1>Delhi's most trusted gadget marketplace</h1>
+    <p>Founded in Govind Puri, built for Delhi. We believe buying and selling gadgets should be simple, honest, and instant.</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="about-sec">
+    <div class="about-img">📱<p>Amrik Singh, Founder</p></div>
+    <div class="about-text">
+      <div class="sec-lbl">Our story</div>
+      <h2>Started with one mission — honest gadget trade in Delhi</h2>
+      <p>Sambhi Mobiles was started by Amrik Singh in Govind Puri, New Delhi. After seeing countless customers get underpaid at local shops or wait days for payment, we decided to build something better.</p>
+      <p>We come to your door. We pay instantly. We show every deduction upfront. No haggling, no spam calls, no hidden fees. Just the best price in Delhi — delivered at your doorstep.</p>
+      <p>Today we have completed over 2,400 transactions across all Delhi districts and maintain a 4.9-star customer rating. Every device is IMEI-verified and every transaction comes with a proper GST bill.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-sec">
+  <div class="values-in">
+    <div class="sec-head"><div class="sec-lbl">What we stand for</div><h2 class="sec-title">Our values</h2></div>
+    <div class="values-grid">
+      <div class="value-card"><div class="value-icon">🎯</div><h3>Radical transparency</h3><p>We show you every deduction before you agree. What we quote is exactly what you receive — no last-minute drops at the door.</p></div>
+      <div class="value-card"><div class="value-icon">⚡</div><h3>Speed & respect</h3><p>We value your time. One call to confirm, show up on time, pay instantly. Average pickup under 90 minutes in Delhi.</p></div>
+      <div class="value-card"><div class="value-icon">🛡️</div><h3>Zero fraud tolerance</h3><p>Every device IMEI-verified on CEIR India. Every transaction with GST bill. We protect both buyer and seller on every deal.</p></div>
+      <div class="value-card"><div class="value-icon">🏆</div><h3>Loyalty is forever</h3><p>Our returning customers get 10% extra — always. No card, no points, no expiry. Just 10% more every single time you return.</p></div>
+      <div class="value-card"><div class="value-icon">📞</div><h3>One call policy</h3><p>We call once to confirm your pickup slot. That is it. No spam calls, no repeated follow-ups, no harassment.</p></div>
+      <div class="value-card"><div class="value-icon">🤝</div><h3>Community first</h3><p>Built in Govind Puri, serving all of Delhi. We reinvest in making local gadget trade better for everyone.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GST DETAILS -->
+<section class="gst-sec" id="contact">
+  <div class="gst-in">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#F97316;margin-bottom:10px">Business details</div>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;color:#fff">Official registration</h2>
+    </div>
+    <div class="gst-grid">
+      <div class="gst-card">
+        <h3>Business details</h3>
+        <div class="gst-row"><span class="gst-lbl">Trade name</span><span class="gst-val">Sambhi Mobiles</span></div>
+        <div class="gst-row"><span class="gst-lbl">Proprietor</span><span class="gst-val">Amrik Singh</span></div>
+        <div class="gst-row"><span class="gst-lbl">GSTIN</span><span class="gst-val">07BWPPS6835M1ZI</span></div>
+        <div class="gst-row"><span class="gst-lbl">PAN</span><span class="gst-val">BWPPS6835M</span></div>
+        <div class="gst-row"><span class="gst-lbl">State</span><span class="gst-val">Delhi (07)</span></div>
+      </div>
+      <div class="gst-card">
+        <h3>Bank & contact</h3>
+        <div class="gst-row"><span class="gst-lbl">Bank</span><span class="gst-val">IDFC First Bank</span></div>
+        <div class="gst-row"><span class="gst-lbl">Branch</span><span class="gst-val">Okhla, New Delhi</span></div>
+        <div class="gst-row"><span class="gst-lbl">Account</span><span class="gst-val">10084177443</span></div>
+        <div class="gst-row"><span class="gst-lbl">IFSC</span><span class="gst-val">IDFB0020107</span></div>
+        <div class="gst-row"><span class="gst-lbl">Phone</span><span class="gst-val">+91 7827505579</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-sec">
+  <div class="contact-in">
+    <div>
+      <div class="sec-lbl">Get in touch</div>
+      <h2 class="sec-title" style="margin-bottom:28px">Contact us</h2>
+      <div class="contact-info">
+        <div class="ci-item"><div class="ci-icon">📞</div><div><h4>Call / WhatsApp</h4><a href="tel:+917827505579">+91 7827505579</a><p>Mon–Sat · 9 AM – 8 PM</p></div></div>
+        <div class="ci-item"><div class="ci-icon">📍</div><div><h4>Address</h4><p>1498, Bhagat Niwas, 13, Govind Puri<br>New Delhi – 110019</p></div></div>
+        <div class="ci-item"><div class="ci-icon">🕐</div><div><h4>Pickup slots</h4><p>🌅 Morning: 9 AM – 1 PM<br>🌆 Evening: 4 PM – 8 PM</p></div></div>
+        <div class="ci-item"><div class="ci-icon">🗺️</div><div><h4>Service area</h4><p>All Delhi districts covered<br>Gurugram & Noida on request</p></div></div>
+      </div>
+      <div class="map-placeholder"><span>🗺️</span><p>Govind Puri, New Delhi – 110019</p></div>
+    </div>
+    <div class="contact-form">
+      <h3>Send us a message</h3>
+      <div class="fg"><label>Your name</label><input id="cName" placeholder="Amrik Singh"></div>
+      <div class="fg"><label>WhatsApp number</label><input id="cPhone" placeholder="+91 98765 43210"></div>
+      <div class="fg"><label>Message</label><textarea id="cMsg" placeholder="Tell us what you want to sell or buy…"></textarea></div>
+      <button class="send-btn" onclick="sendWA()">Send via WhatsApp →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · +91 7827505579</p>
+    <p>1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019</p>
+  </div>
+</footer>
+
+<script>
+function sendWA(){
+  const n=document.getElementById('cName').value.trim();
+  const p=document.getElementById('cPhone').value.trim();
+  const m=document.getElementById('cMsg').value.trim();
+  if(!p){alert('Please enter your WhatsApp number.');return;}
+  const msg=encodeURIComponent(`Hello Sambhi Mobiles!\n\nName: ${n||'Customer'}\nPhone: ${p}\n\nMessage: ${m||'I want to enquire about buying/selling a device.'}`);
+  window.open('https://wa.me/917827505579?text='+msg,'_blank');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy Certified Devices — Sambhi Mobiles Delhi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--blue-dark:#1d4ed8;--blue-light:#EFF6FF;--orange:#F97316;--green:#16A34A;--green-light:#F0FDF4;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;--white:#fff;--border:#E2E8F0}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:#0F172A;line-height:1.6}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nl-icon{width:38px;height:38px;background:linear-gradient(135deg,#2563EB,#F97316);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nl-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0F172A}
+.nl-text span{color:#2563EB}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nl{color:#64748B;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all .2s}
+.nl:hover,.nl.active{background:#EFF6FF;color:#2563EB}
+.nav-cta{background:#2563EB;color:#fff;padding:9px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:8px}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:14px 24px;color:#334155;text-decoration:none;font-size:15px;border-bottom:1px solid #F1F5F9}
+.page-hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:56px 24px}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:13px;color:#94A3B8;margin-bottom:16px}
+.breadcrumb a{color:#2563EB;text-decoration:none}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:#0F172A;margin-bottom:10px}
+.page-hero p{font-size:16px;color:#64748B;max-width:560px}
+/* FILTERS */
+.filters{max-width:1200px;margin:0 auto;padding:28px 24px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-btn{background:#fff;border:1.5px solid #E2E8F0;color:#64748B;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.filter-btn:hover{border-color:#2563EB;color:#2563EB}
+.filter-btn.active{background:#2563EB;border-color:#2563EB;color:#fff}
+/* PRODUCT GRID */
+.products{max-width:1200px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.product-card{background:#fff;border:1.5px solid #E2E8F0;border-radius:20px;overflow:hidden;transition:all .25s}
+.product-card:hover{border-color:#2563EB;box-shadow:0 8px 32px rgba(37,99,235,.12);transform:translateY(-4px)}
+.prod-img{height:180px;background:linear-gradient(135deg,#F1F5F9,#E2E8F0);display:flex;align-items:center;justify-content:center;font-size:72px;position:relative}
+.prod-badge{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+.pb-tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px}
+.pb-green{background:#F0FDF4;color:#16A34A}
+.pb-blue{background:#EFF6FF;color:#2563EB}
+.pb-orange{background:#FFF7ED;color:#D97706}
+.prod-body{padding:20px}
+.prod-title{font-size:16px;font-weight:700;color:#0F172A;margin-bottom:4px}
+.prod-specs{font-size:12px;color:#94A3B8;margin-bottom:12px}
+.prod-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:14px}
+.prod-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#2563EB}
+.prod-orig{font-size:13px;color:#CBD5E1;text-decoration:line-through}
+.prod-save{font-size:11px;font-weight:700;color:#16A34A;background:#F0FDF4;padding:2px 7px;border-radius:100px}
+.prod-features{display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+.pf{display:flex;align-items:center;gap:7px;font-size:12px;color:#64748B}
+.pf span{color:#16A34A;font-weight:700;font-size:14px}
+.enquire-btn{width:100%;background:#0F172A;color:#fff;border:none;padding:12px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.enquire-btn:hover{background:#2563EB}
+/* TRUST SECTION */
+.trust-sec{background:#fff;border-top:1px solid #E2E8F0;border-bottom:1px solid #E2E8F0;padding:32px 24px;margin-bottom:0}
+.trust-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.trust-item{text-align:center}
+.trust-icon{font-size:28px;margin-bottom:8px}
+.trust-item h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.trust-item p{font-size:12px;color:#64748B}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:20px;padding:40px;max-width:420px;width:100%}
+.modal h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
+.modal p{font-size:14px;color:#64748B;margin-bottom:20px;line-height:1.6}
+.modal-device{background:#EFF6FF;border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:14px;font-weight:600;color:#1d4ed8}
+.modal input{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;margin-bottom:12px}
+.modal input:focus{border-color:#2563EB}
+.modal-btns{display:flex;gap:10px}
+.modal-confirm{flex:1;background:#2563EB;color:#fff;border:none;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-cancel{flex:1;background:#F1F5F9;color:#64748B;border:none;padding:13px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+footer{background:#0F172A;padding:28px 24px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.25)}
+@media(max-width:900px){.products{grid-template-columns:1fr 1fr}.trust-in{grid-template-columns:1fr 1fr}.nav-links{display:none}.hamburger{display:block}}
+@media(max-width:600px){.products{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo"><div class="nl-icon">📱</div><div class="nl-text">Sambhi <span>Mobiles</span></div></a>
+    <div class="nav-links">
+      <a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a>
+      <a href="buy.html" class="nl active">Buy</a><a href="about.html" class="nl">About</a><a href="blog.html" class="nl">Blog</a>
+      <a href="sell.html" class="nav-cta">Sell Now →</a>
+    </div>
+    <button class="hamburger" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav">
+    <a href="index.html">Home</a><a href="sell.html">Sell My Phone</a>
+    <a href="buy.html">Buy Devices</a><a href="about.html">About Us</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-in">
+    <div class="breadcrumb"><a href="index.html">Home</a> › Buy Devices</div>
+    <h1>Buy certified pre-owned devices</h1>
+    <p>Every device is IMEI-verified, quality-graded and delivered to your Delhi door. No surprises.</p>
+  </div>
+</section>
+
+<div class="trust-sec">
+  <div class="trust-in">
+    <div class="trust-item"><div class="trust-icon">🔍</div><h4>IMEI Verified</h4><p>Every device checked against CEIR India database before listing</p></div>
+    <div class="trust-item"><div class="trust-icon">🏅</div><h4>Quality Graded</h4><p>A+, A, B grades — honest condition description</p></div>
+    <div class="trust-item"><div class="trust-icon">🚗</div><h4>Free Delivery</h4><p>Free doorstep delivery anywhere in Delhi NCR</p></div>
+    <div class="trust-item"><div class="trust-icon">🛡️</div><h4>7-Day Return</h4><p>Not satisfied? Return within 7 days for full refund</p></div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterProducts('all',this)">All Devices</button>
+  <button class="filter-btn" onclick="filterProducts('iphone',this)">📱 iPhones</button>
+  <button class="filter-btn" onclick="filterProducts('airpods',this)">🎧 AirPods</button>
+  <button class="filter-btn" onclick="filterProducts('applewatch',this)">⌚ Apple Watch</button>
+  <button class="filter-btn" onclick="filterProducts('playstation',this)">🎮 PlayStation</button>
+</div>
+
+<div class="products" id="productsGrid"></div>
+
+<!-- ENQUIRE MODAL -->
+<div class="modal-bg" id="enquireModal">
+  <div class="modal">
+    <h2>Enquire about device</h2>
+    <p>Leave your WhatsApp number and we'll confirm availability and arrange delivery in Delhi.</p>
+    <div class="modal-device" id="enquireDevice">iPhone 14 Pro — ₹45,000</div>
+    <input type="text" id="enquirePhone" placeholder="+91 WhatsApp number">
+    <input type="text" id="enquireName" placeholder="Your name">
+    <div class="modal-btns">
+      <button class="modal-confirm" onclick="confirmEnquiry()">Confirm interest →</button>
+      <button class="modal-cancel" onclick="document.getElementById('enquireModal').classList.remove('show')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · +91 7827505579</p>
+    <p>1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019</p>
+  </div>
+</footer>
+
+<script>
+var INV_ICONS={iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+var DEVICE_IMAGES={
+  'iPhone 16 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 16 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 15':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch_GEO_IN?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 14':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-7inch-sierrablue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-1inch-sierrablue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 13':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 12':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-finish-select-2021-family-purple?wid=300&hei=300&fmt=png-alpha',
+  'iPhone 11':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-select-2019-family?wid=300&hei=300&fmt=png-alpha',
+  'AirPods Pro 2nd Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=300&hei=300&fmt=png-alpha',
+  'AirPods Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202011?wid=300&hei=300&fmt=png-alpha',
+  'Apple Watch Ultra 2':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra-2-finish-unselect-gallery-1-202309?wid=300&hei=300&fmt=png-alpha',
+  'Apple Watch Series 9':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-45mm_GEO_IN?wid=300&hei=300&fmt=png-alpha',
+};
+function getDevImg(name){
+  if(!name)return'';
+  for(var k in DEVICE_IMAGES){if(name.indexOf(k)>-1)return DEVICE_IMAGES[k];}
+  return'';
+}
+// Load from admin inventory (localStorage), fallback to sample data
+function loadInventory(){
+  var saved=JSON.parse(localStorage.getItem('smb_inventory')||'[]');
+  if(saved.length) return saved;
+  // fallback sample products shown until admin adds real inventory
+  return [
+    {id:'s1',cat:'iphone',name:'iPhone 14 Pro',storage:'256GB',color:'Deep Purple',grade:'A+',battery:'89',year:'2022',price:55000,mrp:75000,features:['Face ID working','Original box','All accessories'],visible:true},
+    {id:'s2',cat:'iphone',name:'iPhone 13',storage:'128GB',color:'Midnight',grade:'A',battery:'84',year:'2021',price:32000,mrp:45000,features:['Face ID working','Charger included'],visible:true},
+    {id:'s3',cat:'iphone',name:'iPhone 12',storage:'64GB',color:'Black',grade:'B',battery:'79',year:'2020',price:20000,mrp:32000,features:['Minor scratches','Face ID working'],visible:true},
+    {id:'s4',cat:'airpods',name:'AirPods Pro 2nd Gen',storage:'',color:'White',grade:'A+',battery:'',year:'2023',price:14500,mrp:22000,features:['ANC working','MagSafe case'],visible:true},
+    {id:'s5',cat:'playstation',name:'PlayStation 5 Disc Edition',storage:'',color:'White',grade:'A+',battery:'',year:'2022',price:38000,mrp:55000,features:['2 controllers','All cables'],visible:true},
+    {id:'s6',cat:'applewatch',name:'Apple Watch Series 9',storage:'',color:'Midnight',grade:'A+',battery:'',year:'2023',price:28000,mrp:45000,features:['All sensors working','New band'],visible:true},
+    {id:'s7',cat:'iphone',name:'iPhone 15 Pro',storage:'256GB',color:'Natural Titanium',grade:'A+',battery:'96',year:'2023',price:78000,mrp:95000,features:['Like new','All accessories'],visible:false},
+    {id:'s8',cat:'playstation',name:'PlayStation 4 Pro',storage:'',color:'Black',grade:'A',battery:'',year:'2019',price:16000,mrp:28000,features:['1 controller','All cables'],visible:false},
+  ];
+}
+var PRODUCTS=loadInventory();
+
+let currentFilter='all';
+function getNotifyList(){return JSON.parse(localStorage.getItem('smb_notifications')||'[]');}
+function saveNotify(list){localStorage.setItem('smb_notifications',JSON.stringify(list));}
+
+function renderProducts(){
+  var grid=document.getElementById('productsGrid');
+  var all=loadInventory();
+  var filtered=currentFilter==='all'?all:all.filter(function(p){return p.cat===currentFilter;});
+  // Sort: visible (in stock) first, then coming soon
+  filtered.sort(function(a,b){return (b.visible?1:0)-(a.visible?1:0);});
+  grid.innerHTML=filtered.map(function(p){
+    var icon=INV_ICONS[p.cat]||'📱';
+    var specs=[p.storage,p.color,p.battery?'Battery '+p.battery+'%':'',p.year].filter(Boolean).join(' · ');
+    var gradeColor=p.grade==='A+'?'pb-green':p.grade==='A'?'pb-blue':'pb-orange';
+    var save=p.mrp?Math.round((1-p.price/p.mrp)*100):0;
+    var imeiClean=p.imei?'<span class="pb-tag pb-green">✓ IMEI Clean</span>':'';
+    var features=(p.features||[]).map(function(f){return'<div class="pf"><span>✓</span>'+f+'</div>';}).join('');
+
+    if(!p.visible){
+      // Coming Soon card
+      return'<div class="product-card" style="opacity:.85;position:relative">'
+        +'<div class="prod-img" style="position:relative">'
+        +'<div style="position:absolute;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;border-radius:0">'
+        +'<span style="font-size:14px;font-weight:800;color:#fff;background:var(--purple);padding:5px 14px;border-radius:100px">🔜 Coming Soon</span>'
+        +'</div>'
+        +(function(n,ic){var img=getDevImg(n);return img
+      ?'<img src="'+img+'" style="max-width:120px;max-height:140px;object-fit:contain" onerror="this.style.display='none';this.nextSibling.style.display='block'">'
+      +'<span style="font-size:72px;display:none">'+ic+'</span>'
+      :'<span style="font-size:72px">'+ic+'</span>';})(p.name,icon)
+        +'</div>'
+        +'<div class="prod-body">'
+        +'<div class="prod-title">'+p.name+'</div>'
+        +'<div class="prod-specs">'+(specs||'Available soon')+'</div>'
+        +'<div style="font-size:13px;color:var(--gray-400);margin:10px 0">This device will be available soon. Leave your number and we will notify you when it arrives.</div>'
+        +'<input type="text" id="nf_name_'+p.id+'" placeholder="Your name" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px">'
+        +'<input type="text" id="nf_phone_'+p.id+'" placeholder="WhatsApp number" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px">'
+        +'<button onclick="registerNotify(''+p.id+'',''+p.name+'')" style="width:100%;background:var(--purple);color:#fff;border:none;padding:10px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">🔔 Notify me when available</button>'
+        +'</div></div>';
+    }
+
+    return'<div class="product-card">'
+      +'<div class="prod-img">'
+      +'<div class="prod-badge">'+imeiClean+'<span class="pb-tag '+gradeColor+'">Grade '+p.grade+'</span></div>'
+      +(function(n,ic){var img=getDevImg(n);return img
+      ?'<img src="'+img+'" style="max-width:120px;max-height:140px;object-fit:contain" onerror="this.style.display='none';this.nextSibling.style.display='block'">'
+      +'<span style="font-size:72px;display:none">'+ic+'</span>'
+      :'<span style="font-size:72px">'+ic+'</span>';})(p.name,icon)
+      +'</div>'
+      +'<div class="prod-body">'
+      +'<div class="prod-title">'+p.name+'</div>'
+      +'<div class="prod-specs">'+(specs||'')+'</div>'
+      +'<div class="prod-price-row">'
+      +'<span class="prod-price">₹'+p.price.toLocaleString('en-IN')+'</span>'
+      +(p.mrp?'<span class="prod-orig">₹'+p.mrp.toLocaleString('en-IN')+'</span>':'')
+      +(save>0?'<span class="prod-save">Save '+save+'%</span>':'')
+      +'</div>'
+      +'<div class="prod-features">'+features+'<div class="pf"><span>🚗</span>Free delivery · 7-day return</div></div>'
+      +'<button class="enquire-btn" onclick="openEnquiry(''+p.id+'',''+p.name+' — ₹'+p.price.toLocaleString('en-IN')+'')">Enquire & Buy →</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function registerNotify(devId,devName){
+  var name=document.getElementById('nf_name_'+devId).value.trim();
+  var phone=document.getElementById('nf_phone_'+devId).value.trim();
+  if(!phone){alert('Please enter your WhatsApp number.');return;}
+  var list=getNotifyList();
+  list.push({devId:devId,devName:devName,name:name||'Customer',phone:phone,at:new Date().toISOString(),notified:false});
+  saveNotify(list);
+  document.getElementById('nf_name_'+devId).value='';
+  document.getElementById('nf_phone_'+devId).value='';
+  alert('✅ We will notify you on WhatsApp when '+devName+' is available!');
+}
+
+function filterProducts(cat,btn){
+  currentFilter=cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
+
+let currentDevice='';
+function openEnquiry(id,label){
+  currentDevice=label;
+  document.getElementById('enquireDevice').textContent=label;
+  document.getElementById('enquireModal').classList.add('show');
+}
+function confirmEnquiry(){
+  const p=document.getElementById('enquirePhone').value.trim();
+  const n=document.getElementById('enquireName').value.trim();
+  if(!p){alert('Please enter your WhatsApp number.');return;}
+  const pNum=p.replace(/\D/g,'');
+  const msg=encodeURIComponent(`Hello! I am interested in buying: *${currentDevice}*\n\nMy name: ${n||'Customer'}\n\nPlease confirm availability and delivery.\n\nThank you!`);
+  window.open('https://wa.me/917827505579?text='+msg,'_blank');
+  document.getElementById('enquireModal').classList.remove('show');
+}
+renderProducts();
+</script>
+</body>
+</html>
