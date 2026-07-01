@@ -581,15 +581,20 @@ var invN=1, addDeps={}, addBase=0, editR=null, editI=null;
 
 // ── STORAGE ──────────────────────────────────────────────────────
 function load() {
-  leads  = JSON.parse(localStorage.getItem('smb_leads')  || '[]');
-  bills  = JSON.parse(localStorage.getItem('smb_bills')  || '[]');
-  riders = JSON.parse(localStorage.getItem('smb_riders') || '[]');
-  inv    = JSON.parse(localStorage.getItem('smb_inv')    || '[]');
-  notifs = JSON.parse(localStorage.getItem('smb_notifs') || '[]');
-  invN   = parseInt(localStorage.getItem('smb_invn')     || '1');
-  var sc = localStorage.getItem('smb_camps');
-  camps = sc ? JSON.parse(sc) : dCamps();
-  if (!sc) savC();
+  function safeArr(key) {
+    try { var v=JSON.parse(localStorage.getItem(key)||'[]'); return Array.isArray(v)?v:[]; } catch(e){return [];}
+  }
+  leads  = safeArr('smb_leads');
+  bills  = safeArr('smb_bills');
+  riders = safeArr('smb_riders');
+  inv    = safeArr('smb_inv');
+  notifs = safeArr('smb_notifs');
+  invN   = parseInt(localStorage.getItem('smb_invn') || '1');
+  try {
+    var sc = localStorage.getItem('smb_camps');
+    camps = sc ? JSON.parse(sc) : dCamps();
+    if (!sc) savC();
+  } catch(e) { camps = dCamps(); savC(); }
 }
 function savL() {
   localStorage.setItem('smb_leads', JSON.stringify(leads));
@@ -1530,6 +1535,11 @@ function saveI() {
   if (!mod) { alert('Please enter the device name'); modEl.focus(); return; }
   var price = parseInt(prEl.value) || 0;
   if (!price) { alert('Please enter selling price'); prEl.focus(); return; }
+  // Ensure inv is always a valid array before push
+  if (!Array.isArray(inv)) {
+    try { inv = JSON.parse(localStorage.getItem('smb_inv') || '[]'); } catch(e) { inv = []; }
+    if (!Array.isArray(inv)) inv = [];
+  }
   var id = (document.getElementById('ied').value||'').trim() || null;
   var newItem = {
     id:       id || uid(),
