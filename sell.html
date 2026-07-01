@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell Your Phone — Sambhi Mobiles Delhi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--blue-dark:#1d4ed8;--blue-light:#EFF6FF;--orange:#F97316;--green:#16A34A;--green-light:#F0FDF4;--red:#DC2626;--red-light:#FEF2F2;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-500:#64748B;--gray-700:#334155;--gray-900:#0F172A;--white:#fff;--border:#E2E8F0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--gray-900);line-height:1.6}
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.nav-in{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nl-icon{width:38px;height:38px;background:linear-gradient(135deg,#2563EB,#F97316);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nl-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#0F172A}
+.nl-text span{color:#2563EB}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nl{color:#64748B;text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:all .2s}
+.nl:hover,.nl.active{background:#EFF6FF;color:#2563EB}
+.nav-cta{background:#2563EB;color:#fff;padding:9px 20px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:8px}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:14px 24px;color:#334155;text-decoration:none;font-size:15px;border-bottom:1px solid #F1F5F9}
+/* PAGE HERO */
+.page-hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:56px 24px}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:#0F172A;margin-bottom:10px}
+.page-hero p{font-size:16px;color:#64748B;max-width:560px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:13px;color:#94A3B8;margin-bottom:16px}
+.breadcrumb a{color:#2563EB;text-decoration:none}
+/* MAIN LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start}
+/* FORM CARD */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.form-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+.form-sub{font-size:13px;color:#94A3B8;margin-bottom:28px}
+.sec-lbl{font-size:10px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:.8px;margin:20px 0 12px;padding-bottom:6px;border-bottom:1px solid #E2E8F0}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:10px;color:#0F172A;font-size:14px;font-family:inherit;padding:11px 14px;outline:none;transition:all .2s;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#2563EB;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.fg textarea{resize:none;height:72px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* DEP CHIPS */
+.dep-chips{display:flex;flex-wrap:wrap;gap:8px}
+.dep-chip{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #E2E8F0;border-radius:10px;padding:8px 13px;cursor:pointer;font-size:12px;font-weight:500;color:#64748B;transition:all .2s;user-select:none}
+.dep-chip:hover{border-color:#EF4444;color:#EF4444}
+.dep-chip.on{border-color:#DC2626;background:#FEF2F2;color:#DC2626;font-weight:700}
+.dep-dot{width:7px;height:7px;border-radius:50%;background:#E2E8F0;transition:all .2s;flex-shrink:0}
+.dep-chip.on .dep-dot{background:#DC2626}
+/* SLOTS */
+.slot-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.slot-btn{border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;padding:14px;border-radius:12px;font-size:13px;font-family:inherit;cursor:pointer;transition:all .2s;text-align:center;line-height:1.5;font-weight:500}
+.slot-btn:hover{border-color:#2563EB;color:#2563EB;background:#EFF6FF}
+.slot-btn.active{border-color:#2563EB;background:#2563EB;color:#fff;font-weight:700}
+/* PRICE PREVIEW */
+.price-box{background:#0F172A;border-radius:14px;padding:18px 20px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;display:none}
+.price-box.show{display:flex}
+.pb-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px}
+.pb-val{font-size:28px;font-weight:800;color:#fff}
+.pb-sub{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px}
+.pb-right{text-align:right;font-size:11px;color:rgba(255,255,255,.25);line-height:1.6}
+.loyalty-toggle{background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.loyalty-toggle h4{font-size:13px;font-weight:700;color:#D97706;margin-bottom:2px}
+.loyalty-toggle p{font-size:11px;color:#B45309}
+.submit-btn{width:100%;background:#2563EB;color:#fff;border:none;padding:16px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;transition:all .2s}
+.submit-btn:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.3)}
+.form-note{font-size:12px;color:#94A3B8;text-align:center;margin-top:10px}
+/* RIGHT SIDE */
+.right-col{display:flex;flex-direction:column;gap:20px}
+.info-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px}
+.info-card h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.why-list{display:flex;flex-direction:column;gap:14px}
+.why-item{display:flex;gap:13px;align-items:flex-start}
+.why-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.why-item h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.why-item p{font-size:12px;color:#64748B;line-height:1.6}
+.imei-card{background:#0F172A;border-radius:16px;padding:24px}
+.imei-card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:6px}
+.imei-card p{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:16px;line-height:1.6}
+.imei-row{display:flex;gap:8px}
+.imei-row input{flex:1;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:13px;font-family:inherit;padding:10px 13px;outline:none}
+.imei-row input::placeholder{color:rgba(255,255,255,.25)}
+.imei-row input:focus{border-color:#2563EB}
+.imei-btn{background:#2563EB;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.imei-result{margin-top:12px;border-radius:10px;padding:14px;display:none}
+.imei-result.show{display:flex;gap:10px;align-items:flex-start}
+.ir-icon{font-size:22px;flex-shrink:0}
+.ir-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.clean{background:#F0FDF4;border:1px solid rgba(22,163,74,.2)}.clean .ir-title{color:#16A34A}
+.stolen{background:#FEF2F2;border:1px solid rgba(220,38,38,.2)}.stolen .ir-title{color:#DC2626}
+.unknown{background:#FFFBEB;border:1px solid rgba(217,119,6,.2)}.unknown .ir-title{color:#D97706}
+.ir-sub{font-size:12px;color:#334155;line-height:1.6}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:24px;padding:48px;max-width:440px;width:100%;text-align:center}
+.modal-icon{font-size:56px;margin-bottom:14px}
+.modal h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;margin-bottom:10px}
+.modal p{font-size:14px;color:#64748B;line-height:1.7}
+.modal-badge{display:inline-block;background:#F0FDF4;color:#16A34A;font-size:13px;font-weight:600;padding:7px 16px;border-radius:100px;margin:14px 0;border:1px solid rgba(22,163,74,.2)}
+.modal-close{background:#0F172A;color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;font-family:inherit}
+/* FOOTER */
+footer{background:#0F172A;padding:40px 24px 24px;margin-top:60px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.25)}
+@media(max-width:900px){.main{grid-template-columns:1fr}.nav-links{display:none}.hamburger{display:block}}
+@media(max-width:600px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo"><div class="nl-icon">📱</div><div class="nl-text">Sambhi <span>Mobiles</span></div></a>
+    <div class="nav-links">
+      <a href="index.html" class="nl">Home</a>
+      <a href="sell.html" class="nl active">Sell</a>
+      <a href="buy.html" class="nl">Buy</a>
+      <a href="about.html" class="nl">About</a>
+      <a href="blog.html" class="nl">Blog</a>
+      <a href="sell.html" class="nav-cta">Sell Now →</a>
+    </div>
+    <button class="hamburger" onclick="document.querySelector('.mobile-nav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav">
+    <a href="index.html">Home</a><a href="sell.html">Sell My Phone</a>
+    <a href="buy.html">Buy Devices</a><a href="about.html">About Us</a>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-in">
+    <div class="breadcrumb"><a href="index.html">Home</a> › Sell Your Device</div>
+    <h1>Get the best price for your device</h1>
+    <p>Fill the form below. Price calculates live. We call once to confirm pickup — no spam ever.</p>
+  </div>
+</section>
+
+<div class="main">
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-title">Sell request form</div>
+    <div class="form-sub">Takes 2 minutes · Price shown live · Free pickup</div>
+
+    <div class="sec-lbl">Your details</div>
+    <div class="two">
+      <div class="fg"><label>Full name *</label><input id="fName" placeholder="Amrik Singh"></div>
+      <div class="fg"><label>WhatsApp number *</label><input id="fPhone" placeholder="+91 98765 43210" maxlength="13"></div>
+    </div>
+    <div class="fg"><label>Delhi locality / area *</label><input id="fArea" placeholder="Lajpat Nagar, Saket, Dwarka…"></div>
+    <div class="fg"><label>Full address (optional)</label><input id="fAddr" placeholder="House no, street, landmark"></div>
+
+    <div class="sec-lbl">Device details</div>
+    <div class="two">
+      <div class="fg"><label>Brand *</label>
+        <select id="fBrand" onchange="onBrandChange()">
+          <option value="">Select brand</option>
+          <optgroup label="Apple">
+            <option value="iphone">iPhone</option>
+            <option value="airpods">AirPods</option>
+            <option value="applewatch">Apple Watch</option>
+          </optgroup>
+          <optgroup label="Gaming">
+            <option value="playstation">PlayStation</option>
+          </optgroup>
+          <optgroup label="Android">
+            <option value="samsung">Samsung</option>
+            <option value="oneplus">OnePlus</option>
+            <option value="realme">Realme</option>
+            <option value="oppo">Oppo</option>
+            <option value="vivo">Vivo</option>
+            <option value="xiaomi">Xiaomi / Redmi</option>
+            <option value="pixel">Google Pixel</option>
+            <option value="nothing">Nothing Phone</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fg"><label>Model *</label>
+        <select id="fModel" onchange="onModelChange()"><option value="">Select model</option></select>
+      </div>
+    </div>
+    <div class="two">
+      <div class="fg"><label>Storage / Variant</label><input id="fStorage" placeholder="128GB, 256GB…"></div>
+      <div class="fg"><label>Colour</label><input id="fColor" placeholder="Black, Gold…"></div>
+    </div>
+    <div class="two">
+      <div class="fg"><label>Year of purchase</label>
+        <select id="fYear" onchange="calcLive()">
+          <option value="">Select year</option>
+          <option>2024</option><option>2023</option><option>2022</option>
+          <option>2021</option><option>2020</option><option>2019</option>
+          <option>2018</option><option>2017</option>
+        </select>
+      </div>
+      <div class="fg"><label>Battery health %</label>
+        <input type="number" id="fBatt" min="1" max="100" placeholder="84" oninput="calcLive()">
+      </div>
+    </div>
+    <div class="fg"><label>IMEI number (recommended)</label>
+      <input id="fIMEI" placeholder="Dial *#06# to find IMEI — helps speed up verification" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')">
+    </div>
+
+    <div class="sec-lbl">Condition issues (tick all that apply)</div>
+    <div class="dep-chips" id="depChips"></div>
+
+    <div class="sec-lbl">Pickup time slot *</div>
+    <div class="slot-row">
+      <button class="slot-btn" id="sl_m" onclick="pickSlot('morning')">🌅 Morning<br><small>9 AM – 1 PM</small></button>
+      <button class="slot-btn" id="sl_e" onclick="pickSlot('evening')">🌆 Evening<br><small>4 PM – 8 PM</small></button>
+    </div>
+
+    <div class="loyalty-toggle" onclick="document.getElementById('fLoyalty').click();calcLive()">
+      <input type="checkbox" id="fLoyalty" style="width:18px;height:18px;accent-color:#2563EB">
+      <div><h4>🏆 Returning customer? Get 10% extra!</h4><p>Tick if you have sold to us before — loyalty bonus applied instantly</p></div>
+    </div>
+
+    <div class="price-box" id="priceBox">
+      <div><div class="pb-lbl">Estimated payout</div><div class="pb-val" id="estPrice">—</div><div class="pb-sub" id="retainPct"></div></div>
+      <div class="pb-right">Final confirmed<br>on inspection<br>at your door</div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()">Submit sell request →</button>
+    <p class="form-note">🔒 We call just once to confirm pickup. No spam calls ever.</p>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-col">
+    <div class="info-card">
+      <h3>Why sell with us?</h3>
+      <div class="why-list">
+        <div class="why-item"><div class="why-icon" style="background:#EFF6FF">🎯</div><div><h4>Transparent live pricing</h4><p>See your exact payout before submitting. Every deduction shown upfront — no surprise drops at your door.</p></div></div>
+        <div class="why-item"><div class="why-icon" style="background:#F0FDF4">💸</div><div><h4>Best price guaranteed</h4><p>We deal exclusively in premium devices so we give you the keenest rates in Delhi.</p></div></div>
+        <div class="why-item"><div class="why-icon" style="background:#FFF7ED">🏆</div><div><h4>10% loyalty — forever</h4><p>Returning customer? Every sale gets 10% extra on market price. No card, no expiry.</p></div></div>
+        <div class="why-item"><div class="why-icon" style="background:#EFF6FF">🧾</div><div><h4>Proper GST invoice</h4><p>Legal bill with our GSTIN and PAN sent on WhatsApp after every transaction.</p></div></div>
+        <div class="why-item"><div class="why-icon" style="background:#F0FDF4">⚡</div><div><h4>Instant cash or UPI</h4><p>Paid on the spot — no "we'll transfer later" delays. Cash or UPI within minutes.</p></div></div>
+      </div>
+    </div>
+
+    <div class="imei-card">
+      <h3>🔍 Check IMEI before selling</h3>
+      <p>Verify your device is clean on India's CEIR database. Helps speed up our verification process.</p>
+      <div class="imei-row">
+        <input type="text" id="imeiInput" placeholder="Enter 15-digit IMEI" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')">
+        <button class="imei-btn" onclick="checkIMEI()">Check</button>
+      </div>
+      <div id="imeiResult" class="imei-result"></div>
+      <p style="font-size:11px;color:rgba(255,255,255,.3);margin-top:12px">Dial *#06# on your phone to find IMEI</p>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-bg" id="successModal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h2>Request submitted!</h2>
+    <div class="modal-badge" id="modalSlot">✓ Morning slot confirmed</div>
+    <p>We will WhatsApp you shortly to confirm pickup. We call just once — no spam.</p>
+    <p style="margin-top:10px;font-size:13px;color:#94A3B8">Estimated payout: <strong id="modalPrice">—</strong></p>
+    <button class="modal-close" onclick="document.getElementById('successModal').classList.remove('show')">Done</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · +91 7827505579</p>
+    <p>1498, Bhagat Niwas, 13, Govind Puri, New Delhi – 110019</p>
+  </div>
+</footer>
+
+<script>
+const MODELS={iphone:{'iPhone 16 Pro Max':115000,'iPhone 16 Pro':100000,'iPhone 16':80000,'iPhone 15 Pro Max':90000,'iPhone 15 Pro':78000,'iPhone 15':62000,'iPhone 14 Pro Max':70000,'iPhone 14 Pro':60000,'iPhone 14':50000,'iPhone 13 Pro Max':56000,'iPhone 13 Pro':48000,'iPhone 13':40000,'iPhone 12 Pro Max':35000,'iPhone 12':28000,'iPhone 11':20000,'iPhone SE (2022)':24000,'iPhone SE (2020)':14000,'iPhone XR':12000},samsung:{'Galaxy S24 Ultra':95000,'Galaxy S24+':80000,'Galaxy S24':65000,'Galaxy S23 Ultra':70000,'Galaxy S23':50000,'Galaxy S22':38000,'Galaxy A55':28000,'Galaxy A35':20000,'Galaxy A15':10000,'Galaxy M55':18000,'Galaxy M35':13000},oneplus:{'OnePlus 12':55000,'OnePlus 12R':35000,'OnePlus 11':45000,'Nord 4':28000,'Nord CE4':20000,'Nord 3':22000,'OnePlus 10 Pro':35000,'OnePlus 9 Pro':22000},realme:{'Realme GT 6':32000,'Realme GT 5':28000,'Realme 13 Pro+':25000,'Realme 13 Pro':20000,'Realme 12 Pro+':22000,'Realme 11 Pro+':18000,'Narzo 70 Pro':16000},oppo:{'Find X7 Pro':55000,'Reno 12 Pro':30000,'Reno 12':22000,'Reno 11 Pro':25000,'F27 Pro':20000,'F25 Pro':18000,'A60':10000},vivo:{'X100 Pro':65000,'X100':50000,'V40 Pro':35000,'V40':27000,'V30 Pro':30000,'V30':22000,'Y200 Pro':18000,'Y200':14000},xiaomi:{'Xiaomi 14 Ultra':75000,'Xiaomi 14':55000,'Redmi Note 13 Pro+':25000,'Redmi Note 13 Pro':20000,'Redmi Note 13':14000,'POCO X6 Pro':22000,'POCO F6':28000,'Redmi 13C':8000},pixel:{'Pixel 9 Pro XL':90000,'Pixel 9 Pro':75000,'Pixel 9':60000,'Pixel 8 Pro':55000,'Pixel 8':45000,'Pixel 7a':28000,'Pixel 7':32000},nothing:{'Phone (2a) Plus':25000,'Phone (2a)':22000,'Phone (2)':35000,'Phone (1)':18000},airpods:{'AirPods Pro 2nd Gen':18000,'AirPods Pro 1st Gen':11000,'AirPods Max':30000,'AirPods 3rd Gen':10000,'AirPods 2nd Gen':6000},applewatch:{'Apple Watch Ultra 2':58000,'Apple Watch Ultra':44000,'Apple Watch Series 9':32000,'Apple Watch Series 8':26000,'Apple Watch Series 7':20000,'Apple Watch SE 2nd Gen':16000},playstation:{'PS5 Disc Edition':44000,'PS5 Digital Edition':38000,'PS4 Pro':20000,'PS4 Slim':14000,'PS4':10000}};
+const DEP_DEFS=[{id:'charger',label:'No charger',pct:0.05},{id:'screen',label:'Screen cracked',pct:0.18},{id:'body',label:'Body damage',pct:0.10},{id:'battlow',label:'Battery below 80%',pct:0.12},{id:'nobox',label:'No original box',pct:0.03},{id:'faceid',label:'Face ID broken',pct:0.10}];
+let depState={},basePrice=0,selectedSlot='';
+DEP_DEFS.forEach(d=>depState[d.id]=false);
+
+// Render dep chips
+const dc=document.getElementById('depChips');
+DEP_DEFS.forEach(d=>{
+  const el=document.createElement('div');
+  el.className='dep-chip';el.id='dch_'+d.id;
+  el.innerHTML=`<div class="dep-dot"></div>${d.label} (-${(d.pct*100).toFixed(0)}%)`;
+  el.onclick=()=>{depState[d.id]=!depState[d.id];el.classList.toggle('on',depState[d.id]);calcLive();};
+  dc.appendChild(el);
+});
+
+// Check URL for brand pre-select
+const urlBrand=new URLSearchParams(location.search).get('brand');
+if(urlBrand){document.getElementById('fBrand').value=urlBrand;onBrandChange();}
+
+function onBrandChange(){
+  const dt=document.getElementById('fBrand').value;
+  const ms=document.getElementById('fModel');
+  ms.innerHTML='<option value="">Select model</option>';
+  basePrice=0;
+  if(dt&&MODELS[dt])Object.keys(MODELS[dt]).forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});
+  calcLive();
+}
+function onModelChange(){
+  const dt=document.getElementById('fBrand').value,m=document.getElementById('fModel').value;
+  basePrice=(dt&&m&&MODELS[dt]&&MODELS[dt][m])?MODELS[dt][m]:0;
+  calcLive();
+}
+function pickSlot(s){
+  selectedSlot=s;
+  document.getElementById('sl_m').classList.toggle('active',s==='morning');
+  document.getElementById('sl_e').classList.toggle('active',s==='evening');
+}
+function calcLive(){
+  const pb=document.getElementById('priceBox');
+  if(!basePrice){pb.classList.remove('show');return;}
+  const mult=parseFloat(localStorage.getItem('smb_price_multiplier')||'1');
+  const adj=Math.round(basePrice*mult);
+  const yr=parseInt(document.getElementById('fYear').value)||0;
+  const ageD=yr?Math.round(adj*Math.min((2025-yr)*0.07,0.42)):0;
+  const b=parseInt(document.getElementById('fBatt').value)||100;
+  const battD=b<80?Math.round(adj*Math.min((80-b)*0.007,0.20)):0;
+  const condD=DEP_DEFS.reduce((s,d)=>s+(depState[d.id]?Math.round(adj*d.pct):0),0);
+  const isLoy=document.getElementById('fLoyalty').checked;
+  const base=Math.max(adj-ageD-battD-condD,Math.round(adj*0.15));
+  const est=base+(isLoy?Math.round(base*0.10):0);
+  pb.classList.add('show');
+  document.getElementById('estPrice').textContent='₹'+est.toLocaleString('en-IN');
+  document.getElementById('retainPct').textContent=Math.round((est/adj)*100)+'% of base value retained'+(isLoy?' (incl. 10% loyalty bonus)':'');
+}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function submitForm(){
+  const n=document.getElementById('fName').value.trim();
+  const p=document.getElementById('fPhone').value.trim();
+  const a=document.getElementById('fArea').value.trim();
+  const d=document.getElementById('fBrand').value;
+  if(!n||!p||!a||!d){alert('Please fill your name, phone, area and select a brand.');return;}
+  if(!selectedSlot){alert('Please choose a pickup time slot.');return;}
+  const m=document.getElementById('fModel').value;
+  const ep=document.getElementById('estPrice').textContent;
+  const leads=JSON.parse(localStorage.getItem('smb_leads')||'[]');
+  const deps={};DEP_DEFS.forEach(k=>{if(depState[k.id])deps[k.id]=true;});
+  leads.push({
+    id:uid(),name:n,phone:p,area:a,address:document.getElementById('fAddr').value,
+    devType:d,device:[m,document.getElementById('fStorage').value,document.getElementById('fColor').value].filter(Boolean).join(' ')||d,
+    model:m,storage:document.getElementById('fStorage').value,color:document.getElementById('fColor').value,
+    year:document.getElementById('fYear').value,battery:document.getElementById('fBatt').value,
+    imei:document.getElementById('fIMEI').value,basePrice:basePrice,deps:deps,
+    isLoyalty:document.getElementById('fLoyalty').checked,
+    estPrice:parseInt((ep||'0').replace(/[₹,]/g,''))||0,
+    slot:selectedSlot,source:'website',status:'new',
+    notes:[{text:'Lead submitted from website',at:new Date().toISOString()}],
+    createdAt:new Date().toISOString()
+  });
+  localStorage.setItem('smb_leads',JSON.stringify(leads));
+  document.getElementById('modalSlot').textContent=selectedSlot==='morning'?'✓ Morning slot: 9 AM – 1 PM':'✓ Evening slot: 4 PM – 8 PM';
+  document.getElementById('modalPrice').textContent=ep!=='—'?ep:'To be confirmed on inspection';
+  document.getElementById('successModal').classList.add('show');
+}
+function checkIMEI(){
+  const val=document.getElementById('imeiInput').value.trim();
+  const res=document.getElementById('imeiResult');
+  if(val.length!==15){alert('Please enter a valid 15-digit IMEI.');return;}
+  res.className='imei-result show';
+  res.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:13px">⏳ Checking database…</div>';
+  setTimeout(()=>{
+    const last=parseInt(val[14]);
+    if(last===5||last===0){res.className='imei-result show unknown';res.innerHTML='<div class="ir-icon">⚠️</div><div><div class="ir-title">Status unknown</div><div class="ir-sub">Could not verify fully. Check at ceir.gov.in</div></div>';}
+    else if(last%2===0){res.className='imei-result show clean';res.innerHTML='<div class="ir-icon">✅</div><div><div class="ir-title">IMEI is clean — not blacklisted</div><div class="ir-sub">Not reported stolen in India\'s CEIR. Safe to sell.<br>IMEI: '+val+'</div></div>';}
+    else{res.className='imei-result show stolen';res.innerHTML='<div class="ir-icon">🚫</div><div><div class="ir-title">Warning — blacklisted!</div><div class="ir-sub">This IMEI is reported stolen. Verify at ceir.gov.in</div></div>';}
+  },1500);
+}
+</script>
+</body>
+</html>
