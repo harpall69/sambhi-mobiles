@@ -1283,7 +1283,12 @@ function ri() {
       +'<div class="ith">'
       +'<div class="ibg"><span class="'+gc+'">'+d.grade+'</span>'+(d.qty&&d.qty>1?'<span style="background:#EFF6FF;color:var(--b)">Qty:'+d.qty+'</span>':'')+(d.visible?'':'<span style="background:#EDE9FE;color:var(--p)">Hidden</span>')+'</div>'
       +(d.visible?'':'<div class="cso"><span class="cstag">🔜 Coming Soon</span></div>')
-      +(II[d.cat]||'📱')+'</div>'
+      +(function(name,cat){
+          var img=getImg(name);
+          return img
+            ?'<img src="'+img+'" style="max-width:110px;max-height:110px;object-fit:contain">'
+            :'<span style="font-size:52px">'+(II[cat]||'📱')+'</span>';
+        })(d.name,d.cat)+'</div>'
       +'<div class="ibo"><h4>'+d.name+'</h4><div class="isp">'+(sp||'—')+'</div>'
       +'<div style="margin-bottom:7px"><span class="ipr">'+Rs(d.price)+'</span>'+(d.mrp?'<span class="imrp2">'+Rs(d.mrp)+'</span>':'')+(sv>0?'<span style="font-size:11px;font-weight:700;color:var(--g);background:#F0FDF4;padding:1px 6px;border-radius:100px;margin-left:4px">-'+sv+'%</span>':'')+'</div>'
       +(d.features&&d.features.length?'<ul style="font-size:11px;color:#64748B;padding-left:13px;margin-bottom:9px">'+d.features.slice(0,3).map(function(f){return'<li>'+f+'</li>';}).join('')+'</ul>':'')
@@ -1499,6 +1504,73 @@ var IDATA = {
     }
   }
 };
+
+// ── DEVICE IMAGE URLS ────────────────────────────────────────────
+var IMG = {
+  'iPhone 16 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-7inch-sierrablue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-1inch-sierrablue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Mini':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-mini-finish-select-202209-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-max-pacific-blue-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-pacific-blue-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-black-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Mini':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-mini-black-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-pro-max-midnight-green-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-pro-midnight-green-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-black-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone SE (2022)':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-se-finish-select-202203-midnight?wid=200&hei=200&fmt=png-alpha',
+  'iPhone SE (2020)':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-se-black-select-202004?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XR':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xr-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XS Max':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xs-max-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XS':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xs-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone X':          'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-x-black-select-2017?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen (USB-C)':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MTJV3?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen (Lightning)':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 1st Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MWP22?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Max (USB-C)':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-midnight-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Max (Lightning)':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-spacegray-202011?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 4 (ANC)':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-anc-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 4':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 3rd Gen':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MME73?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 2nd Gen':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MV7N2?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Ultra 2':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra-2-finish-unselect-gallery-1-202309?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 9 45mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-45mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 9 41mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-41mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 8 45mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s8-finish-select-202209-45mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 8 41mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s8-finish-select-202209-41mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch SE 2 44mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-se-finish-select-202209-44mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch SE 2 40mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-se-finish-select-202209-40mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'PS5 Disc Edition':  'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
+  'PS5 Digital Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-digital-edition-product-thumbnail-01-en-14sep21?$facebook$',
+  'PS5 Slim Disc Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-product-thumbnail-01-en-14sep23?$facebook$',
+  'PS5 Slim Digital Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-digital-edition-product-thumbnail-01-en-14sep23?$facebook$',
+  'PS4 Pro':           'https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21',
+  'PS4 Slim':          'https://gmedia.playstation.com/is/image/SIEPDC/ps4-slim-product-thumbnail-01-en-14sep21'
+};
+
+function getImg(name) {
+  if (!name) return '';
+  // Exact match first
+  if (IMG[name]) return IMG[name];
+  // Partial match
+  for (var k in IMG) {
+    if (name.indexOf(k) > -1 || k.indexOf(name) > -1) return IMG[k];
+  }
+  return '';
+}
+
 
 function onICat() {
   var cat = document.getElementById('ic').value;
