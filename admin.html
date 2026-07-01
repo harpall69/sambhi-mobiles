@@ -448,14 +448,48 @@ td{padding:10px 12px;font-size:13px;vertical-align:middle}
 
 <!-- INVENTORY MODAL -->
 <div class="mbg" id="im2"><div class="modal" style="max-width:540px"><div class="mh"><h2 id="imt">Add Device</h2><button class="mx" onclick="cm('im2')">✕</button></div><div class="mb">
-  <div class="g2"><div class="fg"><label>Category *</label><select id="ic" onchange="oIC()"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select></div><div class="fg"><label>Model *</label><select id="imod" onchange="oIM()"><option value="">Select model</option></select></div></div>
-  <div class="g3"><div class="fg"><label>Storage</label><select id="ist"><option value="">Select</option></select></div><div class="fg"><label>Colour</label><select id="ico"><option value="">Select</option></select></div><div class="fg"><label>Grade</label><select id="igr"><option value="A+">A+ Like New</option><option value="A">A Excellent</option><option value="B">B Good</option><option value="C">C Fair</option></select></div></div>
-  <div class="g3"><div class="fg"><label>Battery %</label><input type="number" id="iba" placeholder="89"></div><div class="fg"><label>Year</label><select id="iyr"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select></div><div class="fg"><label>Qty</label><input type="number" id="iqt" value="1" min="1"></div></div>
-  <div class="g2"><div class="fg"><label>Our Price (₹) *</label><input type="number" id="ipr" placeholder="45000"></div><div class="fg"><label>MRP (₹)</label><input type="number" id="imr" placeholder="70000"></div></div>
-  <div class="fg"><label>IMEI</label><input id="iim" placeholder="15-digit IMEI"></div>
-  <div class="fg"><label>Features (one per line)</label><textarea id="ife" placeholder="Original box&#10;All accessories"></textarea></div>
-  <div class="loybox" onclick="document.getElementById('ivi').click()" style="background:#F0FDF4;border-color:rgba(22,163,74,.3)"><input type="checkbox" id="ivi" checked style="width:15px;height:15px;accent-color:var(--g)"><div><h4 style="color:var(--g)">✅ Show as Available on Buy page</h4><p style="color:#166534">Uncheck = Coming Soon</p></div></div>
-  <input type="hidden" id="ied"><button class="sb" onclick="saveI()">Save Device</button>
+  <div class="g2">
+    <div class="fg"><label>Category *</label>
+      <select id="ic">
+        <option value="iphone">iPhone</option>
+        <option value="samsung">Samsung</option>
+        <option value="oneplus">OnePlus</option>
+        <option value="airpods">AirPods</option>
+        <option value="applewatch">Apple Watch</option>
+        <option value="playstation">PlayStation</option>
+      </select>
+    </div>
+    <div class="fg"><label>Device Name *</label><input type="text" id="imod" placeholder="e.g. iPhone 14 Pro Max"></div>
+  </div>
+  <div class="g3">
+    <div class="fg"><label>Storage</label><input type="text" id="ist" placeholder="256GB"></div>
+    <div class="fg"><label>Colour</label><input type="text" id="ico" placeholder="Deep Purple"></div>
+    <div class="fg"><label>Grade</label>
+      <select id="igr">
+        <option value="A+">A+ Like New</option>
+        <option value="A">A Excellent</option>
+        <option value="B">B Good</option>
+        <option value="C">C Fair</option>
+      </select>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="fg"><label>Battery %</label><input type="number" id="iba" placeholder="89" min="1" max="100"></div>
+    <div class="fg"><label>Year</label><input type="text" id="iyr" placeholder="2022"></div>
+    <div class="fg"><label>Qty in stock</label><input type="number" id="iqt" value="1" min="1"></div>
+  </div>
+  <div class="g2">
+    <div class="fg"><label>Our Selling Price (₹) *</label><input type="number" id="ipr" placeholder="45000"></div>
+    <div class="fg"><label>Original MRP (₹)</label><input type="number" id="imr" placeholder="70000"></div>
+  </div>
+  <div class="fg"><label>IMEI Number</label><input type="text" id="iim" placeholder="15-digit IMEI" maxlength="20"></div>
+  <div class="fg"><label>Features / Notes (one per line)</label><textarea id="ife" placeholder="Original box&#10;All accessories&#10;Face ID working"></textarea></div>
+  <div style="background:#F0FDF4;border:1.5px solid rgba(22,163,74,.3);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer;margin-bottom:11px" onclick="document.getElementById('ivi').click()">
+    <input type="checkbox" id="ivi" checked style="width:15px;height:15px;accent-color:#16A34A">
+    <div><div style="font-size:13px;font-weight:700;color:#16A34A">✅ Show as Available on Buy page</div><div style="font-size:11px;color:#166534">Uncheck = shows as Coming Soon</div></div>
+  </div>
+  <input type="hidden" id="ied">
+  <button class="sb" onclick="saveI()">Save Device</button>
 </div></div></div>
 
 <!-- TEAM MODAL -->
@@ -1269,42 +1303,55 @@ function openIM(id) {
   var d = id ? inv.find(function(x){return x.id===id;}) : null;
   document.getElementById('ied').value = id || '';
   document.getElementById('ic').value = d ? d.cat : 'iphone';
-  oIC();
-  if (d) {
-    setTimeout(function(){
-      document.getElementById('imod').value = d.name || '';
-      oIM();
-      setTimeout(function(){
-        document.getElementById('ist').value = d.storage || '';
-        document.getElementById('ico').value = d.color || '';
-      }, 60);
-    }, 60);
-  }
-  document.getElementById('igr').value = d ? d.grade   : 'A+';
-  document.getElementById('iba').value = d ? d.battery||'' : '';
-  document.getElementById('iyr').value = d ? d.year||''    : '';
-  document.getElementById('iqt').value = d ? d.qty||1      : 1;
-  document.getElementById('ipr').value = d ? d.price||''   : '';
-  document.getElementById('imr').value = d ? d.mrp||''     : '';
-  document.getElementById('iim').value = d ? d.imei||''    : '';
+  document.getElementById('imod').value = d ? d.name || '' : '';
+  document.getElementById('ist').value = d ? d.storage || '' : '';
+  document.getElementById('ico').value = d ? d.color || '' : '';
+  document.getElementById('igr').value = d ? d.grade : 'A+';
+  document.getElementById('iba').value = d ? d.battery || '' : '';
+  document.getElementById('iyr').value = d ? d.year || '' : '';
+  document.getElementById('iqt').value = d ? d.qty || 1 : 1;
+  document.getElementById('ipr').value = d ? d.price || '' : '';
+  document.getElementById('imr').value = d ? d.mrp || '' : '';
+  document.getElementById('iim').value = d ? d.imei || '' : '';
   document.getElementById('ife').value = d ? (d.features||[]).join('\n') : '';
   document.getElementById('ivi').checked = d ? !!d.visible : true;
   document.getElementById('im2').classList.add('on');
 }
 
 function saveI() {
-  var mod = rn('imod'); if (!mod) { toast('Select a model','e'); return; }
-  var price = parseInt(rn('ipr'))||0; if (!price) { toast('Enter a price','e'); return; }
-  var id = rn('ied') || null;
+  var mod = (document.getElementById('imod').value||'').trim();
+  if (!mod) { alert('Please enter device name'); return; }
+  var price = parseInt((document.getElementById('ipr').value||'0'))||0;
+  if (!price) { alert('Please enter our selling price'); return; }
+  var id = (document.getElementById('ied').value||'').trim() || null;
   var d = {
-    id:id||uid(), cat:rn('ic'), name:mod, storage:rn('ist'), color:rn('ico'),
-    grade:rn('igr'), battery:rn('iba'), year:rn('iyr'), qty:parseInt(rn('iqt'))||1,
-    price:price, mrp:parseInt(rn('imr'))||0, imei:rn('iim'),
-    features:(rn('ife')||'').split('\n').filter(function(l){return l.trim();}),
-    visible:document.getElementById('ivi').checked, addedAt:new Date().toISOString()
+    id: id || uid(),
+    cat: document.getElementById('ic').value || 'iphone',
+    name: mod,
+    storage: (document.getElementById('ist').value||'').trim(),
+    color: (document.getElementById('ico').value||'').trim(),
+    grade: document.getElementById('igr').value || 'A+',
+    battery: (document.getElementById('iba').value||'').trim(),
+    year: (document.getElementById('iyr').value||'').trim(),
+    qty: parseInt(document.getElementById('iqt').value)||1,
+    price: price,
+    mrp: parseInt(document.getElementById('imr').value)||0,
+    imei: (document.getElementById('iim').value||'').trim(),
+    features: (document.getElementById('ife').value||'').split('\n').filter(function(l){return l.trim();}),
+    visible: document.getElementById('ivi').checked,
+    addedAt: new Date().toISOString()
   };
-  if (id) { var idx=inv.findIndex(function(x){return x.id===id;}); if(idx>-1)inv[idx]=d; } else inv.push(d);
-  savI(); ri(); cm('im2'); toast('Device saved');
+  if (id) {
+    var idx = inv.findIndex(function(x){return x.id===id;});
+    if (idx > -1) inv[idx] = d;
+  } else {
+    inv.push(d);
+  }
+  localStorage.setItem('smb_inv', JSON.stringify(inv));
+  localStorage.setItem('smb_notifs', JSON.stringify(notifs));
+  document.getElementById('im2').classList.remove('on');
+  ri();
+  alert('Device saved successfully! ' + mod + ' added to inventory.');
 }
 
 function tI(id) { var d=inv.find(function(x){return x.id===id;}); if(!d)return; d.visible=!d.visible; savI(); ri(); toast(d.visible?'Now on Buy page':'Hidden — Coming Soon'); }
