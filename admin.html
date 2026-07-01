@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<!-- SAMBHI ADMIN v8 - IF YOU SEE THIS THE FILE IS CORRECT -->
+<!-- SAMBHI ADMIN v9 FINAL -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sambhi Mobiles — Admin</title>
 <style>
@@ -412,7 +415,7 @@ td{padding:10px 12px;font-size:13px;vertical-align:middle}
 <!-- INVENTORY -->
 <div class="pg" id="pg-inv">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:9px">
-    <div><h2 style="font-size:16px;font-weight:700">Inventory</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Available → shows on Buy page · Hidden → Coming Soon</p></div>
+    <div><h2 style="font-size:16px;font-weight:700">Inventory</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Available → shows on Buy page · Hidden → Coming Soon · <span id="invCount" style="color:#2563EB;font-weight:600"></span></p></div>
     <div style="display:flex;gap:7px"><select class="si" id="ifl" onchange="ri()"><option value="">All</option><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select><button class="ab" onclick="openIM()">+ Add Device</button></div>
   </div>
   <div class="ig" id="igrid"></div>
@@ -1274,6 +1277,8 @@ function ri() {
   var cat = rn('ifl');
   var items = cat ? inv.filter(function(x){return x.cat===cat;}) : inv;
   var g = document.getElementById('igrid');
+  var ic = document.getElementById('invCount');
+  if (ic) ic.textContent = items.length + ' device' + (items.length!==1?'s':'') + ' in stock';
   if (!items.length) { g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:36px;color:#94A3B8"><div style="font-size:40px;margin-bottom:10px">📦</div><p>No inventory yet. Click + Add Device.</p></div>'; return; }
   g.innerHTML = items.map(function(d){
     var gc = d.grade==='A+'?'ga':d.grade==='A'?'gb':'gc';
@@ -1644,7 +1649,19 @@ function saveI() {
   }
   document.getElementById('im2').classList.remove('on');
   gt('inv');
-  toast(newItem.name + ' saved to inventory!');
+  // Flash the inventory tab green so user knows it worked
+  var invTab = document.querySelector('.tb[data-pg="inv"]');
+  if (invTab) {
+    invTab.style.background = '#16A34A';
+    invTab.style.color = '#fff';
+    setTimeout(function(){ invTab.style.background=''; invTab.style.color=''; }, 2000);
+  }
+  // Show big visible confirmation
+  var notice = document.createElement('div');
+  notice.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:16px 28px;border-radius:12px;font-size:16px;font-weight:700;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.3)';
+  notice.textContent = '✅ ' + newItem.name + ' saved!';
+  document.body.appendChild(notice);
+  setTimeout(function(){ notice.remove(); }, 3000);
 }
 
 function tI(id) { var d=inv.find(function(x){return x.id===id;}); if(!d)return; d.visible=!d.visible; savI(); ri(); toast(d.visible?'Now on Buy page':'Hidden — Coming Soon'); }
