@@ -69,10 +69,11 @@ nav{background:var(--white);border-bottom:1px solid var(--border);position:stick
 .step h3{font-size:17px;font-weight:700;margin-bottom:8px}
 .step p{font-size:14px;color:var(--gray-500);line-height:1.7}
 /* BRANDS */
-.brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .brand-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px 12px;text-align:center;cursor:pointer;transition:all .25s;text-decoration:none;display:block}
 .brand-card:hover{border-color:var(--blue);box-shadow:var(--shadow-md);transform:translateY(-3px)}
-.brand-logo{width:52px;height:52px;margin:0 auto 10px;border-radius:13px;overflow:hidden}
+.brand-logo{width:72px;height:72px;margin:0 auto 10px;border-radius:16px;overflow:hidden;background:#f8fafc;display:flex;align-items:center;justify-content:center;padding:10px}
+.brand-logo img{width:100%;height:100%;object-fit:contain}
 .brand-logo svg{width:100%;height:100%}
 .brand-card h3{font-size:13px;font-weight:700;color:var(--gray-900);margin-bottom:2px}
 .brand-card p{font-size:11px;color:var(--gray-400)}
@@ -307,17 +308,31 @@ footer{background:var(--gray-900);padding:56px 24px 28px}
 </footer>
 
 <script>
-const BRAND_LOGOS={iphone:'📱',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+const BRAND_LOGOS={
+  iphone:     'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+  samsung:    'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+  oneplus:    'https://upload.wikimedia.org/wikipedia/commons/7/73/OnePlus_logo.svg',
+  realme:     'https://upload.wikimedia.org/wikipedia/commons/9/9e/Realme_logo.svg',
+  oppo:       'https://upload.wikimedia.org/wikipedia/commons/a/a5/OPPO_LOGO_2019.svg',
+  vivo:       'https://upload.wikimedia.org/wikipedia/commons/8/81/Vivo_logo.svg',
+  xiaomi:     'https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg',
+  pixel:      'https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg',
+  nothing:    'https://upload.wikimedia.org/wikipedia/commons/7/76/Nothing_logo_2022.svg',
+  airpods:    'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+  applewatch: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+  playstation:'https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg'
+};
 const BRAND_NAMES={iphone:'iPhone',samsung:'Samsung',oneplus:'OnePlus',realme:'Realme',oppo:'Oppo',vivo:'Vivo',xiaomi:'Xiaomi / Redmi',pixel:'Google Pixel',nothing:'Nothing Phone',airpods:'AirPods',applewatch:'Apple Watch',playstation:'PlayStation'};
 const BRAND_SUB={iphone:'All models',samsung:'Galaxy series',oneplus:'All models',realme:'All series',oppo:'Reno, F, A',vivo:'V, Y, X series',xiaomi:'Redmi, POCO, Mi',pixel:'Pixel 6-9',nothing:'Phone 1, 2, 2a',airpods:'Pro, Max, Gen 2-3',applewatch:'Series 3-9, Ultra',playstation:'PS4, PS5'};
 
+const BRAND_EMOJIS={iphone:'📱',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
 // Render brands
 const bg=document.getElementById('brandsGrid');
 Object.keys(BRAND_LOGOS).forEach(k=>{
   const a=document.createElement('a');
   a.href='sell.html?brand='+k;
   a.className='brand-card';
-  a.innerHTML=`<div class="brand-logo" style="background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:28px">${BRAND_LOGOS[k]}</div><h3>${BRAND_NAMES[k]}</h3><p>${BRAND_SUB[k]}</p>`;
+  a.innerHTML=`<div class="brand-logo" style="background:#f8fafc;display:flex;align-items:center;justify-content:center;padding:14px"><img src="${BRAND_LOGOS[k]}" alt="${BRAND_NAMES[k]}" style="width:56px;height:56px;object-fit:contain" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=font-size:28px>${BRAND_EMOJIS[k]||'📱'}</span>'"></div><h3>${BRAND_NAMES[k]}</h3><p>${BRAND_SUB[k]}</p>`;
   bg.appendChild(a);
 });
 
