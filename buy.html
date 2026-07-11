@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buy Certified Devices — Sambhi Mobiles Delhi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   SAMBHI MOBILES — GLOBAL STYLES v3
+   Copy into <style> tag of each page
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
+  --green:#16A34A;--green-l:#F0FDF4;
+  --orange:#F97316;--orange-l:#FFF7ED;
+  --red:#DC2626;--red-l:#FEF2F2;
+  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
+  --bg:#F8FAFC;--white:#fff;
+  --border:#E2E8F0;--border-d:#CBD5E1;
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.13)
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.logo-text{font-size:17px;font-weight:700;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.logo-text strong{color:var(--blue)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
+.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cta-btn{background:var(--blue);color:var(--white);padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;white-space:nowrap}
+.cta-btn:hover{background:var(--blue-d)}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap}
+.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
+.burger{display:none;background:none;border:none;font-size:21px;cursor:pointer;padding:6px;color:var(--ink);line-height:1}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:var(--white)}
+.mobile-nav.open{display:flex}
+.mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.28)}
+.btn-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-ghost{background:var(--bg);color:var(--muted)}
+.btn-ghost:hover{background:var(--border);color:var(--ink)}
+.btn-danger{background:var(--red);color:var(--white)}
+.btn-full{width:100%;justify-content:center}
+.btn-lg{padding:14px 28px;font-size:15px;border-radius:var(--radius-lg)}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fg label .opt{color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--ink);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.07)}
+.fg input.err,.fg select.err,.fg textarea.err{border-color:var(--red);background:var(--red-l)}
+.fg textarea{resize:none;height:72px}
+.fg .hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.card-lg{padding:32px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.badge-blue{background:var(--blue-l);color:var(--blue)}
+.badge-green{background:var(--green-l);color:var(--green)}
+.badge-orange{background:var(--orange-l);color:var(--orange)}
+.badge-red{background:var(--red-l);color:var(--red)}
+.badge-gray{background:var(--bg);color:var(--muted)}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:var(--white);padding:11px 17px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(10px);opacity:0;transition:all .28s;pointer-events:auto;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.green{background:var(--green)}
+.toast.red{background:var(--red)}
+
+/* ── AUTH MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:400;align-items:flex-start;justify-content:center;padding:48px 16px 24px;overflow-y:auto;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.auth-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
+.auth-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit;line-height:1}
+.auth-close:hover{background:var(--border);color:var(--ink)}
+.auth-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
+.auth-tab.on{background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.auth-err{background:var(--red-l);color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none}
+
+/* ── SECTION LAYOUT ── */
+.sec{padding:68px 20px}
+.sec-in{max-width:1200px;margin:0 auto}
+.sec-sm{padding:44px 20px}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px;line-height:1.15}
+.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:40px}
+
+/* ── PAGE HERO ── */
+.page-hero{background:linear-gradient(135deg,var(--blue-l),var(--green-l));padding:48px 20px 40px}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:14px}
+.breadcrumb a{color:var(--blue);text-decoration:none}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--ink);margin-bottom:8px}
+.page-hero p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7}
+
+/* ── CAMPAIGN BANNER ── */
+.camp-banner{background:linear-gradient(90deg,var(--orange),#ea580c);padding:10px 20px;text-align:center;color:var(--white);font-size:13px;font-weight:600;display:none;cursor:pointer}
+.camp-banner.on{display:block}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:52px 20px 24px}
+.footer-in{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.footer-logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;margin-bottom:12px}
+.footer-contact a{display:block;font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:5px}
+.footer-contact a:hover{color:var(--white)}
+.footer-col h4{font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:52px 24px}
+.empty-icon{font-size:52px;margin-bottom:14px}
+.empty h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty p{font-size:14px;color:var(--muted);margin-bottom:18px}
+
+/* ── STATUS BADGES ── */
+.st-pending{background:#FFFBEB;color:#D97706}
+.st-reviewing{background:var(--blue-l);color:var(--blue)}
+.st-completed{background:var(--green-l);color:var(--green)}
+.st-rejected{background:var(--red-l);color:var(--red)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .footer-top{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .burger{display:block}
+}
+@media(max-width:640px){
+  .footer-top{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr}
+  nav .cta-btn{display:none}
+}
+
+/* BUY-SPECIFIC */
+.filters{max-width:1200px;margin:0 auto;padding:22px 20px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-btn{background:var(--white);border:1.5px solid var(--border);color:var(--muted);padding:7px 15px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
+.filter-btn.on{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.search-wrap{margin-left:auto}
+.search-input{border:1.5px solid var(--border);border-radius:100px;padding:7px 15px;font-size:13px;font-family:inherit;outline:none;background:var(--white);width:200px}
+.search-input:focus{border-color:var(--blue)}
+.products{max-width:1200px;margin:0 auto;padding:22px 20px 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+/* PRODUCT CARD */
+.prod-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;transition:all .22s;display:flex;flex-direction:column}
+.prod-card:hover{border-color:var(--blue);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.prod-img{height:180px;background:linear-gradient(135deg,#F1F5F9,#E2E8F0);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative}
+.prod-img img{max-width:120px;max-height:150px;object-fit:contain}
+.prod-badges{position:absolute;top:10px;left:10px;display:flex;gap:5px;flex-wrap:wrap}
+.prod-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.prod-name{font-size:15px;font-weight:700;margin-bottom:3px;color:var(--ink)}
+.prod-specs{font-size:12px;color:var(--light);margin-bottom:10px}
+.prod-price-row{display:flex;align-items:baseline;gap:7px;margin-bottom:12px}
+.prod-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--blue)}
+.prod-orig{font-size:13px;color:#CBD5E1;text-decoration:line-through}
+.prod-save{font-size:11px;font-weight:700;color:var(--green);background:var(--green-l);padding:2px 7px;border-radius:100px}
+.prod-feats{flex:1;margin-bottom:12px}
+.pf{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.pf::before{content:"✓";color:var(--green);font-weight:700;font-size:13px}
+.enq-btn{width:100%;background:var(--ink);color:var(--white);border:none;padding:11px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;margin-top:auto}
+.enq-btn:hover{background:var(--blue)}
+/* COMING SOON */
+.coming-card .prod-card{opacity:.8}
+.coming-overlay{position:absolute;inset:0;background:rgba(15,23,42,.35);display:flex;align-items:center;justify-content:center;border-radius:0}
+.coming-pill{background:var(--ink);color:var(--white);font-size:11px;font-weight:700;padding:5px 12px;border-radius:100px}
+.notify-zone{padding:13px 18px;background:linear-gradient(135deg,#F3E8FF,#EDE9FE);border-top:1px solid #E0D8FF}
+.notify-zone p{font-size:12px;color:#6D28D9;font-weight:600;margin-bottom:7px}
+.notify-row{display:flex;gap:6px}
+.notify-input{flex:1;border:1.5px solid #DDD6FE;border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;outline:none;background:var(--white);min-width:0}
+.notify-btn{background:#7C3AED;color:var(--white);border:none;padding:7px 13px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+/* TRUST */
+.buy-trust{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px}
+.buy-trust-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bt{text-align:center}
+.bt-icon{font-size:24px;margin-bottom:5px}
+.bt h4{font-size:13px;font-weight:700;margin-bottom:2px}
+.bt p{font-size:11px;color:var(--muted)}
+/* ENQUIRY MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:400;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.enq-modal{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
+.enq-modal h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px}
+.enq-modal p{font-size:13px;color:var(--light);margin-bottom:14px;line-height:1.6}
+.enq-device{background:var(--blue-l);border-radius:var(--radius);padding:10px 13px;margin-bottom:14px;font-size:13px;font-weight:700;color:#1d4ed8}
+.enq-modal-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit}
+.wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:#25D366;color:var(--white);text-decoration:none;padding:11px;border-radius:var(--radius);font-size:13px;font-weight:700;margin-top:9px}
+/* RESP */
+@media(max-width:1024px){.products{grid-template-columns:repeat(2,1fr)}.buy-trust-in{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.products{grid-template-columns:1fr}.search-wrap{display:none}.filters{gap:6px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
+    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl active">Buy</a><a href="about.html" class="nl">About</a></div>
+    <div class="nav-right">
+      <a href="sell.html" class="cta-btn">Sell Now →</a>
+      <a href="index.html" class="acct-btn" data-guest>Login</a>
+      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+    </div>
+    <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="account.html" data-auth style="display:none">My Account</a></div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-in">
+    <div class="breadcrumb"><a href="index.html">Home</a> › Buy Devices</div>
+    <h1>Buy certified pre-owned devices</h1>
+    <p>Every device is IMEI-verified, quality-graded and delivered free to your door.</p>
+  </div>
+</div>
+
+<div class="buy-trust">
+  <div class="buy-trust-in">
+    <div class="bt"><div class="bt-icon">🔍</div><h4>IMEI Verified</h4><p>Checked against CEIR India before listing</p></div>
+    <div class="bt"><div class="bt-icon">⭐</div><h4>Quality Graded</h4><p>A+, A, B — honest condition description</p></div>
+    <div class="bt"><div class="bt-icon">🚗</div><h4>Free Delivery</h4><p>Free doorstep delivery anywhere in Delhi</p></div>
+    <div class="bt"><div class="bt-icon">↩️</div><h4>7-Day Return</h4><p>Not satisfied? Full refund within 7 days</p></div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn on" onclick="filterBy('',this)">All</button>
+  <button class="filter-btn" onclick="filterBy('iphone',this)">📱 iPhones</button>
+  <button class="filter-btn" onclick="filterBy('airpods',this)">🎧 AirPods</button>
+  <button class="filter-btn" onclick="filterBy('applewatch',this)">⌚ Apple Watch</button>
+  <button class="filter-btn" onclick="filterBy('playstation',this)">🎮 PlayStation</button>
+  <div class="search-wrap"><input class="search-input" id="srch" placeholder="🔍 Search..." oninput="renderProducts()"></div>
+</div>
+
+<div class="products" id="prodGrid"></div>
+
+<!-- ENQUIRY MODAL -->
+<div class="modal-overlay" id="enqModal" onclick="if(event.target===this)closeEnq()">
+  <div class="enq-modal">
+    <button class="enq-modal-close" onclick="closeEnq()">✕</button>
+    <h2>Enquire about this device</h2>
+    <p>We'll confirm availability and arrange delivery</p>
+    <div class="enq-device" id="enqDeviceName">Device</div>
+    <div class="fg"><label>Your Name</label><input type="text" id="enqName" placeholder="Full name"></div>
+    <div class="fg"><label>WhatsApp Number</label><input type="tel" id="enqPhone" placeholder="10-digit number" maxlength="10"></div>
+    <button class="btn btn-primary btn-full" onclick="submitEnq()">Send Enquiry</button>
+    <a id="enqWALink" href="#" target="_blank" class="wa-btn">💬 WhatsApp +91 7827505579</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
+      <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<script src="shared.js"></script>
+<script>
+var ICON = {iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮',samsung:'🌟',oneplus:'⚡',xiaomi:'🔴',realme:'🎯',oppo:'💚',vivo:'🔵',pixel:'🌐',nothing:'⭕'};
+var DEV_IMG = {
+  'iPhone 16 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Pro Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-7inch-sierrablue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-black-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-black-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen (USB-C)':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MTJV3?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 9 45mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-45mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'PS5 Disc Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
+  'PS5 Digital Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-digital-edition-product-thumbnail-01-en-14sep21?$facebook$'
+};
+function getImg(name) {
+  if (!name) return '';
+  if (DEV_IMG[name]) return DEV_IMG[name];
+  for (var k in DEV_IMG) { if (name.indexOf(k) > -1) return DEV_IMG[k]; }
+  return '';
+}
+var curCat = '', curDevice = null;
+function filterBy(cat, btn) {
+  curCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderProducts();
+}
+function renderProducts() {
+  var inv = SMB.inventory.all();
+  var q = ((document.getElementById('srch')||{}).value||'').toLowerCase();
+  var list = inv;
+  if (curCat) list = list.filter(function(p){return p.cat===curCat;});
+  if (q) list = list.filter(function(p){return (p.name+' '+(p.storage||'')+' '+(p.color||'')+' '+(p.grade||'')).toLowerCase().indexOf(q)>-1;});
+  list.sort(function(a,b){return (b.visible?1:0)-(a.visible?1:0);});
+  var grid = document.getElementById('prodGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">📦</div><h3 style="font-size:18px;font-weight:700;margin-bottom:6px">No devices in stock yet</h3><p>Check back soon or call +91 7827505579</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(p) {
+    var icon = ICON[p.cat] || '📱';
+    var imgUrl = getImg(p.name);
+    var imgHtml = imgUrl
+      ? '<img src="'+imgUrl+'" alt="'+p.name+'" style="max-width:120px;max-height:150px;object-fit:contain" onerror="this.style.display=\'none\'">'
+      : '<span>'+icon+'</span>';
+    var gcls = p.grade==='A+'?'badge-green':p.grade==='A'?'badge-blue':'badge-orange';
+    var specs = [p.storage,p.color,p.battery?'Batt '+p.battery+'%':'',p.year].filter(Boolean).join(' · ');
+    var sv = p.mrp ? Math.round((1-p.price/p.mrp)*100) : 0;
+    if (!p.visible) {
+      return '<div class="prod-card"><div class="prod-img">'+imgHtml
+        +'<div class="prod-badges"><span class="badge '+gcls+'">'+p.grade+'</span></div>'
+        +'<div class="coming-overlay"><span class="coming-pill">🔜 Coming Soon</span></div></div>'
+        +'<div class="prod-body"><div class="prod-name">'+p.name+'</div><div class="prod-specs">'+(specs||'Details pending')+'</div>'
+        +'<div class="prod-price-row"><span style="color:var(--light);font-size:20px;font-weight:800">Price TBD</span></div></div>'
+        +'<div class="notify-zone"><p>🔔 Notify me when available</p>'
+        +'<div class="notify-row"><input class="notify-input" id="nfi_'+p.id+'" placeholder="Your WhatsApp" maxlength="10">'
+        +'<button class="notify-btn" onclick="saveNotify(\''+p.id+'\',\''+p.name+'\')">Notify</button></div></div></div>';
+    }
+    return '<div class="prod-card"><div class="prod-img">'+imgHtml
+      +'<div class="prod-badges"><span class="badge '+gcls+'">'+p.grade+'</span>'
+      +(p.qty>1?'<span class="badge badge-blue">Qty:'+p.qty+'</span>':'')
+      +'</div></div>'
+      +'<div class="prod-body"><div class="prod-name">'+p.name+'</div>'
+      +'<div class="prod-specs">'+(specs||'—')+'</div>'
+      +'<div class="prod-price-row"><span class="prod-price">₹'+parseInt(p.price).toLocaleString('en-IN')+'</span>'
+      +(p.mrp?'<span class="prod-orig">₹'+parseInt(p.mrp).toLocaleString('en-IN')+'</span>':'')
+      +(sv>0?'<span class="prod-save">-'+sv+'%</span>':'')+'</div>'
+      +((p.features||[]).length?'<div class="prod-feats">'+(p.features||[]).slice(0,3).map(function(f){return'<div class="pf">'+f+'</div>';}).join('')+'</div>':'<div class="prod-feats"></div>')
+      +'<button class="enq-btn" onclick="openEnq(\''+p.id+'\')">Enquire Now</button></div></div>';
+  }).join('');
+}
+function openEnq(id) {
+  var inv = SMB.inventory.all(); curDevice = inv.find(function(p){return p.id===id;});
+  if (!curDevice) return;
+  var CU = SMB.customer.current();
+  document.getElementById('enqName').value  = CU ? CU.name  : '';
+  document.getElementById('enqPhone').value = CU ? CU.phone : '';
+  var dStr = curDevice.name + (curDevice.storage?' '+curDevice.storage:'');
+  document.getElementById('enqDeviceName').textContent = dStr;
+  var waMsg = encodeURIComponent('Hi! I\'m interested in '+dStr+' at ₹'+parseInt(curDevice.price).toLocaleString('en-IN')+'. Please confirm availability.');
+  document.getElementById('enqWALink').href = 'https://wa.me/917827505579?text='+waMsg;
+  document.getElementById('enqModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeEnq() { document.getElementById('enqModal').classList.remove('open'); document.body.style.overflow = ''; curDevice = null; }
+function submitEnq() {
+  var name  = (document.getElementById('enqName').value||'').trim();
+  var phone = (document.getElementById('enqPhone').value||'').trim();
+  if (!name||phone.length<10) { showToast('Enter name and phone number','red'); return; }
+  if (!curDevice) return;
+  var notifs = SMB.arr(SMB.K.notifs);
+  notifs.push({devId:curDevice.id,devName:curDevice.name,type:'buy_enquiry',name:name,phone:phone,at:SMB.now()});
+  SMB.set(SMB.K.notifs, notifs);
+  var dStr = curDevice.name + (curDevice.storage?' '+curDevice.storage:'');
+  var msg = encodeURIComponent('Hi! I\'m '+name+' and I want to buy '+dStr+' (₹'+parseInt(curDevice.price).toLocaleString('en-IN')+'). My number: '+phone);
+  window.open('https://wa.me/917827505579?text='+msg,'_blank');
+  closeEnq(); showToast('Enquiry sent! We\'ll call you shortly.','green');
+}
+function saveNotify(devId, devName) {
+  var phone = (document.getElementById('nfi_'+devId).value||'').trim();
+  if (phone.length<10) { showToast('Enter valid number','red'); return; }
+  var notifs = SMB.arr(SMB.K.notifs);
+  notifs.push({devId:devId,devName:devName,type:'notify_me',phone:phone,at:SMB.now()});
+  SMB.set(SMB.K.notifs, notifs);
+  showToast('We\'ll notify you when available! 🔔','green');
+}
+function showToast(msg, type) {
+  var w=document.getElementById('toastWrap');var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;w.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},3500);
+}
+renderProducts(); // No login required — everyone sees inventory
+</script>
+</body>
+</html>

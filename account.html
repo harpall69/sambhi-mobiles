@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account — Sambhi Mobiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   SAMBHI MOBILES — GLOBAL STYLES v3
+   Copy into <style> tag of each page
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
+  --green:#16A34A;--green-l:#F0FDF4;
+  --orange:#F97316;--orange-l:#FFF7ED;
+  --red:#DC2626;--red-l:#FEF2F2;
+  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
+  --bg:#F8FAFC;--white:#fff;
+  --border:#E2E8F0;--border-d:#CBD5E1;
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.13)
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.logo-text{font-size:17px;font-weight:700;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.logo-text strong{color:var(--blue)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
+.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cta-btn{background:var(--blue);color:var(--white);padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;white-space:nowrap}
+.cta-btn:hover{background:var(--blue-d)}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap}
+.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
+.burger{display:none;background:none;border:none;font-size:21px;cursor:pointer;padding:6px;color:var(--ink);line-height:1}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:var(--white)}
+.mobile-nav.open{display:flex}
+.mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.28)}
+.btn-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-ghost{background:var(--bg);color:var(--muted)}
+.btn-ghost:hover{background:var(--border);color:var(--ink)}
+.btn-danger{background:var(--red);color:var(--white)}
+.btn-full{width:100%;justify-content:center}
+.btn-lg{padding:14px 28px;font-size:15px;border-radius:var(--radius-lg)}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fg label .opt{color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--ink);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.07)}
+.fg input.err,.fg select.err,.fg textarea.err{border-color:var(--red);background:var(--red-l)}
+.fg textarea{resize:none;height:72px}
+.fg .hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.card-lg{padding:32px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.badge-blue{background:var(--blue-l);color:var(--blue)}
+.badge-green{background:var(--green-l);color:var(--green)}
+.badge-orange{background:var(--orange-l);color:var(--orange)}
+.badge-red{background:var(--red-l);color:var(--red)}
+.badge-gray{background:var(--bg);color:var(--muted)}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:var(--white);padding:11px 17px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(10px);opacity:0;transition:all .28s;pointer-events:auto;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.green{background:var(--green)}
+.toast.red{background:var(--red)}
+
+/* ── AUTH MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:400;align-items:flex-start;justify-content:center;padding:48px 16px 24px;overflow-y:auto;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.auth-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
+.auth-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit;line-height:1}
+.auth-close:hover{background:var(--border);color:var(--ink)}
+.auth-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
+.auth-tab.on{background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.auth-err{background:var(--red-l);color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none}
+
+/* ── SECTION LAYOUT ── */
+.sec{padding:68px 20px}
+.sec-in{max-width:1200px;margin:0 auto}
+.sec-sm{padding:44px 20px}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px;line-height:1.15}
+.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:40px}
+
+/* ── PAGE HERO ── */
+.page-hero{background:linear-gradient(135deg,var(--blue-l),var(--green-l));padding:48px 20px 40px}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:14px}
+.breadcrumb a{color:var(--blue);text-decoration:none}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--ink);margin-bottom:8px}
+.page-hero p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7}
+
+/* ── CAMPAIGN BANNER ── */
+.camp-banner{background:linear-gradient(90deg,var(--orange),#ea580c);padding:10px 20px;text-align:center;color:var(--white);font-size:13px;font-weight:600;display:none;cursor:pointer}
+.camp-banner.on{display:block}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:52px 20px 24px}
+.footer-in{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.footer-logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;margin-bottom:12px}
+.footer-contact a{display:block;font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:5px}
+.footer-contact a:hover{color:var(--white)}
+.footer-col h4{font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:52px 24px}
+.empty-icon{font-size:52px;margin-bottom:14px}
+.empty h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty p{font-size:14px;color:var(--muted);margin-bottom:18px}
+
+/* ── STATUS BADGES ── */
+.st-pending{background:#FFFBEB;color:#D97706}
+.st-reviewing{background:var(--blue-l);color:var(--blue)}
+.st-completed{background:var(--green-l);color:var(--green)}
+.st-rejected{background:var(--red-l);color:var(--red)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .footer-top{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .burger{display:block}
+}
+@media(max-width:640px){
+  .footer-top{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr}
+  nav .cta-btn{display:none}
+}
+
+.acc-layout{max-width:1200px;margin:0 auto;padding:30px 20px 60px;display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:start}
+/* SIDEBAR */
+.sidebar{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+.profile-block{padding:22px;text-align:center;border-bottom:1px solid var(--border)}
+.avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:var(--white);margin:0 auto 11px}
+.profile-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.profile-phone{font-size:13px;color:var(--light)}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-l);color:var(--green);font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;margin-top:8px}
+.snav{padding:8px 0}
+.snav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:11px 18px;color:var(--muted);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;border-radius:0}
+.snav-btn:hover{background:var(--bg);color:var(--ink)}
+.snav-btn.on{background:var(--blue-l);color:var(--blue);font-weight:600}
+.snav-icon{font-size:16px;width:20px;text-align:center}
+.snav-count{margin-left:auto;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:700;padding:2px 7px;border-radius:100px}
+/* MAIN */
+.main-col{display:flex;flex-direction:column;gap:18px}
+.tab-panel{display:none}.tab-panel.on{display:flex;flex-direction:column;gap:18px}
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat-tile{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;text-align:center}
+.st-num{font-size:26px;font-weight:800;color:var(--blue);line-height:1;margin-bottom:3px}
+.st-lbl{font-size:12px;color:var(--light)}
+/* DEVICE LIST */
+.device-list{display:flex;flex-direction:column;gap:10px}
+.dev-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px 17px;display:flex;align-items:center;gap:13px}
+.dev-icon{width:46px;height:46px;border-radius:11px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.dev-info{flex:1;min-width:0}
+.dev-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dev-meta{font-size:12px;color:var(--light)}
+.dev-right{text-align:right;flex-shrink:0}
+.dev-price{font-size:15px;font-weight:700;color:var(--blue)}
+.dev-status{display:inline-flex;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;margin-top:4px}
+/* PROFILE FORM */
+.profile-form{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px}
+.form-section-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.save-btn{background:var(--blue);color:var(--white);border:none;padding:10px 20px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.save-btn:hover{background:var(--blue-d)}
+.divider{height:1px;background:var(--border);margin:20px 0}
+/* NOT LOGGED IN */
+.not-logged{display:none;text-align:center;padding:80px 20px}
+.not-logged.on{display:block}
+/* RESP */
+@media(max-width:768px){.acc-layout{grid-template-columns:1fr}.stats-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.stats-strip{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
+    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="account.html" class="nl active">Account</a></div>
+    <div class="nav-right">
+      <button class="acct-btn" style="border:1.5px solid var(--border);background:none;cursor:pointer;font-family:inherit" onclick="doLogout()">Logout</button>
+    </div>
+    <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><button onclick="doLogout()" style="background:none;border:none;border-bottom:1px solid var(--bg);padding:13px 20px;font-size:15px;cursor:pointer;font-family:inherit;text-align:left;color:var(--red);width:100%">Logout</button></div>
+</nav>
+
+<!-- NOT LOGGED IN -->
+<div class="not-logged" id="notLogged">
+  <div style="font-size:64px;margin-bottom:16px">🔐</div>
+  <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Please login first</h2>
+  <p style="color:var(--muted);margin-bottom:20px">Login or register to see your account</p>
+  <a href="index.html" class="btn btn-primary">Go to Homepage →</a>
+</div>
+
+<div class="page-hero" id="pageHero" style="display:none">
+  <div class="page-hero-in">
+    <h1>My Account</h1>
+    <p id="helloText">Manage your profile, track sells and purchases.</p>
+  </div>
+</div>
+
+<div class="acc-layout" id="accLayout" style="display:none">
+  <!-- SIDEBAR -->
+  <div>
+    <div class="sidebar">
+      <div class="profile-block">
+        <div class="avatar" id="avEl">?</div>
+        <div class="profile-name" id="profName">—</div>
+        <div class="profile-phone" id="profPhone">—</div>
+        <div class="verified-badge">✓ Verified Customer</div>
+      </div>
+      <div class="snav">
+        <button class="snav-btn on" onclick="goTab('overview',this)"><span class="snav-icon">📊</span>Overview</button>
+        <button class="snav-btn" onclick="goTab('sells',this)"><span class="snav-icon">💸</span>My Sells<span class="snav-count" id="scBadge">0</span></button>
+        <button class="snav-btn" onclick="goTab('purchases',this)"><span class="snav-icon">🛒</span>My Purchases<span class="snav-count" id="pcBadge">0</span></button>
+        <button class="snav-btn" onclick="goTab('profile',this)"><span class="snav-icon">👤</span>Profile & Settings</button>
+      </div>
+    </div>
+  </div>
+  <!-- MAIN CONTENT -->
+  <div class="main-col">
+
+    <!-- OVERVIEW -->
+    <div class="tab-panel on" id="tab-overview">
+      <div class="stats-strip">
+        <div class="stat-tile"><div class="st-num" id="ovSells">0</div><div class="st-lbl">Phones Sold</div></div>
+        <div class="stat-tile"><div class="st-num" id="ovBuys">0</div><div class="st-lbl">Phones Bought</div></div>
+        <div class="stat-tile"><div class="st-num" id="ovEarned">₹0</div><div class="st-lbl">Total Earned</div></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">Recent Activity</h3>
+        <div class="device-list" id="recentList"></div>
+      </div>
+    </div>
+
+    <!-- MY SELLS -->
+    <div class="tab-panel" id="tab-sells">
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:4px">My Sell Requests</h3>
+        <p style="font-size:13px;color:var(--light);margin-bottom:16px">All phones you've submitted to sell</p>
+        <div class="device-list" id="sellsList"></div>
+      </div>
+    </div>
+
+    <!-- MY PURCHASES -->
+    <div class="tab-panel" id="tab-purchases">
+      <div class="card">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:4px">My Purchases</h3>
+        <p style="font-size:13px;color:var(--light);margin-bottom:16px">Devices you've bought from us</p>
+        <div id="purchasesList">
+          <div class="empty"><div class="empty-icon">🛒</div><h3>No purchases yet</h3><p>Browse our certified devices</p><a href="buy.html" class="btn btn-primary">Browse Devices →</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="tab-panel" id="tab-profile">
+      <div class="profile-form">
+        <div class="form-section-title">Personal Information</div>
+        <div class="fg"><label>Full Name</label><input type="text" id="eName" placeholder="Full name"></div>
+        <div class="fg"><label>Primary Mobile</label><input type="tel" id="ePhone" readonly style="background:var(--bg);color:var(--light);cursor:not-allowed"><div class="hint">Primary number cannot be changed. Contact support if needed.</div></div>
+        <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="eAlt" placeholder="Second number" maxlength="10"></div>
+        <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+        <div class="divider"></div>
+        <div class="form-section-title">Change Password</div>
+        <div class="fg"><label>Current Password</label><input type="password" id="curPw" placeholder="Current password"></div>
+        <div class="fg"><label>New Password</label><input type="password" id="newPw" placeholder="New password (min 6 chars)"></div>
+        <div class="fg"><label>Confirm New Password</label><input type="password" id="conPw" placeholder="Repeat new password"></div>
+        <button class="save-btn" onclick="changePw()">Update Password</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
+      <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="tw"></div>
+<script src="shared.js"></script>
+<script>
+var CU = null, mySells = [];
+var ICONS = {iphone:'📱',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+var SLBL  = {pending:'⏳ Pending',reviewing:'🔍 Reviewing',completed:'✅ Completed',rejected:'❌ Rejected'};
+var SCLS  = {pending:'st-pending',reviewing:'st-reviewing',completed:'st-completed',rejected:'st-rejected'};
+
+function init() {
+  CU = SMB.customer.current();
+  if (!CU) { document.getElementById('notLogged').classList.add('on'); return; }
+  document.getElementById('pageHero').style.display = '';
+  document.getElementById('accLayout').style.display = '';
+  document.getElementById('helloText').textContent = 'Welcome back, ' + CU.name.split(' ')[0] + '!';
+  document.getElementById('avEl').textContent = CU.name.charAt(0).toUpperCase();
+  document.getElementById('profName').textContent = CU.name;
+  document.getElementById('profPhone').textContent = '+91 ' + CU.phone;
+  mySells = SMB.sells.forCustomer(CU.id);
+  document.getElementById('scBadge').textContent = mySells.length;
+  document.getElementById('pcBadge').textContent = CU.buyCount || 0;
+  document.getElementById('ovSells').textContent = mySells.length;
+  document.getElementById('ovBuys').textContent = CU.buyCount || 0;
+  var earned = mySells.filter(function(s){return s.status==='completed';}).reduce(function(sum,s){return sum+(parseInt(s.askingPrice)||0);},0);
+  document.getElementById('ovEarned').textContent = earned ? SMB.Rs(earned) : '₹0';
+  renderSells(); renderRecent(); fillProfile();
+}
+
+function renderSells() {
+  var el = document.getElementById('sellsList');
+  if (!mySells.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📱</div><h3>No sell requests yet</h3><p>Submit your first phone for instant cash</p><a href="sell.html" class="btn btn-primary">Sell a Phone →</a></div>'; return; }
+  el.innerHTML = mySells.slice().reverse().map(function(s) {
+    var dt = (s.brand||'').toLowerCase(), icon = ICONS[dt]||'📱';
+    var name = [s.brand,s.model,s.storage].filter(Boolean).join(' ') || s.device || 'Device';
+    var st = s.status||'pending';
+    return '<div class="dev-card"><div class="dev-icon">'+icon+'</div>'
+      +'<div class="dev-info"><div class="dev-name">'+name+'</div>'
+      +'<div class="dev-meta">'+SMB.fmtDate(s.createdAt)+(s.condition?' · '+s.condition:'')+'</div></div>'
+      +'<div class="dev-right"><div class="dev-price">'+(s.askingPrice?SMB.Rs(s.askingPrice):'—')+'</div>'
+      +'<div class="dev-status '+SCLS[st]+'">'+SLBL[st]+'</div></div></div>';
+  }).join('');
+}
+function renderRecent() {
+  var el = document.getElementById('recentList');
+  var recent = mySells.slice().reverse().slice(0,5);
+  if (!recent.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">✨</div><h3>Nothing here yet</h3><p>Start by selling your phone</p><a href="sell.html" class="btn btn-primary">Sell a Phone →</a></div>'; return; }
+  el.innerHTML = recent.map(function(s) {
+    var dt = (s.brand||'').toLowerCase(), icon = ICONS[dt]||'📱';
+    var name = [s.brand,s.model,s.storage].filter(Boolean).join(' ') || 'Device';
+    var st = s.status||'pending';
+    return '<div class="dev-card"><div class="dev-icon">'+icon+'</div>'
+      +'<div class="dev-info"><div class="dev-name">'+name+'</div><div class="dev-meta">Sell · '+SMB.fmtDate(s.createdAt)+'</div></div>'
+      +'<div class="dev-right"><div class="dev-status '+SCLS[st]+'">'+SLBL[st]+'</div></div></div>';
+  }).join('');
+}
+function fillProfile() {
+  document.getElementById('eName').value = CU.name||'';
+  document.getElementById('ePhone').value = CU.phone||'';
+  document.getElementById('eAlt').value = CU.altPhone||'';
+}
+function goTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(el){el.classList.remove('on');});
+  document.querySelectorAll('.snav-btn').forEach(function(el){el.classList.remove('on');});
+  document.getElementById('tab-'+tab).classList.add('on');
+  btn.classList.add('on');
+}
+function saveProfile() {
+  var name = (document.getElementById('eName').value||'').trim();
+  var alt  = (document.getElementById('eAlt').value||'').trim();
+  if (!name) { showToast('Name cannot be empty','red'); return; }
+  SMB.customer.update(CU.id, {name:name, altPhone:alt});
+  CU = SMB.customer.current();
+  document.getElementById('profName').textContent = name;
+  document.getElementById('avEl').textContent = name.charAt(0).toUpperCase();
+  showToast('Profile updated!','green');
+}
+function changePw() {
+  var cur  = (document.getElementById('curPw').value||'').trim();
+  var nw   = (document.getElementById('newPw').value||'').trim();
+  var conf = (document.getElementById('conPw').value||'').trim();
+  if (!cur||!nw) { showToast('Fill all password fields','red'); return; }
+  if (SMB.hash(cur) !== CU.pwHash) { showToast('Current password incorrect','red'); return; }
+  if (nw.length < 6) { showToast('New password must be 6+ chars','red'); return; }
+  if (nw !== conf) { showToast('New passwords do not match','red'); return; }
+  SMB.customer.update(CU.id, {pwHash: SMB.hash(nw)});
+  ['curPw','newPw','conPw'].forEach(function(id){document.getElementById(id).value='';});
+  showToast('Password updated!','green');
+}
+function doLogout() { SMB.customer.logout(); location.href = 'index.html'; }
+function showToast(msg, type) {
+  var w=document.getElementById('tw');var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;w.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},3200);
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sambhi Mobiles — Sell Any Phone | Buy Certified Gadgets Delhi</title>
+<meta name="description" content="Sell any mobile in Delhi. Free pickup, instant cash, GST bill. Buy certified pre-owned Apple, Samsung, PlayStation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   SAMBHI MOBILES — GLOBAL STYLES v3
+   Copy into <style> tag of each page
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
+  --green:#16A34A;--green-l:#F0FDF4;
+  --orange:#F97316;--orange-l:#FFF7ED;
+  --red:#DC2626;--red-l:#FEF2F2;
+  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
+  --bg:#F8FAFC;--white:#fff;
+  --border:#E2E8F0;--border-d:#CBD5E1;
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.13)
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.logo-text{font-size:17px;font-weight:700;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.logo-text strong{color:var(--blue)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
+.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cta-btn{background:var(--blue);color:var(--white);padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;white-space:nowrap}
+.cta-btn:hover{background:var(--blue-d)}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap}
+.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
+.burger{display:none;background:none;border:none;font-size:21px;cursor:pointer;padding:6px;color:var(--ink);line-height:1}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:var(--white)}
+.mobile-nav.open{display:flex}
+.mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.28)}
+.btn-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-ghost{background:var(--bg);color:var(--muted)}
+.btn-ghost:hover{background:var(--border);color:var(--ink)}
+.btn-danger{background:var(--red);color:var(--white)}
+.btn-full{width:100%;justify-content:center}
+.btn-lg{padding:14px 28px;font-size:15px;border-radius:var(--radius-lg)}
+
+/* ── FORM ELEMENTS ── */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fg label .opt{color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--ink);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.07)}
+.fg input.err,.fg select.err,.fg textarea.err{border-color:var(--red);background:var(--red-l)}
+.fg textarea{resize:none;height:72px}
+.fg .hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.card-lg{padding:32px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
+.badge-blue{background:var(--blue-l);color:var(--blue)}
+.badge-green{background:var(--green-l);color:var(--green)}
+.badge-orange{background:var(--orange-l);color:var(--orange)}
+.badge-red{background:var(--red-l);color:var(--red)}
+.badge-gray{background:var(--bg);color:var(--muted)}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:var(--white);padding:11px 17px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(10px);opacity:0;transition:all .28s;pointer-events:auto;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.green{background:var(--green)}
+.toast.red{background:var(--red)}
+
+/* ── AUTH MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:400;align-items:flex-start;justify-content:center;padding:48px 16px 24px;overflow-y:auto;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.auth-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
+.auth-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit;line-height:1}
+.auth-close:hover{background:var(--border);color:var(--ink)}
+.auth-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
+.auth-tab{flex:1;padding:8px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
+.auth-tab.on{background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.auth-err{background:var(--red-l);color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none}
+
+/* ── SECTION LAYOUT ── */
+.sec{padding:68px 20px}
+.sec-in{max-width:1200px;margin:0 auto}
+.sec-sm{padding:44px 20px}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px;line-height:1.15}
+.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:40px}
+
+/* ── PAGE HERO ── */
+.page-hero{background:linear-gradient(135deg,var(--blue-l),var(--green-l));padding:48px 20px 40px}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:14px}
+.breadcrumb a{color:var(--blue);text-decoration:none}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--ink);margin-bottom:8px}
+.page-hero p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7}
+
+/* ── CAMPAIGN BANNER ── */
+.camp-banner{background:linear-gradient(90deg,var(--orange),#ea580c);padding:10px 20px;text-align:center;color:var(--white);font-size:13px;font-weight:600;display:none;cursor:pointer}
+.camp-banner.on{display:block}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:52px 20px 24px}
+.footer-in{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none}
+.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.footer-logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;margin-bottom:12px}
+.footer-contact a{display:block;font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:5px}
+.footer-contact a:hover{color:var(--white)}
+.footer-col h4{font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .15s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:52px 24px}
+.empty-icon{font-size:52px;margin-bottom:14px}
+.empty h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty p{font-size:14px;color:var(--muted);margin-bottom:18px}
+
+/* ── STATUS BADGES ── */
+.st-pending{background:#FFFBEB;color:#D97706}
+.st-reviewing{background:var(--blue-l);color:var(--blue)}
+.st-completed{background:var(--green-l);color:var(--green)}
+.st-rejected{background:var(--red-l);color:var(--red)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .footer-top{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .burger{display:block}
+}
+@media(max-width:640px){
+  .footer-top{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr}
+  nav .cta-btn{display:none}
+}
+
+/* ── HOME-SPECIFIC ── */
+.hero{background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 55%,#FFF7ED 100%);padding:80px 20px}
+.hero-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:16px;border:1px solid var(--blue-b)}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(30px,4vw,52px);font-weight:900;color:var(--ink);line-height:1.08;letter-spacing:-1.5px;margin-bottom:14px}
+.hero h1 .h1-b{color:var(--blue)}.hero h1 .h1-o{color:var(--orange)}
+.hero-p{font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:26px;max-width:440px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.hero-badges{display:flex;gap:7px;flex-wrap:wrap}
+.hero-badge{background:var(--white);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:4px 11px;border-radius:100px}
+.hero-cards{display:flex;flex-direction:column;gap:12px}
+.hc{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow-md)}
+.hc-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hc-num{font-size:20px;font-weight:800;color:var(--ink);line-height:1}
+.hc-lbl{font-size:12px;color:var(--light);margin-top:2px}
+/* TRUST */
+.trust{background:var(--white);border-bottom:1px solid var(--border);padding:12px 20px}
+.trust-in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink)}
+/* HOW */
+.how{background:var(--bg)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:26px;transition:box-shadow .2s}
+.step:hover{box-shadow:var(--shadow-lg)}
+.step-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+.step h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.step p{font-size:13px;color:var(--muted);line-height:1.7}
+/* BRANDS */
+.brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.brand-card{background:var(--white);border:1.5px solid var(--border);border-radius:13px;padding:18px 10px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.brand-card:hover{border-color:var(--blue);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.blogo{width:60px;height:60px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.blogo svg{width:100%;height:100%}
+.brand-card h3{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.brand-card p{font-size:10px;color:var(--light)}
+/* LOYALTY */
+.loyalty{background:var(--ink)}
+.loyalty-in{max-width:1200px;margin:0 auto;padding:68px 20px;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.loyalty-left .sec-lbl{color:var(--orange)}
+.loyalty-left .sec-title{color:var(--white)}
+.loyalty-left .sec-sub{color:rgba(255,255,255,.4);margin-bottom:26px}
+.lperks{display:flex;flex-direction:column;gap:13px}
+.lperk{display:flex;gap:12px}
+.lperk-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.lperk h4{font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px}
+.lperk p{font-size:12px;color:rgba(255,255,255,.35);line-height:1.6}
+.calc-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-lg);padding:24px}
+.calc-card h3{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px}
+.calc-card > p{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:16px}
+.calc-lbl{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.calc-row input[type=range]{flex:1;accent-color:var(--orange)}
+.calc-val{font-size:13px;font-weight:700;color:var(--orange);min-width:56px;text-align:right}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pay-card{border-radius:10px;padding:13px}
+.pay-norm{background:rgba(255,255,255,.07)}.pay-loyal{background:var(--orange)}
+.pay-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.4);margin-bottom:5px}
+.pay-loyal .pay-lbl{color:rgba(255,255,255,.7)}
+.pay-amt{font-size:22px;font-weight:800;color:var(--white)}
+.pay-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:2px}
+.pay-loyal .pay-sub{color:rgba(255,255,255,.7)}
+.bonus-pill{display:inline-block;background:rgba(255,255,255,.2);color:var(--white);font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;margin-top:5px}
+/* STATS */
+.stats{background:var(--blue);padding:48px 20px}
+.stats-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat{text-align:center}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:900;color:var(--white)}
+.stat-lbl{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px}
+/* RESPONSIVE HOME */
+@media(max-width:1024px){.hero-in,.loyalty-in{grid-template-columns:1fr}.brands-grid{grid-template-columns:repeat(4,1fr)}.stats-in{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.hero{padding:52px 16px}.brands-grid{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr}.hero-btns{flex-direction:column}}
+@media(max-width:420px){.brands-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="camp-banner" id="campBanner" onclick="location.href='sell.html'"></div>
+
+<nav>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nl active">Home</a>
+      <a href="sell.html" class="nl">Sell</a>
+      <a href="buy.html" class="nl">Buy</a>
+      <a href="about.html" class="nl">About</a>
+    </div>
+    <div class="nav-right">
+      <a href="sell.html" class="cta-btn">Sell Now →</a>
+      <a href="#" class="acct-btn" data-guest onclick="openAuthModal();return false">Login</a>
+      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+    </div>
+    <button class="burger" onclick="toggleMobileNav()">☰</button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a>
+    <a href="account.html" data-auth style="display:none">My Account</a>
+    <a href="#" data-guest onclick="openAuthModal();return false">Login / Register</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <div class="hero-tag">📍 Delhi NCR · Zero spam</div>
+      <h1>Sell <span class="h1-b">any mobile.</span><br>Buy <span class="h1-o">premium gadgets.</span></h1>
+      <p class="hero-p">Delhi's most trusted platform. Free doorstep pickup, instant cash, IMEI verified, GST bill guaranteed.</p>
+      <div class="hero-btns">
+        <a href="sell.html" class="btn btn-primary btn-lg">💸 Get my price →</a>
+        <a href="buy.html" class="btn btn-secondary btn-lg">🛒 Buy devices</a>
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">✅ No processing fee</span>
+        <span class="hero-badge">🚗 Free pickup</span>
+        <span class="hero-badge">⚡ Instant cash</span>
+        <span class="hero-badge">🧾 GST bill</span>
+        <span class="hero-badge">🔍 IMEI verified</span>
+      </div>
+    </div>
+    <div class="hero-cards">
+      <div class="hc"><div class="hc-icon" style="background:#EFF6FF">⚡</div><div><div class="hc-num">90 min</div><div class="hc-lbl">Average pickup time</div></div></div>
+      <div class="hc"><div class="hc-icon" style="background:#F0FDF4">💰</div><div><div class="hc-num">₹85,000+</div><div class="hc-lbl">Best price paid for iPhone 15 Pro Max</div></div></div>
+      <div class="hc"><div class="hc-icon" style="background:#FFF7ED">🏆</div><div><div class="hc-num">10% Extra</div><div class="hc-lbl">Loyalty bonus for returning customers</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust-in">
+    <div class="trust-item">🚫 No processing fee</div>
+    <div class="trust-item">🚗 Free pickup</div>
+    <div class="trust-item">🔍 IMEI verified</div>
+    <div class="trust-item">🧾 GST bill</div>
+    <div class="trust-item">📞 One call only</div>
+    <div class="trust-item">🏆 10% loyalty forever</div>
+  </div>
+</div>
+
+<!-- HOW -->
+<section class="sec how">
+  <div class="sec-in">
+    <div class="sec-lbl">How it works</div>
+    <h2 class="sec-title">Three steps to instant cash</h2>
+    <p class="sec-sub">Fill once — we handle everything else.</p>
+    <div class="steps">
+      <div class="step"><div class="step-icon" style="background:#EFF6FF">📋</div><h3>Fill the form</h3><p>Choose brand and model. Live price calculator shows your estimate instantly.</p></div>
+      <div class="step"><div class="step-icon" style="background:#F0FDF4">🚗</div><h3>We come to you</h3><p>Certified pickup at your door anywhere in Delhi. Always free, no exceptions.</p></div>
+      <div class="step"><div class="step-icon" style="background:#FFF7ED">💰</div><h3>Get paid now</h3><p>Device inspected on the spot. Cash or UPI in minutes. GST invoice on WhatsApp.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="sec">
+  <div class="sec-in">
+    <div class="sec-lbl">We buy everything</div>
+    <h2 class="sec-title">Sell any brand</h2>
+    <p class="sec-sub">All major brands at the best prices in Delhi.</p>
+    <div class="brands-grid" id="brandsGrid"></div>
+  </div>
+</section>
+
+<!-- LOYALTY CALC -->
+<section class="loyalty">
+  <div class="loyalty-in">
+    <div class="loyalty-left">
+      <div class="sec-lbl">Sambhi Promise</div>
+      <h2 class="sec-title">Zero fees. 10% extra every time.</h2>
+      <p class="sec-sub">The only gadget buyer in Delhi that charges nothing and rewards loyalty forever.</p>
+      <div class="lperks">
+        <div class="lperk"><div class="lperk-icon" style="background:rgba(249,115,22,.15)">🚫</div><div><h4>No processing fee</h4><p>What we quote is what you get.</p></div></div>
+        <div class="lperk"><div class="lperk-icon" style="background:rgba(22,163,74,.15)">🚗</div><div><h4>Free doorstep pickup</h4><p>We come to you. Always free.</p></div></div>
+        <div class="lperk"><div class="lperk-icon" style="background:rgba(234,179,8,.12)">🏆</div><div><h4>10% loyalty forever</h4><p>Every return sale — 10% extra on top.</p></div></div>
+        <div class="lperk"><div class="lperk-icon" style="background:rgba(37,99,235,.12)">👤</div><div><h4>Your account, your history</h4><p>Track every sell and purchase in one place.</p></div></div>
+      </div>
+    </div>
+    <div class="calc-card">
+      <h3>🏆 Loyalty bonus calculator</h3>
+      <p>See how much extra you earn as a returning customer</p>
+      <div class="calc-lbl">Device market price</div>
+      <div class="calc-row">
+        <input type="range" min="3000" max="120000" value="50000" step="1000" id="loySlider" oninput="calcLoyalty(this.value)">
+        <span class="calc-val" id="loyVal">₹50,000</span>
+      </div>
+      <div class="pay-grid">
+        <div class="pay-card pay-norm"><div class="pay-lbl">First time</div><div class="pay-amt" id="payNorm">₹50,000</div><div class="pay-sub">Standard payout</div></div>
+        <div class="pay-card pay-loyal"><div class="pay-lbl">Returning customer</div><div class="pay-amt" id="payLoyal">₹55,000</div><div class="pay-sub">+10% loyalty</div><div class="bonus-pill" id="payBonus">+₹5,000</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-in">
+    <div class="stat"><div class="stat-num">2,400+</div><div class="stat-lbl">Devices purchased</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">IMEI verified</div></div>
+    <div class="stat"><div class="stat-num">90 min</div><div class="stat-lbl">Avg pickup time</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-lbl">Customer rating</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <div class="footer-top">
+      <div>
+        <a href="index.html" class="footer-logo"><div class="footer-logo-icon">📱</div><span class="footer-logo-text">Sambhi Mobiles</span></a>
+        <p class="footer-desc">Delhi's most trusted platform to sell any smartphone and buy certified premium gadgets.</p>
+        <div class="footer-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="admin.html">🔐 Admin</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any phone</a></div>
+      <div class="footer-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
+      <div class="footer-col"><h4>Account</h4><a href="account.html">My Account</a><a href="account.html">My Sells</a><a href="account.html">My Purchases</a><a href="about.html">About Us</a></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p>🏦 IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
+    </div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" onclick="if(event.target===this)closeAuthModal()">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuthModal()">✕</button>
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px">Welcome 👋</h2>
+    <p style="font-size:13px;color:var(--light);margin-bottom:18px">Login or register to track your sells & purchases</p>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabLogin" onclick="authTab('login')">Login</button>
+      <button class="auth-tab" id="tabReg" onclick="authTab('register')">Register</button>
+    </div>
+    <div id="authErr" class="auth-err"></div>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit mobile" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">Login →</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name *</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Primary Mobile *</label><input type="tel" id="rPhone" placeholder="10-digit mobile" maxlength="10"></div>
+      <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password *</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="btn btn-primary btn-full" onclick="doRegister()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="shared.js"></script>
+<script>
+// ── BRANDS ───────────────────────────────────────────────────────
+var BRANDS = [
+  {k:'iphone',    n:'iPhone',         s:'All models',       svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'},
+  {k:'samsung',   n:'Samsung',        s:'Galaxy series',    svg:'<svg viewBox="0 0 220 50"><text y="40" font-family="Arial Black,Arial" font-size="40" font-weight="900" fill="#1428A0">SAMSUNG</text></svg>'},
+  {k:'oneplus',   n:'OnePlus',        s:'All models',       svg:'<svg viewBox="0 0 120 80"><text y="68" font-family="Arial Black" font-size="68" font-weight="900" fill="#F5010C">1+</text></svg>'},
+  {k:'realme',    n:'Realme',         s:'All series',       svg:'<svg viewBox="0 0 200 60"><text y="50" font-family="Arial" font-size="46" font-weight="700" fill="#E8B400">realme</text></svg>'},
+  {k:'oppo',      n:'Oppo',           s:'Reno, F, A',       svg:'<svg viewBox="0 0 160 60"><text y="50" font-family="Arial" font-size="50" font-weight="700" fill="#1A5276">OPPO</text></svg>'},
+  {k:'vivo',      n:'Vivo',           s:'V, Y, X series',   svg:'<svg viewBox="0 0 130 60"><text y="50" font-family="Arial" font-size="52" font-weight="700" fill="#415FFF">vivo</text></svg>'},
+  {k:'xiaomi',    n:'Xiaomi / Redmi', s:'Redmi, POCO, Mi',  svg:'<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#FF6900"/><text x="60" y="78" font-family="Arial Black" font-size="52" font-weight="900" fill="white" text-anchor="middle">MI</text></svg>'},
+  {k:'pixel',     n:'Google Pixel',   s:'Pixel 6-9',        svg:'<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#fff" stroke="#ddd" stroke-width="2"/><path d="M60 20a40 40 0 0 1 34 20H60V52h43a40 40 0 1 1-43-32z" fill="#4285F4"/><path d="M20 60a40 40 0 0 0 6 21L47 57H34V43h-13A40 40 0 0 0 20 60z" fill="#34A853"/><path d="M60 100a40 40 0 0 1-34-19L47 57v17h44A40 40 0 0 1 60 100z" fill="#FBBC05"/><path d="M100 60a40 40 0 0 0-1-7L60 75V60h40z" fill="#EA4335"/></svg>'},
+  {k:'nothing',   n:'Nothing Phone',  s:'Phone 1, 2, 2a',   svg:'<svg viewBox="0 0 220 60"><text y="48" font-family="Arial" font-size="40" font-weight="700" fill="#000" letter-spacing="2">Nothing</text></svg>'},
+  {k:'airpods',   n:'AirPods',        s:'Pro, Max, Gen 2-3',svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z" fill="#000"/></svg>'},
+  {k:'applewatch',n:'Apple Watch',    s:'Series 3-9, Ultra',svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z" fill="#000"/></svg>'},
+  {k:'playstation',n:'PlayStation',   s:'PS4, PS5',         svg:'<svg viewBox="0 0 200 140"><path d="M58 115V28s21-3 21 18-21 28-21 28h22V115zm27 0V74l25 8V115zm28-8l-26-8 26-14c18-8 40-4 40 12s-22 18-40 10z" fill="#003087"/><text x="10" y="135" font-family="Arial" font-size="16" font-weight="700" fill="#003087">PlayStation</text></svg>'}
+];
+
+(function() {
+  var g = document.getElementById('brandsGrid');
+  BRANDS.forEach(function(b) {
+    var a = document.createElement('a'); a.href = 'sell.html?brand=' + b.k; a.className = 'brand-card';
+    var logo = document.createElement('div'); logo.className = 'blogo'; logo.innerHTML = b.svg;
+    var h3 = document.createElement('h3'); h3.textContent = b.n;
+    var p = document.createElement('p'); p.textContent = b.s;
+    a.appendChild(logo); a.appendChild(h3); a.appendChild(p); g.appendChild(a);
+  });
+})();
+
+// ── LOYALTY CALC ─────────────────────────────────────────────────
+function calcLoyalty(v) {
+  v = parseInt(v);
+  var f = function(n) { return '₹' + n.toLocaleString('en-IN'); };
+  document.getElementById('loyVal').textContent = f(v);
+  document.getElementById('payNorm').textContent = f(v);
+  var bonus = Math.round(v * 0.1);
+  document.getElementById('payLoyal').textContent = f(v + bonus);
+  document.getElementById('payBonus').textContent = '+' + f(bonus);
+}
+
+// ── CAMPAIGN BANNER ───────────────────────────────────────────────
+(function() {
+  var camps = SMB.arr(SMB.K.camps), now = new Date();
+  var ac = camps.find(function(c) {
+    if (!c.on) return false;
+    if (c.fr && new Date(c.fr) > now) return false;
+    if (c.to && new Date(c.to) < now) return false;
+    return true;
+  });
+  if (ac) { var b = document.getElementById('campBanner'); b.textContent = '🔥 ' + ac.t + ' — Tap to sell now →'; b.classList.add('on'); }
+})();
+
+// ── MOBILE NAV ───────────────────────────────────────────────────
+function toggleMobileNav() { document.getElementById('mobileNav').classList.toggle('open'); }
+
+// ── AUTH MODAL ───────────────────────────────────────────────────
+function openAuthModal() { document.getElementById('authModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); document.body.style.overflow = ''; }
+function authTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('on', tab === 'login');
+  document.getElementById('tabReg').classList.toggle('on', tab === 'register');
+  document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('regForm').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('authErr').style.display = 'none';
+}
+function showAuthErr(msg) { var e = document.getElementById('authErr'); e.textContent = msg; e.style.display = 'block'; }
+function doLogin() {
+  var ph = (document.getElementById('lPhone').value || '').trim();
+  var pw = (document.getElementById('lPw').value || '').trim();
+  if (!ph || !pw) { showAuthErr('Enter phone number and password.'); return; }
+  var r = SMB.customer.login(ph, pw);
+  if (!r.ok) { showAuthErr(r.err); return; }
+  closeAuthModal(); smbUpdateNav();
+  showToast('Welcome back, ' + r.customer.name.split(' ')[0] + '! 👋', 'green');
+}
+function doRegister() {
+  var name = (document.getElementById('rName').value || '').trim();
+  var ph   = (document.getElementById('rPhone').value || '').trim();
+  var alt  = (document.getElementById('rAlt').value || '').trim();
+  var pw   = (document.getElementById('rPw').value || '').trim();
+  if (!name) { showAuthErr('Enter your full name.'); return; }
+  if (ph.length < 10) { showAuthErr('Enter a valid 10-digit mobile number.'); return; }
+  if (pw.length < 6) { showAuthErr('Password must be at least 6 characters.'); return; }
+  var r = SMB.customer.register(name, ph, alt, pw);
+  if (!r.ok) { showAuthErr(r.err); return; }
+  closeAuthModal(); smbUpdateNav();
+  showToast('Account created! Welcome, ' + name.split(' ')[0] + ' 🎉', 'green');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var wrap = document.getElementById('toastWrap');
+  var t = document.createElement('div'); t.className = 'toast' + (type ? ' ' + type : ''); t.textContent = msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+  setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 300); }, 3500);
+}
+</script>
+</body>
+</html>
