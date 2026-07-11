@@ -232,6 +232,7 @@ footer{background:var(--ink);padding:52px 20px 24px}
       <a href="sell.html" class="cta-btn">Sell Now →</a>
       <a href="#" class="acct-btn" data-guest onclick="location.href='index.html';return false">Login</a>
       <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+      <button class="acct-btn" data-auth style="display:none;background:none;border-color:#FECACA;color:#DC2626;cursor:pointer;font-family:inherit" onclick="SMB.customer.logout();location.href='index.html'">Logout</button>
     </div>
     <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
   </div>
@@ -482,6 +483,26 @@ function showToast(msg, type) {
   requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
   setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},3500);
 }
+function validatePin(el) {
+  var v = el.value.replace(/\D/g,'');
+  el.value = v;
+  var hint = document.getElementById('pinHint');
+  if (v.length === 0) { el.classList.remove('err'); hint.textContent = 'Delhi PIN codes start with 110'; hint.style.color = ''; return; }
+  if (!v.startsWith('110')) {
+    el.classList.add('err');
+    hint.textContent = '⚠️ Only Delhi PIN codes accepted (must start with 110)';
+    hint.style.color = '#DC2626';
+  } else if (v.length === 6) {
+    el.classList.remove('err');
+    hint.textContent = '✅ Valid Delhi PIN code';
+    hint.style.color = '#16A34A';
+  } else {
+    el.classList.remove('err');
+    hint.textContent = 'Enter 6-digit Delhi PIN code';
+    hint.style.color = '';
+  }
+}
+
 function submitSell() {
   var name  = (document.getElementById('fName').value||'').trim();
   var phone = (document.getElementById('fPhone').value||'').trim();
@@ -510,6 +531,9 @@ function submitSell() {
     askingPrice: price,
     isLoyalty: document.getElementById('fLoyalty').checked,
     slot: selSlot,
+    address: (document.getElementById('fAddress').value||'').trim(),
+    pincode: (document.getElementById('fPincode').value||'').trim(),
+    landmark: (document.getElementById('fLandmark').value||'').trim(),
     notes: document.getElementById('fNotes').value
   };
   SMB.sells.submit(data, CU ? CU.id : null);

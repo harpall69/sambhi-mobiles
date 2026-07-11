@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About Us — Sambhi Mobiles Delhi</title>
+<meta name="description" content="Sambhi Mobiles — Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--green:#16A34A;--green-l:#F0FDF4;--orange:#F97316;--ink:#0F172A;--muted:#64748B;--light:#94A3B8;--bg:#F8FAFC;--white:#fff;--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
+.logo-text strong{color:var(--blue)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
+.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s}
+.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
+.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:99;box-shadow:var(--shadow-md)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--bg)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:72px 20px}
+.hero-in{max-width:800px;margin:0 auto;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:18px;border:1px solid #BFDBFE}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,5vw,52px);font-weight:900;color:var(--ink);line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
+.hero p{font-size:17px;color:var(--muted);line-height:1.75;max-width:580px;margin:0 auto}
+
+/* SECTIONS */
+.sec{padding:72px 20px}
+.sec-in{max-width:1200px;margin:0 auto}
+.sec-sm{padding:48px 20px}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px}
+.sec-sub{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:40px}
+
+/* STORY */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.story-content p{font-size:16px;color:var(--muted);line-height:1.85;margin-bottom:16px}
+.story-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.story-stat{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
+.ss-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:900;color:var(--blue);margin-bottom:4px}
+.ss-lbl{font-size:13px;color:var(--muted)}
+
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.val-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;transition:box-shadow .2s}
+.val-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.val-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+.val-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.val-card p{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* PROMISE */
+.promise{background:var(--ink)}
+.promise-in{max-width:1200px;margin:0 auto;padding:72px 20px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.promise-left h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,3vw,38px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.15}
+.promise-left p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8}
+.promise-items{display:flex;flex-direction:column;gap:16px}
+.pi{display:flex;gap:14px;align-items:flex-start}
+.pi-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pi h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
+.pi p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.team-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center}
+.team-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;margin:0 auto 14px}
+.team-card h3{font-size:16px;font-weight:700;margin-bottom:3px}
+.team-role{font-size:12px;color:var(--blue);font-weight:600;background:var(--blue-l);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px}
+.team-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.contact-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px}
+.contact-card h3{font-size:16px;font-weight:700;margin-bottom:18px}
+.contact-item{display:flex;gap:13px;align-items:flex-start;margin-bottom:16px}
+.ci-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ci-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.ci-value{font-size:14px;font-weight:600;color:var(--ink)}
+.ci-value a{color:var(--blue);text-decoration:none}
+.ci-value a:hover{text-decoration:underline}
+.gst-card{background:var(--ink);border-radius:16px;padding:28px}
+.gst-card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:18px}
+.gst-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
+.gst-row:last-child{border:none}
+.gst-lbl{color:rgba(255,255,255,.4)}
+.gst-val{color:#fff;font-weight:600}
+.bank-section{margin-top:18px;background:rgba(255,255,255,.06);border-radius:10px;padding:14px}
+.bank-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.bank-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.bank-lbl{color:rgba(255,255,255,.35)}
+.bank-val{color:rgba(255,255,255,.8);font-weight:600}
+
+/* WHY SELL */
+.why-bg{background:var(--bg)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.why-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px}
+.wc-icon{font-size:28px;margin-bottom:12px}
+.wc-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:900;color:var(--blue);margin-bottom:4px}
+.wc-label{font-size:13px;font-weight:700;margin-bottom:6px}
+.wc-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* CTA */
+.cta-sec{background:linear-gradient(135deg,var(--blue),var(--blue-d));padding:72px 20px;text-align:center}
+.cta-sec h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:-.5px}
+.cta-sec p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:28px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-btn-w{background:#fff;color:var(--blue);padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s}
+.cta-btn-w:hover{background:rgba(255,255,255,.9);transform:translateY(-2px)}
+.cta-btn-t{background:rgba(255,255,255,.15);color:#fff;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,.3);transition:all .18s}
+.cta-btn-t:hover{background:rgba(255,255,255,.25)}
+
+/* FOOTER */
+footer{background:var(--ink);padding:32px 20px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
+.footer-links{display:flex;gap:16px}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-links a:hover{color:#fff}
+
+@media(max-width:1024px){.story-grid,.contact-grid,.promise-in{grid-template-columns:1fr}.values-grid,.team-grid{grid-template-columns:1fr 1fr}.why-grid{grid-template-columns:repeat(2,1fr)}.nav-links{display:none}.burger{display:block}}
+@media(max-width:640px){.values-grid,.team-grid,.why-grid,.story-stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
+    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl active">About</a><a href="blog.html" class="nl">Blog</a></div>
+    <div class="nav-right">
+      <a href="sell.html" class="cta-btn">Sell Now →</a>
+      <a href="index.html" class="acct-btn" data-guest>Login</a>
+      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+    </div>
+    <button class="burger" onclick="document.getElementById('mn').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mn"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="account.html" data-auth style="display:none">My Account</a></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-tag">📍 Govind Puri, New Delhi</div>
+    <h1>Delhi's most trusted place to sell &amp; buy phones</h1>
+    <p>We started Sambhi Mobiles because selling a phone in Delhi was broken — too many middlemen, too little trust, too much haggling. We fixed that.</p>
+  </div>
+</section>
+
+<!-- WHY WE EXIST -->
+<section class="sec">
+  <div class="sec-in">
+    <div class="story-grid">
+      <div class="story-content">
+        <div class="sec-lbl">Our Story</div>
+        <h2 class="sec-title">Built for Delhi. Built on trust.</h2>
+        <p>In Delhi's secondhand phone market, customers were getting underpaid, deceived, and scammed daily. Retailers with no transparency, buyers who vanished after inspection, and a complete lack of documentation.</p>
+        <p>Amrik Singh started Sambhi Mobiles in 2021 with one mission: make selling your phone as simple and transparent as ordering food. No hidden charges. No haggling. Just a fair price, free pickup, and instant payment.</p>
+        <p>Today we've bought over 2,400 devices across Delhi NCR and built a reputation that speaks for itself — 4.9 stars across every platform.</p>
+      </div>
+      <div>
+        <div class="story-stats">
+          <div class="story-stat"><div class="ss-num">2,400+</div><div class="ss-lbl">Devices purchased</div></div>
+          <div class="story-stat"><div class="ss-num">4.9★</div><div class="ss-lbl">Average rating</div></div>
+          <div class="story-stat"><div class="ss-num">90 min</div><div class="ss-lbl">Avg pickup time</div></div>
+          <div class="story-stat"><div class="ss-num">100%</div><div class="ss-lbl">IMEI verified</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="sec" style="background:var(--bg);padding:72px 20px">
+  <div class="sec-in">
+    <div class="sec-lbl">Our Values</div>
+    <h2 class="sec-title">What makes us different</h2>
+    <p class="sec-sub">Three principles we never compromise on, no matter what.</p>
+    <div class="values-grid">
+      <div class="val-card"><div class="val-icon" style="background:#EFF6FF">🤝</div><h3>Radical transparency</h3><p>We show you exactly how we calculate your price — model, year, battery, condition. No black box. No surprises at the door.</p></div>
+      <div class="val-card"><div class="val-icon" style="background:#F0FDF4">🔒</div><h3>Zero pressure, one call</h3><p>We call you once to confirm pickup. That's it. No repeated follow-ups, no WhatsApp spam, no sales pressure. Respect is non-negotiable.</p></div>
+      <div class="val-card"><div class="val-icon" style="background:#FFF7ED">⚡</div><h3>Speed above all</h3><p>We're available same-day. Most pickups happen within 90 minutes of you filling the form. Cash or UPI the moment inspection is done.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMBHI PROMISE -->
+<section class="promise">
+  <div class="promise-in">
+    <div class="promise-left">
+      <div class="sec-lbl" style="color:var(--orange)">The Sambhi Promise</div>
+      <h2>Every single customer. Every single time.</h2>
+      <p>These aren't marketing claims. They're guarantees. If we don't deliver on any of these, contact us and we'll make it right.</p>
+    </div>
+    <div class="promise-items">
+      <div class="pi"><div class="pi-icon" style="background:rgba(249,115,22,.15)">🚫</div><div><h4>Zero processing fee — guaranteed</h4><p>The price we quote is exactly what you receive. No deductions at the door.</p></div></div>
+      <div class="pi"><div class="pi-icon" style="background:rgba(22,163,74,.15)">🚗</div><div><h4>Free doorstep pickup — always</h4><p>Our rider comes to you. No travel cost, no minimum distance, no exceptions.</p></div></div>
+      <div class="pi"><div class="pi-icon" style="background:rgba(37,99,235,.15)">🧾</div><div><h4>GST bill + IMEI certificate</h4><p>Full legal documentation for every transaction. Safe, legal, verifiable.</p></div></div>
+      <div class="pi"><div class="pi-icon" style="background:rgba(234,179,8,.12)">🏆</div><div><h4>Lifetime 10% loyalty bonus</h4><p>Every return sale gets 10% extra on top of market price. Forever. No conditions.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SELL SECONDHAND -->
+<section class="sec why-bg">
+  <div class="sec-in">
+    <div class="sec-lbl">Why Secondhand?</div>
+    <h2 class="sec-title">The smart choice for Delhi</h2>
+    <p class="sec-sub">Selling or buying secondhand isn't just good for your wallet — it's good for everyone.</p>
+    <div class="why-grid">
+      <div class="why-card"><div class="wc-icon">💰</div><div class="wc-num">₹15,000+</div><div class="wc-label">Average saved vs new</div><div class="wc-desc">Certified pre-owned devices give you flagship features at mid-range prices.</div></div>
+      <div class="why-card"><div class="wc-icon">♻️</div><div class="wc-num">2.4K</div><div class="wc-label">Devices given a second life</div><div class="wc-desc">Every resold phone is one less device in a landfill. Responsible consumption.</div></div>
+      <div class="why-card"><div class="wc-icon">⏱️</div><div class="wc-num">90 min</div><div class="wc-label">From form to cash</div><div class="wc-desc">No waiting weeks for a buyer. We're there in 90 minutes with cash in hand.</div></div>
+      <div class="why-card"><div class="wc-icon">📋</div><div class="wc-num">100%</div><div class="wc-label">IMEI verified and documented</div><div class="wc-desc">Every device checked against CEIR India. You know exactly what you're getting.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec">
+  <div class="sec-in">
+    <div class="sec-lbl">Get in touch</div>
+    <h2 class="sec-title">We're based in South Delhi</h2>
+    <p class="sec-sub">Walk in, call, or WhatsApp us. We respond within minutes.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h3>Contact Details</h3>
+        <div class="contact-item"><div class="ci-icon" style="background:#EFF6FF">📞</div><div><div class="ci-label">Phone / WhatsApp</div><div class="ci-value"><a href="tel:+917827505579">+91 7827505579</a></div></div></div>
+        <div class="contact-item"><div class="ci-icon" style="background:#F0FDF4">📍</div><div><div class="ci-label">Address</div><div class="ci-value">1498, Bhagat Niwas, 13 Govind Puri<br>New Delhi – 110019</div></div></div>
+        <div class="contact-item"><div class="ci-icon" style="background:#FFF7ED">🕐</div><div><div class="ci-label">Working Hours</div><div class="ci-value">Mon – Sat: 9 AM – 8 PM<br>Sunday: 10 AM – 6 PM</div></div></div>
+        <div class="contact-item" style="margin:0"><div class="ci-icon" style="background:#F3E8FF">💬</div><div><div class="ci-label">WhatsApp</div><div class="ci-value"><a href="https://wa.me/917827505579" target="_blank">Chat with us →</a></div></div></div>
+      </div>
+      <div class="gst-card">
+        <h3>Business Details</h3>
+        <div class="gst-row"><span class="gst-lbl">Business Name</span><span class="gst-val">Sambhi Mobiles</span></div>
+        <div class="gst-row"><span class="gst-lbl">Proprietor</span><span class="gst-val">Amrik Singh</span></div>
+        <div class="gst-row"><span class="gst-lbl">GSTIN</span><span class="gst-val">07BWPPS6835M1ZI</span></div>
+        <div class="gst-row"><span class="gst-lbl">PAN</span><span class="gst-val">BWPPS6835M</span></div>
+        <div class="gst-row"><span class="gst-lbl">State Code</span><span class="gst-val">07 — Delhi</span></div>
+        <div class="bank-section">
+          <div class="bank-title">Bank Details (for payment)</div>
+          <div class="bank-row"><span class="bank-lbl">Bank</span><span class="bank-val">IDFC First Bank</span></div>
+          <div class="bank-row"><span class="bank-lbl">Account No</span><span class="bank-val">10084177443</span></div>
+          <div class="bank-row"><span class="bank-lbl">IFSC</span><span class="bank-val">IDFB0020107</span></div>
+          <div class="bank-row"><span class="bank-lbl">Branch</span><span class="bank-val">Okhla, New Delhi</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <h2>Ready to get the best price for your phone?</h2>
+  <p>Join 2,400+ Delhi customers who trust Sambhi Mobiles</p>
+  <div class="cta-btns">
+    <a href="sell.html" class="cta-btn-w">💸 Sell My Phone →</a>
+    <a href="buy.html" class="cta-btn-t">🛒 Browse Devices</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+    <div class="footer-links"><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="blog.html">Blog</a><a href="admin.html">Admin</a></div>
+  </div>
+</footer>
+<script src="shared.js"></script>
+<script>
+document.querySelector('.burger').onclick = function(){ document.getElementById('mn').classList.toggle('open'); };
+</script>
+</body>
+</html>

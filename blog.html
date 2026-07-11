@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog — Sambhi Mobiles | Buy &amp; Sell Phones Delhi</title>
+<meta name="description" content="Expert guides on selling your phone for the best price in Delhi, buying certified pre-owned devices, and getting the most from your gadgets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--green:#16A34A;--green-l:#F0FDF4;--orange:#F97316;--ink:#0F172A;--muted:#64748B;--light:#94A3B8;--bg:#F8FAFC;--white:#fff;--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
+.logo-text strong{color:var(--blue)}
+.nav-links{display:flex;gap:2px;margin-left:16px}
+.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
+.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s}
+.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:99;box-shadow:var(--shadow-md)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--bg)}
+/* HERO */
+.hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:64px 20px 52px}
+.hero-in{max-width:780px;margin:0 auto;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:16px;border:1px solid #BFDBFE}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:900;color:var(--ink);line-height:1.1;letter-spacing:-1px;margin-bottom:14px}
+.hero p{font-size:16px;color:var(--muted);line-height:1.75}
+/* FEATURED */
+.featured{max-width:1200px;margin:0 auto;padding:52px 20px}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:24px}
+.featured-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;margin-bottom:52px}
+.article-main{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.article-main:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.art-img-main{height:260px;background:linear-gradient(135deg,#1e3a8a,#2563EB);display:flex;align-items:center;justify-content:center;font-size:72px;position:relative;overflow:hidden}
+.art-img-main::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.4))}
+.art-body{padding:24px}
+.art-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px}
+.art-title-main{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.25}
+.art-excerpt{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.art-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--light)}
+.art-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--light)}
+/* SIDE ARTICLES */
+.side-articles{display:flex;flex-direction:column;gap:14px}
+.article-side{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;gap:0;flex-direction:column}
+.article-side:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.art-img-side{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px}
+.art-body-side{padding:16px}
+.art-title-side{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.3}
+.art-excerpt-side{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+/* ALL ARTICLES GRID */
+.all-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.article-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.article-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.art-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:48px}
+.art-body-card{padding:20px}
+.art-title-card{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.3}
+.art-excerpt-card{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.read-more{font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:4px}
+/* ARTICLE MODAL */
+.art-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:500;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(4px)}
+.art-overlay.open{display:flex}
+.art-modal{background:var(--white);border-radius:20px;max-width:760px;width:100%;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.art-modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.art-modal-hero{height:200px;display:flex;align-items:center;justify-content:center;font-size:64px}
+.art-modal-body{padding:32px}
+.art-modal-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:10px}
+.art-modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--ink);margin-bottom:8px;line-height:1.2}
+.art-modal-meta{font-size:13px;color:var(--light);margin-bottom:28px}
+.art-modal-content h3{font-size:18px;font-weight:700;color:var(--ink);margin:24px 0 10px}
+.art-modal-content p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.art-modal-content ul{padding-left:20px;margin-bottom:16px}
+.art-modal-content li{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:8px}
+.art-modal-content strong{color:var(--ink);font-weight:700}
+.art-cta-box{background:linear-gradient(135deg,var(--blue-l),var(--green-l));border-radius:14px;padding:24px;margin-top:28px;text-align:center}
+.art-cta-box h4{font-size:18px;font-weight:800;margin-bottom:6px}
+.art-cta-box p{font-size:14px;color:var(--muted);margin-bottom:16px}
+.art-cta-box a{background:var(--blue);color:#fff;padding:11px 24px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+/* NEWSLETTER */
+.newsletter{background:var(--ink);padding:56px 20px;text-align:center}
+.newsletter h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;margin-bottom:8px}
+.newsletter p{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:24px}
+.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.nl-input{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:12px 16px;border-radius:10px;font-size:14px;font-family:inherit;outline:none;min-width:200px}
+.nl-input::placeholder{color:rgba(255,255,255,.35)}
+.nl-input:focus{border-color:var(--blue)}
+.nl-btn{background:var(--blue);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+/* FOOTER */
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:24px 20px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
+.footer-links{display:flex;gap:16px}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
+.footer-links a:hover{color:#fff}
+@media(max-width:1024px){.featured-grid{grid-template-columns:1fr}.all-grid{grid-template-columns:repeat(2,1fr)}.nav-links{display:none}.burger{display:block}}
+@media(max-width:640px){.all-grid{grid-template-columns:1fr}.nl-form{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
+    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl">About</a><a href="blog.html" class="nl active">Blog</a></div>
+    <div class="nav-right">
+      <a href="sell.html" class="cta-btn">Sell Now →</a>
+      <a href="index.html" class="acct-btn" data-guest>Login</a>
+      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+    </div>
+    <button class="burger" onclick="document.getElementById('mn').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mn"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="blog.html">Blog</a></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-tag">📖 Expert guides for Delhi</div>
+    <h1>Smart phone buying &amp; selling in Delhi</h1>
+    <p>Honest guides on getting the best price, choosing certified devices, and making secondhand phones work for you.</p>
+  </div>
+</section>
+
+<div class="featured">
+  <div class="section-title">Featured Articles</div>
+  <div class="featured-grid">
+    <a class="article-main" onclick="openArt(0);return false" href="#">
+      <div class="art-img-main" style="background:linear-gradient(135deg,#1e3a8a,#2563EB)">📱</div>
+      <div class="art-body">
+        <div class="art-cat">Selling Guide</div>
+        <div class="art-title-main">Why you should sell your old phone — right now, not later</div>
+        <div class="art-excerpt">Every month you wait, your phone loses 3–8% of its value. Here's exactly how much you're losing and how to stop the bleeding.</div>
+        <div class="art-meta"><span>Sambhi Mobiles</span><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Selling</span></div>
+      </div>
+    </a>
+    <div class="side-articles">
+      <a class="article-side" onclick="openArt(1);return false" href="#">
+        <div class="art-img-side" style="background:linear-gradient(135deg,#064e3b,#16A34A)">🛡️</div>
+        <div class="art-body-side">
+          <div class="art-cat" style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Buying Guide</div>
+          <div class="art-title-side">How to buy a secondhand iPhone safely in Delhi — the complete checklist</div>
+          <div class="art-excerpt-side">IMEI check, Face ID test, battery health — the 12 things to verify before you pay.</div>
+          <div class="art-meta"><span>6 min read</span></div>
+        </div>
+      </a>
+      <a class="article-side" onclick="openArt(2);return false" href="#">
+        <div class="art-img-side" style="background:linear-gradient(135deg,#7c2d12,#F97316)">💰</div>
+        <div class="art-body-side">
+          <div class="art-cat" style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Price Guide</div>
+          <div class="art-title-side">iPhone resale value in 2025 — which models hold value best</div>
+          <div class="art-excerpt-side">Pro models depreciate 40% slower than base models. Here's the full breakdown.</div>
+          <div class="art-meta"><span>5 min read</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section-title">All Articles</div>
+  <div class="all-grid">
+    <a class="article-card" onclick="openArt(3);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#1e1b4b,#4338CA)">🔍</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#4338CA;text-transform:uppercase;margin-bottom:6px">Trust & Safety</div><div class="art-title-card">Why Sambhi Mobiles over OLX, Cashify, or local buyers in Delhi</div><div class="art-excerpt-card">We compared 6 ways to sell your phone in Delhi. The difference in final payout and safety is shocking.</div><div class="read-more">Read article →</div></div></a>
+    <a class="article-card" onclick="openArt(4);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#064e3b,#059669)">🏆</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#059669;text-transform:uppercase;margin-bottom:6px">Tips & Tricks</div><div class="art-title-card">5 things to do before selling your phone that add ₹2,000+ to your payout</div><div class="art-excerpt-card">Clean your phone, gather accessories, check battery health. Simple prep that makes a real difference.</div><div class="read-more">Read article →</div></div></a>
+    <a class="article-card" onclick="openArt(5);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#831843,#DB2777)">♻️</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#DB2777;text-transform:uppercase;margin-bottom:6px">Sustainability</div><div class="art-title-card">The environmental case for secondhand phones — why it matters in India</div><div class="art-excerpt-card">India generates 3.2 million tonnes of e-waste per year. Buying secondhand is the single biggest thing you can do.</div><div class="read-more">Read article →</div></div></a>
+  </div>
+</div>
+
+<section class="newsletter">
+  <h2>Get price alerts and selling tips</h2>
+  <p>Join 1,200+ Delhi customers who stay ahead of phone prices</p>
+  <div class="nl-form">
+    <input class="nl-input" type="tel" id="nlPhone" placeholder="Your WhatsApp number">
+    <button class="nl-btn" onclick="subNewsletter()">Subscribe →</button>
+  </div>
+</section>
+
+<!-- ARTICLE MODAL -->
+<div class="art-overlay" id="artOverlay" onclick="if(event.target===this)closeArt()">
+  <div class="art-modal" id="artModal">
+    <button class="art-modal-close" onclick="closeArt()">✕</button>
+    <div class="art-modal-hero" id="artHero"></div>
+    <div class="art-modal-body">
+      <div class="art-modal-cat" id="artCat"></div>
+      <h1 class="art-modal-title" id="artTitle"></h1>
+      <div class="art-modal-meta" id="artMeta"></div>
+      <div class="art-modal-content" id="artContent"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
+    <div class="footer-links"><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="admin.html">Admin</a></div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+var ARTICLES = [
+  {
+    cat:'Selling Guide', icon:'📱', bg:'linear-gradient(135deg,#1e3a8a,#2563EB)',
+    title:'Why you should sell your old phone — right now, not later',
+    meta:'Sambhi Mobiles · 8 min read · Selling',
+    content:`<p>Here's a number most people don't know: <strong>the average smartphone loses 15–25% of its value in the first six months</strong> of being unused in a drawer. If you have an iPhone 13 sitting in your cupboard, you're losing roughly ₹3,000–₹5,000 every three months you wait.</p>
+    <h3>The depreciation curve is steep and fast</h3>
+    <p>Phones aren't like property. They don't appreciate. Every new model launch — and Apple, Samsung, and OnePlus launch major updates every year — pulls down the value of older models. The iPhone 15 launch didn't just depreciate the iPhone 14. It depreciated everything older too.</p>
+    <p>The best time to sell is always <strong>3–6 months before the next model launch</strong>. For iPhones, that means selling between March and August. For Samsung, sell before February (Galaxy S launch) or July (Galaxy A launch).</p>
+    <h3>Battery health is the biggest hidden depreciator</h3>
+    <p>Every charge cycle degrades your battery slightly. At 79% battery health, most buyers — including us — apply a deduction. At 70%, the deduction is significant. A phone at 95% battery health is worth <strong>₹2,000–₹8,000 more</strong> than the same model at 78%, depending on the device.</p>
+    <h3>Why sell to Sambhi Mobiles specifically?</h3>
+    <ul>
+      <li><strong>Same-day pickup</strong> — we're there within 90 minutes in Delhi</li>
+      <li><strong>Zero deductions</strong> — the price we quote is what you get</li>
+      <li><strong>Instant UPI/cash</strong> — payment the moment we verify your device</li>
+      <li><strong>GST bill provided</strong> — full legal documentation</li>
+      <li><strong>10% loyalty bonus</strong> for returning customers, forever</li>
+    </ul>
+    <h3>What to do right now</h3>
+    <p>Open Settings → General → About on your iPhone. Note your model. Then go to Settings → Battery → Battery Health. These two numbers determine 80% of your phone's resale value. Fill our form — it takes 2 minutes — and we'll give you a price within the hour.</p>`
+  },
+  {
+    cat:'Buying Guide', icon:'🛡️', bg:'linear-gradient(135deg,#064e3b,#16A34A)',
+    title:'How to buy a secondhand iPhone safely in Delhi — the complete checklist',
+    meta:'Sambhi Mobiles · 6 min read · Buying',
+    content:`<p>Delhi's secondhand phone market is massive — and full of risk. Refurbished phones sold as originals. IMEI-blacklisted devices. Phones with replaced screens that show up as original on casual inspection. This guide tells you exactly what to check before paying.</p>
+    <h3>The 12-point verification checklist</h3>
+    <ul>
+      <li><strong>IMEI check</strong> — Dial *#06# and check against CEIR India (ceir.gov.in). If it's blacklisted or lost/stolen, walk away.</li>
+      <li><strong>Battery health</strong> — Settings → Battery → Battery Health. Below 80% means replacement soon.</li>
+      <li><strong>Face ID / Touch ID</strong> — Test in Settings. A failed biometric often means screen replacement.</li>
+      <li><strong>True Tone and Display</strong> — Settings → Display. If True Tone is missing, the screen was replaced with a non-original.</li>
+      <li><strong>Camera test</strong> — Test front and back, video and photos, in natural light.</li>
+      <li><strong>Speaker and microphone</strong> — Make a call, use Siri, play music.</li>
+      <li><strong>All ports</strong> — Lightning/USB-C charging, headphone jack if present.</li>
+      <li><strong>SIM slot</strong> — Both slots if dual SIM.</li>
+      <li><strong>Touch sensitivity</strong> — All four corners of the screen.</li>
+      <li><strong>Activation Lock</strong> — Go to Settings → Apple ID. If someone else's account is there, don't buy.</li>
+      <li><strong>Serial number verification</strong> — Check checkcoverage.apple.com with the serial number.</li>
+      <li><strong>Physical inspection</strong> — Look for signs of water damage (orange dots near SIM slot).</li>
+    </ul>
+    <h3>Why certified pre-owned from Sambhi Mobiles is different</h3>
+    <p>We do all 12 of these checks before listing any device. Every phone comes with an IMEI certificate, verified battery health percentage, and a 7-day return policy. If anything doesn't match what we described, full refund. No questions.</p>`
+  },
+  {
+    cat:'Price Guide', icon:'💰', bg:'linear-gradient(135deg,#7c2d12,#F97316)',
+    title:'iPhone resale value in 2025 — which models hold value best',
+    meta:'Sambhi Mobiles · 5 min read · Prices',
+    content:`<p>Not all iPhones depreciate equally. The Pro and Pro Max models consistently hold value 35–45% better than base models over a 2-year period. Here's what the data shows for 2025.</p>
+    <h3>Best value holders (least depreciation)</h3>
+    <ul>
+      <li><strong>iPhone 15 Pro Max</strong> — Still commanding ₹78,000–₹88,000. Pro Max models hold value best because of the large screen demand.</li>
+      <li><strong>iPhone 14 Pro Max</strong> — ₹62,000–₹72,000. Excellent value retention, still a top performer.</li>
+      <li><strong>iPhone 13 Pro Max</strong> — ₹48,000–₹56,000. Nearly 3 years old and still in high demand.</li>
+    </ul>
+    <h3>Models that depreciate faster</h3>
+    <ul>
+      <li><strong>Base iPhones (non-Pro)</strong> — Lose 40–50% of value within 18 months</li>
+      <li><strong>iPhone SE models</strong> — Fast depreciation due to old design and limited features</li>
+      <li><strong>iPhone XR / XS</strong> — Now 6 years old, still usable but prices have bottomed out</li>
+    </ul>
+    <h3>The battery health premium</h3>
+    <p>Battery health above 90% adds a significant premium — often ₹3,000–₹8,000 on Pro models. If your battery is still above 90%, sell now before it degrades further.</p>
+    <h3>Get today's actual price</h3>
+    <p>Our prices update daily based on real market demand. Fill our sell form and get an instant estimate — it takes 2 minutes and there's no commitment.</p>`
+  },
+  {
+    cat:'Trust & Safety', icon:'🔍', bg:'linear-gradient(135deg,#1e1b4b,#4338CA)',
+    title:'Why Sambhi Mobiles over OLX, Cashify, or local buyers in Delhi',
+    meta:'Sambhi Mobiles · 7 min read · Comparison',
+    content:`<p>When you want to sell your phone in Delhi, you have several options. We've honestly compared all of them — including our own service — so you can make the best decision.</p>
+    <h3>OLX / Quickr — High risk, unpredictable price</h3>
+    <p>You'll find buyers but <strong>safety is a real concern</strong>. Meeting strangers, dealing with lowball offers after inspection, fake UPI screenshots, and buyers who ghost. Average time to sell: 1–3 weeks. Price: variable, often 15–25% below market.</p>
+    <h3>Cashify / Togofogo — Convenient but low prices</h3>
+    <p>Good UX, terrible prices. Cashify typically offers <strong>20–35% below market</strong> because they're running a high-volume, low-margin business. Their algorithm is conservative and they apply every possible deduction. Safe, but you leave a lot of money on the table.</p>
+    <h3>Local second-hand shops</h3>
+    <p>No documentation, no price transparency, no recourse if something goes wrong. They'll tell you "this is the market rate" — and it often isn't. No GST bill means no legal protection.</p>
+    <h3>Sambhi Mobiles — what we actually offer</h3>
+    <ul>
+      <li>✅ <strong>Market-rate pricing</strong> — we check 5+ sources before quoting</li>
+      <li>✅ <strong>Zero deductions</strong> — quoted price is paid price</li>
+      <li>✅ <strong>Same-day pickup</strong> in Delhi</li>
+      <li>✅ <strong>GST bill</strong> — legal, documented, transferable</li>
+      <li>✅ <strong>10% loyalty bonus</strong> forever for returning customers</li>
+      <li>✅ <strong>IMEI certificate</strong> provided</li>
+    </ul>
+    <p>We're not the largest. We're also not trying to be. We're building a reputation in Delhi one transaction at a time — and 2,400+ happy customers is evidence that it's working.</p>`
+  },
+  {
+    cat:'Tips & Tricks', icon:'🏆', bg:'linear-gradient(135deg,#064e3b,#059669)',
+    title:'5 things to do before selling your phone that add ₹2,000+ to your payout',
+    meta:'Sambhi Mobiles · 4 min read · Tips',
+    content:`<p>Small preparation steps have a real impact on what you receive. These take 20–30 minutes total and consistently add ₹2,000–₹5,000 to your final payout.</p>
+    <h3>1. Find all accessories (adds ₹500–₹2,000)</h3>
+    <p>Original box, charger, earphones, cable — each adds value. The original box alone can add ₹800–₹1,500 on iPhones. Search your home for everything that came with the phone.</p>
+    <h3>2. Clean the device properly (adds ₹200–₹500)</h3>
+    <p>Use a soft microfiber cloth. Clean the screen, back, and camera lenses. Buyers — including us — grade condition visually first. A clean phone gets a better grade and a higher price.</p>
+    <h3>3. Remove your SIM and erase all data</h3>
+    <p>Sign out of iCloud/Google account FIRST, then factory reset. This is essential — a phone with Activation Lock enabled is worth much less because buyers can't set it up.</p>
+    <h3>4. Screenshot your battery health before reset</h3>
+    <p>Once you reset, you can't show the buyer your battery health. Screenshot it first. On iPhone: Settings → Battery → Battery Health. On Android: Settings → Battery or use AccuBattery app.</p>
+    <h3>5. Check for any pending repairs or issues</h3>
+    <p>If your screen has a small crack, disclose it upfront — we apply a smaller deduction for disclosed issues vs discovered ones. Transparency always pays.</p>`
+  },
+  {
+    cat:'Sustainability', icon:'♻️', bg:'linear-gradient(135deg,#831843,#DB2777)',
+    title:'The environmental case for secondhand phones — why it matters in India',
+    meta:'Sambhi Mobiles · 6 min read · Environment',
+    content:`<p>India is the world's third-largest producer of electronic waste, generating over 3.2 million tonnes per year. Smartphones are a major contributor — and most end up in informal recycling where toxic materials leach into soil and water.</p>
+    <h3>The carbon cost of a new smartphone</h3>
+    <p>Manufacturing a single new smartphone generates approximately <strong>70–85 kg of CO2 equivalent</strong>. Most of this comes from mining rare earth metals and chip fabrication — not usage. Buying a secondhand phone skips almost all of this manufacturing footprint.</p>
+    <h3>What happens to phones in India's informal sector</h3>
+    <p>Without formal recycling, phones are disassembled by hand in cities like Delhi's Seelampur — exposed to lead, cadmium, and mercury without protection. Formalizing the secondhand market means fewer phones reaching these informal channels.</p>
+    <h3>The economics align with the environment</h3>
+    <p>This is rare: doing the right thing environmentally also saves you ₹15,000–₹40,000. A certified pre-owned iPhone 14 Pro costs ₹55,000–₹65,000. New, it's ₹1,19,900. Same phone. Same experience. One-third the environmental cost.</p>
+    <h3>Our commitment</h3>
+    <p>Every phone we buy either gets resold (extending its life) or responsibly recycled through certified e-waste partners. We issue IMEI certificates for every transaction, creating a documented chain of custody for each device.</p>`
+  }
+];
+
+function openArt(idx) {
+  var a = ARTICLES[idx];
+  document.getElementById('artHero').style.background = a.bg;
+  document.getElementById('artHero').textContent = a.icon;
+  document.getElementById('artCat').textContent = a.cat;
+  document.getElementById('artTitle').textContent = a.title;
+  document.getElementById('artMeta').textContent = a.meta;
+  document.getElementById('artContent').innerHTML = a.content
+    + '<div class="art-cta-box"><h4>Ready to sell your phone?</h4><p>Get an instant price estimate — takes 2 minutes</p><a href="sell.html">Get My Price →</a></div>';
+  document.getElementById('artOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeArt() {
+  document.getElementById('artOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function subNewsletter() {
+  var ph = (document.getElementById('nlPhone').value||'').trim();
+  if (ph.length < 10) { alert('Enter a valid WhatsApp number'); return; }
+  var subs = JSON.parse(localStorage.getItem('smb_newsletter')||'[]');
+  if (!subs.includes(ph)) { subs.push(ph); localStorage.setItem('smb_newsletter', JSON.stringify(subs)); }
+  document.getElementById('nlPhone').value = '';
+  alert('Subscribed! We\'ll send price alerts to your WhatsApp.');
+}
+</script>
+</body>
+</html>

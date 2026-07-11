@@ -192,7 +192,7 @@ footer{background:var(--ink);padding:52px 20px 24px}
 .step h3{font-size:16px;font-weight:700;margin-bottom:6px}
 .step p{font-size:13px;color:var(--muted);line-height:1.7}
 /* BRANDS */
-.brands-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.brands-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
 .brand-card{background:var(--white);border:1.5px solid var(--border);border-radius:13px;padding:18px 10px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
 .brand-card:hover{border-color:var(--blue);box-shadow:var(--shadow-md);transform:translateY(-3px)}
 .blogo{width:60px;height:60px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
@@ -255,6 +255,7 @@ footer{background:var(--ink);padding:52px 20px 24px}
       <a href="sell.html" class="cta-btn">Sell Now →</a>
       <a href="#" class="acct-btn" data-guest onclick="openAuthModal();return false">Login</a>
       <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
+      <button class="acct-btn" data-auth style="display:none;background:none;border-color:#FECACA;color:#DC2626;cursor:pointer;font-family:inherit" onclick="doLogout()">Logout</button>
     </div>
     <button class="burger" onclick="toggleMobileNav()">☰</button>
   </div>
@@ -322,8 +323,8 @@ footer{background:var(--ink);padding:52px 20px 24px}
 <section class="sec">
   <div class="sec-in">
     <div class="sec-lbl">We buy everything</div>
-    <h2 class="sec-title">Sell any brand</h2>
-    <p class="sec-sub">All major brands at the best prices in Delhi.</p>
+    <h2 class="sec-title">We buy every brand</h2>
+    <p class="sec-sub">iPhone, Samsung, OnePlus, Realme, Pixel, PlayStation — we buy them all at the best prices in Delhi. Click your brand to get an instant quote.</p>
     <div class="brands-grid" id="brandsGrid"></div>
   </div>
 </section>
@@ -428,24 +429,22 @@ footer{background:var(--ink);padding:52px 20px 24px}
 <script>
 // ── BRANDS ───────────────────────────────────────────────────────
 var BRANDS = [
-  {k:'iphone',    n:'iPhone',         s:'All models',       svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'},
-  {k:'samsung',   n:'Samsung',        s:'Galaxy series',    svg:'<svg viewBox="0 0 220 50"><text y="40" font-family="Arial Black,Arial" font-size="40" font-weight="900" fill="#1428A0">SAMSUNG</text></svg>'},
-  {k:'oneplus',   n:'OnePlus',        s:'All models',       svg:'<svg viewBox="0 0 120 80"><text y="68" font-family="Arial Black" font-size="68" font-weight="900" fill="#F5010C">1+</text></svg>'},
-  {k:'realme',    n:'Realme',         s:'All series',       svg:'<svg viewBox="0 0 200 60"><text y="50" font-family="Arial" font-size="46" font-weight="700" fill="#E8B400">realme</text></svg>'},
-  {k:'oppo',      n:'Oppo',           s:'Reno, F, A',       svg:'<svg viewBox="0 0 160 60"><text y="50" font-family="Arial" font-size="50" font-weight="700" fill="#1A5276">OPPO</text></svg>'},
-  {k:'vivo',      n:'Vivo',           s:'V, Y, X series',   svg:'<svg viewBox="0 0 130 60"><text y="50" font-family="Arial" font-size="52" font-weight="700" fill="#415FFF">vivo</text></svg>'},
-  {k:'xiaomi',    n:'Xiaomi / Redmi', s:'Redmi, POCO, Mi',  svg:'<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#FF6900"/><text x="60" y="78" font-family="Arial Black" font-size="52" font-weight="900" fill="white" text-anchor="middle">MI</text></svg>'},
-  {k:'pixel',     n:'Google Pixel',   s:'Pixel 6-9',        svg:'<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#fff" stroke="#ddd" stroke-width="2"/><path d="M60 20a40 40 0 0 1 34 20H60V52h43a40 40 0 1 1-43-32z" fill="#4285F4"/><path d="M20 60a40 40 0 0 0 6 21L47 57H34V43h-13A40 40 0 0 0 20 60z" fill="#34A853"/><path d="M60 100a40 40 0 0 1-34-19L47 57v17h44A40 40 0 0 1 60 100z" fill="#FBBC05"/><path d="M100 60a40 40 0 0 0-1-7L60 75V60h40z" fill="#EA4335"/></svg>'},
-  {k:'nothing',   n:'Nothing Phone',  s:'Phone 1, 2, 2a',   svg:'<svg viewBox="0 0 220 60"><text y="48" font-family="Arial" font-size="40" font-weight="700" fill="#000" letter-spacing="2">Nothing</text></svg>'},
-  {k:'airpods',   n:'AirPods',        s:'Pro, Max, Gen 2-3',svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z" fill="#000"/></svg>'},
-  {k:'applewatch',n:'Apple Watch',    s:'Series 3-9, Ultra',svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z" fill="#000"/></svg>'},
-  {k:'playstation',n:'PlayStation',   s:'PS4, PS5',         svg:'<svg viewBox="0 0 200 140"><path d="M58 115V28s21-3 21 18-21 28-21 28h22V115zm27 0V74l25 8V115zm28-8l-26-8 26-14c18-8 40-4 40 12s-22 18-40 10z" fill="#003087"/><text x="10" y="135" font-family="Arial" font-size="16" font-weight="700" fill="#003087">PlayStation</text></svg>'}
+  {k:'apple',     n:'Apple',          s:'iPhone, AirPods, Watch', svg:'<svg viewBox="0 0 170 210"><path d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'},
+  {k:'samsung',   n:'Samsung',        s:'Galaxy series',          svg:'<svg viewBox="0 0 220 50"><text y="40" font-family="Arial Black,Arial" font-size="40" font-weight="900" fill="#1428A0">SAMSUNG</text></svg>'},
+  {k:'oneplus',   n:'OnePlus',        s:'All models',             svg:'<svg viewBox="0 0 120 80"><text y="68" font-family="Arial Black" font-size="68" font-weight="900" fill="#F5010C">1+</text></svg>'},
+  {k:'realme',    n:'Realme',         s:'All series',             svg:'<svg viewBox="0 0 200 60"><text y="50" font-family="Arial" font-size="46" font-weight="700" fill="#E8B400">realme</text></svg>'},
+  {k:'oppo',      n:'Oppo',           s:'Reno, F, A',             svg:'<svg viewBox="0 0 160 60"><text y="50" font-family="Arial" font-size="50" font-weight="700" fill="#1A5276">OPPO</text></svg>'},
+  {k:'vivo',      n:'Vivo',           s:'V, Y, X series',         svg:'<svg viewBox="0 0 130 60"><text y="50" font-family="Arial" font-size="52" font-weight="700" fill="#415FFF">vivo</text></svg>'},
+  {k:'xiaomi',    n:'Xiaomi / Redmi', s:'Redmi, POCO, Mi',        svg:'<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#FF6900"/><text x="60" y="78" font-family="Arial Black" font-size="52" font-weight="900" fill="white" text-anchor="middle">MI</text></svg>'},
+  {k:'pixel',     n:'Google Pixel',   s:'Pixel 6-9',              svg:'<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58" fill="#fff" stroke="#ddd" stroke-width="2"/><path d="M60 20a40 40 0 0 1 34 20H60V52h43a40 40 0 1 1-43-32z" fill="#4285F4"/><path d="M20 60a40 40 0 0 0 6 21L47 57H34V43h-13A40 40 0 0 0 20 60z" fill="#34A853"/><path d="M60 100a40 40 0 0 1-34-19L47 57v17h44A40 40 0 0 1 60 100z" fill="#FBBC05"/><path d="M100 60a40 40 0 0 0-1-7L60 75V60h40z" fill="#EA4335"/></svg>'},
+  {k:'nothing',   n:'Nothing Phone',  s:'Phone 1, 2, 2a',         svg:'<svg viewBox="0 0 220 60"><text y="48" font-family="Arial" font-size="40" font-weight="700" fill="#000" letter-spacing="2">Nothing</text></svg>'},
+  {k:'playstation',n:'PlayStation',   s:'PS4, PS5',               svg:'<svg viewBox="0 0 200 140"><path d="M58 115V28s21-3 21 18-21 28-21 28h22V115zm27 0V74l25 8V115zm28-8l-26-8 26-14c18-8 40-4 40 12s-22 18-40 10z" fill="#003087"/><text x="10" y="135" font-family="Arial" font-size="16" font-weight="700" fill="#003087">PlayStation</text></svg>'}
 ];
 
 (function() {
   var g = document.getElementById('brandsGrid');
   BRANDS.forEach(function(b) {
-    var a = document.createElement('a'); a.href = 'sell.html?brand=' + b.k; a.className = 'brand-card';
+    var a = document.createElement('a'); a.href = 'sell.html?brand=' + (b.k==='apple'?'iphone':b.k); a.className = 'brand-card';
     var logo = document.createElement('div'); logo.className = 'blogo'; logo.innerHTML = b.svg;
     var h3 = document.createElement('h3'); h3.textContent = b.n;
     var p = document.createElement('p'); p.textContent = b.s;
@@ -521,6 +520,7 @@ function showToast(msg, type) {
   requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
   setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 300); }, 3500);
 }
+function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out successfully');}
 </script>
 </body>
 </html>
