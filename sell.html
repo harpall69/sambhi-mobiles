@@ -4,441 +4,620 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sell Your Phone — Sambhi Mobiles Delhi</title>
+<meta name="description" content="Sell any mobile in Delhi. Get instant price. Free pickup. iPhone, Samsung, OnePlus and more. Instant cash or UPI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ================================================================
-   SAMBHI MOBILES — GLOBAL STYLES v3
-   Copy into <style> tag of each page
-   ================================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
   --green:#16A34A;--green-l:#F0FDF4;
   --orange:#F97316;--orange-l:#FFF7ED;
   --red:#DC2626;--red-l:#FEF2F2;
+  --yellow:#D97706;--yellow-l:#FFFBEB;
   --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
-  --bg:#F8FAFC;--white:#fff;
-  --border:#E2E8F0;--border-d:#CBD5E1;
-  --radius:12px;--radius-lg:18px;--radius-xl:24px;
-  --shadow:0 1px 3px rgba(0,0,0,.08);
-  --shadow-md:0 4px 16px rgba(0,0,0,.1);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.13)
+  --bg:#F8FAFC;--white:#fff;--border:#E2E8F0;
+  --radius:10px;--radius-lg:16px;--radius-xl:20px;
+  --shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)
 }
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
 
 /* ── NAV ── */
-nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
 .nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.logo-text{font-size:17px;font-weight:700;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
 .logo-text strong{color:var(--blue)}
 .nav-links{display:flex;gap:2px;margin-left:16px}
 .nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
 .nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.cta-btn{background:var(--blue);color:var(--white);padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;white-space:nowrap}
+.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s}
 .cta-btn:hover{background:var(--blue-d)}
-.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap}
+.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;background:none;cursor:pointer;font-family:inherit}
 .acct-btn:hover{border-color:var(--blue);color:var(--blue)}
-.burger{display:none;background:none;border:none;font-size:21px;cursor:pointer;padding:6px;color:var(--ink);line-height:1}
-.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:var(--white)}
+.acct-btn.logout{border-color:#FECACA;color:var(--red)}
+.acct-btn.logout:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
+.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:199;box-shadow:var(--shadow-md)}
 .mobile-nav.open{display:flex}
 .mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
 
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s;text-decoration:none;white-space:nowrap}
-.btn-primary{background:var(--blue);color:var(--white)}
-.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.28)}
-.btn-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
-.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
-.btn-ghost{background:var(--bg);color:var(--muted)}
-.btn-ghost:hover{background:var(--border);color:var(--ink)}
-.btn-danger{background:var(--red);color:var(--white)}
-.btn-full{width:100%;justify-content:center}
-.btn-lg{padding:14px 28px;font-size:15px;border-radius:var(--radius-lg)}
+/* ── PAGE HERO ── */
+.page-hero{background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%);padding:44px 20px 36px;border-bottom:1px solid var(--border)}
+.page-hero-in{max-width:1200px;margin:0 auto}
+.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:12px}
+.breadcrumb a{color:var(--blue);text-decoration:none}
+.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:900;color:var(--ink);margin-bottom:6px;letter-spacing:-.5px}
+.page-hero p{font-size:15px;color:var(--muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hero-pill{background:#fff;border:1px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:5px}
 
-/* ── FORM ELEMENTS ── */
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.fg label .opt{color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--ink);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.07)}
-.fg input.err,.fg select.err,.fg textarea.err{border-color:var(--red);background:var(--red-l)}
+/* ── LAYOUT ── */
+.sell-wrap{max-width:1200px;margin:0 auto;padding:32px 20px 60px;display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+
+/* ── FORM CARD ── */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.form-header{background:var(--ink);padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
+.form-header h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.form-header p{font-size:12px;color:rgba(255,255,255,.45);margin-top:2px}
+.form-step-pills{display:flex;gap:6px}
+.step-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.5)}
+.step-pill.done{background:var(--green);color:#fff}
+.step-pill.active{background:var(--blue);color:#fff}
+
+/* RETURNING BANNER */
+.returning-banner{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-bottom:1px solid #FCD34D;padding:14px 28px;display:none;align-items:flex-start;gap:12px}
+.returning-banner.show{display:flex}
+.rb-icon{font-size:28px;flex-shrink:0}
+.rb-title{font-size:14px;font-weight:700;color:#92400E;margin-bottom:3px}
+.rb-sub{font-size:12px;color:#B45309;line-height:1.5}
+
+/* FORM BODY */
+.form-body{padding:28px}
+
+/* SECTION DIVIDERS */
+.section-group{margin-bottom:24px}
+.section-label{font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* FORM FIELDS */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
+.fg label .opt-tag{font-size:10px;font-weight:500;color:var(--light);text-transform:none;letter-spacing:0;background:var(--bg);padding:1px 6px;border-radius:4px}
+.fg input,.fg select,.fg textarea{
+  width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);
+  color:var(--ink);font-size:14px;font-family:inherit;padding:11px 13px;outline:none;
+  transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.06)}
+.fg input.err,.fg select.err{border-color:var(--red);background:var(--red-l)}
+.fg input.ok,.fg select.ok{border-color:var(--green)}
 .fg textarea{resize:none;height:72px}
-.fg .hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5}
+.fg .field-hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5;display:flex;align-items:center;gap:4px}
+.fg .field-hint.success{color:var(--green)}
+.fg .field-hint.error{color:var(--red)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
-/* ── CARDS ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
-.card-lg{padding:32px}
+/* DEVICE SPECS GRID */
+.spec-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.spec-chip{border:1.5px solid var(--border);background:#fff;color:var(--muted);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+.spec-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.spec-chip.on{border-color:var(--blue);background:var(--blue);color:#fff;font-weight:700}
 
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
-.badge-blue{background:var(--blue-l);color:var(--blue)}
-.badge-green{background:var(--green-l);color:var(--green)}
-.badge-orange{background:var(--orange-l);color:var(--orange)}
-.badge-red{background:var(--red-l);color:var(--red)}
-.badge-gray{background:var(--bg);color:var(--muted)}
+/* CONDITION */
+.cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cond-btn{border:1.5px solid var(--border);background:#fff;padding:13px 8px;border-radius:var(--radius);font-family:inherit;cursor:pointer;transition:all .15s;text-align:center}
+.cond-btn .cond-emoji{font-size:22px;display:block;margin-bottom:5px}
+.cond-btn .cond-label{font-size:12px;font-weight:700;display:block;margin-bottom:2px;color:var(--ink)}
+.cond-btn .cond-sub{font-size:10px;color:var(--light);line-height:1.4}
+.cond-btn:hover{border-color:var(--blue);background:var(--blue-l)}
+.cond-btn.on{border-color:var(--blue);background:var(--blue)}
+.cond-btn.on .cond-label,.cond-btn.on .cond-sub{color:#fff}
+.cond-btn.on .cond-emoji{filter:brightness(0) invert(1)}
+
+/* ACCESSORIES */
+.acc-wrap{display:flex;flex-wrap:wrap;gap:7px}
+.acc-chip{border:1.5px solid var(--border);background:#fff;color:var(--muted);padding:7px 13px;border-radius:100px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500;display:flex;align-items:center;gap:5px}
+.acc-chip:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
+.acc-chip.on{border-color:var(--green);background:var(--green);color:#fff;font-weight:700}
+
+/* PHOTOS */
+.photo-zone{border:2px dashed var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg);position:relative}
+.photo-zone:hover{border-color:var(--blue);background:var(--blue-l)}
+.photo-zone.has-photos{border-color:var(--green);background:var(--green-l);border-style:solid}
+.photo-zone-icon{font-size:32px;margin-bottom:8px}
+.photo-zone-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.photo-zone-sub{font-size:12px;color:var(--light)}
+.photo-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center}
+.photo-thumb-wrap{position:relative}
+.photo-thumb{width:72px;height:72px;border-radius:9px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.photo-remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+
+/* ASKING PRICE */
+.price-input-wrap{position:relative}
+.price-input-wrap .rupee{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--muted)}
+.price-input-wrap input{padding-left:28px}
+.price-preview{background:var(--ink);border-radius:13px;padding:16px 20px;margin-top:10px;display:none;align-items:center;justify-content:space-between}
+.price-preview.show{display:flex}
+.pp-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.pp-val{font-size:28px;font-weight:800;color:#fff;font-family:'Plus Jakarta Sans',sans-serif}
+.pp-right{text-align:right}
+.pp-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:4px}
+.pp-note{font-size:10px;color:rgba(255,255,255,.25)}
+
+/* SLOTS */
+.slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot-btn{border:1.5px solid var(--border);background:#fff;padding:14px;border-radius:var(--radius-lg);cursor:pointer;font-family:inherit;transition:all .15s;text-align:center}
+.slot-btn .slot-emoji{font-size:24px;display:block;margin-bottom:5px}
+.slot-btn .slot-name{font-size:14px;font-weight:700;color:var(--ink);display:block}
+.slot-btn .slot-time{font-size:11px;color:var(--light)}
+.slot-btn.on{border-color:var(--blue);background:var(--blue)}
+.slot-btn.on .slot-name{color:#fff}
+.slot-btn.on .slot-time{color:rgba(255,255,255,.7)}
+.slot-btn:not(.on):hover{border-color:var(--blue);background:var(--blue-l)}
+
+/* SUBMIT */
+.submit-area{background:var(--bg);border-top:1px solid var(--border);padding:20px 28px}
+.submit-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:15px;border-radius:var(--radius-lg);font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.2px}
+.submit-btn:hover:not(:disabled){background:var(--blue-d);transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,.28)}
+.submit-btn:disabled{background:var(--light);cursor:not-allowed;transform:none;box-shadow:none}
+.submit-note{font-size:12px;color:var(--light);text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.trust-row{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
+.trust-item{font-size:11px;color:var(--light);display:flex;align-items:center;gap:4px;font-weight:500}
+
+/* AUTH NOTICE */
+.auth-notice{background:var(--blue-l);border:1px solid var(--blue-b);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--blue);display:none;align-items:center;gap:8px}
+.auth-notice.show{display:flex}
+.auth-notice a{color:var(--blue-d);font-weight:600;margin-left:4px}
+
+/* SUCCESS */
+.success-wrap{display:none;text-align:center;padding:60px 28px}
+.success-wrap.on{display:block}
+.success-icon{font-size:72px;margin-bottom:18px;animation:bounceIn .6s ease}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px}
+.success-sub{font-size:15px;color:var(--muted);max-width:360px;margin:0 auto 24px;line-height:1.7}
+.success-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sa-primary{background:var(--blue);color:#fff;padding:12px 24px;border-radius:var(--radius);font-size:14px;font-weight:700;text-decoration:none}
+.sa-secondary{background:var(--bg);color:var(--muted);padding:12px 24px;border-radius:var(--radius);font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid var(--border)}
+
+/* ── RIGHT SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:78px}
+.side-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
+.side-card h3{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.why-item{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px}
+.why-item:last-child{margin:0}
+.why-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.why-item h4{font-size:13px;font-weight:700;margin-bottom:2px}
+.why-item p{font-size:12px;color:var(--muted);line-height:1.6}
+.price-table .pt-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.price-table .pt-row:last-child{border:none}
+.pt-model{color:var(--muted)}.pt-price{font-weight:700;color:var(--blue)}
+.contact-dark{background:var(--ink);border-color:var(--ink)}
+.contact-dark h3{color:#fff}
+.contact-link{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);color:#fff;padding:12px 14px;border-radius:var(--radius);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:8px;transition:background .15s}
+.contact-link:hover{background:rgba(255,255,255,.16)}
+.contact-link:last-child{margin:0}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:24px 20px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
 
 /* ── TOAST ── */
 .toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--ink);color:var(--white);padding:11px 17px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(10px);opacity:0;transition:all .28s;pointer-events:auto;max-width:300px}
+.toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(10px);opacity:0;transition:all .25s;pointer-events:auto;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.green{background:var(--green)}
 .toast.red{background:var(--red)}
 
-/* ── AUTH MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:400;align-items:flex-start;justify-content:center;padding:48px 16px 24px;overflow-y:auto;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex}
-.auth-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
-.auth-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit;line-height:1}
-.auth-close:hover{background:var(--border);color:var(--ink)}
-.auth-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
-.auth-tab{flex:1;padding:8px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
-.auth-tab.on{background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.auth-err{background:var(--red-l);color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none}
-
-/* ── SECTION LAYOUT ── */
-.sec{padding:68px 20px}
-.sec-in{max-width:1200px;margin:0 auto}
-.sec-sm{padding:44px 20px}
-.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
-.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px;line-height:1.15}
-.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:40px}
-
-/* ── PAGE HERO ── */
-.page-hero{background:linear-gradient(135deg,var(--blue-l),var(--green-l));padding:48px 20px 40px}
-.page-hero-in{max-width:1200px;margin:0 auto}
-.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:14px}
-.breadcrumb a{color:var(--blue);text-decoration:none}
-.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--ink);margin-bottom:8px}
-.page-hero p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7}
-
-/* ── CAMPAIGN BANNER ── */
-.camp-banner{background:linear-gradient(90deg,var(--orange),#ea580c);padding:10px 20px;text-align:center;color:var(--white);font-size:13px;font-weight:600;display:none;cursor:pointer}
-.camp-banner.on{display:block}
-
-/* ── FOOTER ── */
-footer{background:var(--ink);padding:52px 20px 24px}
-.footer-in{max-width:1200px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
-.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none}
-.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.footer-logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
-.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;margin-bottom:12px}
-.footer-contact a{display:block;font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:5px}
-.footer-contact a:hover{color:var(--white)}
-.footer-col h4{font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .15s}
-.footer-col a:hover{color:var(--white)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
-
-/* ── EMPTY STATE ── */
-.empty{text-align:center;padding:52px 24px}
-.empty-icon{font-size:52px;margin-bottom:14px}
-.empty h3{font-size:18px;font-weight:700;margin-bottom:6px}
-.empty p{font-size:14px;color:var(--muted);margin-bottom:18px}
-
-/* ── STATUS BADGES ── */
-.st-pending{background:#FFFBEB;color:#D97706}
-.st-reviewing{background:var(--blue-l);color:var(--blue)}
-.st-completed{background:var(--green-l);color:var(--green)}
-.st-rejected{background:var(--red-l);color:var(--red)}
-
 /* ── RESPONSIVE ── */
-@media(max-width:1024px){
-  .footer-top{grid-template-columns:1fr 1fr}
-  .nav-links{display:none}
-  .burger{display:block}
-}
-@media(max-width:640px){
-  .footer-top{grid-template-columns:1fr}
-  .g2{grid-template-columns:1fr}
-  .g3{grid-template-columns:1fr}
-  nav .cta-btn{display:none}
-}
-
-/* SELL-SPECIFIC */
-.sell-layout{max-width:1200px;margin:0 auto;padding:36px 20px 60px;display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start}
-.form-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.07)}
-.form-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;font-weight:800;margin-bottom:3px}
-.form-sub{font-size:13px;color:var(--light);margin-bottom:22px}
-.sec-lbl-sm{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;display:block;margin:18px 0 11px;padding-bottom:5px;border-bottom:1px solid var(--border)}
-/* CONDITION GRID */
-.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.cond-btn{border:1.5px solid var(--border);background:var(--bg);padding:11px 13px;border-radius:var(--radius);font-size:13px;font-family:inherit;cursor:pointer;text-align:left;transition:all .15s;line-height:1.4}
-.cond-btn span{display:block;font-size:11px;color:var(--light);margin-top:2px;font-weight:400}
-.cond-btn:hover,.cond-btn.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue);font-weight:700}
-.cond-btn.on span{color:var(--blue)}
-/* ACCESSORIES */
-.acc-chips{display:flex;flex-wrap:wrap;gap:7px}
-.acc-chip{border:1.5px solid var(--border);background:var(--bg);color:var(--muted);padding:6px 12px;border-radius:100px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500}
-.acc-chip:hover,.acc-chip.on{border-color:var(--green);background:var(--green-l);color:var(--green);font-weight:700}
-/* PHOTOS */
-.photo-area{border:2px dashed var(--border);border-radius:var(--radius);padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
-.photo-area:hover{border-color:var(--blue);background:var(--blue-l)}
-.photo-area.has{border-color:var(--green);background:var(--green-l)}
-.photo-area-icon{font-size:28px;margin-bottom:6px}
-.photo-area-txt{font-size:13px;font-weight:600;color:var(--muted)}
-.photo-area-sub{font-size:11px;color:var(--light);margin-top:2px}
-.photo-thumbs{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.photo-thumb{width:68px;height:68px;border-radius:9px;object-fit:cover;border:1.5px solid var(--border)}
-/* SLOTS */
-.slot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.slot-btn{border:1.5px solid var(--border);background:var(--bg);color:var(--muted);padding:13px;border-radius:var(--radius);font-size:13px;font-family:inherit;cursor:pointer;text-align:center;line-height:1.5;transition:all .15s;font-weight:500}
-.slot-btn.on{border-color:var(--blue);background:var(--blue);color:var(--white);font-weight:700}
-.slot-btn:not(.on):hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-/* PRICE BOX */
-.price-preview{background:var(--ink);border-radius:13px;padding:15px 18px;margin:16px 0;display:none;align-items:center;justify-content:space-between}
-.price-preview.on{display:flex}
-.pp-lbl{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:3px}
-.pp-val{font-size:26px;font-weight:800;color:var(--white)}
-.pp-note{font-size:10px;color:rgba(255,255,255,.2);text-align:right;line-height:1.6}
-/* LOYALTY TOGGLE */
-.loyalty-toggle{background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:var(--radius);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:14px}
-.loyalty-toggle h4{font-size:13px;font-weight:700;color:#D97706;margin-bottom:1px}
-.loyalty-toggle p{font-size:11px;color:#B45309}
-/* RIGHT COL */
-.right-col{display:flex;flex-direction:column;gap:16px;position:sticky;top:78px}
-.info-card h3{font-size:14px;font-weight:700;margin-bottom:14px}
-.why-item{display:flex;gap:11px;align-items:flex-start;margin-bottom:12px}
-.why-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.why-item h4{font-size:13px;font-weight:700;margin-bottom:2px}
-.why-item p{font-size:12px;color:var(--muted);line-height:1.6}
-.price-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
-.price-row:last-child{border:none}
-.pr-device{color:var(--muted)}.pr-price{font-weight:700;color:var(--blue)}
-/* SUCCESS */
-.success-wrap{display:none;text-align:center;padding:48px 24px}
-.success-wrap.on{display:block}
-/* NOTICE */
-.auth-notice{background:var(--blue-l);border:1px solid var(--blue-b);border-radius:var(--radius);padding:11px 13px;font-size:13px;color:var(--blue);margin-bottom:14px}
-/* RESP */
-@media(max-width:1024px){.sell-layout{grid-template-columns:1fr}.right-col{position:static}}
-@media(max-width:640px){.cond-grid{grid-template-columns:1fr}.slot-row{grid-template-columns:1fr}}
+@media(max-width:1024px){.sell-wrap{grid-template-columns:1fr}.sidebar{position:static}.nav-links{display:none}.burger{display:block}}
+@media(max-width:640px){.cond-grid{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}.slot-grid{grid-template-columns:1fr}.form-body{padding:20px}.form-header{padding:18px 20px}.submit-area{padding:16px 20px}}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-wrap">
     <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
-    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl active">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl">About</a></div>
+    <div class="nav-links">
+      <a href="index.html" class="nl">Home</a>
+      <a href="sell.html" class="nl active">Sell</a>
+      <a href="buy.html" class="nl">Buy</a>
+      <a href="about.html" class="nl">About</a>
+      <a href="blog.html" class="nl">Blog</a>
+    </div>
     <div class="nav-right">
       <a href="sell.html" class="cta-btn">Sell Now →</a>
-      <a href="#" class="acct-btn" data-guest onclick="location.href='index.html';return false">Login</a>
-      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
-      <button class="acct-btn" data-auth style="display:none;background:none;border-color:#FECACA;color:#DC2626;cursor:pointer;font-family:inherit" onclick="SMB.customer.logout();location.href='index.html'">Logout</button>
+      <a href="index.html" class="acct-btn" id="navLogin" data-guest>Login</a>
+      <a href="account.html" class="acct-btn" id="navAccount" data-auth style="display:none">👤 <span data-cname></span></a>
+      <button class="acct-btn logout" id="navLogout" data-auth style="display:none" onclick="doLogout()">Logout</button>
     </div>
     <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
   </div>
-  <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="account.html" data-auth style="display:none">My Account</a></div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html">Home</a>
+    <a href="sell.html">Sell</a>
+    <a href="buy.html">Buy</a>
+    <a href="about.html">About</a>
+    <a href="account.html" data-auth style="display:none">My Account</a>
+    <button data-guest onclick="location.href='index.html'">Login / Register</button>
+  </div>
 </nav>
 
+<!-- PAGE HERO -->
 <div class="page-hero">
   <div class="page-hero-in">
     <div class="breadcrumb"><a href="index.html">Home</a> › Sell Your Phone</div>
-    <h1>Get instant cash for your phone</h1>
-    <p>Fill the form below. We review in 2 hours. Free pickup anywhere in Delhi.</p>
+    <h1>📱 Get the best price for your phone</h1>
+    <p>
+      <span class="hero-pill">✅ No processing fee</span>
+      <span class="hero-pill">🚗 Free pickup</span>
+      <span class="hero-pill">⚡ Instant cash or UPI</span>
+      <span class="hero-pill">🧾 GST bill</span>
+    </p>
   </div>
 </div>
 
-<div class="sell-layout">
-  <!-- FORM CARD -->
+<div class="sell-wrap">
+
+  <!-- MAIN FORM -->
   <div>
+
     <!-- SUCCESS STATE -->
-    <div class="success-wrap" id="successWrap">
-      <div style="font-size:64px;margin-bottom:16px">🎉</div>
-      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;margin-bottom:8px">Request received!</h2>
-      <p style="font-size:15px;color:var(--muted);max-width:340px;margin:0 auto 24px;line-height:1.7">We'll call within 2 hours to confirm pickup. Track it in My Account.</p>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <a href="account.html" class="btn btn-primary">View My Account →</a>
-        <a href="sell.html" class="btn btn-secondary">Sell Another</a>
+    <div id="successCard" class="form-card" style="display:none">
+      <div class="success-wrap on" id="successWrap">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Request submitted!</h2>
+        <p class="success-sub">We'll call you within 2 hours to confirm pickup details. Track this in My Account.</p>
+        <div class="success-actions">
+          <a href="account.html" class="sa-primary">📊 View My Account</a>
+          <a href="sell.html" onclick="location.reload();return false" class="sa-secondary">Sell Another Phone</a>
+        </div>
       </div>
     </div>
 
+    <!-- SELL FORM -->
     <div class="form-card" id="formCard">
-      <h2 class="form-title">Sell your phone</h2>
-      <p class="form-sub">Takes 2 min · Free pickup · Instant cash</p>
-
-      <!-- Logged-in notice -->
-      <div class="auth-notice" id="authNotice" style="display:none">
-        ✅ Logged in as <strong id="authNoticeName"></strong> — your details are pre-filled.
-        <a href="account.html" style="color:var(--blue);margin-left:4px;font-weight:600">My Account</a>
-      </div>
-
-      <!-- CONTACT DETAILS -->
-      <span class="sec-lbl-sm">Your Details</span>
-      <div class="g2">
-        <div class="fg"><label>Full Name *</label><input type="text" id="fName" placeholder="Your full name"></div>
-        <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10"></div>
-      </div>
-      <div class="fg">
-        <label>Email Address <span class="opt">(optional — for updates)</span></label>
-        <input type="email" id="fEmail" placeholder="yourname@gmail.com">
-        <div class="hint">We send pickup confirmation to: 📧 mobilessambhi@gmail.com</div>
-      </div>
-
-      <!-- DEVICE -->
-      <span class="sec-lbl-sm">Device Details</span>
-      <div class="g2">
-        <div class="fg"><label>Brand *</label>
-          <select id="fBrand" onchange="onBrandChange()">
-            <option value="">Select brand</option>
-            <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
-            <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
-            <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
-          </select>
+      <div class="form-header">
+        <div>
+          <h2>Sell your phone</h2>
+          <p>2 minutes · Free pickup · Instant payment</p>
         </div>
-        <div class="fg"><label>Model *</label><select id="fModel"><option value="">Select model</option></select></div>
-      </div>
-      <div class="g3">
-        <div class="fg"><label>Storage</label><select id="fStorage"><option value="">Select</option><option>16GB</option><option>32GB</option><option>64GB</option><option>128GB</option><option>256GB</option><option>512GB</option><option>1TB</option></select></div>
-        <div class="fg"><label>RAM <span class="opt">(optional)</span></label><select id="fRAM"><option value="">Select</option><option>2GB</option><option>3GB</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
-        <div class="fg"><label>Colour</label>
-          <select id="fColor">
-            <option value="">Select colour</option>
-            <optgroup label="Common"><option>Black</option><option>White</option><option>Gold</option><option>Silver</option><option>Blue</option><option>Red</option><option>Green</option><option>Purple</option><option>Pink</option><option>Yellow</option><option>Grey</option></optgroup>
-            <optgroup label="iPhone-specific"><option>Midnight</option><option>Starlight</option><option>Deep Purple</option><option>Desert Titanium</option><option>Black Titanium</option><option>White Titanium</option><option>Natural Titanium</option><option>Blue Titanium</option><option>Pacific Blue</option><option>Sierra Blue</option><option>Alpine Green</option><option>Product Red</option><option>Space Grey</option><option>Space Black</option></optgroup>
-            <optgroup label="Samsung-specific"><option>Phantom Black</option><option>Cream</option><option>Lavender</option><option>Titanium Black</option><option>Titanium Gray</option><option>Cobalt Violet</option><option>Onyx Black</option></optgroup>
-            <optgroup label="Other"><option>Other (mention in notes)</option></optgroup>
-          </select>
-        </div>
-      </div>
-      <div class="g2">
-        <div class="fg"><label>Year</label><select id="fYear"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option></select></div>
-        <div class="fg"><label>IMEI Number <span class="opt">(dial *#06# on your phone)</span></label>
-          <input type="text" id="fIMEI" placeholder="Enter 15-digit IMEI number" maxlength="15" oninput="validateIMEI(this)" inputmode="numeric" pattern="[0-9]*">
-          <div class="hint" id="imeiHint" style="display:none"></div>
+        <div class="form-step-pills">
+          <span class="step-pill active">Details</span>
+          <span class="step-pill">Condition</span>
+          <span class="step-pill">Pickup</span>
         </div>
       </div>
 
-      <!-- BATTERY (iPhone only) -->
-      <div id="batteryRow" style="display:none">
-        <div class="fg">
-          <label>Battery Health % <span style="font-size:11px;color:var(--blue);font-weight:400">(Settings → Battery → Battery Health)</span></label>
-          <input type="number" id="fBattery" placeholder="e.g. 87" min="1" max="100">
+      <!-- RETURNING CUSTOMER BANNER (auto-shown) -->
+      <div class="returning-banner" id="returningBanner">
+        <span class="rb-icon">🏆</span>
+        <div>
+          <div class="rb-title">Welcome back! Your 10% loyalty bonus is applied.</div>
+          <div class="rb-sub" id="returningBannerSub">You've sold to us before — you automatically get 10% extra on your offer.</div>
         </div>
       </div>
 
-      <!-- CONDITION -->
-      <span class="sec-lbl-sm">Condition *</span>
-      <div class="cond-grid" id="condGrid">
-        <button class="cond-btn" onclick="pickCond('Like New',this)">⭐ Like New<span>No scratches, perfect working</span></button>
-        <button class="cond-btn" onclick="pickCond('Good',this)">👍 Good<span>Minor scratches, fully working</span></button>
-        <button class="cond-btn" onclick="pickCond('Fair',this)">👌 Fair<span>Visible wear, fully working</span></button>
-        <button class="cond-btn" onclick="pickCond('Poor',this)">😟 Poor<span>Heavy damage or hardware issues</span></button>
-      </div>
+      <div class="form-body">
 
-      <!-- ACCESSORIES -->
-      <span class="sec-lbl-sm">Accessories Included</span>
-      <div class="acc-chips" id="accChips">
-        <button class="acc-chip" onclick="togAcc(this,'Original Box')">📦 Original Box</button>
-        <button class="acc-chip" onclick="togAcc(this,'Charger')">🔌 Charger</button>
-        <button class="acc-chip" onclick="togAcc(this,'Earphones')">🎧 Earphones</button>
-        <button class="acc-chip" onclick="togAcc(this,'Cable')">🔗 Cable</button>
-        <button class="acc-chip" onclick="togAcc(this,'Cover')">🛡️ Cover</button>
-        <button class="acc-chip" onclick="togAcc(this,'Invoice / Bill')">🧾 Invoice</button>
-      </div>
+        <!-- AUTH NOTICE -->
+        <div class="auth-notice" id="authNotice">
+          <span>✅</span>
+          <span>Logged in as <strong id="authNoticeName"></strong> — your details are pre-filled.</span>
+          <a href="account.html">My Account →</a>
+        </div>
 
-      <!-- PHOTOS -->
-      <span class="sec-lbl-sm">Photos <span style="color:var(--light);font-size:11px;text-transform:none;font-weight:400">(optional · helps get better price)</span></span>
-      <div class="photo-area" id="photoArea" onclick="document.getElementById('photoInput').click()">
-        <div class="photo-area-icon">📷</div>
-        <div class="photo-area-txt">Tap to add photos</div>
-        <div class="photo-area-sub">Front, back, screen, any damage — up to 6</div>
-        <div class="photo-thumbs" id="photoThumbs"></div>
-      </div>
-      <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
-
-      <!-- ASKING PRICE -->
-      <span class="sec-lbl-sm">Your Asking Price</span>
-      <div class="fg">
-        <label>Expected Amount (₹) *</label>
-        <input type="number" id="fPrice" placeholder="e.g. 35000" oninput="updatePricePreview()">
-        <div class="hint">Enter what you expect — we'll review and confirm.</div>
-      </div>
-      <div class="price-preview" id="pricePreview">
-        <div><div class="pp-lbl">Your asking price</div><div class="pp-val" id="ppVal">₹0</div></div>
-        <div class="pp-note">Free pickup<br>Instant cash</div>
-      </div>
-
-      <!-- LOYALTY - AUTO DETECTED -->
-      <div id="loyaltyBox" style="display:none">
-        <div style="background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <span style="font-size:24px">🏆</span>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#D97706">Returning customer bonus applied!</div>
-            <div style="font-size:11px;color:#B45309">You get +10% extra on your offer because you've sold to us before.</div>
+        <!-- SECTION 1: YOUR DETAILS -->
+        <div class="section-group">
+          <div class="section-label">👤 Your Details</div>
+          <div class="g2">
+            <div class="fg">
+              <label>Full Name <span class="opt-tag">required</span></label>
+              <input type="text" id="fName" placeholder="Your full name" autocomplete="name">
+            </div>
+            <div class="fg">
+              <label>WhatsApp Number <span class="opt-tag">required</span></label>
+              <input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+            </div>
           </div>
-          <input type="checkbox" id="fLoyalty" checked style="display:none">
+          <div class="fg">
+            <label>Email Address <span class="opt-tag">optional</span></label>
+            <input type="email" id="fEmail" placeholder="yourname@gmail.com">
+            <div class="field-hint">📧 Confirmation sent to mobilessambhi@gmail.com</div>
+          </div>
+          <div class="g2">
+            <div class="fg">
+              <label>Pickup Address <span class="opt-tag">optional</span></label>
+              <input type="text" id="fAddress" placeholder="House / flat / street">
+            </div>
+            <div class="fg">
+              <label>Delhi PIN Code <span class="opt-tag">optional</span></label>
+              <input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)">
+              <div class="field-hint" id="pinHint"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: DEVICE DETAILS -->
+        <div class="section-group">
+          <div class="section-label">📱 Device Details</div>
+          <div class="g2">
+            <div class="fg">
+              <label>Brand <span class="opt-tag">required</span></label>
+              <select id="fBrand" onchange="onBrand()">
+                <option value="">Select brand</option>
+                <optgroup label="Apple">
+                  <option value="iphone">iPhone</option>
+                  <option value="airpods">AirPods</option>
+                  <option value="applewatch">Apple Watch</option>
+                </optgroup>
+                <optgroup label="Android">
+                  <option value="samsung">Samsung</option>
+                  <option value="oneplus">OnePlus</option>
+                  <option value="realme">Realme</option>
+                  <option value="oppo">Oppo</option>
+                  <option value="vivo">Vivo</option>
+                  <option value="xiaomi">Xiaomi / Redmi</option>
+                  <option value="pixel">Google Pixel</option>
+                  <option value="nothing">Nothing Phone</option>
+                </optgroup>
+                <optgroup label="Gaming">
+                  <option value="playstation">PlayStation</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Model <span class="opt-tag">required</span></label>
+              <select id="fModel" onchange="onModel()">
+                <option value="">Select model</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Storage chips (shown after model selected) -->
+          <div id="storageSection" style="display:none" class="fg">
+            <label>Storage</label>
+            <div class="spec-chip-row" id="storageChips"></div>
+            <input type="hidden" id="fStorage">
+          </div>
+
+          <div class="g3">
+            <div class="fg">
+              <label>RAM <span class="opt-tag">optional</span></label>
+              <select id="fRAM">
+                <option value="">Select</option>
+                <option>2GB</option><option>3GB</option><option>4GB</option>
+                <option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Colour <span class="opt-tag">optional</span></label>
+              <select id="fColor">
+                <option value="">Select</option>
+                <optgroup label="Common">
+                  <option>Black</option><option>White</option><option>Gold</option><option>Silver</option>
+                  <option>Blue</option><option>Red</option><option>Green</option><option>Purple</option>
+                  <option>Pink</option><option>Yellow</option><option>Grey / Graphite</option>
+                </optgroup>
+                <optgroup label="Apple Colours">
+                  <option>Midnight</option><option>Starlight</option><option>Deep Purple</option>
+                  <option>Desert Titanium</option><option>Black Titanium</option><option>White Titanium</option>
+                  <option>Natural Titanium</option><option>Blue Titanium</option><option>Pacific Blue</option>
+                  <option>Sierra Blue</option><option>Alpine Green</option><option>Product Red</option>
+                  <option>Space Grey</option><option>Space Black</option>
+                </optgroup>
+                <optgroup label="Samsung Colours">
+                  <option>Phantom Black</option><option>Cream</option><option>Lavender</option>
+                  <option>Titanium Black</option><option>Cobalt Violet</option><option>Onyx Black</option>
+                </optgroup>
+                <option>Other (mention in notes)</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Purchase Year <span class="opt-tag">optional</span></label>
+              <select id="fYear">
+                <option value="">Year</option>
+                <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+                <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+                <option>2017</option><option>2016 or older</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- IMEI -->
+          <div class="fg">
+            <label>IMEI Number <span class="opt-tag">optional — dial *#06# on your phone</span></label>
+            <input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)">
+            <div class="field-hint" id="imeiHint"></div>
+          </div>
+
+          <!-- Battery Health (iPhone only) -->
+          <div id="batterySection" style="display:none">
+            <div class="fg">
+              <label>Battery Health % <span class="opt-tag">Settings → Battery → Battery Health</span></label>
+              <input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100">
+              <div class="field-hint">⚡ Higher battery health = higher payout</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: CONDITION -->
+        <div class="section-group">
+          <div class="section-label">🔍 Device Condition <span style="color:var(--red);font-size:12px;margin-left:4px">*</span></div>
+          <div class="cond-grid" id="condGrid">
+            <button class="cond-btn" onclick="pickCond('Like New',this)">
+              <span class="cond-emoji">⭐</span>
+              <span class="cond-label">Like New</span>
+              <span class="cond-sub">No scratches, perfect working</span>
+            </button>
+            <button class="cond-btn" onclick="pickCond('Good',this)">
+              <span class="cond-emoji">👍</span>
+              <span class="cond-label">Good</span>
+              <span class="cond-sub">Minor scratches, fully working</span>
+            </button>
+            <button class="cond-btn" onclick="pickCond('Fair',this)">
+              <span class="cond-emoji">👌</span>
+              <span class="cond-label">Fair</span>
+              <span class="cond-sub">Visible wear, fully working</span>
+            </button>
+            <button class="cond-btn" onclick="pickCond('Poor',this)">
+              <span class="cond-emoji">🔧</span>
+              <span class="cond-label">Needs Repair</span>
+              <span class="cond-sub">Cracked screen or hardware issue</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 4: ACCESSORIES -->
+        <div class="section-group">
+          <div class="section-label">📦 Accessories Included</div>
+          <div class="acc-wrap" id="accChips">
+            <button class="acc-chip" onclick="togAcc(this,'Original Box')">📦 Original Box</button>
+            <button class="acc-chip" onclick="togAcc(this,'Charger')">🔌 Charger</button>
+            <button class="acc-chip" onclick="togAcc(this,'Earphones')">🎧 Earphones</button>
+            <button class="acc-chip" onclick="togAcc(this,'Cable')">🔗 Cable</button>
+            <button class="acc-chip" onclick="togAcc(this,'Cover / Case')">🛡️ Cover</button>
+            <button class="acc-chip" onclick="togAcc(this,'Invoice / Bill')">🧾 Invoice</button>
+            <button class="acc-chip" onclick="togAcc(this,'Screen Guard')">🪟 Screen Guard</button>
+          </div>
+        </div>
+
+        <!-- SECTION 5: PHOTOS -->
+        <div class="section-group">
+          <div class="section-label">📷 Photos <span style="font-size:11px;color:var(--light);font-weight:400;text-transform:none;letter-spacing:0">Better photos = better offer</span></div>
+          <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
+            <div class="photo-zone-icon">📷</div>
+            <div class="photo-zone-title">Tap to add photos</div>
+            <div class="photo-zone-sub">Front · Back · Screen · Any damage — up to 6 photos</div>
+            <div class="photo-grid" id="photoGrid"></div>
+          </div>
+          <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
+        </div>
+
+        <!-- SECTION 6: ASKING PRICE -->
+        <div class="section-group">
+          <div class="section-label">💰 Your Asking Price</div>
+          <div class="fg">
+            <label>Expected Amount (₹) <span class="opt-tag">required</span></label>
+            <div class="price-input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" id="fPrice" placeholder="e.g. 35000" oninput="updatePricePreview()" min="0">
+            </div>
+            <div class="field-hint">Enter what you expect — we review and confirm within 2 hours</div>
+          </div>
+          <div class="price-preview" id="pricePreview">
+            <div>
+              <div class="pp-lbl">Your asking price</div>
+              <div class="pp-val" id="ppVal">₹0</div>
+            </div>
+            <div class="pp-right">
+              <div class="pp-badge" id="ppBonus" style="display:none">+10% loyalty</div>
+              <div class="pp-note">Free pickup · Instant payment</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 7: PICKUP SLOT -->
+        <div class="section-group" style="margin-bottom:0">
+          <div class="section-label">🚗 Pickup Slot</div>
+          <div class="slot-grid">
+            <button class="slot-btn on" id="slotMorn" onclick="pickSlot('morning')">
+              <span class="slot-emoji">🌅</span>
+              <span class="slot-name">Morning</span>
+              <span class="slot-time">9 AM – 1 PM</span>
+            </button>
+            <button class="slot-btn" id="slotEve" onclick="pickSlot('evening')">
+              <span class="slot-emoji">🌆</span>
+              <span class="slot-name">Evening</span>
+              <span class="slot-time">4 PM – 8 PM</span>
+            </button>
+          </div>
+          <input type="hidden" id="fSlot" value="morning">
+          <div class="fg" style="margin-top:13px">
+            <label>Additional Notes <span class="opt-tag">optional</span></label>
+            <textarea id="fNotes" placeholder="Any details about your phone, specific issues, preferred pickup time, etc."></textarea>
+          </div>
+        </div>
+
+      </div><!-- /form-body -->
+
+      <!-- SUBMIT -->
+      <div class="submit-area">
+        <button class="submit-btn" id="submitBtn" onclick="submitSell()">
+          <span id="submitIcon">🚀</span>
+          <span id="submitText">Submit Sell Request</span>
+        </button>
+        <div class="submit-note">
+          📞 We call within 2 hours to confirm pickup
+        </div>
+        <div class="trust-row">
+          <span class="trust-item">✅ Zero processing fee</span>
+          <span class="trust-item">🔒 Secure & private</span>
+          <span class="trust-item">📋 GST bill provided</span>
         </div>
       </div>
-      <div id="loyaltyManual" style="margin-bottom:14px">
-        <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="togManualLoyalty()">
-          <input type="checkbox" id="fLoyaltyManual" style="width:15px;height:15px;accent-color:var(--blue)">
-          <div><div style="font-size:13px;font-weight:600;color:#334155">🏆 I've sold to Sambhi Mobiles before</div><div style="font-size:11px;color:#94A3B8">Tick this to get 10% extra on your offer</div></div>
-        </div>
-      </div>
 
-      <!-- PICKUP SLOT -->
-      <span class="sec-lbl-sm">Pickup Slot</span>
-      <div class="slot-row">
-        <button class="slot-btn on" id="slotMorn" onclick="pickSlot('morning')">🌅 Morning<br><small>9 AM – 1 PM</small></button>
-        <button class="slot-btn" id="slotEve" onclick="pickSlot('evening')">🌆 Evening<br><small>4 PM – 8 PM</small></button>
-      </div>
-      <input type="hidden" id="fSlot" value="morning">
-
-      <!-- NOTES -->
-      <div class="fg" style="margin-top:14px">
-        <label>Notes <span class="opt">(optional)</span></label>
-        <textarea id="fNotes" placeholder="Any extra details, your address, etc."></textarea>
-      </div>
-
-      <button class="btn btn-primary btn-full btn-lg" style="margin-top:6px" id="submitBtn" onclick="submitSell()">Submit Sell Request →</button>
-      <p style="font-size:12px;color:var(--light);text-align:center;margin-top:9px">We'll call within 2 hours to confirm 📞</p>
-    </div>
+    </div><!-- /formCard -->
   </div>
 
-  <!-- RIGHT COL -->
-  <div class="right-col">
-    <div class="card">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="side-card">
       <h3>💡 Why sell with us?</h3>
-      <div class="why-item"><div class="why-icon" style="background:#EFF6FF">💰</div><div><h4>Best price in Delhi</h4><p>We compare multiple buyers to maximise your payout.</p></div></div>
-      <div class="why-item"><div class="why-icon" style="background:#F0FDF4">🚗</div><div><h4>Free doorstep pickup</h4><p>We come to you. No travel needed.</p></div></div>
-      <div class="why-item"><div class="why-icon" style="background:#FFF7ED">⚡</div><div><h4>Instant payment</h4><p>Cash or UPI the moment we verify your device.</p></div></div>
-      <div class="why-item" style="margin:0"><div class="why-icon" style="background:#F3E8FF">🧾</div><div><h4>GST bill provided</h4><p>Full legal documentation for every transaction.</p></div></div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#EFF6FF">💰</div>
+        <div><h4>Best price in Delhi</h4><p>We compare 10+ buyers to give you maximum value. Always transparent.</p></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#F0FDF4">🚗</div>
+        <div><h4>Free doorstep pickup</h4><p>We come to you anywhere in Delhi. No travel needed.</p></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#FFF7ED">⚡</div>
+        <div><h4>Instant payment</h4><p>Cash or UPI the moment we verify your device.</p></div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon" style="background:#F3E8FF">🧾</div>
+        <div><h4>GST bill + IMEI cert</h4><p>Full legal documentation for every transaction.</p></div>
+      </div>
     </div>
-    <div class="card">
-      <h3>📊 Today's prices</h3>
-      <div class="price-row"><span class="pr-device">iPhone 15 Pro Max</span><span class="pr-price">Up to ₹88,000</span></div>
-      <div class="price-row"><span class="pr-device">iPhone 14 Pro Max</span><span class="pr-price">Up to ₹68,000</span></div>
-      <div class="price-row"><span class="pr-device">Samsung S24 Ultra</span><span class="pr-price">Up to ₹85,000</span></div>
-      <div class="price-row"><span class="pr-device">OnePlus 12</span><span class="pr-price">Up to ₹48,000</span></div>
-      <div class="price-row"><span class="pr-device">PS5 Disc Edition</span><span class="pr-price">Up to ₹38,000</span></div>
+
+    <div class="side-card">
+      <h3>📊 Today's best prices</h3>
+      <div class="price-table">
+        <div class="pt-row"><span class="pt-model">iPhone 15 Pro Max</span><span class="pt-price">₹88,000</span></div>
+        <div class="pt-row"><span class="pt-model">iPhone 14 Pro Max</span><span class="pt-price">₹68,000</span></div>
+        <div class="pt-row"><span class="pt-model">Samsung S24 Ultra</span><span class="pt-price">₹85,000</span></div>
+        <div class="pt-row"><span class="pt-model">OnePlus 12</span><span class="pt-price">₹48,000</span></div>
+        <div class="pt-row"><span class="pt-model">PS5 Disc Edition</span><span class="pt-price">₹38,000</span></div>
+      </div>
     </div>
-    <div class="card" style="background:var(--ink);border-color:var(--ink)">
-      <h3 style="color:var(--white);margin-bottom:6px">📞 Need help?</h3>
-      <p style="font-size:13px;color:rgba(255,255,255,.4);margin-bottom:12px">Talk to our team directly</p>
-      <a href="tel:+917827505579" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);color:var(--white);padding:11px 13px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:600">📞 +91 7827505579</a>
+
+    <div class="side-card contact-dark">
+      <h3>📞 Need help?</h3>
+      <a href="tel:+917827505579" class="contact-link">📞 +91 7827505579</a>
+      <a href="https://wa.me/917827505579" target="_blank" class="contact-link">💬 WhatsApp us</a>
+      <a href="mailto:mobilessambhi@gmail.com" class="contact-link">📧 mobilessambhi@gmail.com</a>
     </div>
   </div>
-</div>
+
+</div><!-- /sell-wrap -->
 
 <footer>
-  <div class="footer-in">
-    <div class="footer-bottom">
-      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
-      <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
-    </div>
+  <div class="footer-bottom">
+    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · +91 7827505579</p>
+    <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
   </div>
 </footer>
 
 <div class="toast-wrap" id="toastWrap"></div>
+
 <script>
 // ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
@@ -638,10 +817,13 @@ if (document.readyState === 'loading') {
 } else { smbUpdateNav(); }
 
 </script>
+SHARED_JS_PLACEHOLDER
+
 <script>
+// ── MODEL DATA ────────────────────────────────────────────────────
 var MODELS = {
   iphone:['iPhone 16 Pro Max','iPhone 16 Pro','iPhone 16 Plus','iPhone 16','iPhone 15 Pro Max','iPhone 15 Pro','iPhone 15 Plus','iPhone 15','iPhone 14 Pro Max','iPhone 14 Pro','iPhone 14 Plus','iPhone 14','iPhone 13 Pro Max','iPhone 13 Pro','iPhone 13','iPhone 13 Mini','iPhone 12 Pro Max','iPhone 12 Pro','iPhone 12','iPhone 12 Mini','iPhone 11 Pro Max','iPhone 11 Pro','iPhone 11','iPhone SE (2022)','iPhone SE (2020)','iPhone XR','iPhone XS Max','iPhone XS','iPhone X'],
-  samsung:['Galaxy S24 Ultra','Galaxy S24+','Galaxy S24','Galaxy S23 Ultra','Galaxy S23+','Galaxy S23','Galaxy S22 Ultra','Galaxy S22+','Galaxy S22','Galaxy A55','Galaxy A54','Galaxy A35','Galaxy A25','Galaxy A15','Galaxy M55','Galaxy M35'],
+  samsung:['Galaxy S24 Ultra','Galaxy S24+','Galaxy S24','Galaxy S23 Ultra','Galaxy S23+','Galaxy S23','Galaxy S22 Ultra','Galaxy S22+','Galaxy S22','Galaxy A55','Galaxy A54','Galaxy A35','Galaxy A34','Galaxy A25','Galaxy A15','Galaxy M55','Galaxy M35'],
   oneplus:['OnePlus 12','OnePlus 12R','OnePlus 11','OnePlus 11R','Nord 4','Nord CE4','Nord 3','OnePlus 10 Pro','OnePlus 10T','OnePlus 9 Pro'],
   realme:['Realme GT 6','Realme GT 5','Realme 13 Pro+','Realme 13 Pro','Realme 12 Pro+','Realme 12 Pro','Realme 11 Pro+'],
   oppo:['Find X7 Pro','Reno 12 Pro','Reno 12','Reno 11 Pro','F27 Pro','A3 Pro'],
@@ -654,166 +836,287 @@ var MODELS = {
   playstation:['PS5 Disc Edition','PS5 Digital Edition','PS5 Slim Disc','PS5 Slim Digital','PS4 Pro','PS4 Slim','PS4']
 };
 
-var selCond = '', selAccs = [], selSlot = 'morning', photoUrls = [];
+// Storage options per brand
+var STORAGE = {
+  iphone:['16GB','32GB','64GB','128GB','256GB','512GB','1TB'],
+  samsung:['64GB','128GB','256GB','512GB'],
+  oneplus:['128GB','256GB','512GB'],
+  pixel:['128GB','256GB','512GB'],
+  realme:['64GB','128GB','256GB'],
+  oppo:['64GB','128GB','256GB'],
+  vivo:['64GB','128GB','256GB'],
+  xiaomi:['64GB','128GB','256GB','512GB'],
+  nothing:['128GB','256GB'],
+  airpods:['Single unit'],
+  applewatch:['GPS','GPS + Cellular'],
+  playstation:['825GB']
+};
 
-function validateIMEI(el) {
-  var v = el.value.replace(/\D/g,'');
-  el.value = v;
-  var hint = document.getElementById('imeiHint');
-  if (!v) { hint.style.display='none'; return; }
-  hint.style.display = 'block';
-  if (v.length < 15) {
-    hint.textContent = v.length + '/15 digits entered';
-    hint.style.color = '#94A3B8';
-    el.classList.remove('err');
-  } else if (v.length === 15) {
-    hint.textContent = '✅ Valid 15-digit IMEI';
-    hint.style.color = '#16A34A';
-    el.classList.remove('err');
-  }
-}
-function togManualLoyalty() {
-  var cb = document.getElementById('fLoyaltyManual');
-  cb.checked = !cb.checked;
-}
-function getLoyaltyValue() {
-  // Auto loyalty (detected) takes priority, then manual checkbox
-  var autoBox = document.getElementById('fLoyalty');
-  var manBox  = document.getElementById('fLoyaltyManual');
-  if (autoBox && autoBox.checked) return true;
-  if (manBox && manBox.checked) return true;
-  return false;
-}
+// ── STATE ─────────────────────────────────────────────────────────
+var selCond = '', selAccs = [], selSlot = 'morning', photoUrls = [], isReturning = false;
+
+// ── INIT ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', function() {
+  smbUpdateNav();
+
   var CU = SMB.customer.current();
   if (CU) {
-    document.getElementById('authNotice').style.display = '';
+    // Pre-fill contact details
+    document.getElementById('authNotice').classList.add('show');
     document.getElementById('authNoticeName').textContent = CU.name;
     document.getElementById('fName').value  = CU.name;
     document.getElementById('fPhone').value = CU.phone;
-    // Auto-detect returning customer: check for completed sell requests
+
+    // AUTO-DETECT returning customer from completed sells
     var prevSells = SMB.sells.forCustomer(CU.id);
-    var hasCompleted = prevSells.some(function(s) { return s.status === 'completed'; });
-    if (hasCompleted) {
-      // Auto-apply loyalty bonus
-      document.getElementById('loyaltyBox').style.display = '';
-      document.getElementById('loyaltyManual').style.display = 'none';
-      document.getElementById('fLoyalty').checked = true;
+    var completedSells = prevSells.filter(function(s) { return s.status === 'completed'; });
+    if (completedSells.length > 0) {
+      isReturning = true;
+      var banner = document.getElementById('returningBanner');
+      banner.classList.add('show');
+      // Show last sold device info
+      var last = completedSells[completedSells.length - 1];
+      var lastDevice = [last.brand, last.model].filter(Boolean).join(' ');
+      var lastDate = last.createdAt ? SMB.fmtDate(last.createdAt) : '';
+      var sub = document.getElementById('returningBannerSub');
+      if (lastDevice) {
+        sub.textContent = 'Your last sale: ' + lastDevice + (lastDate ? ' on ' + lastDate : '') + '. You get 10% extra automatically!';
+      }
+      // Show loyalty bonus on price preview
+      document.getElementById('ppBonus').style.display = 'inline-block';
     }
   }
+
+  // Pre-select brand from URL param
   var params = new URLSearchParams(location.search);
   var brand = params.get('brand');
-  if (brand) { var el = document.getElementById('fBrand'); if (el.querySelector('option[value="'+brand+'"]')) { el.value = brand; onBrandChange(); } }
+  if (brand) {
+    var sel = document.getElementById('fBrand');
+    if (sel.querySelector('option[value="' + brand + '"]')) {
+      sel.value = brand; onBrand();
+    }
+  }
 });
 
-function onBrandChange() {
+// ── BRAND → MODEL ─────────────────────────────────────────────────
+function onBrand() {
   var brand = document.getElementById('fBrand').value;
   var ms = document.getElementById('fModel');
   ms.innerHTML = '<option value="">Select model</option>';
-  (MODELS[brand] || []).forEach(function(m) { var o = document.createElement('option'); o.value = m; o.textContent = m; ms.appendChild(o); });
-  document.getElementById('batteryRow').style.display = brand === 'iphone' ? '' : 'none';
+  (MODELS[brand] || []).forEach(function(m) {
+    var o = document.createElement('option'); o.value = m; o.textContent = m; ms.appendChild(o);
+  });
+  document.getElementById('batterySection').style.display = brand === 'iphone' ? '' : 'none';
+  document.getElementById('storageSection').style.display = 'none';
+  document.getElementById('fStorage').value = '';
 }
-function pickCond(val, btn) { document.querySelectorAll('.cond-btn').forEach(function(b){b.classList.remove('on');}); btn.classList.add('on'); selCond = val; }
-function togAcc(btn, val) { btn.classList.toggle('on'); if(btn.classList.contains('on')){if(!selAccs.includes(val))selAccs.push(val);}else{selAccs=selAccs.filter(function(a){return a!==val;});} }
+
+function onModel() {
+  var brand = document.getElementById('fBrand').value;
+  var opts = STORAGE[brand] || ['64GB','128GB','256GB'];
+  var chips = document.getElementById('storageChips');
+  chips.innerHTML = '';
+  document.getElementById('fStorage').value = '';
+  if (opts.length) {
+    document.getElementById('storageSection').style.display = '';
+    opts.forEach(function(s) {
+      var btn = document.createElement('button');
+      btn.className = 'spec-chip'; btn.textContent = s; btn.type = 'button';
+      btn.onclick = function() {
+        document.querySelectorAll('.spec-chip').forEach(function(b){b.classList.remove('on');});
+        this.classList.add('on');
+        document.getElementById('fStorage').value = s;
+      };
+      chips.appendChild(btn);
+    });
+  }
+}
+
+// ── CONDITION ────────────────────────────────────────────────────
+function pickCond(val, btn) {
+  document.querySelectorAll('.cond-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on'); selCond = val;
+}
+
+// ── ACCESSORIES ──────────────────────────────────────────────────
+function togAcc(btn, val) {
+  btn.classList.toggle('on');
+  if (btn.classList.contains('on')) { if (!selAccs.includes(val)) selAccs.push(val); }
+  else { selAccs = selAccs.filter(function(a){return a !== val;}); }
+}
+
+// ── SLOT ─────────────────────────────────────────────────────────
 function pickSlot(v) {
   selSlot = v;
   document.getElementById('slotMorn').classList.toggle('on', v === 'morning');
   document.getElementById('slotEve').classList.toggle('on', v === 'evening');
 }
+
+// ── PHOTOS ───────────────────────────────────────────────────────
 function handlePhotos(input) {
-  var files = Array.from(input.files).slice(0, 6); photoUrls = [];
-  var thumbs = document.getElementById('photoThumbs'); thumbs.innerHTML = '';
-  var area = document.getElementById('photoArea');
-  if (!files.length) { area.classList.remove('has'); return; }
-  area.classList.add('has');
-  area.querySelector('.photo-area-txt').textContent = files.length + ' photo' + (files.length > 1 ? 's' : '') + ' selected';
-  files.forEach(function(f) {
-    var r = new FileReader(); r.onload = function(e) {
+  var files = Array.from(input.files).slice(0, 6);
+  photoUrls = [];
+  var grid = document.getElementById('photoGrid');
+  grid.innerHTML = '';
+  var zone = document.getElementById('photoZone');
+  if (!files.length) { zone.classList.remove('has-photos'); return; }
+  zone.classList.add('has-photos');
+  zone.querySelector('.photo-zone-title').textContent = files.length + ' photo' + (files.length > 1 ? 's' : '') + ' added';
+  files.forEach(function(f, idx) {
+    var r = new FileReader();
+    r.onload = function(e) {
       photoUrls.push(e.target.result);
-      var img = document.createElement('img'); img.className = 'photo-thumb'; img.src = e.target.result; thumbs.appendChild(img);
-    }; r.readAsDataURL(f);
+      var wrap = document.createElement('div'); wrap.className = 'photo-thumb-wrap';
+      var img = document.createElement('img'); img.className = 'photo-thumb'; img.src = e.target.result;
+      var rm = document.createElement('button'); rm.className = 'photo-remove'; rm.textContent = '✕';
+      rm.onclick = function(ev) { ev.stopPropagation(); wrap.remove(); photoUrls.splice(idx,1); if(!grid.children.length){zone.classList.remove('has-photos');zone.querySelector('.photo-zone-title').textContent='Tap to add photos';} };
+      wrap.appendChild(img); wrap.appendChild(rm); grid.appendChild(wrap);
+    };
+    r.readAsDataURL(f);
   });
 }
-function updatePricePreview() {
-  var p = parseInt(document.getElementById('fPrice').value) || 0;
-  var box = document.getElementById('pricePreview');
-  if (p > 0) { box.classList.add('on'); document.getElementById('ppVal').textContent = '₹' + p.toLocaleString('en-IN'); }
-  else box.classList.remove('on');
-}
-function markErr(id) { var el = document.getElementById(id); if(el){el.classList.add('err'); el.addEventListener('input',function(){el.classList.remove('err');},{once:true});} }
-function showToast(msg, type) {
-  var w = document.getElementById('toastWrap'); var t = document.createElement('div'); t.className = 'toast' + (type?' '+type:''); t.textContent = msg; w.appendChild(t);
-  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
-  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},3500);
-}
-function validatePin(el) {
-  var v = el.value.replace(/\D/g,'');
-  el.value = v;
-  var hint = document.getElementById('pinHint');
-  if (v.length === 0) { el.classList.remove('err'); hint.textContent = 'Delhi PIN codes start with 110'; hint.style.color = ''; return; }
-  if (!v.startsWith('110')) {
-    el.classList.add('err');
-    hint.textContent = '⚠️ Only Delhi PIN codes accepted (must start with 110)';
-    hint.style.color = '#DC2626';
-  } else if (v.length === 6) {
-    el.classList.remove('err');
-    hint.textContent = '✅ Valid Delhi PIN code';
-    hint.style.color = '#16A34A';
-  } else {
-    el.classList.remove('err');
-    hint.textContent = 'Enter 6-digit Delhi PIN code';
-    hint.style.color = '';
+
+// ── IMEI VALIDATION ───────────────────────────────────────────────
+function validateIMEI(el) {
+  var v = el.value.replace(/\D/g,''); el.value = v;
+  var hint = document.getElementById('imeiHint');
+  if (!v) { hint.textContent=''; hint.className='field-hint'; el.classList.remove('err','ok'); return; }
+  if (v.length < 15) {
+    hint.textContent = v.length + ' / 15 digits entered';
+    hint.className = 'field-hint';
+    el.classList.remove('err','ok');
+  } else if (v.length === 15) {
+    hint.textContent = '✅ Valid IMEI';
+    hint.className = 'field-hint success';
+    el.classList.add('ok'); el.classList.remove('err');
   }
 }
 
+// ── PIN VALIDATION ────────────────────────────────────────────────
+function validatePin(el) {
+  var v = el.value.replace(/\D/g,''); el.value = v;
+  var hint = document.getElementById('pinHint');
+  if (!v) { hint.textContent=''; hint.className='field-hint'; el.classList.remove('err','ok'); return; }
+  if (v.length === 6 && v.startsWith('110')) {
+    hint.textContent = '✅ Valid Delhi PIN';
+    hint.className = 'field-hint success';
+    el.classList.add('ok'); el.classList.remove('err');
+  } else if (v.length === 6 && !v.startsWith('110')) {
+    hint.textContent = '⚠️ Only Delhi PIN codes accepted (must start with 110)';
+    hint.className = 'field-hint error';
+    el.classList.add('err'); el.classList.remove('ok');
+  } else {
+    hint.textContent = v.length + '/6 digits';
+    hint.className = 'field-hint';
+    el.classList.remove('err','ok');
+  }
+}
+
+// ── PRICE PREVIEW ────────────────────────────────────────────────
+function updatePricePreview() {
+  var p = parseInt(document.getElementById('fPrice').value) || 0;
+  var preview = document.getElementById('pricePreview');
+  if (p > 0) {
+    preview.classList.add('show');
+    document.getElementById('ppVal').textContent = '₹' + p.toLocaleString('en-IN');
+  } else {
+    preview.classList.remove('show');
+  }
+}
+
+// ── FORM VALIDATION ───────────────────────────────────────────────
+function markErr(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('err');
+  el.addEventListener('input', function(){ el.classList.remove('err'); }, { once: true });
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────
 function submitSell() {
-  var name  = (document.getElementById('fName').value||'').trim();
-  var phone = (document.getElementById('fPhone').value||'').trim();
+  var name  = (document.getElementById('fName').value || '').trim();
+  var phone = (document.getElementById('fPhone').value || '').trim();
   var brand = document.getElementById('fBrand').value;
   var model = document.getElementById('fModel').value;
-  var price = parseInt(document.getElementById('fPrice').value)||0;
+  var price = parseInt(document.getElementById('fPrice').value) || 0;
+
+  // Validate
   var errs = [];
-  if(!name){markErr('fName');errs.push('Name required');}
-  if(phone.length<10){markErr('fPhone');errs.push('Valid phone required');}
-  if(!brand){markErr('fBrand');errs.push('Select brand');}
-  if(!model){markErr('fModel');errs.push('Select model');}
-  if(!selCond){errs.push('Select device condition');}
-  if(!price){markErr('fPrice');errs.push('Enter asking price');}
-  if(errs.length){showToast(errs[0],'red');return;}
-  var btn = document.getElementById('submitBtn'); btn.disabled = true; btn.textContent = 'Submitting...';
+  if (!name) { markErr('fName'); errs.push('Please enter your full name.'); }
+  if (phone.length < 10) { markErr('fPhone'); errs.push('Please enter a valid 10-digit phone number.'); }
+  if (!brand) { markErr('fBrand'); errs.push('Please select a brand.'); }
+  if (!model) { markErr('fModel'); errs.push('Please select a model.'); }
+  if (!selCond) { errs.push('Please select the device condition.'); }
+  if (!price || price < 100) { markErr('fPrice'); errs.push('Please enter your expected price.'); }
+  var pin = (document.getElementById('fPincode').value || '').trim();
+  if (pin && pin.length === 6 && !pin.startsWith('110')) {
+    markErr('fPincode'); errs.push('Please enter a valid Delhi PIN code (starts with 110).');
+  }
+
+  if (errs.length > 0) { showToast(errs[0], 'red'); return; }
+
+  // Disable button while submitting
+  var btn = document.getElementById('submitBtn');
+  var icon = document.getElementById('submitIcon');
+  var text = document.getElementById('submitText');
+  btn.disabled = true;
+  icon.textContent = '⏳';
+  text.textContent = 'Submitting...';
+
   var CU = SMB.customer.current();
+
   var data = {
-    name:name, phone:phone, brand:brand, model:model,
+    name:    name,
+    phone:   phone,
+    email:   (document.getElementById('fEmail').value || '').trim(),
+    address: (document.getElementById('fAddress').value || '').trim(),
+    pincode: pin,
+    brand:   brand,
+    model:   model,
     storage: document.getElementById('fStorage').value,
-    ram: document.getElementById('fRAM').value,
-    color: document.getElementById('fColor').value,
-    year: document.getElementById('fYear').value,
-    imei: document.getElementById('fIMEI').value,
-    batteryHealth: document.getElementById('fBattery').value,
-    condition: selCond, accessories: selAccs.slice(), photos: photoUrls.slice(),
-    askingPrice: price,
-    isLoyalty: getLoyaltyValue(),
-    slot: selSlot,
-    address: (document.getElementById('fAddress').value||'').trim(),
-    pincode: (document.getElementById('fPincode').value||'').trim(),
-    landmark: (document.getElementById('fLandmark').value||'').trim(),
-    notes: document.getElementById('fNotes').value
+    ram:     document.getElementById('fRAM').value,
+    color:   document.getElementById('fColor').value,
+    year:    document.getElementById('fYear').value,
+    imei:    (document.getElementById('fIMEI').value || '').trim(),
+    batteryHealth: (document.getElementById('fBattery').value || '').trim(),
+    condition:    selCond,
+    accessories:  selAccs.slice(),
+    photos:       photoUrls.slice(),
+    askingPrice:  price,
+    isLoyalty:    isReturning,
+    slot:         selSlot,
+    notes:        (document.getElementById('fNotes').value || '').trim()
   };
+
   try {
     SMB.sells.submit(data, CU ? CU.id : null);
   } catch(e) {
-    console.error('Submit error:', e);
+    console.error('Submit failed:', e);
     btn.disabled = false;
-    btn.textContent = 'Submit Sell Request →';
-    showToast('Something went wrong. Please try again.', 'red');
+    icon.textContent = '🚀';
+    text.textContent = 'Submit Sell Request';
+    showToast('Submission failed. Please try again.', 'red');
     return;
   }
-  // Success
+
+  // SUCCESS
   btn.disabled = false;
+  icon.textContent = '🚀';
+  text.textContent = 'Submit Sell Request';
   document.getElementById('formCard').style.display = 'none';
-  document.getElementById('successWrap').classList.add('on');
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('successCard').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var w = document.getElementById('toastWrap');
+  var t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  w.appendChild(t);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.classList.add('show'); if(type) t.classList.add(type); }); });
+  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 4000);
+}
+function doLogout() { SMB.customer.logout(); smbUpdateNav(); location.href = 'index.html'; }
 </script>
 </body>
 </html>
