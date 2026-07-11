@@ -256,6 +256,9 @@ td{padding:10px 12px;font-size:13px;vertical-align:middle}
     </div>
     <button id="lbtn" onclick="doLogin()">Login →</button>
     <div id="lerr"></div>
+    <div style="margin-top:14px;text-align:center">
+      <button onclick="clearAndRetry()" style="background:none;border:none;font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;font-family:inherit;text-decoration:underline">Having trouble? Click here to reset</button>
+    </div>
   </div>
 </div>
 
@@ -703,12 +706,19 @@ function doLogin() {
   var p = rn('lp').trim();
   var err = document.getElementById('lerr');
   if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display = 'block'; return; }
-  var team = getTeam();
+  // Try localStorage team first, then fall back to TEAM_DEF
   var found = null;
+  var team = getTeam();
   for (var i = 0; i < team.length; i++) {
     if (team[i].u === u && team[i].pw === p) { found = team[i]; break; }
   }
-  if (!found) { err.textContent = 'Wrong credentials. Try: amrik / amrik1234'; err.style.display = 'block'; return; }
+  // Always also check TEAM_DEF in case localStorage is corrupted
+  if (!found) {
+    for (var j = 0; j < TEAM_DEF.length; j++) {
+      if (TEAM_DEF[j].u === u && TEAM_DEF[j].pw === p) { found = TEAM_DEF[j]; break; }
+    }
+  }
+  if (!found) { err.textContent = 'Incorrect username or password.'; err.style.display = 'block'; return; }
   err.style.display = 'none';
   CU = found;
   localStorage.setItem('smb_sess', JSON.stringify({u: found.u, name: found.name, role: found.role, ts: Date.now()}));
@@ -1716,7 +1726,6 @@ function rTm() {
       +'<span class="tr '+(u.role==='Owner'?'tro':u.role==='Manager'?'trm':'tre')+'">'+u.role+'</span>'
       +(u.ph?'<div class="ti">📞 '+u.ph+'</div>':'')
       +(u.em?'<div class="ti">✉️ '+u.em+'</div>':'')
-      ''
       +'<div class="ti" style="color:#CBD5E1">Account: ••••••••</div>'
       +(isO?'<button class="teb" onclick="oTE('+i+')">✏️ Edit</button>':'')
       +'</div>';
@@ -1773,18 +1782,22 @@ function rSellReqs() {
   body.innerHTML = f.length ? f.map(function(r) {
     var st = r.status || 'pending';
     var dev = [r.brand, r.model, r.storage].filter(Boolean).join(' ') || r.device || 'Unknown';
+    var rid = r.id;
+    var opts = ['pending','reviewing','completed','rejected'].map(function(s) {
+      return '<option value="' + s + '"' + (st === s ? ' selected' : '') + '>' + s + '</option>';
+    }).join('');
+    var sel = '<select style="border:1.5px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;background:#F8FAFC" onchange="updSR(this.dataset.id,this.value)" data-id="' + rid + '">' + opts + '</select>';
     return '<tr>'
       + '<td style="font-size:11px;color:#94A3B8">' + (r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) : '—') + '</td>'
       + '<td><strong>' + (r.name||'—') + '</strong><br><span style="font-size:11px;color:var(--b)">' + (r.phone||'') + '</span></td>'
       + '<td style="font-size:12px">' + dev + (r.condition ? '<br><span style="font-size:11px;color:#94A3B8">' + r.condition + '</span>' : '') + '</td>'
       + '<td style="font-size:12px;color:#64748B">' + (r.accessories && r.accessories.length ? r.accessories.join(', ') : 'None') + '</td>'
       + '<td style="font-weight:700;color:var(--b)">' + (r.askingPrice ? '₹' + parseInt(r.askingPrice).toLocaleString('en-IN') : '—') + '</td>'
-      + '<td><span class="badge ' + SCL[st] + '">' + SRL[st] + '</span></td>'
-      + '<td><select style="border:1.5px solid #E2E8F0;border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;background:#F8FAFC" onchange="updSR('' + r.id + '',this.value)">'
-      + ['pending','reviewing','completed','rejected'].map(function(s) { return '<option value="' + s + '"' + (st===s?' selected':'') + '>' + s + '</option>'; }).join('')
-      + '</select></td></tr>';
+      + '<td><span class="badge ' + (SCL[st]||'st-new') + '">' + (SRL[st]||st) + '</span></td>'
+      + '<td>' + sel + '</td></tr>';
   }).join('') : '<tr><td colspan="7" style="text-align:center;padding:24px;color:#94A3B8">No customer sell requests yet.</td></tr>';
 }
+
 function updSR(id, status) {
   var reqs = []; try { reqs = JSON.parse(localStorage.getItem('smb_sell_reqs') || '[]'); } catch(e) {}
   var idx = reqs.findIndex(function(r) { return r.id === id; });
@@ -1812,6 +1825,17 @@ function rCustomers() {
       + '<td style="font-weight:700;color:var(--b)">' + cSells + '</td>'
       + '<td style="font-weight:700;color:var(--g)">' + (c.buyCount||0) + '</td></tr>';
   }).join('') : '<tr><td colspan="6" style="text-align:center;padding:24px;color:#94A3B8">No registered customers yet.</td></tr>';
+}
+
+// ── CLEAR & RETRY ────────────────────────────────────────────────
+function clearAndRetry() {
+  // Clear potentially corrupted session/team data
+  localStorage.removeItem('smb_team');
+  localStorage.removeItem('smb_sess');
+  document.getElementById('lerr').textContent = 'Saved data cleared. Try logging in again.';
+  document.getElementById('lerr').style.display = 'block';
+  document.getElementById('lerr').style.background = '#F0FDF4';
+  document.getElementById('lerr').style.color = '#16A34A';
 }
 
 // ── BOOT ─────────────────────────────────────────────────────────
