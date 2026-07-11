@@ -277,6 +277,11 @@ footer{background:var(--ink);padding:52px 20px 24px}
         <div class="fg"><label>Full Name *</label><input type="text" id="fName" placeholder="Your full name"></div>
         <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10"></div>
       </div>
+      <div class="fg">
+        <label>Email Address <span class="opt">(optional — for updates)</span></label>
+        <input type="email" id="fEmail" placeholder="yourname@gmail.com">
+        <div class="hint">We send pickup confirmation to: 📧 mobilessambhi@gmail.com</div>
+      </div>
 
       <!-- DEVICE -->
       <span class="sec-lbl-sm">Device Details</span>
@@ -294,11 +299,22 @@ footer{background:var(--ink);padding:52px 20px 24px}
       <div class="g3">
         <div class="fg"><label>Storage</label><select id="fStorage"><option value="">Select</option><option>16GB</option><option>32GB</option><option>64GB</option><option>128GB</option><option>256GB</option><option>512GB</option><option>1TB</option></select></div>
         <div class="fg"><label>RAM <span class="opt">(optional)</span></label><select id="fRAM"><option value="">Select</option><option>2GB</option><option>3GB</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
-        <div class="fg"><label>Colour</label><input type="text" id="fColor" placeholder="e.g. Black"></div>
+        <div class="fg"><label>Colour</label>
+          <select id="fColor">
+            <option value="">Select colour</option>
+            <optgroup label="Common"><option>Black</option><option>White</option><option>Gold</option><option>Silver</option><option>Blue</option><option>Red</option><option>Green</option><option>Purple</option><option>Pink</option><option>Yellow</option><option>Grey</option></optgroup>
+            <optgroup label="iPhone-specific"><option>Midnight</option><option>Starlight</option><option>Deep Purple</option><option>Desert Titanium</option><option>Black Titanium</option><option>White Titanium</option><option>Natural Titanium</option><option>Blue Titanium</option><option>Pacific Blue</option><option>Sierra Blue</option><option>Alpine Green</option><option>Product Red</option><option>Space Grey</option><option>Space Black</option></optgroup>
+            <optgroup label="Samsung-specific"><option>Phantom Black</option><option>Cream</option><option>Lavender</option><option>Titanium Black</option><option>Titanium Gray</option><option>Cobalt Violet</option><option>Onyx Black</option></optgroup>
+            <optgroup label="Other"><option>Other (mention in notes)</option></optgroup>
+          </select>
+        </div>
       </div>
       <div class="g2">
         <div class="fg"><label>Year</label><select id="fYear"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option></select></div>
-        <div class="fg"><label>IMEI <span class="opt">(dial *#06#, optional)</span></label><input type="text" id="fIMEI" placeholder="15-digit IMEI" maxlength="15"></div>
+        <div class="fg"><label>IMEI Number <span class="opt">(dial *#06# on your phone)</span></label>
+          <input type="text" id="fIMEI" placeholder="Enter 15-digit IMEI number" maxlength="15" oninput="validateIMEI(this)" inputmode="numeric" pattern="[0-9]*">
+          <div class="hint" id="imeiHint" style="display:none"></div>
+        </div>
       </div>
 
       <!-- BATTERY (iPhone only) -->
@@ -351,10 +367,22 @@ footer{background:var(--ink);padding:52px 20px 24px}
         <div class="pp-note">Free pickup<br>Instant cash</div>
       </div>
 
-      <!-- LOYALTY -->
-      <div class="loyalty-toggle" onclick="document.getElementById('fLoyalty').click()">
-        <input type="checkbox" id="fLoyalty" style="width:15px;height:15px;accent-color:var(--blue)">
-        <div><h4>🏆 I'm a returning customer (+10% extra)</h4><p>Have you sold to us before?</p></div>
+      <!-- LOYALTY - AUTO DETECTED -->
+      <div id="loyaltyBox" style="display:none">
+        <div style="background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <span style="font-size:24px">🏆</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#D97706">Returning customer bonus applied!</div>
+            <div style="font-size:11px;color:#B45309">You get +10% extra on your offer because you've sold to us before.</div>
+          </div>
+          <input type="checkbox" id="fLoyalty" checked style="display:none">
+        </div>
+      </div>
+      <div id="loyaltyManual" style="margin-bottom:14px">
+        <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="togManualLoyalty()">
+          <input type="checkbox" id="fLoyaltyManual" style="width:15px;height:15px;accent-color:var(--blue)">
+          <div><div style="font-size:13px;font-weight:600;color:#334155">🏆 I've sold to Sambhi Mobiles before</div><div style="font-size:11px;color:#94A3B8">Tick this to get 10% extra on your offer</div></div>
+        </div>
       </div>
 
       <!-- PICKUP SLOT -->
@@ -411,7 +439,205 @@ footer{background:var(--ink);padding:52px 20px 24px}
 </footer>
 
 <div class="toast-wrap" id="toastWrap"></div>
-<script src="shared.js"></script>
+<script>
+// ================================================================
+// SAMBHI MOBILES — SHARED.JS v3
+// Central data layer, auth, and utilities
+// All pages load this file first
+// ================================================================
+'use strict';
+
+var SMB = (function() {
+
+  // ── STORAGE KEYS ───────────────────────────────────────────────
+  var K = {
+    customers:    'smb_customers',
+    cust_sess:    'smb_cust_sess',
+    sell_reqs:    'smb_sell_reqs',
+    inv:          'smb_inv',
+    leads:        'smb_leads',
+    bills:        'smb_bills',
+    riders:       'smb_riders',
+    camps:        'smb_camps',
+    active_camp:  'smb_active_camp',
+    team:         'smb_team',
+    mult:         'smb_mult',
+    admin_sess:   'smb_sess',
+    notifs:       'smb_notifs',
+    invn:         'smb_invn',
+    videos:       'smb_videos'
+  };
+
+  // ── SAFE STORAGE ───────────────────────────────────────────────
+  function get(key) {
+    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
+    catch(e) { return null; }
+  }
+  function set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch(e) { return false; }
+  }
+  function arr(key) {
+    var v = get(key); return Array.isArray(v) ? v : [];
+  }
+
+  // ── HASH (djb2 — no plain text passwords stored) ──────────────
+  function hash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i);
+      h = h & h;
+    }
+    return 'smb_' + Math.abs(h).toString(16) + '_' + str.length;
+  }
+
+  // ── UTILITIES ──────────────────────────────────────────────────
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function now() { return new Date().toISOString(); }
+  function Rs(n) { return n ? '₹' + parseInt(n).toLocaleString('en-IN') : '—'; }
+  function fmtDate(d) {
+    return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  // ── CUSTOMER AUTH ──────────────────────────────────────────────
+  var SESSION_TTL = 12 * 60 * 60 * 1000; // 12 hours
+
+  var customer = {
+    all: function() { return arr(K.customers); },
+    save: function(list) { set(K.customers, list); },
+
+    byPhone: function(phone) {
+      var clean = (phone + '').replace(/\D/g, '').slice(-10);
+      return customer.all().find(function(c) {
+        return c.phone === clean || (c.altPhone && c.altPhone === clean);
+      }) || null;
+    },
+
+    register: function(name, phone, altPhone, password) {
+      phone = (phone + '').replace(/\D/g, '').slice(-10);
+      altPhone = altPhone ? (altPhone + '').replace(/\D/g, '').slice(-10) : '';
+      if (customer.byPhone(phone)) return { ok: false, err: 'Phone number already registered. Please login.' };
+      if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
+      var c = {
+        id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
+        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+      };
+      var list = customer.all(); list.push(c); customer.save(list);
+      customer.startSession(c);
+      notify.log(phone, 'registration', { name: name });
+      return { ok: true, customer: c };
+    },
+
+    login: function(phone, password) {
+      var c = customer.byPhone(phone);
+      if (!c) return { ok: false, err: 'No account found. Please register first.' };
+      if (c.pwHash !== hash(password)) return { ok: false, err: 'Incorrect password.' };
+      customer.startSession(c);
+      return { ok: true, customer: c };
+    },
+
+    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    logout: function() { localStorage.removeItem(K.cust_sess); },
+
+    current: function() {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return null;
+      if (Date.now() - sess.ts > SESSION_TTL) { localStorage.removeItem(K.cust_sess); return null; }
+      return customer.all().find(function(c) { return c.id === sess.id; }) || null;
+    },
+
+    update: function(id, changes) {
+      var list = customer.all();
+      var i = list.findIndex(function(c) { return c.id === id; });
+      if (i < 0) return false;
+      list[i] = Object.assign(list[i], changes);
+      customer.save(list); return true;
+    }
+  };
+
+  // ── SELL REQUESTS ──────────────────────────────────────────────
+  var sells = {
+    all: function() { return arr(K.sell_reqs); },
+    save: function(list) { set(K.sell_reqs, list); },
+
+    submit: function(data, custId) {
+      var req = Object.assign({}, data, {
+        id: uid(), customerId: custId || null,
+        status: 'pending', createdAt: now(), adminNote: ''
+      });
+      var list = sells.all(); list.push(req); sells.save(list);
+
+      // Mirror to admin leads
+      var leads = arr(K.leads);
+      leads.push({
+        id: req.id, name: data.name || '', phone: data.phone || '',
+        device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
+        devType: (data.brand || '').toLowerCase(),
+        model: data.model || '', storage: data.storage || '',
+        color: data.color || '', condition: data.condition || '',
+        battery: data.batteryHealth || '', imei: data.imei || '',
+        ram: data.ram || '',
+        accessories: data.accessories || [],
+        photos: data.photos || [],
+        askPrice: data.askingPrice || 0,
+        notes: [{ t: 'Website submission', at: now() }],
+        status: 'new', slot: data.slot || 'morning',
+        source: 'website', createdAt: now(), customerId: custId || null
+      });
+      set(K.leads, leads);
+
+      notify.log(data.phone || '', 'sell_received', { name: data.name, device: data.model });
+      return req;
+    },
+
+    forCustomer: function(custId) {
+      return sells.all().filter(function(r) { return r.customerId === custId; });
+    }
+  };
+
+  // ── INVENTORY ──────────────────────────────────────────────────
+  var inventory = {
+    all: function() { return arr(K.inv); },
+    visible: function() { return inventory.all().filter(function(i) { return i.visible; }); }
+  };
+
+  // ── NOTIFICATION STUB ──────────────────────────────────────────
+  // Structured for easy drop-in of paid API later
+  var notify = {
+    log: function(phone, template, data) {
+      console.log('[NOTIFY] phone=' + phone + ' tpl=' + template, data);
+      // Future: if (window.SMB_NOTIFY === 'twilio') { ... }
+      // Future: if (window.SMB_NOTIFY === 'interakt') { ... }
+    },
+    templates: {
+      registration:  'Welcome {name}! You are registered with Sambhi Mobiles. +91 7827505579',
+      sell_received: 'Hi {name}! We received your sell request for {device}. We will call within 2 hours.',
+      pickup_booked: 'Pickup confirmed for {device}. Rider on the way. +91 7827505579'
+    }
+  };
+
+  // Public API
+  return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
+})();
+
+// ── NAV STATE ──────────────────────────────────────────────────────
+function smbUpdateNav() {
+  var c = SMB.customer.current();
+  document.querySelectorAll('[data-guest]').forEach(function(el) {
+    el.style.display = c ? 'none' : '';
+  });
+  document.querySelectorAll('[data-auth]').forEach(function(el) {
+    el.style.display = c ? '' : 'none';
+  });
+  document.querySelectorAll('[data-cname]').forEach(function(el) {
+    el.textContent = c ? c.name.split(' ')[0] : '';
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', smbUpdateNav);
+} else { smbUpdateNav(); }
+
+</script>
 <script>
 var MODELS = {
   iphone:['iPhone 16 Pro Max','iPhone 16 Pro','iPhone 16 Plus','iPhone 16','iPhone 15 Pro Max','iPhone 15 Pro','iPhone 15 Plus','iPhone 15','iPhone 14 Pro Max','iPhone 14 Pro','iPhone 14 Plus','iPhone 14','iPhone 13 Pro Max','iPhone 13 Pro','iPhone 13','iPhone 13 Mini','iPhone 12 Pro Max','iPhone 12 Pro','iPhone 12','iPhone 12 Mini','iPhone 11 Pro Max','iPhone 11 Pro','iPhone 11','iPhone SE (2022)','iPhone SE (2020)','iPhone XR','iPhone XS Max','iPhone XS','iPhone X'],
@@ -430,6 +656,34 @@ var MODELS = {
 
 var selCond = '', selAccs = [], selSlot = 'morning', photoUrls = [];
 
+function validateIMEI(el) {
+  var v = el.value.replace(/\D/g,'');
+  el.value = v;
+  var hint = document.getElementById('imeiHint');
+  if (!v) { hint.style.display='none'; return; }
+  hint.style.display = 'block';
+  if (v.length < 15) {
+    hint.textContent = v.length + '/15 digits entered';
+    hint.style.color = '#94A3B8';
+    el.classList.remove('err');
+  } else if (v.length === 15) {
+    hint.textContent = '✅ Valid 15-digit IMEI';
+    hint.style.color = '#16A34A';
+    el.classList.remove('err');
+  }
+}
+function togManualLoyalty() {
+  var cb = document.getElementById('fLoyaltyManual');
+  cb.checked = !cb.checked;
+}
+function getLoyaltyValue() {
+  // Auto loyalty (detected) takes priority, then manual checkbox
+  var autoBox = document.getElementById('fLoyalty');
+  var manBox  = document.getElementById('fLoyaltyManual');
+  if (autoBox && autoBox.checked) return true;
+  if (manBox && manBox.checked) return true;
+  return false;
+}
 window.addEventListener('DOMContentLoaded', function() {
   var CU = SMB.customer.current();
   if (CU) {
@@ -437,6 +691,15 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('authNoticeName').textContent = CU.name;
     document.getElementById('fName').value  = CU.name;
     document.getElementById('fPhone').value = CU.phone;
+    // Auto-detect returning customer: check for completed sell requests
+    var prevSells = SMB.sells.forCustomer(CU.id);
+    var hasCompleted = prevSells.some(function(s) { return s.status === 'completed'; });
+    if (hasCompleted) {
+      // Auto-apply loyalty bonus
+      document.getElementById('loyaltyBox').style.display = '';
+      document.getElementById('loyaltyManual').style.display = 'none';
+      document.getElementById('fLoyalty').checked = true;
+    }
   }
   var params = new URLSearchParams(location.search);
   var brand = params.get('brand');
@@ -529,19 +792,27 @@ function submitSell() {
     batteryHealth: document.getElementById('fBattery').value,
     condition: selCond, accessories: selAccs.slice(), photos: photoUrls.slice(),
     askingPrice: price,
-    isLoyalty: document.getElementById('fLoyalty').checked,
+    isLoyalty: getLoyaltyValue(),
     slot: selSlot,
     address: (document.getElementById('fAddress').value||'').trim(),
     pincode: (document.getElementById('fPincode').value||'').trim(),
     landmark: (document.getElementById('fLandmark').value||'').trim(),
     notes: document.getElementById('fNotes').value
   };
-  SMB.sells.submit(data, CU ? CU.id : null);
-  setTimeout(function(){
-    document.getElementById('formCard').style.display = 'none';
-    document.getElementById('successWrap').classList.add('on');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }, 500);
+  try {
+    SMB.sells.submit(data, CU ? CU.id : null);
+  } catch(e) {
+    console.error('Submit error:', e);
+    btn.disabled = false;
+    btn.textContent = 'Submit Sell Request →';
+    showToast('Something went wrong. Please try again.', 'red');
+    return;
+  }
+  // Success
+  btn.disabled = false;
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('successWrap').classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 </body>
