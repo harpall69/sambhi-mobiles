@@ -4,622 +4,246 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sell Your Phone — Sambhi Mobiles Delhi</title>
-<meta name="description" content="Sell any mobile in Delhi. Get instant price. Free pickup. iPhone, Samsung, OnePlus and more. Instant cash or UPI.">
+<meta name="description" content="Sell any mobile in Delhi. Get instant price. Free pickup. iPhone, Samsung, OnePlus and more.">
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* SAMBHI MOBILES — SHARED DESIGN SYSTEM */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
-  --green:#16A34A;--green-l:#F0FDF4;
-  --orange:#F97316;--orange-l:#FFF7ED;
-  --red:#DC2626;--red-l:#FEF2F2;
-  --yellow:#D97706;--yellow-l:#FFFBEB;
-  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
-  --bg:#F8FAFC;--white:#fff;--border:#E2E8F0;
-  --radius:10px;--radius-lg:16px;--radius-xl:20px;
-  --shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)
+  --ink:#0A0A0A;--ink2:#1C1C24;
+  --cream:#F2EDE6;--cream2:#EAE3DA;
+  --orange:#FF4D00;--orange-d:#CC3D00;
+  --white:#FFFFFF;--muted:#6B6B6B;--light:#94A3B8;
+  --border:rgba(255,255,255,.09);--border-d:rgba(0,0,0,.1);
+  --bg-dark:#0A0A0A;--bg-light:#F2EDE6;
+  --f-display:"Cormorant Garamond",Georgia,serif;
+  --f-body:"Inter",system-ui,sans-serif
 }
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
+a,button{cursor:none}
 
-/* ── NAV ── */
-nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
-.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
-.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
-.logo-text strong{color:var(--blue)}
-.nav-links{display:flex;gap:2px;margin-left:16px}
-.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
-.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s}
-.cta-btn:hover{background:var(--blue-d)}
-.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;background:none;cursor:pointer;font-family:inherit}
-.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
-.acct-btn.logout{border-color:#FECACA;color:var(--red)}
-.acct-btn.logout:hover{background:var(--red);color:#fff;border-color:var(--red)}
-.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
-.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:199;box-shadow:var(--shadow-md)}
-.mobile-nav.open{display:flex}
-.mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
+@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
 
-/* ── PAGE HERO ── */
-.page-hero{background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%);padding:44px 20px 36px;border-bottom:1px solid var(--border)}
-.page-hero-in{max-width:1200px;margin:0 auto}
-.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:12px}
-.breadcrumb a{color:var(--blue);text-decoration:none}
-.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:900;color:var(--ink);margin-bottom:6px;letter-spacing:-.5px}
-.page-hero p{font-size:15px;color:var(--muted);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.hero-pill{background:#fff;border:1px solid var(--border);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:5px}
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
 
-/* ── LAYOUT ── */
-.sell-wrap{max-width:1200px;margin:0 auto;padding:32px 20px 60px;display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;letter-spacing:-.3px;flex-shrink:0}
+.nav-logo span{color:var(--orange)}
+.nav-links{display:flex;gap:28px;align-items:center;margin:0 auto}
+.nl{color:rgba(242,237,230,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;transition:color .2s}
+.nl:hover,.nl.active{color:var(--cream)}
+.nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.nav-cta{background:var(--orange);color:var(--white);padding:9px 22px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.nav-cta:hover{background:var(--orange-d)}
+.nav-acct{color:rgba(242,237,230,.5);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:inherit}
+.nav-acct:hover{color:var(--cream)}
+.burger{display:none;background:none;border:none;color:var(--cream);font-size:22px;padding:4px;cursor:none}
+.mob-nav{display:none;position:fixed;inset:0;background:var(--ink);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-nav.open{display:flex}
+.mob-nl{color:var(--cream);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
+.mob-nl:hover{color:var(--orange)}
+.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(242,237,230,.4);font-size:26px;cursor:none}
 
-/* ── FORM CARD ── */
-.form-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.form-header{background:var(--ink);padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
-.form-header h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#fff}
-.form-header p{font-size:12px;color:rgba(255,255,255,.45);margin-top:2px}
-.form-step-pills{display:flex;gap:6px}
-.step-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.5)}
-.step-pill.done{background:var(--green);color:#fff}
-.step-pill.active{background:var(--blue);color:#fff}
+/* PAGE HERO (dark) */
+.pg-hero{padding:140px 48px 72px;background:var(--ink);position:relative;overflow:hidden}
+.pg-hero-in{max-width:1280px;margin:0 auto}
+.pg-eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.pg-eyebrow::before{content:'';width:20px;height:1px;background:var(--orange)}
+.pg-h1{font-family:var(--f-display);font-size:clamp(44px,7vw,96px);font-weight:600;line-height:.95;letter-spacing:-2px;color:var(--cream);margin-bottom:18px}
+.pg-h1 em{font-style:italic;color:var(--orange)}
+.pg-h1 .outline{-webkit-text-stroke:1.5px rgba(242,237,230,.4);color:transparent}
+.pg-sub{font-size:15px;color:rgba(242,237,230,.45);max-width:520px;line-height:1.8;font-weight:300}
+.pg-hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,0,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
 
-/* RETURNING BANNER */
-.returning-banner{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-bottom:1px solid #FCD34D;padding:14px 28px;display:none;align-items:flex-start;gap:12px}
-.returning-banner.show{display:flex}
-.rb-icon{font-size:28px;flex-shrink:0}
-.rb-title{font-size:14px;font-weight:700;color:#92400E;margin-bottom:3px}
-.rb-sub{font-size:12px;color:#B45309;line-height:1.5}
+/* SECTION LABELS */
+.sec-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.sec-eyebrow-light{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.35);margin-bottom:16px}
+.sec-title{font-family:var(--f-display);font-size:clamp(32px,5vw,64px);font-weight:600;line-height:1.0;letter-spacing:-1.5px}
+.sec-title em{font-style:italic;color:var(--orange)}
+.sec-title.dark{color:var(--ink)}
+.sec-title.light{color:var(--cream)}
+.sec-title .outline{-webkit-text-stroke:1px currentColor;color:transparent}
 
-/* FORM BODY */
-.form-body{padding:28px}
+/* BUTTONS */
+.btn-p{display:inline-block;background:var(--orange);color:var(--white);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-p:hover{background:var(--orange-d);transform:translateY(-2px)}
+.btn-dark{display:inline-block;background:var(--ink);color:var(--cream);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-dark:hover{background:var(--orange)}
+.btn-ghost{display:inline-block;background:transparent;color:var(--cream);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(242,237,230,.25);transition:all .2s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--cream)}
+.btn-ghost-dark{display:inline-block;background:transparent;color:var(--ink);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(10,10,10,.25);transition:all .2s;font-family:inherit}
+.btn-ghost-dark:hover{border-color:var(--ink);background:var(--ink);color:var(--cream)}
 
-/* SECTION DIVIDERS */
-.section-group{margin-bottom:24px}
-.section-label{font-size:10px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* TICKER */
+.ticker{background:var(--orange);padding:15px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);padding:0 28px}
+.ticker-item .sep{color:rgba(255,255,255,.4);margin:0 12px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* FORM FIELDS */
-.fg{margin-bottom:13px}
-.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
-.fg label .opt-tag{font-size:10px;font-weight:500;color:var(--light);text-transform:none;letter-spacing:0;background:var(--bg);padding:1px 6px;border-radius:4px}
-.fg input,.fg select,.fg textarea{
-  width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);
-  color:var(--ink);font-size:14px;font-family:inherit;padding:11px 13px;outline:none;
-  transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none
-}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.06)}
-.fg input.err,.fg select.err{border-color:var(--red);background:var(--red-l)}
-.fg input.ok,.fg select.ok{border-color:var(--green)}
-.fg textarea{resize:none;height:72px}
-.fg .field-hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5;display:flex;align-items:center;gap:4px}
-.fg .field-hint.success{color:var(--green)}
-.fg .field-hint.error{color:var(--red)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* FOOTER */
+footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,255,255,.04)}
+.foot-in{max-width:1280px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.foot-logo{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--cream);margin-bottom:14px;display:block}
+.foot-logo span{color:var(--orange)}
+.foot-desc{font-size:13px;color:rgba(242,237,230,.28);line-height:1.85;margin-bottom:18px;font-weight:300}
+.foot-contact a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:6px;transition:color .15s;font-weight:300}
+.foot-contact a:hover{color:var(--cream)}
+.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.2);margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:10px;transition:color .15s;font-weight:300}
+.foot-col a:hover{color:var(--cream)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-bottom p{font-size:11px;color:rgba(242,237,230,.18);letter-spacing:.3px}
+
+/* AUTH MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
+.modal-bg.open{display:flex}
+.auth-box{background:#141418;border:1px solid rgba(255,255,255,.09);padding:48px;width:100%;max-width:400px;position:relative}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(242,237,230,.3);font-size:20px;cursor:none;font-family:inherit;transition:color .15s}
+.auth-close:hover{color:var(--cream)}
+.auth-box h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:-.5px}
+.auth-box .auth-sub{font-size:13px;color:rgba(242,237,230,.3);margin-bottom:28px;font-weight:300}
+.auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08)}
+.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);cursor:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab.on{color:var(--orange);border-bottom-color:var(--orange)}
+.auth-err{background:rgba(255,77,0,.12);color:var(--orange);border:1px solid rgba(255,77,0,.25);padding:10px 13px;font-size:12px;margin-bottom:12px;display:none;font-weight:500}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);margin-bottom:7px}
+.fg label .opt{color:rgba(242,237,230,.18);font-weight:400;text-transform:none;letter-spacing:0}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:var(--cream);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--orange)}
+.fg input.err{border-color:var(--orange);background:rgba(255,77,0,.06)}
+.fg input.ok{border-color:rgba(100,200,100,.4)}
+.fg textarea{resize:none;height:80px}
+.fg .hint{font-size:11px;color:rgba(242,237,230,.25);margin-top:5px;line-height:1.5}
+.fg .hint.ok{color:rgba(100,200,100,.7)}
+.fg .hint.err{color:var(--orange)}
+.auth-btn{width:100%;background:var(--orange);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.auth-btn:hover{background:var(--orange-d)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
-/* DEVICE SPECS GRID */
-.spec-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
-.spec-chip{border:1.5px solid var(--border);background:#fff;color:var(--muted);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
-.spec-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-.spec-chip.on{border-color:var(--blue);background:var(--blue);color:#fff;font-weight:700}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease}
+.reveal-left.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* CONDITION */
-.cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.cond-btn{border:1.5px solid var(--border);background:#fff;padding:13px 8px;border-radius:var(--radius);font-family:inherit;cursor:pointer;transition:all .15s;text-align:center}
-.cond-btn .cond-emoji{font-size:22px;display:block;margin-bottom:5px}
-.cond-btn .cond-label{font-size:12px;font-weight:700;display:block;margin-bottom:2px;color:var(--ink)}
-.cond-btn .cond-sub{font-size:10px;color:var(--light);line-height:1.4}
-.cond-btn:hover{border-color:var(--blue);background:var(--blue-l)}
-.cond-btn.on{border-color:var(--blue);background:var(--blue)}
-.cond-btn.on .cond-label,.cond-btn.on .cond-sub{color:#fff}
-.cond-btn.on .cond-emoji{filter:brightness(0) invert(1)}
-
-/* ACCESSORIES */
-.acc-wrap{display:flex;flex-wrap:wrap;gap:7px}
-.acc-chip{border:1.5px solid var(--border);background:#fff;color:var(--muted);padding:7px 13px;border-radius:100px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:500;display:flex;align-items:center;gap:5px}
-.acc-chip:hover{border-color:var(--green);color:var(--green);background:var(--green-l)}
-.acc-chip.on{border-color:var(--green);background:var(--green);color:#fff;font-weight:700}
-
-/* PHOTOS */
-.photo-zone{border:2px dashed var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg);position:relative}
-.photo-zone:hover{border-color:var(--blue);background:var(--blue-l)}
-.photo-zone.has-photos{border-color:var(--green);background:var(--green-l);border-style:solid}
-.photo-zone-icon{font-size:32px;margin-bottom:8px}
-.photo-zone-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
-.photo-zone-sub{font-size:12px;color:var(--light)}
-.photo-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center}
-.photo-thumb-wrap{position:relative}
-.photo-thumb{width:72px;height:72px;border-radius:9px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.photo-remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;border:none;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
-
-/* ASKING PRICE */
-.price-input-wrap{position:relative}
-.price-input-wrap .rupee{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--muted)}
-.price-input-wrap input{padding-left:28px}
-.price-preview{background:var(--ink);border-radius:13px;padding:16px 20px;margin-top:10px;display:none;align-items:center;justify-content:space-between}
-.price-preview.show{display:flex}
-.pp-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
-.pp-val{font-size:28px;font-weight:800;color:#fff;font-family:'Plus Jakarta Sans',sans-serif}
-.pp-right{text-align:right}
-.pp-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:4px}
-.pp-note{font-size:10px;color:rgba(255,255,255,.25)}
-
-/* SLOTS */
-.slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.slot-btn{border:1.5px solid var(--border);background:#fff;padding:14px;border-radius:var(--radius-lg);cursor:pointer;font-family:inherit;transition:all .15s;text-align:center}
-.slot-btn .slot-emoji{font-size:24px;display:block;margin-bottom:5px}
-.slot-btn .slot-name{font-size:14px;font-weight:700;color:var(--ink);display:block}
-.slot-btn .slot-time{font-size:11px;color:var(--light)}
-.slot-btn.on{border-color:var(--blue);background:var(--blue)}
-.slot-btn.on .slot-name{color:#fff}
-.slot-btn.on .slot-time{color:rgba(255,255,255,.7)}
-.slot-btn:not(.on):hover{border-color:var(--blue);background:var(--blue-l)}
-
-/* SUBMIT */
-.submit-area{background:var(--bg);border-top:1px solid var(--border);padding:20px 28px}
-.submit-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:15px;border-radius:var(--radius-lg);font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:9px;letter-spacing:.2px}
-.submit-btn:hover:not(:disabled){background:var(--blue-d);transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,.28)}
-.submit-btn:disabled{background:var(--light);cursor:not-allowed;transform:none;box-shadow:none}
-.submit-note{font-size:12px;color:var(--light);text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
-.trust-row{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap}
-.trust-item{font-size:11px;color:var(--light);display:flex;align-items:center;gap:4px;font-weight:500}
-
-/* AUTH NOTICE */
-.auth-notice{background:var(--blue-l);border:1px solid var(--blue-b);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--blue);display:none;align-items:center;gap:8px}
-.auth-notice.show{display:flex}
-.auth-notice a{color:var(--blue-d);font-weight:600;margin-left:4px}
-
-/* SUCCESS */
-.success-wrap{display:none;text-align:center;padding:60px 28px}
-.success-wrap.on{display:block}
-.success-icon{font-size:72px;margin-bottom:18px;animation:bounceIn .6s ease}
-@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-.success-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px}
-.success-sub{font-size:15px;color:var(--muted);max-width:360px;margin:0 auto 24px;line-height:1.7}
-.success-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.sa-primary{background:var(--blue);color:#fff;padding:12px 24px;border-radius:var(--radius);font-size:14px;font-weight:700;text-decoration:none}
-.sa-secondary{background:var(--bg);color:var(--muted);padding:12px 24px;border-radius:var(--radius);font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid var(--border)}
-
-/* ── RIGHT SIDEBAR ── */
-.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:78px}
-.side-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
-.side-card h3{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
-.why-item{display:flex;gap:11px;align-items:flex-start;margin-bottom:13px}
-.why-item:last-child{margin:0}
-.why-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.why-item h4{font-size:13px;font-weight:700;margin-bottom:2px}
-.why-item p{font-size:12px;color:var(--muted);line-height:1.6}
-.price-table .pt-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
-.price-table .pt-row:last-child{border:none}
-.pt-model{color:var(--muted)}.pt-price{font-weight:700;color:var(--blue)}
-.contact-dark{background:var(--ink);border-color:var(--ink)}
-.contact-dark h3{color:#fff}
-.contact-link{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.09);color:#fff;padding:12px 14px;border-radius:var(--radius);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:8px;transition:background .15s}
-.contact-link:hover{background:rgba(255,255,255,.16)}
-.contact-link:last-child{margin:0}
-
-/* ── FOOTER ── */
-footer{background:var(--ink);padding:24px 20px}
-.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
-
-/* ── TOAST ── */
-.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(10px);opacity:0;transition:all .25s;pointer-events:auto;max-width:300px}
+/* TOAST */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:9999;pointer-events:none}
+.toast{background:var(--orange);color:var(--white);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 32px rgba(255,77,0,.35);transform:translateY(16px);opacity:0;transition:all .3s;margin-top:8px}
 .toast.show{transform:translateY(0);opacity:1}
-.toast.green{background:var(--green)}
-.toast.red{background:var(--red)}
+.toast.success{background:#1A4A1A;box-shadow:0 8px 32px rgba(0,200,0,.2)}
+.toast.error{background:#4A1A1A}
 
-/* ── RESPONSIVE ── */
-@media(max-width:1024px){.sell-wrap{grid-template-columns:1fr}.sidebar{position:static}.nav-links{display:none}.burger{display:block}}
-@media(max-width:640px){.cond-grid{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}.slot-grid{grid-template-columns:1fr}.form-body{padding:20px}.form-header{padding:18px 20px}.submit-area{padding:16px 20px}}
+/* RESPONSIVE NAV */
+@media(max-width:1100px){nav{padding:18px 28px}nav.scrolled{padding:12px 28px}.pg-hero{padding:120px 28px 60px}footer{padding:60px 28px 28px}.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links,.nav-right{display:none}.burger{display:block}.foot-top{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.reveal,.reveal-left{opacity:1;transform:none;transition:none}.ticker-track{animation-duration:.001ms}}
+
+/* ── SELL PAGE ─────────────────────────────────────────────── */
+.sell-layout{max-width:1280px;margin:0 auto;padding:0 48px 80px;display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start}
+.form-card{background:#111114;border:1px solid var(--border);overflow:hidden}
+.form-header{background:#0D0D10;padding:24px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.form-header h2{font-family:var(--f-display);font-size:24px;font-weight:600;color:var(--cream);letter-spacing:-.3px}
+.form-header p{font-size:11px;color:rgba(242,237,230,.3);margin-top:3px;letter-spacing:.3px}
+.step-pills{display:flex;gap:6px}
+.sp{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;background:rgba(255,255,255,.05);color:rgba(242,237,230,.3)}
+.sp.on{background:var(--orange);color:var(--white)}
+.returning-bar{background:linear-gradient(135deg,rgba(255,77,0,.1),rgba(255,77,0,.05));border-bottom:1px solid rgba(255,77,0,.2);padding:14px 32px;display:none;align-items:center;gap:14px}
+.returning-bar.show{display:flex}
+.rb-icon{font-size:28px;flex-shrink:0}
+.rb-text h4{font-family:var(--f-display);font-size:17px;font-weight:600;color:var(--orange);margin-bottom:2px}
+.rb-text p{font-size:12px;color:rgba(255,165,0,.6);font-weight:300}
+.form-body{padding:32px}
+.sec-div{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 14px;display:flex;align-items:center;gap:10px}
+.sec-div::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.07)}
+.spec-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(242,237,230,.6);padding:7px 14px;font-size:12px;font-family:inherit;cursor:none;transition:all .15s}
+.sc:hover{border-color:var(--orange);color:var(--orange)}
+.sc.on{background:var(--orange);border-color:var(--orange);color:var(--white);font-weight:700}
+.cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);padding:14px 8px;font-family:inherit;cursor:none;transition:all .15s;text-align:center}
+.cb-em{font-size:22px;display:block;margin-bottom:6px}
+.cb-lbl{font-size:11px;font-weight:700;color:rgba(242,237,230,.7);display:block;margin-bottom:2px}
+.cb-sub{font-size:9px;color:rgba(242,237,230,.3);line-height:1.4}
+.cb:hover{border-color:var(--orange)}.cb.on{border-color:var(--orange);background:rgba(255,77,0,.1)}
+.cb.on .cb-lbl{color:var(--orange)}
+.acc-wrap{display:flex;flex-wrap:wrap;gap:7px}
+.ac{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:rgba(242,237,230,.5);padding:7px 14px;border-radius:0;font-size:12px;font-family:inherit;cursor:none;transition:all .15s;font-weight:400}
+.ac:hover{border-color:rgba(100,200,100,.4);color:rgba(100,200,100,.7)}
+.ac.on{border-color:rgba(100,200,100,.5);background:rgba(100,200,100,.08);color:rgba(100,220,100,.9);font-weight:600}
+.photo-zone{border:1px dashed rgba(255,255,255,.1);padding:28px;text-align:center;cursor:none;transition:all .15s;background:rgba(255,255,255,.02)}
+.photo-zone:hover{border-color:var(--orange);background:rgba(255,77,0,.04)}
+.photo-zone.has{border-style:solid;border-color:rgba(100,200,100,.3);background:rgba(100,200,100,.04)}
+.pz-icon{font-size:30px;margin-bottom:8px}
+.pz-title{font-size:13px;font-weight:600;color:rgba(242,237,230,.6);margin-bottom:3px}
+.pz-sub{font-size:11px;color:rgba(242,237,230,.25)}
+.photo-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;justify-content:center}
+.ph-wrap{position:relative}
+.ph-img{width:70px;height:70px;object-fit:cover;border:1px solid rgba(255,255,255,.1)}
+.ph-rm{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--orange);color:#fff;border:none;font-size:10px;cursor:none;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1}
+.price-prev{background:#0D0D10;border:1px solid rgba(255,77,0,.2);padding:18px 20px;margin-top:10px;display:none;align-items:center;justify-content:space-between}
+.price-prev.on{display:flex}
+.pp-lbl{font-size:10px;color:rgba(242,237,230,.3);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
+.pp-val{font-family:var(--f-display);font-size:32px;font-weight:600;color:var(--cream);letter-spacing:-1px}
+.pp-bonus{background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;margin-top:5px;display:inline-block;letter-spacing:.5px;text-transform:uppercase}
+.slot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sl-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);padding:16px;cursor:none;font-family:inherit;transition:all .15s;text-align:center}
+.sl-btn .sl-em{font-size:22px;display:block;margin-bottom:5px}
+.sl-btn .sl-nm{font-size:13px;font-weight:700;color:rgba(242,237,230,.7);display:block}
+.sl-btn .sl-t{font-size:11px;color:rgba(242,237,230,.3)}
+.sl-btn.on{border-color:var(--orange);background:rgba(255,77,0,.08)}
+.sl-btn.on .sl-nm{color:var(--orange)}
+.sl-btn:hover:not(.on){border-color:rgba(255,77,0,.3)}
+.submit-area{background:#0D0D10;border-top:1px solid var(--border);padding:24px 32px}
+.submit-btn{width:100%;background:var(--orange);color:#fff;border:none;padding:16px;font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn:hover:not(:disabled){background:var(--orange-d)}
+.submit-btn:disabled{background:rgba(255,255,255,.08);color:rgba(242,237,230,.3);cursor:none}
+.trust-pills{display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.tp{font-size:11px;color:rgba(242,237,230,.25);display:flex;align-items:center;gap:4px;letter-spacing:.3px}
+.success-card{display:none;text-align:center;padding:72px 32px}
+.success-card.on{display:block}
+.success-icon{font-size:72px;margin-bottom:20px;animation:bounce .6s ease}
+@keyframes bounce{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.success-card h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:-.5px}
+.success-card p{font-size:15px;color:rgba(242,237,230,.4);max-width:360px;margin:0 auto 28px;line-height:1.7;font-weight:300}
+.success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:90px}
+.side-card{background:#111114;border:1px solid var(--border);padding:24px}
+.side-card h3{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--cream);margin-bottom:18px;letter-spacing:-.2px}
+.why-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.why-row:last-child{margin:0}
+.wr-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:rgba(255,77,0,.08)}
+.wr-body h4{font-size:13px;font-weight:700;color:var(--cream);margin-bottom:3px}
+.wr-body p{font-size:12px;color:rgba(242,237,230,.35);line-height:1.65;font-weight:300}
+.price-table .pt{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.price-table .pt:last-child{border:none}
+.pt-m{color:rgba(242,237,230,.5);font-weight:300}
+.pt-p{font-weight:700;color:var(--orange)}
+.contact-card{background:#0D0D10;border-color:rgba(255,77,0,.15)}
+.contact-card h3{color:var(--cream)}
+.contact-link{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);color:var(--cream);padding:12px 14px;text-decoration:none;font-size:13px;font-weight:500;margin-bottom:8px;transition:background .15s;border:1px solid rgba(255,255,255,.05)}
+.contact-link:hover{background:rgba(255,77,0,.08);border-color:rgba(255,77,0,.2)}
+.contact-link:last-child{margin:0}
+.imei-hint{font-size:11px;margin-top:4px;font-weight:500}
+.pin-hint{font-size:11px;margin-top:4px;font-weight:500}
+@media(max-width:1100px){.sell-layout{grid-template-columns:1fr;padding:0 28px 60px}.sidebar{position:static}}
+@media(max-width:640px){.cond-grid{grid-template-columns:1fr 1fr}.form-body{padding:20px}.form-header{padding:18px 20px}.submit-area{padding:18px 20px}}
 </style>
-</head>
-<body>
-
-<nav>
-  <div class="nav-wrap">
-    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
-    <div class="nav-links">
-      <a href="index.html" class="nl">Home</a>
-      <a href="sell.html" class="nl active">Sell</a>
-      <a href="buy.html" class="nl">Buy</a>
-      <a href="about.html" class="nl">About</a>
-      <a href="blog.html" class="nl">Blog</a>
-    </div>
-    <div class="nav-right">
-      <a href="sell.html" class="cta-btn">Sell Now →</a>
-      <a href="index.html" class="acct-btn" id="navLogin" data-guest>Login</a>
-      <a href="account.html" class="acct-btn" id="navAccount" data-auth style="display:none">👤 <span data-cname></span></a>
-      <button class="acct-btn logout" id="navLogout" data-auth style="display:none" onclick="doLogout()">Logout</button>
-    </div>
-    <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
-  </div>
-  <div class="mobile-nav" id="mobileNav">
-    <a href="index.html">Home</a>
-    <a href="sell.html">Sell</a>
-    <a href="buy.html">Buy</a>
-    <a href="about.html">About</a>
-    <a href="account.html" data-auth style="display:none">My Account</a>
-    <button data-guest onclick="location.href='index.html'">Login / Register</button>
-  </div>
-</nav>
-
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-in">
-    <div class="breadcrumb"><a href="index.html">Home</a> › Sell Your Phone</div>
-    <h1>📱 Get the best price for your phone</h1>
-    <p>
-      <span class="hero-pill">✅ No processing fee</span>
-      <span class="hero-pill">🚗 Free pickup</span>
-      <span class="hero-pill">⚡ Instant cash or UPI</span>
-      <span class="hero-pill">🧾 GST bill</span>
-    </p>
-  </div>
-</div>
-
-<div class="sell-wrap">
-
-  <!-- MAIN FORM -->
-  <div>
-
-    <!-- SUCCESS STATE -->
-    <div id="successCard" class="form-card" style="display:none">
-      <div class="success-wrap on" id="successWrap">
-        <div class="success-icon">🎉</div>
-        <h2 class="success-title">Request submitted!</h2>
-        <p class="success-sub">We'll call you within 2 hours to confirm pickup details. Track this in My Account.</p>
-        <div class="success-actions">
-          <a href="account.html" class="sa-primary">📊 View My Account</a>
-          <a href="sell.html" onclick="location.reload();return false" class="sa-secondary">Sell Another Phone</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- SELL FORM -->
-    <div class="form-card" id="formCard">
-      <div class="form-header">
-        <div>
-          <h2>Sell your phone</h2>
-          <p>2 minutes · Free pickup · Instant payment</p>
-        </div>
-        <div class="form-step-pills">
-          <span class="step-pill active">Details</span>
-          <span class="step-pill">Condition</span>
-          <span class="step-pill">Pickup</span>
-        </div>
-      </div>
-
-      <!-- RETURNING CUSTOMER BANNER (auto-shown) -->
-      <div class="returning-banner" id="returningBanner">
-        <span class="rb-icon">🏆</span>
-        <div>
-          <div class="rb-title">Welcome back! Your 10% loyalty bonus is applied.</div>
-          <div class="rb-sub" id="returningBannerSub">You've sold to us before — you automatically get 10% extra on your offer.</div>
-        </div>
-      </div>
-
-      <div class="form-body">
-
-        <!-- AUTH NOTICE -->
-        <div class="auth-notice" id="authNotice">
-          <span>✅</span>
-          <span>Logged in as <strong id="authNoticeName"></strong> — your details are pre-filled.</span>
-          <a href="account.html">My Account →</a>
-        </div>
-
-        <!-- SECTION 1: YOUR DETAILS -->
-        <div class="section-group">
-          <div class="section-label">👤 Your Details</div>
-          <div class="g2">
-            <div class="fg">
-              <label>Full Name <span class="opt-tag">required</span></label>
-              <input type="text" id="fName" placeholder="Your full name" autocomplete="name">
-            </div>
-            <div class="fg">
-              <label>WhatsApp Number <span class="opt-tag">required</span></label>
-              <input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
-            </div>
-          </div>
-          <div class="fg">
-            <label>Email Address <span class="opt-tag">optional</span></label>
-            <input type="email" id="fEmail" placeholder="yourname@gmail.com">
-            <div class="field-hint">📧 Confirmation sent to mobilessambhi@gmail.com</div>
-          </div>
-          <div class="g2">
-            <div class="fg">
-              <label>Pickup Address <span class="opt-tag">optional</span></label>
-              <input type="text" id="fAddress" placeholder="House / flat / street">
-            </div>
-            <div class="fg">
-              <label>Delhi PIN Code <span class="opt-tag">optional</span></label>
-              <input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)">
-              <div class="field-hint" id="pinHint"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 2: DEVICE DETAILS -->
-        <div class="section-group">
-          <div class="section-label">📱 Device Details</div>
-          <div class="g2">
-            <div class="fg">
-              <label>Brand <span class="opt-tag">required</span></label>
-              <select id="fBrand" onchange="onBrand()">
-                <option value="">Select brand</option>
-                <optgroup label="Apple">
-                  <option value="iphone">iPhone</option>
-                  <option value="airpods">AirPods</option>
-                  <option value="applewatch">Apple Watch</option>
-                </optgroup>
-                <optgroup label="Android">
-                  <option value="samsung">Samsung</option>
-                  <option value="oneplus">OnePlus</option>
-                  <option value="realme">Realme</option>
-                  <option value="oppo">Oppo</option>
-                  <option value="vivo">Vivo</option>
-                  <option value="xiaomi">Xiaomi / Redmi</option>
-                  <option value="pixel">Google Pixel</option>
-                  <option value="nothing">Nothing Phone</option>
-                </optgroup>
-                <optgroup label="Gaming">
-                  <option value="playstation">PlayStation</option>
-                </optgroup>
-              </select>
-            </div>
-            <div class="fg">
-              <label>Model <span class="opt-tag">required</span></label>
-              <select id="fModel" onchange="onModel()">
-                <option value="">Select model</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Storage chips (shown after model selected) -->
-          <div id="storageSection" style="display:none" class="fg">
-            <label>Storage</label>
-            <div class="spec-chip-row" id="storageChips"></div>
-            <input type="hidden" id="fStorage">
-          </div>
-
-          <div class="g3">
-            <div class="fg">
-              <label>RAM <span class="opt-tag">optional</span></label>
-              <select id="fRAM">
-                <option value="">Select</option>
-                <option>2GB</option><option>3GB</option><option>4GB</option>
-                <option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option>
-              </select>
-            </div>
-            <div class="fg">
-              <label>Colour <span class="opt-tag">optional</span></label>
-              <select id="fColor">
-                <option value="">Select</option>
-                <optgroup label="Common">
-                  <option>Black</option><option>White</option><option>Gold</option><option>Silver</option>
-                  <option>Blue</option><option>Red</option><option>Green</option><option>Purple</option>
-                  <option>Pink</option><option>Yellow</option><option>Grey / Graphite</option>
-                </optgroup>
-                <optgroup label="Apple Colours">
-                  <option>Midnight</option><option>Starlight</option><option>Deep Purple</option>
-                  <option>Desert Titanium</option><option>Black Titanium</option><option>White Titanium</option>
-                  <option>Natural Titanium</option><option>Blue Titanium</option><option>Pacific Blue</option>
-                  <option>Sierra Blue</option><option>Alpine Green</option><option>Product Red</option>
-                  <option>Space Grey</option><option>Space Black</option>
-                </optgroup>
-                <optgroup label="Samsung Colours">
-                  <option>Phantom Black</option><option>Cream</option><option>Lavender</option>
-                  <option>Titanium Black</option><option>Cobalt Violet</option><option>Onyx Black</option>
-                </optgroup>
-                <option>Other (mention in notes)</option>
-              </select>
-            </div>
-            <div class="fg">
-              <label>Purchase Year <span class="opt-tag">optional</span></label>
-              <select id="fYear">
-                <option value="">Year</option>
-                <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
-                <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
-                <option>2017</option><option>2016 or older</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- IMEI -->
-          <div class="fg">
-            <label>IMEI Number <span class="opt-tag">optional — dial *#06# on your phone</span></label>
-            <input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)">
-            <div class="field-hint" id="imeiHint"></div>
-          </div>
-
-          <!-- Battery Health (iPhone only) -->
-          <div id="batterySection" style="display:none">
-            <div class="fg">
-              <label>Battery Health % <span class="opt-tag">Settings → Battery → Battery Health</span></label>
-              <input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100">
-              <div class="field-hint">⚡ Higher battery health = higher payout</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 3: CONDITION -->
-        <div class="section-group">
-          <div class="section-label">🔍 Device Condition <span style="color:var(--red);font-size:12px;margin-left:4px">*</span></div>
-          <div class="cond-grid" id="condGrid">
-            <button class="cond-btn" onclick="pickCond('Like New',this)">
-              <span class="cond-emoji">⭐</span>
-              <span class="cond-label">Like New</span>
-              <span class="cond-sub">No scratches, perfect working</span>
-            </button>
-            <button class="cond-btn" onclick="pickCond('Good',this)">
-              <span class="cond-emoji">👍</span>
-              <span class="cond-label">Good</span>
-              <span class="cond-sub">Minor scratches, fully working</span>
-            </button>
-            <button class="cond-btn" onclick="pickCond('Fair',this)">
-              <span class="cond-emoji">👌</span>
-              <span class="cond-label">Fair</span>
-              <span class="cond-sub">Visible wear, fully working</span>
-            </button>
-            <button class="cond-btn" onclick="pickCond('Poor',this)">
-              <span class="cond-emoji">🔧</span>
-              <span class="cond-label">Needs Repair</span>
-              <span class="cond-sub">Cracked screen or hardware issue</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- SECTION 4: ACCESSORIES -->
-        <div class="section-group">
-          <div class="section-label">📦 Accessories Included</div>
-          <div class="acc-wrap" id="accChips">
-            <button class="acc-chip" onclick="togAcc(this,'Original Box')">📦 Original Box</button>
-            <button class="acc-chip" onclick="togAcc(this,'Charger')">🔌 Charger</button>
-            <button class="acc-chip" onclick="togAcc(this,'Earphones')">🎧 Earphones</button>
-            <button class="acc-chip" onclick="togAcc(this,'Cable')">🔗 Cable</button>
-            <button class="acc-chip" onclick="togAcc(this,'Cover / Case')">🛡️ Cover</button>
-            <button class="acc-chip" onclick="togAcc(this,'Invoice / Bill')">🧾 Invoice</button>
-            <button class="acc-chip" onclick="togAcc(this,'Screen Guard')">🪟 Screen Guard</button>
-          </div>
-        </div>
-
-        <!-- SECTION 5: PHOTOS -->
-        <div class="section-group">
-          <div class="section-label">📷 Photos <span style="font-size:11px;color:var(--light);font-weight:400;text-transform:none;letter-spacing:0">Better photos = better offer</span></div>
-          <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
-            <div class="photo-zone-icon">📷</div>
-            <div class="photo-zone-title">Tap to add photos</div>
-            <div class="photo-zone-sub">Front · Back · Screen · Any damage — up to 6 photos</div>
-            <div class="photo-grid" id="photoGrid"></div>
-          </div>
-          <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
-        </div>
-
-        <!-- SECTION 6: ASKING PRICE -->
-        <div class="section-group">
-          <div class="section-label">💰 Your Asking Price</div>
-          <div class="fg">
-            <label>Expected Amount (₹) <span class="opt-tag">required</span></label>
-            <div class="price-input-wrap">
-              <span class="rupee">₹</span>
-              <input type="number" id="fPrice" placeholder="e.g. 35000" oninput="updatePricePreview()" min="0">
-            </div>
-            <div class="field-hint">Enter what you expect — we review and confirm within 2 hours</div>
-          </div>
-          <div class="price-preview" id="pricePreview">
-            <div>
-              <div class="pp-lbl">Your asking price</div>
-              <div class="pp-val" id="ppVal">₹0</div>
-            </div>
-            <div class="pp-right">
-              <div class="pp-badge" id="ppBonus" style="display:none">+10% loyalty</div>
-              <div class="pp-note">Free pickup · Instant payment</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION 7: PICKUP SLOT -->
-        <div class="section-group" style="margin-bottom:0">
-          <div class="section-label">🚗 Pickup Slot</div>
-          <div class="slot-grid">
-            <button class="slot-btn on" id="slotMorn" onclick="pickSlot('morning')">
-              <span class="slot-emoji">🌅</span>
-              <span class="slot-name">Morning</span>
-              <span class="slot-time">9 AM – 1 PM</span>
-            </button>
-            <button class="slot-btn" id="slotEve" onclick="pickSlot('evening')">
-              <span class="slot-emoji">🌆</span>
-              <span class="slot-name">Evening</span>
-              <span class="slot-time">4 PM – 8 PM</span>
-            </button>
-          </div>
-          <input type="hidden" id="fSlot" value="morning">
-          <div class="fg" style="margin-top:13px">
-            <label>Additional Notes <span class="opt-tag">optional</span></label>
-            <textarea id="fNotes" placeholder="Any details about your phone, specific issues, preferred pickup time, etc."></textarea>
-          </div>
-        </div>
-
-      </div><!-- /form-body -->
-
-      <!-- SUBMIT -->
-      <div class="submit-area">
-        <button class="submit-btn" id="submitBtn" onclick="submitSell()">
-          <span id="submitIcon">🚀</span>
-          <span id="submitText">Submit Sell Request</span>
-        </button>
-        <div class="submit-note">
-          📞 We call within 2 hours to confirm pickup
-        </div>
-        <div class="trust-row">
-          <span class="trust-item">✅ Zero processing fee</span>
-          <span class="trust-item">🔒 Secure & private</span>
-          <span class="trust-item">📋 GST bill provided</span>
-        </div>
-      </div>
-
-    </div><!-- /formCard -->
-  </div>
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="side-card">
-      <h3>💡 Why sell with us?</h3>
-      <div class="why-item">
-        <div class="why-icon" style="background:#EFF6FF">💰</div>
-        <div><h4>Best price in Delhi</h4><p>We compare 10+ buyers to give you maximum value. Always transparent.</p></div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon" style="background:#F0FDF4">🚗</div>
-        <div><h4>Free doorstep pickup</h4><p>We come to you anywhere in Delhi. No travel needed.</p></div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon" style="background:#FFF7ED">⚡</div>
-        <div><h4>Instant payment</h4><p>Cash or UPI the moment we verify your device.</p></div>
-      </div>
-      <div class="why-item">
-        <div class="why-icon" style="background:#F3E8FF">🧾</div>
-        <div><h4>GST bill + IMEI cert</h4><p>Full legal documentation for every transaction.</p></div>
-      </div>
-    </div>
-
-    <div class="side-card">
-      <h3>📊 Today's best prices</h3>
-      <div class="price-table">
-        <div class="pt-row"><span class="pt-model">iPhone 15 Pro Max</span><span class="pt-price">₹88,000</span></div>
-        <div class="pt-row"><span class="pt-model">iPhone 14 Pro Max</span><span class="pt-price">₹68,000</span></div>
-        <div class="pt-row"><span class="pt-model">Samsung S24 Ultra</span><span class="pt-price">₹85,000</span></div>
-        <div class="pt-row"><span class="pt-model">OnePlus 12</span><span class="pt-price">₹48,000</span></div>
-        <div class="pt-row"><span class="pt-model">PS5 Disc Edition</span><span class="pt-price">₹38,000</span></div>
-      </div>
-    </div>
-
-    <div class="side-card contact-dark">
-      <h3>📞 Need help?</h3>
-      <a href="tel:+917827505579" class="contact-link">📞 +91 7827505579</a>
-      <a href="https://wa.me/917827505579" target="_blank" class="contact-link">💬 WhatsApp us</a>
-      <a href="mailto:mobilessambhi@gmail.com" class="contact-link">📧 mobilessambhi@gmail.com</a>
-    </div>
-  </div>
-
-</div><!-- /sell-wrap -->
-
-<footer>
-  <div class="footer-bottom">
-    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · +91 7827505579</p>
-    <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
-  </div>
-</footer>
-
-<div class="toast-wrap" id="toastWrap"></div>
-
-<script>
-// ================================================================
+<script>// ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
 // All pages load this file first
@@ -815,12 +439,367 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
-
 </script>
-SHARED_JS_PLACEHOLDER
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nl">Home</a>
+    <a href="sell.html" class="nl active">Sell</a>
+    <a href="buy.html" class="nl">Buy</a>
+    <a href="about.html" class="nl">About</a>
+    <a href="blog.html" class="nl">Blog</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
+    <a href="account.html" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
+    <button class="nav-acct" data-auth style="display:none;font-size:12px;letter-spacing:.4px" onclick="doLogout()">Logout</button>
+    <a href="sell.html" class="nav-cta">Get My Price</a>
+  </div>
+  <button class="burger" onclick="openMobNav()">☰</button>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="index.html" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="sell.html" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="buy.html" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="about.html" onclick="closeMobNav()">About</a>
+  <a class="mob-nl" href="blog.html" onclick="closeMobNav()">Blog</a>
+  <a class="mob-nl" href="sell.html">Sell Now →</a>
+</div>
 
+<!-- HERO -->
+<div class="pg-hero">
+  <div class="pg-hero-bg-grid"></div>
+  <div class="pg-hero-in">
+    <div class="pg-eyebrow">Sell your device</div>
+    <h1 class="pg-h1">Get the best<br><em>price today.</em></h1>
+    <p class="pg-sub">Free doorstep pickup · Instant cash or UPI · GST bill · No middlemen</p>
+  </div>
+</div>
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
+  </div>
+</div>
+
+<div class="sell-layout">
+  <!-- FORM -->
+  <div>
+    <!-- SUCCESS -->
+    <div class="form-card" id="successCard" style="display:none">
+      <div class="success-card on">
+        <div class="success-icon">🎉</div>
+        <h2>Request submitted!</h2>
+        <p>We'll call within 2 hours to confirm pickup. Track your request in My Account.</p>
+        <div class="success-actions">
+          <a href="account.html" class="btn-p">My Account →</a>
+          <a href="sell.html" class="btn-ghost">Sell Another</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card" id="formCard">
+      <div class="form-header">
+        <div><h2>Sell your phone</h2><p>2 minutes · Free pickup · Instant payment</p></div>
+        <div class="step-pills"><span class="sp on">Details</span><span class="sp">Condition</span><span class="sp">Pickup</span></div>
+      </div>
+
+      <!-- RETURNING CUSTOMER -->
+      <div class="returning-bar" id="returningBar">
+        <span class="rb-icon">🏆</span>
+        <div class="rb-text">
+          <h4>Returning customer bonus applied — +10%</h4>
+          <p id="returningBarSub">You've sold to us before. You automatically get 10% extra on your offer.</p>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div class="auth-notice" id="authNotice" style="display:none;background:rgba(255,77,0,.07);border:1px solid rgba(255,77,0,.2);padding:10px 14px;margin-bottom:18px;font-size:12px;color:rgba(255,165,50,.8)">
+          ✅ Logged in as <strong id="authNoticeName"></strong>
+          <a href="account.html" style="color:var(--orange);margin-left:6px;font-weight:600">My Account →</a>
+        </div>
+
+        <div class="sec-div">Your Details</div>
+        <div class="g2">
+          <div class="fg"><label>Full Name <span class="opt">required</span></label><input type="text" id="fName" placeholder="Your full name"></div>
+          <div class="fg"><label>WhatsApp <span class="opt">required</span></label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+        </div>
+        <div class="fg"><label>Email <span class="opt">optional</span></label><input type="email" id="fEmail" placeholder="yourname@gmail.com"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">📧 Confirmation sent to mobilessambhi@gmail.com</div></div>
+        <div class="g2">
+          <div class="fg"><label>Pickup Address <span class="opt">optional</span></label><input type="text" id="fAddress" placeholder="House / street / area"></div>
+          <div class="fg"><label>Delhi PIN <span class="opt">starts with 110</span></label><input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)"><div class="pin-hint" id="pinHint"></div></div>
+        </div>
+
+        <div class="sec-div">Device Details</div>
+        <div class="g2">
+          <div class="fg"><label>Brand <span class="opt">required</span></label>
+            <select id="fBrand" onchange="onBrand()">
+              <option value="">Select brand</option>
+              <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
+              <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
+              <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
+            </select>
+          </div>
+          <div class="fg"><label>Model <span class="opt">required</span></label><select id="fModel" onchange="onModel()"><option value="">Select model</option></select></div>
+        </div>
+        <div id="storageSection" style="display:none" class="fg"><label>Storage</label><div class="spec-chips" id="storageChips"></div><input type="hidden" id="fStorage"></div>
+        <div class="g3">
+          <div class="fg"><label>RAM <span class="opt">optional</span></label><select id="fRAM"><option value="">Select</option><option>2GB</option><option>3GB</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
+          <div class="fg"><label>Colour <span class="opt">optional</span></label>
+            <select id="fColor">
+              <option value="">Select</option>
+              <optgroup label="Common"><option>Black</option><option>White</option><option>Gold</option><option>Silver</option><option>Blue</option><option>Red</option><option>Green</option><option>Purple</option><option>Pink</option><option>Grey</option></optgroup>
+              <optgroup label="Apple"><option>Midnight</option><option>Starlight</option><option>Deep Purple</option><option>Black Titanium</option><option>White Titanium</option><option>Natural Titanium</option><option>Pacific Blue</option><option>Sierra Blue</option><option>Product Red</option><option>Space Grey</option></optgroup>
+              <optgroup label="Samsung"><option>Phantom Black</option><option>Cream</option><option>Lavender</option><option>Titanium Black</option><option>Cobalt Violet</option></optgroup>
+              <option>Other (mention in notes)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Year <span class="opt">optional</span></label><select id="fYear"><option value="">Year</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016 or older</option></select></div>
+        </div>
+        <div class="fg"><label>IMEI <span class="opt">dial *#06# — optional</span></label><input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)"><div class="imei-hint" id="imeiHint"></div></div>
+        <div id="batterySection" style="display:none" class="fg"><label>Battery Health % <span class="opt">Settings → Battery → Battery Health</span></label><input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">⚡ Higher battery = higher payout</div></div>
+
+        <div class="sec-div">Condition <span style="color:var(--orange)">*</span></div>
+        <div class="cond-grid">
+          <button class="cb" onclick="pickCond('Like New',this)"><span class="cb-em">⭐</span><span class="cb-lbl">Like New</span><span class="cb-sub">No scratches, perfect</span></button>
+          <button class="cb" onclick="pickCond('Good',this)"><span class="cb-em">👍</span><span class="cb-lbl">Good</span><span class="cb-sub">Minor wear, fully working</span></button>
+          <button class="cb" onclick="pickCond('Fair',this)"><span class="cb-em">👌</span><span class="cb-lbl">Fair</span><span class="cb-sub">Visible wear, working</span></button>
+          <button class="cb" onclick="pickCond('Poor',this)"><span class="cb-em">🔧</span><span class="cb-lbl">Needs Repair</span><span class="cb-sub">Damage or issues</span></button>
+        </div>
+
+        <div class="sec-div">Accessories</div>
+        <div class="acc-wrap">
+          <button class="ac" onclick="togAcc(this,'Original Box')">📦 Original Box</button>
+          <button class="ac" onclick="togAcc(this,'Charger')">🔌 Charger</button>
+          <button class="ac" onclick="togAcc(this,'Earphones')">🎧 Earphones</button>
+          <button class="ac" onclick="togAcc(this,'Cable')">🔗 Cable</button>
+          <button class="ac" onclick="togAcc(this,'Cover')">🛡️ Cover</button>
+          <button class="ac" onclick="togAcc(this,'Invoice')">🧾 Invoice</button>
+          <button class="ac" onclick="togAcc(this,'Screen Guard')">🪟 Screen Guard</button>
+        </div>
+
+        <div class="sec-div">Photos <span style="font-size:10px;color:rgba(242,237,230,.25);font-weight:400;text-transform:none;letter-spacing:0">better photos = better offer</span></div>
+        <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
+          <div class="pz-icon">📷</div>
+          <div class="pz-title">Tap to add photos</div>
+          <div class="pz-sub">Front · Back · Screen · Any damage — up to 6</div>
+          <div class="photo-grid" id="photoGrid"></div>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
+
+        <div class="sec-div">Your Asking Price <span style="color:var(--orange)">*</span></div>
+        <div class="fg">
+          <label>Expected Amount (₹)</label>
+          <input type="number" id="fPrice" placeholder="e.g. 35000" oninput="updatePricePreview()">
+          <div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">Enter what you expect — we'll review and confirm within 2 hours</div>
+        </div>
+        <div class="price-prev" id="pricePreview">
+          <div><div class="pp-lbl">Your asking price</div><div class="pp-val" id="ppVal">₹0</div><div class="pp-bonus" id="ppBonus" style="display:none">+10% Loyalty Applied</div></div>
+          <div style="text-align:right;font-size:10px;color:rgba(242,237,230,.2);letter-spacing:.5px;text-transform:uppercase">Free pickup<br>Instant cash</div>
+        </div>
+
+        <div class="sec-div">Pickup Slot</div>
+        <div class="slot-row">
+          <button class="sl-btn on" id="slotMorn" onclick="pickSlot('morning')"><span class="sl-em">🌅</span><span class="sl-nm">Morning</span><span class="sl-t">9 AM – 1 PM</span></button>
+          <button class="sl-btn" id="slotEve" onclick="pickSlot('evening')"><span class="sl-em">🌆</span><span class="sl-nm">Evening</span><span class="sl-t">4 PM – 8 PM</span></button>
+        </div>
+        <input type="hidden" id="fSlot" value="morning">
+        <div class="fg" style="margin-top:16px"><label>Notes <span class="opt">optional</span></label><textarea id="fNotes" placeholder="Any details, pickup instructions, specific issues..."></textarea></div>
+      </div>
+
+      <div class="submit-area">
+        <button class="submit-btn" id="submitBtn" onclick="submitSell()">
+          <span id="submitIcon">🚀</span><span id="submitText">Submit Sell Request</span>
+        </button>
+        <div class="trust-pills">
+          <span class="tp">✅ Zero processing fee</span>
+          <span class="tp">🔒 Private & secure</span>
+          <span class="tp">📋 GST bill provided</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="side-card">
+      <h3>Why sell with us?</h3>
+      <div class="why-row"><div class="wr-icon">💰</div><div class="wr-body"><h4>Best price in Delhi</h4><p>We compare 10+ buyers to maximise your payout. Always transparent pricing.</p></div></div>
+      <div class="why-row"><div class="wr-icon">🚗</div><div class="wr-body"><h4>Free doorstep pickup</h4><p>We come to you. No travel, no minimum distance, no charge — ever.</p></div></div>
+      <div class="why-row"><div class="wr-icon">⚡</div><div class="wr-body"><h4>Instant payment</h4><p>Cash or UPI the moment we verify your device. No delays.</p></div></div>
+      <div class="why-row"><div class="wr-icon">🧾</div><div class="wr-body"><h4>GST bill + IMEI cert</h4><p>Full legal documentation for every transaction. Safe and verifiable.</p></div></div>
+    </div>
+    <div class="side-card">
+      <h3>Today's best prices</h3>
+      <div class="price-table">
+        <div class="pt"><span class="pt-m">iPhone 15 Pro Max</span><span class="pt-p">₹88,000</span></div>
+        <div class="pt"><span class="pt-m">iPhone 14 Pro Max</span><span class="pt-p">₹68,000</span></div>
+        <div class="pt"><span class="pt-m">Samsung S24 Ultra</span><span class="pt-p">₹85,000</span></div>
+        <div class="pt"><span class="pt-m">OnePlus 12</span><span class="pt-p">₹48,000</span></div>
+        <div class="pt"><span class="pt-m">PS5 Disc Edition</span><span class="pt-p">₹38,000</span></div>
+      </div>
+    </div>
+    <div class="side-card contact-card">
+      <h3>Need help?</h3>
+      <a href="tel:+917827505579" class="contact-link">📞 +91 7827505579</a>
+      <a href="https://wa.me/917827505579" target="_blank" class="contact-link">💬 WhatsApp us</a>
+      <a href="mailto:mobilessambhi@gmail.com" class="contact-link">📧 mobilessambhi@gmail.com</a>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="authModal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2>Welcome<br><em style="font-style:italic;color:var(--orange)">back.</em></h2>
+    <p class="auth-sub">Login or create an account to track your sells & purchases</p>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabL" onclick="authSwitch('login')">Login</button>
+      <button class="auth-tab" id="tabR" onclick="authSwitch('reg')">Register</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Login →</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Primary Mobile</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap"></div>
+<footer>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="admin.html">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="account.html">My Account</a><a href="about.html">About Us</a><a href="blog.html">Blog</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
+    </div>
+  </div>
+</footer>
 <script>
-// ── MODEL DATA ────────────────────────────────────────────────────
+
+// ── CURSOR ──────────────────────────────────────────────────────────
+(function(){
+  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
+  if(!c||!r)return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    c.style.left=mx+'px';c.style.top=my+'px';
+  });
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
+    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
+  });
+})();
+
+// ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
+(function(){
+  function tick(){
+    var scrolled=window.scrollY,total=document.body.scrollHeight-window.innerHeight;
+    var p=document.getElementById('progress');if(p)p.style.width=(scrolled/total*100)+'%';
+    var nav=document.querySelector('nav');if(nav)nav.classList.toggle('scrolled',scrolled>50);
+    document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
+      if(el.getBoundingClientRect().top<window.innerHeight*.88)el.classList.add('in');
+    });
+  }
+  window.addEventListener('scroll',tick,{passive:true});
+  setTimeout(tick,80);
+})();
+
+// ── MOBILE NAV ──────────────────────────────────────────────────────
+function openMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+// ── AUTH ────────────────────────────────────────────────────────────
+function openAuth(){var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeAuth(){var m=document.getElementById('authModal');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+function authSwitch(tab){
+  var tl=document.getElementById('tabL'),tr=document.getElementById('tabR');
+  var fl=document.getElementById('loginForm'),fr=document.getElementById('regForm');
+  var err=document.getElementById('authErr');
+  if(tl)tl.classList.toggle('on',tab==='login');if(tr)tr.classList.toggle('on',tab==='reg');
+  if(fl)fl.style.display=tab==='login'?'':'none';if(fr)fr.style.display=tab==='reg'?'':'none';
+  if(err)err.style.display='none';
+}
+function showAuthErr(msg){var e=document.getElementById('authErr');if(e){e.textContent=msg;e.style.display='block';}}
+function doLogin(){
+  var ph=(document.getElementById('lPhone').value||'').trim();
+  var pw=(document.getElementById('lPw').value||'').trim();
+  if(!ph||!pw){showAuthErr('Enter your phone number and password.');return;}
+  SMB.customer.login(ph,pw).then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome back, '+r.customer.name.split(' ')[0]+'!');
+  });
+}
+function doRegister(){
+  var name=(document.getElementById('rName').value||'').trim();
+  var ph=(document.getElementById('rPhone').value||'').trim();
+  var alt=(document.getElementById('rAlt').value||'').trim();
+  var pw=(document.getElementById('rPw').value||'').trim();
+  if(!name){showAuthErr('Enter your full name.');return;}
+  if(ph.length<10){showAuthErr('Enter a valid 10-digit mobile number.');return;}
+  if(pw.length<6){showAuthErr('Password must be at least 6 characters.');return;}
+  SMB.customer.register(name,ph,alt,pw,'').then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome, '+name.split(' ')[0]+'! Account created.');
+  });
+}
+function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out.');}
+
+// ── TOAST ────────────────────────────────────────────────────────────
+function showToast(msg,type){
+  var wrap=document.querySelector('.toast-wrap');if(!wrap)return;
+  var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},3800);
+}
+
+// ── BACKDROP CLOSE ────────────────────────────────────────────────────
+document.addEventListener('click',function(e){
+  if(e.target.id==='authModal')closeAuth();
+});
+
 var MODELS = {
   iphone:['iPhone 16 Pro Max','iPhone 16 Pro','iPhone 16 Plus','iPhone 16','iPhone 15 Pro Max','iPhone 15 Pro','iPhone 15 Plus','iPhone 15','iPhone 14 Pro Max','iPhone 14 Pro','iPhone 14 Plus','iPhone 14','iPhone 13 Pro Max','iPhone 13 Pro','iPhone 13','iPhone 13 Mini','iPhone 12 Pro Max','iPhone 12 Pro','iPhone 12','iPhone 12 Mini','iPhone 11 Pro Max','iPhone 11 Pro','iPhone 11','iPhone SE (2022)','iPhone SE (2020)','iPhone XR','iPhone XS Max','iPhone XS','iPhone X'],
   samsung:['Galaxy S24 Ultra','Galaxy S24+','Galaxy S24','Galaxy S23 Ultra','Galaxy S23+','Galaxy S23','Galaxy S22 Ultra','Galaxy S22+','Galaxy S22','Galaxy A55','Galaxy A54','Galaxy A35','Galaxy A34','Galaxy A25','Galaxy A15','Galaxy M55','Galaxy M35'],
@@ -835,8 +814,6 @@ var MODELS = {
   applewatch:['Apple Watch Ultra 2','Apple Watch Ultra','Apple Watch Series 9 45mm','Apple Watch Series 9 41mm','Apple Watch SE 2 44mm','Apple Watch SE 2 40mm','Apple Watch Series 8 45mm'],
   playstation:['PS5 Disc Edition','PS5 Digital Edition','PS5 Slim Disc','PS5 Slim Digital','PS4 Pro','PS4 Slim','PS4']
 };
-
-// Storage options per brand
 var STORAGE = {
   iphone:['16GB','32GB','64GB','128GB','256GB','512GB','1TB'],
   samsung:['64GB','128GB','256GB','512GB'],
@@ -851,272 +828,110 @@ var STORAGE = {
   applewatch:['GPS','GPS + Cellular'],
   playstation:['825GB']
 };
+var selCond='',selAccs=[],selSlot='morning',photoUrls=[],isReturning=false;
 
-// ── STATE ─────────────────────────────────────────────────────────
-var selCond = '', selAccs = [], selSlot = 'morning', photoUrls = [], isReturning = false;
-
-// ── INIT ─────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded',function(){
   smbUpdateNav();
-
-  var CU = SMB.customer.current();
-  if (CU) {
-    // Pre-fill contact details
-    document.getElementById('authNotice').classList.add('show');
-    document.getElementById('authNoticeName').textContent = CU.name;
-    document.getElementById('fName').value  = CU.name;
-    document.getElementById('fPhone').value = CU.phone;
-
-    // AUTO-DETECT returning customer from completed sells
-    var prevSells = SMB.sells.forCustomer(CU.id);
-    var completedSells = prevSells.filter(function(s) { return s.status === 'completed'; });
-    if (completedSells.length > 0) {
-      isReturning = true;
-      var banner = document.getElementById('returningBanner');
-      banner.classList.add('show');
-      // Show last sold device info
-      var last = completedSells[completedSells.length - 1];
-      var lastDevice = [last.brand, last.model].filter(Boolean).join(' ');
-      var lastDate = last.createdAt ? SMB.fmtDate(last.createdAt) : '';
-      var sub = document.getElementById('returningBannerSub');
-      if (lastDevice) {
-        sub.textContent = 'Your last sale: ' + lastDevice + (lastDate ? ' on ' + lastDate : '') + '. You get 10% extra automatically!';
-      }
-      // Show loyalty bonus on price preview
-      document.getElementById('ppBonus').style.display = 'inline-block';
+  var CU=SMB.customer.current();
+  if(CU){
+    document.getElementById('authNotice').style.display='';
+    document.getElementById('authNoticeName').textContent=CU.name;
+    document.getElementById('fName').value=CU.name;
+    document.getElementById('fPhone').value=CU.phone;
+    var prev=SMB.sells.forCustomer(CU.id).filter(function(s){return s.status==='completed';});
+    if(prev.length){
+      isReturning=true;
+      var bar=document.getElementById('returningBar');bar.classList.add('show');
+      var last=prev[prev.length-1];
+      var ld=[last.brand,last.model].filter(Boolean).join(' ');
+      var dt=last.createdAt?SMB.fmtDate(last.createdAt):'';
+      if(ld)document.getElementById('returningBarSub').textContent='Last sale: '+ld+(dt?' on '+dt:'')+'. +10% applied automatically.';
+      document.getElementById('ppBonus').style.display='inline-block';
     }
   }
-
-  // Pre-select brand from URL param
-  var params = new URLSearchParams(location.search);
-  var brand = params.get('brand');
-  if (brand) {
-    var sel = document.getElementById('fBrand');
-    if (sel.querySelector('option[value="' + brand + '"]')) {
-      sel.value = brand; onBrand();
-    }
-  }
+  var p=new URLSearchParams(location.search).get('brand');
+  if(p){var s=document.getElementById('fBrand');if(s.querySelector('option[value="'+p+'"]')){s.value=p;onBrand();}}
 });
-
-// ── BRAND → MODEL ─────────────────────────────────────────────────
-function onBrand() {
-  var brand = document.getElementById('fBrand').value;
-  var ms = document.getElementById('fModel');
-  ms.innerHTML = '<option value="">Select model</option>';
-  (MODELS[brand] || []).forEach(function(m) {
-    var o = document.createElement('option'); o.value = m; o.textContent = m; ms.appendChild(o);
-  });
-  document.getElementById('batterySection').style.display = brand === 'iphone' ? '' : 'none';
-  document.getElementById('storageSection').style.display = 'none';
-  document.getElementById('fStorage').value = '';
+function onBrand(){
+  var b=document.getElementById('fBrand').value,ms=document.getElementById('fModel');
+  ms.innerHTML='<option value="">Select model</option>';
+  (MODELS[b]||[]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});
+  document.getElementById('batterySection').style.display=b==='iphone'?'':'none';
+  document.getElementById('storageSection').style.display='none';
+  document.getElementById('fStorage').value='';
 }
-
-function onModel() {
-  var brand = document.getElementById('fBrand').value;
-  var opts = STORAGE[brand] || ['64GB','128GB','256GB'];
-  var chips = document.getElementById('storageChips');
-  chips.innerHTML = '';
-  document.getElementById('fStorage').value = '';
-  if (opts.length) {
-    document.getElementById('storageSection').style.display = '';
-    opts.forEach(function(s) {
-      var btn = document.createElement('button');
-      btn.className = 'spec-chip'; btn.textContent = s; btn.type = 'button';
-      btn.onclick = function() {
-        document.querySelectorAll('.spec-chip').forEach(function(b){b.classList.remove('on');});
-        this.classList.add('on');
-        document.getElementById('fStorage').value = s;
-      };
-      chips.appendChild(btn);
-    });
-  }
+function onModel(){
+  var b=document.getElementById('fBrand').value,opts=STORAGE[b]||['64GB','128GB','256GB'];
+  var chips=document.getElementById('storageChips');chips.innerHTML='';
+  document.getElementById('fStorage').value='';
+  if(opts.length){document.getElementById('storageSection').style.display='';
+    opts.forEach(function(s){var btn=document.createElement('button');btn.className='sc';btn.textContent=s;btn.type='button';
+      btn.onclick=function(){document.querySelectorAll('.sc').forEach(function(b){b.classList.remove('on');});this.classList.add('on');document.getElementById('fStorage').value=s;};chips.appendChild(btn);});}
 }
-
-// ── CONDITION ────────────────────────────────────────────────────
-function pickCond(val, btn) {
-  document.querySelectorAll('.cond-btn').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on'); selCond = val;
+function pickCond(v,btn){document.querySelectorAll('.cb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');selCond=v;}
+function togAcc(btn,v){btn.classList.toggle('on');if(btn.classList.contains('on')){if(!selAccs.includes(v))selAccs.push(v);}else{selAccs=selAccs.filter(function(a){return a!==v;});}}
+function pickSlot(v){selSlot=v;document.getElementById('slotMorn').classList.toggle('on',v==='morning');document.getElementById('slotEve').classList.toggle('on',v==='evening');}
+function handlePhotos(input){
+  var files=Array.from(input.files).slice(0,6);photoUrls=[];
+  var grid=document.getElementById('photoGrid'),zone=document.getElementById('photoZone');
+  grid.innerHTML='';
+  if(!files.length){zone.classList.remove('has');return;}
+  zone.classList.add('has');zone.querySelector('.pz-title').textContent=files.length+' photo'+(files.length>1?'s':'')+' added';
+  files.forEach(function(f){var r=new FileReader();r.onload=function(e){
+    photoUrls.push(e.target.result);
+    var w=document.createElement('div');w.className='ph-wrap';
+    var img=document.createElement('img');img.className='ph-img';img.src=e.target.result;
+    var rm=document.createElement('button');rm.className='ph-rm';rm.textContent='✕';rm.onclick=function(ev){ev.stopPropagation();w.remove();photoUrls=photoUrls.filter(function(u){return u!==e.target.result;});};
+    w.appendChild(img);w.appendChild(rm);grid.appendChild(w);};r.readAsDataURL(f);});
 }
-
-// ── ACCESSORIES ──────────────────────────────────────────────────
-function togAcc(btn, val) {
-  btn.classList.toggle('on');
-  if (btn.classList.contains('on')) { if (!selAccs.includes(val)) selAccs.push(val); }
-  else { selAccs = selAccs.filter(function(a){return a !== val;}); }
+function validateIMEI(el){
+  var v=el.value.replace(/\D/g,'');el.value=v;
+  var h=document.getElementById('imeiHint');
+  if(!v){h.textContent='';h.className='imei-hint';el.classList.remove('err','ok');return;}
+  if(v.length<15){h.textContent=v.length+'/15 digits';h.className='imei-hint';h.style.color='rgba(242,237,230,.25)';el.classList.remove('err','ok');}
+  else{h.textContent='✅ Valid IMEI';h.className='imei-hint ok';h.style.color='rgba(100,200,100,.7)';el.classList.add('ok');el.classList.remove('err');}
 }
-
-// ── SLOT ─────────────────────────────────────────────────────────
-function pickSlot(v) {
-  selSlot = v;
-  document.getElementById('slotMorn').classList.toggle('on', v === 'morning');
-  document.getElementById('slotEve').classList.toggle('on', v === 'evening');
+function validatePin(el){
+  var v=el.value.replace(/\D/g,'');el.value=v;
+  var h=document.getElementById('pinHint');
+  if(!v){h.textContent='';el.classList.remove('err','ok');return;}
+  if(v.length===6&&v.startsWith('110')){h.textContent='✅ Valid Delhi PIN';h.style.color='rgba(100,200,100,.7)';el.classList.add('ok');el.classList.remove('err');}
+  else if(v.length===6){h.textContent='⚠️ Only Delhi PINs accepted (starts with 110)';h.style.color='var(--orange)';el.classList.add('err');el.classList.remove('ok');}
+  else{h.textContent=v.length+'/6 digits';h.style.color='rgba(242,237,230,.25)';el.classList.remove('err','ok');}
 }
-
-// ── PHOTOS ───────────────────────────────────────────────────────
-function handlePhotos(input) {
-  var files = Array.from(input.files).slice(0, 6);
-  photoUrls = [];
-  var grid = document.getElementById('photoGrid');
-  grid.innerHTML = '';
-  var zone = document.getElementById('photoZone');
-  if (!files.length) { zone.classList.remove('has-photos'); return; }
-  zone.classList.add('has-photos');
-  zone.querySelector('.photo-zone-title').textContent = files.length + ' photo' + (files.length > 1 ? 's' : '') + ' added';
-  files.forEach(function(f, idx) {
-    var r = new FileReader();
-    r.onload = function(e) {
-      photoUrls.push(e.target.result);
-      var wrap = document.createElement('div'); wrap.className = 'photo-thumb-wrap';
-      var img = document.createElement('img'); img.className = 'photo-thumb'; img.src = e.target.result;
-      var rm = document.createElement('button'); rm.className = 'photo-remove'; rm.textContent = '✕';
-      rm.onclick = function(ev) { ev.stopPropagation(); wrap.remove(); photoUrls.splice(idx,1); if(!grid.children.length){zone.classList.remove('has-photos');zone.querySelector('.photo-zone-title').textContent='Tap to add photos';} };
-      wrap.appendChild(img); wrap.appendChild(rm); grid.appendChild(wrap);
-    };
-    r.readAsDataURL(f);
-  });
+function updatePricePreview(){
+  var p=parseInt(document.getElementById('fPrice').value)||0;
+  var preview=document.getElementById('pricePreview');
+  if(p>0){preview.classList.add('on');document.getElementById('ppVal').textContent='₹'+p.toLocaleString('en-IN');}
+  else preview.classList.remove('on');
 }
-
-// ── IMEI VALIDATION ───────────────────────────────────────────────
-function validateIMEI(el) {
-  var v = el.value.replace(/\D/g,''); el.value = v;
-  var hint = document.getElementById('imeiHint');
-  if (!v) { hint.textContent=''; hint.className='field-hint'; el.classList.remove('err','ok'); return; }
-  if (v.length < 15) {
-    hint.textContent = v.length + ' / 15 digits entered';
-    hint.className = 'field-hint';
-    el.classList.remove('err','ok');
-  } else if (v.length === 15) {
-    hint.textContent = '✅ Valid IMEI';
-    hint.className = 'field-hint success';
-    el.classList.add('ok'); el.classList.remove('err');
-  }
+function markErr(id){var el=document.getElementById(id);if(el){el.classList.add('err');el.addEventListener('input',function(){el.classList.remove('err');},{once:true});}}
+function submitSell(){
+  var name=(document.getElementById('fName').value||'').trim();
+  var phone=(document.getElementById('fPhone').value||'').trim();
+  var brand=document.getElementById('fBrand').value;
+  var model=document.getElementById('fModel').value;
+  var price=parseInt(document.getElementById('fPrice').value)||0;
+  var errs=[];
+  if(!name){markErr('fName');errs.push('Please enter your full name.');}
+  if(phone.length<10){markErr('fPhone');errs.push('Please enter a valid 10-digit number.');}
+  if(!brand){markErr('fBrand');errs.push('Please select a brand.');}
+  if(!model){markErr('fModel');errs.push('Please select a model.');}
+  if(!selCond){errs.push('Please select device condition.');}
+  if(!price){markErr('fPrice');errs.push('Please enter your asking price.');}
+  if(errs.length){showToast(errs[0],'error');return;}
+  var btn=document.getElementById('submitBtn');
+  document.getElementById('submitIcon').textContent='⏳';
+  document.getElementById('submitText').textContent='Submitting...';
+  btn.disabled=true;
+  var CU=SMB.customer.current();
+  var data={name:name,phone:phone,email:(document.getElementById('fEmail').value||'').trim(),address:(document.getElementById('fAddress').value||'').trim(),pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
+  try{SMB.sells.submit(data,CU?CU.id:null);}catch(e){btn.disabled=false;document.getElementById('submitIcon').textContent='🚀';document.getElementById('submitText').textContent='Submit Sell Request';showToast('Something went wrong. Please try again.','error');return;}
+  btn.disabled=false;
+  document.getElementById('formCard').style.display='none';
+  document.getElementById('successCard').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-// ── PIN VALIDATION ────────────────────────────────────────────────
-function validatePin(el) {
-  var v = el.value.replace(/\D/g,''); el.value = v;
-  var hint = document.getElementById('pinHint');
-  if (!v) { hint.textContent=''; hint.className='field-hint'; el.classList.remove('err','ok'); return; }
-  if (v.length === 6 && v.startsWith('110')) {
-    hint.textContent = '✅ Valid Delhi PIN';
-    hint.className = 'field-hint success';
-    el.classList.add('ok'); el.classList.remove('err');
-  } else if (v.length === 6 && !v.startsWith('110')) {
-    hint.textContent = '⚠️ Only Delhi PIN codes accepted (must start with 110)';
-    hint.className = 'field-hint error';
-    el.classList.add('err'); el.classList.remove('ok');
-  } else {
-    hint.textContent = v.length + '/6 digits';
-    hint.className = 'field-hint';
-    el.classList.remove('err','ok');
-  }
-}
-
-// ── PRICE PREVIEW ────────────────────────────────────────────────
-function updatePricePreview() {
-  var p = parseInt(document.getElementById('fPrice').value) || 0;
-  var preview = document.getElementById('pricePreview');
-  if (p > 0) {
-    preview.classList.add('show');
-    document.getElementById('ppVal').textContent = '₹' + p.toLocaleString('en-IN');
-  } else {
-    preview.classList.remove('show');
-  }
-}
-
-// ── FORM VALIDATION ───────────────────────────────────────────────
-function markErr(id) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.classList.add('err');
-  el.addEventListener('input', function(){ el.classList.remove('err'); }, { once: true });
-}
-
-// ── SUBMIT ────────────────────────────────────────────────────────
-function submitSell() {
-  var name  = (document.getElementById('fName').value || '').trim();
-  var phone = (document.getElementById('fPhone').value || '').trim();
-  var brand = document.getElementById('fBrand').value;
-  var model = document.getElementById('fModel').value;
-  var price = parseInt(document.getElementById('fPrice').value) || 0;
-
-  // Validate
-  var errs = [];
-  if (!name) { markErr('fName'); errs.push('Please enter your full name.'); }
-  if (phone.length < 10) { markErr('fPhone'); errs.push('Please enter a valid 10-digit phone number.'); }
-  if (!brand) { markErr('fBrand'); errs.push('Please select a brand.'); }
-  if (!model) { markErr('fModel'); errs.push('Please select a model.'); }
-  if (!selCond) { errs.push('Please select the device condition.'); }
-  if (!price || price < 100) { markErr('fPrice'); errs.push('Please enter your expected price.'); }
-  var pin = (document.getElementById('fPincode').value || '').trim();
-  if (pin && pin.length === 6 && !pin.startsWith('110')) {
-    markErr('fPincode'); errs.push('Please enter a valid Delhi PIN code (starts with 110).');
-  }
-
-  if (errs.length > 0) { showToast(errs[0], 'red'); return; }
-
-  // Disable button while submitting
-  var btn = document.getElementById('submitBtn');
-  var icon = document.getElementById('submitIcon');
-  var text = document.getElementById('submitText');
-  btn.disabled = true;
-  icon.textContent = '⏳';
-  text.textContent = 'Submitting...';
-
-  var CU = SMB.customer.current();
-
-  var data = {
-    name:    name,
-    phone:   phone,
-    email:   (document.getElementById('fEmail').value || '').trim(),
-    address: (document.getElementById('fAddress').value || '').trim(),
-    pincode: pin,
-    brand:   brand,
-    model:   model,
-    storage: document.getElementById('fStorage').value,
-    ram:     document.getElementById('fRAM').value,
-    color:   document.getElementById('fColor').value,
-    year:    document.getElementById('fYear').value,
-    imei:    (document.getElementById('fIMEI').value || '').trim(),
-    batteryHealth: (document.getElementById('fBattery').value || '').trim(),
-    condition:    selCond,
-    accessories:  selAccs.slice(),
-    photos:       photoUrls.slice(),
-    askingPrice:  price,
-    isLoyalty:    isReturning,
-    slot:         selSlot,
-    notes:        (document.getElementById('fNotes').value || '').trim()
-  };
-
-  try {
-    SMB.sells.submit(data, CU ? CU.id : null);
-  } catch(e) {
-    console.error('Submit failed:', e);
-    btn.disabled = false;
-    icon.textContent = '🚀';
-    text.textContent = 'Submit Sell Request';
-    showToast('Submission failed. Please try again.', 'red');
-    return;
-  }
-
-  // SUCCESS
-  btn.disabled = false;
-  icon.textContent = '🚀';
-  text.textContent = 'Submit Sell Request';
-  document.getElementById('formCard').style.display = 'none';
-  document.getElementById('successCard').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── UTILS ─────────────────────────────────────────────────────────
-function showToast(msg, type) {
-  var w = document.getElementById('toastWrap');
-  var t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
-  w.appendChild(t);
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.classList.add('show'); if(type) t.classList.add(type); }); });
-  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 4000);
-}
-function doLogout() { SMB.customer.logout(); smbUpdateNav(); location.href = 'index.html'; }
 </script>
 </body>
 </html>

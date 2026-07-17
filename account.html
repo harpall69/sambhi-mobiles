@@ -4,325 +4,196 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>My Account — Sambhi Mobiles</title>
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ================================================================
-   SAMBHI MOBILES — GLOBAL STYLES v3
-   Copy into <style> tag of each page
-   ================================================================ */
+/* SAMBHI MOBILES — SHARED DESIGN SYSTEM */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--blue-b:#BFDBFE;
-  --green:#16A34A;--green-l:#F0FDF4;
-  --orange:#F97316;--orange-l:#FFF7ED;
-  --red:#DC2626;--red-l:#FEF2F2;
-  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
-  --bg:#F8FAFC;--white:#fff;
-  --border:#E2E8F0;--border-d:#CBD5E1;
-  --radius:12px;--radius-lg:18px;--radius-xl:24px;
-  --shadow:0 1px 3px rgba(0,0,0,.08);
-  --shadow-md:0 4px 16px rgba(0,0,0,.1);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.13)
+  --ink:#0A0A0A;--ink2:#1C1C24;
+  --cream:#F2EDE6;--cream2:#EAE3DA;
+  --orange:#FF4D00;--orange-d:#CC3D00;
+  --white:#FFFFFF;--muted:#6B6B6B;--light:#94A3B8;
+  --border:rgba(255,255,255,.09);--border-d:rgba(0,0,0,.1);
+  --bg-dark:#0A0A0A;--bg-light:#F2EDE6;
+  --f-display:"Cormorant Garamond",Georgia,serif;
+  --f-body:"Inter",system-ui,sans-serif
 }
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
+a,button{cursor:none}
 
-/* ── NAV ── */
-nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
-.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.logo-text{font-size:17px;font-weight:700;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
-.logo-text strong{color:var(--blue)}
-.nav-links{display:flex;gap:2px;margin-left:16px}
-.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
-.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.cta-btn{background:var(--blue);color:var(--white);padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;white-space:nowrap}
-.cta-btn:hover{background:var(--blue-d)}
-.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap}
-.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
-.burger{display:none;background:none;border:none;font-size:21px;cursor:pointer;padding:6px;color:var(--ink);line-height:1}
-.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:var(--white)}
-.mobile-nav.open{display:flex}
-.mobile-nav a,.mobile-nav button{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--bg);background:none;border-left:none;border-right:none;border-top:none;text-align:left;cursor:pointer;font-family:inherit;width:100%}
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
+@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
 
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;border-radius:var(--radius);font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s;text-decoration:none;white-space:nowrap}
-.btn-primary{background:var(--blue);color:var(--white)}
-.btn-primary:hover{background:var(--blue-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.28)}
-.btn-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
-.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
-.btn-ghost{background:var(--bg);color:var(--muted)}
-.btn-ghost:hover{background:var(--border);color:var(--ink)}
-.btn-danger{background:var(--red);color:var(--white)}
-.btn-full{width:100%;justify-content:center}
-.btn-lg{padding:14px 28px;font-size:15px;border-radius:var(--radius-lg)}
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
 
-/* ── FORM ELEMENTS ── */
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.fg label .opt{color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--ink);font-size:14px;font-family:inherit;padding:10px 13px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.07)}
-.fg input.err,.fg select.err,.fg textarea.err{border-color:var(--red);background:var(--red-l)}
-.fg textarea{resize:none;height:72px}
-.fg .hint{font-size:11px;color:var(--light);margin-top:4px;line-height:1.5}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;letter-spacing:-.3px;flex-shrink:0}
+.nav-logo span{color:var(--orange)}
+.nav-links{display:flex;gap:28px;align-items:center;margin:0 auto}
+.nl{color:rgba(242,237,230,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;transition:color .2s}
+.nl:hover,.nl.active{color:var(--cream)}
+.nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.nav-cta{background:var(--orange);color:var(--white);padding:9px 22px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.nav-cta:hover{background:var(--orange-d)}
+.nav-acct{color:rgba(242,237,230,.5);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:inherit}
+.nav-acct:hover{color:var(--cream)}
+.burger{display:none;background:none;border:none;color:var(--cream);font-size:22px;padding:4px;cursor:none}
+.mob-nav{display:none;position:fixed;inset:0;background:var(--ink);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-nav.open{display:flex}
+.mob-nl{color:var(--cream);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
+.mob-nl:hover{color:var(--orange)}
+.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(242,237,230,.4);font-size:26px;cursor:none}
+
+/* PAGE HERO (dark) */
+.pg-hero{padding:140px 48px 72px;background:var(--ink);position:relative;overflow:hidden}
+.pg-hero-in{max-width:1280px;margin:0 auto}
+.pg-eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.pg-eyebrow::before{content:'';width:20px;height:1px;background:var(--orange)}
+.pg-h1{font-family:var(--f-display);font-size:clamp(44px,7vw,96px);font-weight:600;line-height:.95;letter-spacing:-2px;color:var(--cream);margin-bottom:18px}
+.pg-h1 em{font-style:italic;color:var(--orange)}
+.pg-h1 .outline{-webkit-text-stroke:1.5px rgba(242,237,230,.4);color:transparent}
+.pg-sub{font-size:15px;color:rgba(242,237,230,.45);max-width:520px;line-height:1.8;font-weight:300}
+.pg-hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,0,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
+
+/* SECTION LABELS */
+.sec-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.sec-eyebrow-light{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.35);margin-bottom:16px}
+.sec-title{font-family:var(--f-display);font-size:clamp(32px,5vw,64px);font-weight:600;line-height:1.0;letter-spacing:-1.5px}
+.sec-title em{font-style:italic;color:var(--orange)}
+.sec-title.dark{color:var(--ink)}
+.sec-title.light{color:var(--cream)}
+.sec-title .outline{-webkit-text-stroke:1px currentColor;color:transparent}
+
+/* BUTTONS */
+.btn-p{display:inline-block;background:var(--orange);color:var(--white);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-p:hover{background:var(--orange-d);transform:translateY(-2px)}
+.btn-dark{display:inline-block;background:var(--ink);color:var(--cream);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-dark:hover{background:var(--orange)}
+.btn-ghost{display:inline-block;background:transparent;color:var(--cream);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(242,237,230,.25);transition:all .2s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--cream)}
+.btn-ghost-dark{display:inline-block;background:transparent;color:var(--ink);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(10,10,10,.25);transition:all .2s;font-family:inherit}
+.btn-ghost-dark:hover{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+
+/* TICKER */
+.ticker{background:var(--orange);padding:15px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);padding:0 28px}
+.ticker-item .sep{color:rgba(255,255,255,.4);margin:0 12px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* FOOTER */
+footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,255,255,.04)}
+.foot-in{max-width:1280px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.foot-logo{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--cream);margin-bottom:14px;display:block}
+.foot-logo span{color:var(--orange)}
+.foot-desc{font-size:13px;color:rgba(242,237,230,.28);line-height:1.85;margin-bottom:18px;font-weight:300}
+.foot-contact a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:6px;transition:color .15s;font-weight:300}
+.foot-contact a:hover{color:var(--cream)}
+.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.2);margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:10px;transition:color .15s;font-weight:300}
+.foot-col a:hover{color:var(--cream)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-bottom p{font-size:11px;color:rgba(242,237,230,.18);letter-spacing:.3px}
+
+/* AUTH MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
+.modal-bg.open{display:flex}
+.auth-box{background:#141418;border:1px solid rgba(255,255,255,.09);padding:48px;width:100%;max-width:400px;position:relative}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(242,237,230,.3);font-size:20px;cursor:none;font-family:inherit;transition:color .15s}
+.auth-close:hover{color:var(--cream)}
+.auth-box h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:-.5px}
+.auth-box .auth-sub{font-size:13px;color:rgba(242,237,230,.3);margin-bottom:28px;font-weight:300}
+.auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08)}
+.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);cursor:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab.on{color:var(--orange);border-bottom-color:var(--orange)}
+.auth-err{background:rgba(255,77,0,.12);color:var(--orange);border:1px solid rgba(255,77,0,.25);padding:10px 13px;font-size:12px;margin-bottom:12px;display:none;font-weight:500}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);margin-bottom:7px}
+.fg label .opt{color:rgba(242,237,230,.18);font-weight:400;text-transform:none;letter-spacing:0}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:var(--cream);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--orange)}
+.fg input.err{border-color:var(--orange);background:rgba(255,77,0,.06)}
+.fg input.ok{border-color:rgba(100,200,100,.4)}
+.fg textarea{resize:none;height:80px}
+.fg .hint{font-size:11px;color:rgba(242,237,230,.25);margin-top:5px;line-height:1.5}
+.fg .hint.ok{color:rgba(100,200,100,.7)}
+.fg .hint.err{color:var(--orange)}
+.auth-btn{width:100%;background:var(--orange);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.auth-btn:hover{background:var(--orange-d)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
-/* ── CARDS ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
-.card-lg{padding:32px}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease}
+.reveal-left.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px}
-.badge-blue{background:var(--blue-l);color:var(--blue)}
-.badge-green{background:var(--green-l);color:var(--green)}
-.badge-orange{background:var(--orange-l);color:var(--orange)}
-.badge-red{background:var(--red-l);color:var(--red)}
-.badge-gray{background:var(--bg);color:var(--muted)}
-
-/* ── TOAST ── */
-.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--ink);color:var(--white);padding:11px 17px;border-radius:11px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(10px);opacity:0;transition:all .28s;pointer-events:auto;max-width:300px}
+/* TOAST */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:9999;pointer-events:none}
+.toast{background:var(--orange);color:var(--white);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 32px rgba(255,77,0,.35);transform:translateY(16px);opacity:0;transition:all .3s;margin-top:8px}
 .toast.show{transform:translateY(0);opacity:1}
-.toast.green{background:var(--green)}
-.toast.red{background:var(--red)}
+.toast.success{background:#1A4A1A;box-shadow:0 8px 32px rgba(0,200,0,.2)}
+.toast.error{background:#4A1A1A}
 
-/* ── AUTH MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:400;align-items:flex-start;justify-content:center;padding:48px 16px 24px;overflow-y:auto;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex}
-.auth-box{background:var(--white);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22);position:relative}
-.auth-close{position:absolute;top:13px;right:13px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;color:var(--muted);font-family:inherit;line-height:1}
-.auth-close:hover{background:var(--border);color:var(--ink)}
-.auth-tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px}
-.auth-tab{flex:1;padding:8px;border:none;background:transparent;font-size:13px;font-weight:600;color:var(--muted);border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
-.auth-tab.on{background:var(--white);color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.auth-err{background:var(--red-l);color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none}
-
-/* ── SECTION LAYOUT ── */
-.sec{padding:68px 20px}
-.sec-in{max-width:1200px;margin:0 auto}
-.sec-sm{padding:44px 20px}
-.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
-.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px;line-height:1.15}
-.sec-sub{font-size:15px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:40px}
-
-/* ── PAGE HERO ── */
-.page-hero{background:linear-gradient(135deg,var(--blue-l),var(--green-l));padding:48px 20px 40px}
-.page-hero-in{max-width:1200px;margin:0 auto}
-.breadcrumb{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--light);margin-bottom:14px}
-.breadcrumb a{color:var(--blue);text-decoration:none}
-.page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:var(--ink);margin-bottom:8px}
-.page-hero p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7}
-
-/* ── CAMPAIGN BANNER ── */
-.camp-banner{background:linear-gradient(90deg,var(--orange),#ea580c);padding:10px 20px;text-align:center;color:var(--white);font-size:13px;font-weight:600;display:none;cursor:pointer}
-.camp-banner.on{display:block}
-
-/* ── FOOTER ── */
-footer{background:var(--ink);padding:52px 20px 24px}
-.footer-in{max-width:1200px;margin:0 auto}
-.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
-.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none}
-.footer-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.footer-logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--white)}
-.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.75;margin-bottom:12px}
-.footer-contact a{display:block;font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;margin-bottom:5px}
-.footer-contact a:hover{color:var(--white)}
-.footer-col h4{font-size:11px;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:8px;transition:color .15s}
-.footer-col a:hover{color:var(--white)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
-
-/* ── EMPTY STATE ── */
-.empty{text-align:center;padding:52px 24px}
-.empty-icon{font-size:52px;margin-bottom:14px}
-.empty h3{font-size:18px;font-weight:700;margin-bottom:6px}
-.empty p{font-size:14px;color:var(--muted);margin-bottom:18px}
-
-/* ── STATUS BADGES ── */
-.st-pending{background:#FFFBEB;color:#D97706}
-.st-reviewing{background:var(--blue-l);color:var(--blue)}
-.st-completed{background:var(--green-l);color:var(--green)}
-.st-rejected{background:var(--red-l);color:var(--red)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1024px){
-  .footer-top{grid-template-columns:1fr 1fr}
-  .nav-links{display:none}
-  .burger{display:block}
-}
-@media(max-width:640px){
-  .footer-top{grid-template-columns:1fr}
-  .g2{grid-template-columns:1fr}
-  .g3{grid-template-columns:1fr}
-  nav .cta-btn{display:none}
-}
-
-.acc-layout{max-width:1200px;margin:0 auto;padding:30px 20px 60px;display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:start}
-/* SIDEBAR */
-.sidebar{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
-.profile-block{padding:22px;text-align:center;border-bottom:1px solid var(--border)}
-.avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:var(--white);margin:0 auto 11px}
-.profile-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:2px}
-.profile-phone{font-size:13px;color:var(--light)}
-.verified-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-l);color:var(--green);font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;margin-top:8px}
-.snav{padding:8px 0}
-.snav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:11px 18px;color:var(--muted);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;border-radius:0}
-.snav-btn:hover{background:var(--bg);color:var(--ink)}
-.snav-btn.on{background:var(--blue-l);color:var(--blue);font-weight:600}
-.snav-icon{font-size:16px;width:20px;text-align:center}
-.snav-count{margin-left:auto;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:700;padding:2px 7px;border-radius:100px}
-/* MAIN */
-.main-col{display:flex;flex-direction:column;gap:18px}
-.tab-panel{display:none}.tab-panel.on{display:flex;flex-direction:column;gap:18px}
-/* STATS STRIP */
-.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.stat-tile{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;text-align:center}
-.st-num{font-size:26px;font-weight:800;color:var(--blue);line-height:1;margin-bottom:3px}
-.st-lbl{font-size:12px;color:var(--light)}
-/* DEVICE LIST */
-.device-list{display:flex;flex-direction:column;gap:10px}
-.dev-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px 17px;display:flex;align-items:center;gap:13px}
-.dev-icon{width:46px;height:46px;border-radius:11px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+/* RESPONSIVE NAV */
+@media(max-width:1100px){nav{padding:18px 28px}nav.scrolled{padding:12px 28px}.pg-hero{padding:120px 28px 60px}footer{padding:60px 28px 28px}.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links,.nav-right{display:none}.burger{display:block}.foot-top{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.reveal,.reveal-left{opacity:1;transform:none;transition:none}.ticker-track{animation-duration:.001ms}}
+.acc-layout{max-width:1280px;margin:0 auto;padding:0 48px 80px;display:grid;grid-template-columns:260px 1fr;gap:1px;background:rgba(255,255,255,.05)}
+.sidebar{background:var(--ink);padding:32px 0}
+.profile-block{padding:0 24px 28px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px;text-align:center}
+.avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#FF8533);display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:28px;font-weight:600;color:#fff;margin:0 auto 14px}
+.prof-name{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--cream);margin-bottom:3px;letter-spacing:-.2px}
+.prof-phone{font-size:12px;color:rgba(242,237,230,.3);font-weight:300}
+.verified{display:inline-flex;align-items:center;gap:4px;background:rgba(100,200,100,.08);color:rgba(100,200,100,.7);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 10px;margin-top:10px}
+.snav-btn{width:100%;display:flex;align-items:center;gap:10px;padding:13px 24px;color:rgba(242,237,230,.4);font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;background:none;border:none;cursor:none;font-family:inherit;text-align:left;transition:all .15s}
+.snav-btn:hover{color:var(--cream);background:rgba(255,255,255,.03)}
+.snav-btn.on{color:var(--orange);background:rgba(255,77,0,.06)}
+.snav-count{margin-left:auto;background:var(--orange);color:#fff;font-size:10px;font-weight:800;padding:2px 7px}
+.main-col{background:var(--ink);padding:32px 40px}
+.tab-panel{display:none}.tab-panel.on{display:block}
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);margin-bottom:32px}
+.stat-tile{background:var(--ink);padding:24px;text-align:center}
+.st-num{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--orange);line-height:1;margin-bottom:5px;letter-spacing:-1px}
+.st-lbl{font-size:10px;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:1px}
+.dev-list{display:flex;flex-direction:column;gap:1px}
+.dev-card{background:#0D0D10;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:background .15s}
+.dev-card:hover{background:#111116}
+.dev-icon{width:44px;height:44px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .dev-info{flex:1;min-width:0}
-.dev-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dev-meta{font-size:12px;color:var(--light)}
+.dev-name{font-family:var(--f-display);font-size:16px;font-weight:600;color:var(--cream);margin-bottom:2px;letter-spacing:-.2px}
+.dev-meta{font-size:11px;color:rgba(242,237,230,.3);font-weight:300}
 .dev-right{text-align:right;flex-shrink:0}
-.dev-price{font-size:15px;font-weight:700;color:var(--blue)}
-.dev-status{display:inline-flex;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;margin-top:4px}
-/* PROFILE FORM */
-.profile-form{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px}
-.form-section-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.save-btn{background:var(--blue);color:var(--white);border:none;padding:10px 20px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
-.save-btn:hover{background:var(--blue-d)}
-.divider{height:1px;background:var(--border);margin:20px 0}
-/* NOT LOGGED IN */
-.not-logged{display:none;text-align:center;padding:80px 20px}
-.not-logged.on{display:block}
-/* RESP */
-@media(max-width:768px){.acc-layout{grid-template-columns:1fr}.stats-strip{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.stats-strip{grid-template-columns:1fr}}
+.dev-price{font-family:var(--f-display);font-size:18px;font-weight:600;color:var(--orange);letter-spacing:-.3px}
+.dev-status{display:inline-flex;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;margin-top:4px}
+.ds-pending{background:rgba(255,200,0,.08);color:rgba(255,200,0,.7)}
+.ds-reviewing{background:rgba(100,140,255,.08);color:rgba(140,170,255,.7)}
+.ds-completed{background:rgba(100,200,100,.08);color:rgba(100,200,100,.7)}
+.ds-rejected{background:rgba(255,77,0,.08);color:var(--orange)}
+.form-section{margin-bottom:28px}
+.form-section-title{font-size:11px;font-weight:700;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.save-btn{background:var(--orange);color:#fff;border:none;padding:11px 24px;font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.save-btn:hover{background:var(--orange-d)}
+.divider{height:1px;background:rgba(255,255,255,.05);margin:28px 0}
+.not-logged{text-align:center;padding:100px 20px}
+.not-logged h2{font-family:var(--f-display);font-size:40px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:-.5px}
+.not-logged p{color:rgba(242,237,230,.3);margin-bottom:24px;font-weight:300}
+.logout-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(242,237,230,.6);padding:8px 18px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:all .15s}
+.logout-btn:hover{background:rgba(255,77,0,.1);border-color:rgba(255,77,0,.3);color:var(--orange)}
+@media(max-width:900px){.acc-layout{grid-template-columns:1fr;padding:0 28px 60px}.stats-strip{grid-template-columns:1fr 1fr}}
 </style>
-</head>
-<body>
-<nav>
-  <div class="nav-wrap">
-    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
-    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="account.html" class="nl active">Account</a></div>
-    <div class="nav-right">
-      <button class="acct-btn" style="border:1.5px solid var(--border);background:none;cursor:pointer;font-family:inherit" onclick="doLogout()">Logout</button>
-    </div>
-    <button class="burger" onclick="document.getElementById('mobileNav').classList.toggle('open')">☰</button>
-  </div>
-  <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><button onclick="doLogout()" style="background:none;border:none;border-bottom:1px solid var(--bg);padding:13px 20px;font-size:15px;cursor:pointer;font-family:inherit;text-align:left;color:var(--red);width:100%">Logout</button></div>
-</nav>
-
-<!-- NOT LOGGED IN -->
-<div class="not-logged" id="notLogged">
-  <div style="font-size:64px;margin-bottom:16px">🔐</div>
-  <h2 style="font-size:22px;font-weight:800;margin-bottom:8px">Please login first</h2>
-  <p style="color:var(--muted);margin-bottom:20px">Login or register to see your account</p>
-  <a href="index.html" class="btn btn-primary">Go to Homepage →</a>
-</div>
-
-<div class="page-hero" id="pageHero" style="display:none">
-  <div class="page-hero-in">
-    <h1>My Account</h1>
-    <p id="helloText">Manage your profile, track sells and purchases.</p>
-  </div>
-</div>
-
-<div class="acc-layout" id="accLayout" style="display:none">
-  <!-- SIDEBAR -->
-  <div>
-    <div class="sidebar">
-      <div class="profile-block">
-        <div class="avatar" id="avEl">?</div>
-        <div class="profile-name" id="profName">—</div>
-        <div class="profile-phone" id="profPhone">—</div>
-        <div class="verified-badge">✓ Verified Customer</div>
-      </div>
-      <div class="snav">
-        <button class="snav-btn on" onclick="goTab('overview',this)"><span class="snav-icon">📊</span>Overview</button>
-        <button class="snav-btn" onclick="goTab('sells',this)"><span class="snav-icon">💸</span>My Sells<span class="snav-count" id="scBadge">0</span></button>
-        <button class="snav-btn" onclick="goTab('purchases',this)"><span class="snav-icon">🛒</span>My Purchases<span class="snav-count" id="pcBadge">0</span></button>
-        <button class="snav-btn" onclick="goTab('profile',this)"><span class="snav-icon">👤</span>Profile & Settings</button>
-      </div>
-    </div>
-  </div>
-  <!-- MAIN CONTENT -->
-  <div class="main-col">
-
-    <!-- OVERVIEW -->
-    <div class="tab-panel on" id="tab-overview">
-      <div class="stats-strip">
-        <div class="stat-tile"><div class="st-num" id="ovSells">0</div><div class="st-lbl">Phones Sold</div></div>
-        <div class="stat-tile"><div class="st-num" id="ovBuys">0</div><div class="st-lbl">Phones Bought</div></div>
-        <div class="stat-tile"><div class="st-num" id="ovEarned">₹0</div><div class="st-lbl">Total Earned</div></div>
-      </div>
-      <div class="card">
-        <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">Recent Activity</h3>
-        <div class="device-list" id="recentList"></div>
-      </div>
-    </div>
-
-    <!-- MY SELLS -->
-    <div class="tab-panel" id="tab-sells">
-      <div class="card">
-        <h3 style="font-size:15px;font-weight:700;margin-bottom:4px">My Sell Requests</h3>
-        <p style="font-size:13px;color:var(--light);margin-bottom:16px">All phones you've submitted to sell</p>
-        <div class="device-list" id="sellsList"></div>
-      </div>
-    </div>
-
-    <!-- MY PURCHASES -->
-    <div class="tab-panel" id="tab-purchases">
-      <div class="card">
-        <h3 style="font-size:15px;font-weight:700;margin-bottom:4px">My Purchases</h3>
-        <p style="font-size:13px;color:var(--light);margin-bottom:16px">Devices you've bought from us</p>
-        <div id="purchasesList">
-          <div class="empty"><div class="empty-icon">🛒</div><h3>No purchases yet</h3><p>Browse our certified devices</p><a href="buy.html" class="btn btn-primary">Browse Devices →</a></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROFILE -->
-    <div class="tab-panel" id="tab-profile">
-      <div class="profile-form">
-        <div class="form-section-title">Personal Information</div>
-        <div class="fg"><label>Full Name</label><input type="text" id="eName" placeholder="Full name"></div>
-        <div class="fg"><label>Primary Mobile</label><input type="tel" id="ePhone" readonly style="background:var(--bg);color:var(--light);cursor:not-allowed"><div class="hint">Primary number cannot be changed. Contact support if needed.</div></div>
-        <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="eAlt" placeholder="Second number" maxlength="10"></div>
-        <button class="save-btn" onclick="saveProfile()">Save Changes</button>
-        <div class="divider"></div>
-        <div class="form-section-title">Change Password</div>
-        <div class="fg"><label>Current Password</label><input type="password" id="curPw" placeholder="Current password"></div>
-        <div class="fg"><label>New Password</label><input type="password" id="newPw" placeholder="New password (min 6 chars)"></div>
-        <div class="fg"><label>Confirm New Password</label><input type="password" id="conPw" placeholder="Repeat new password"></div>
-        <button class="save-btn" onclick="changePw()">Update Password</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<footer>
-  <div class="footer-in">
-    <div class="footer-bottom">
-      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
-      <p>1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</p>
-    </div>
-  </div>
-</footer>
-
-<div class="toast-wrap" id="tw"></div>
-<script>
-// ================================================================
+<script>// ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
 // All pages load this file first
@@ -518,100 +389,274 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
-
 </script>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
+  <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl">About</a></div>
+  <div class="nav-right">
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+    <a href="sell.html" class="nav-cta">Get My Price</a>
+  </div>
+  <button class="burger" onclick="openMobNav()">☰</button>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="index.html" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="sell.html" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="buy.html" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="account.html" onclick="closeMobNav()">Account</a>
+  <a class="mob-nl" style="color:var(--orange)" onclick="doLogout()">Logout</a>
+</div>
+
+<div class="pg-hero">
+  <div class="pg-hero-bg-grid"></div>
+  <div class="pg-hero-in">
+    <div class="pg-eyebrow">Your account</div>
+    <h1 class="pg-h1" id="helloH1">My <em>Account.</em></h1>
+    <p class="pg-sub">Track your sells, purchases and profile settings.</p>
+  </div>
+</div>
+
+<!-- NOT LOGGED IN -->
+<div class="not-logged" id="notLogged" style="display:none">
+  <div style="font-size:64px;margin-bottom:18px">🔐</div>
+  <h2>Please login first.</h2>
+  <p>Your sell history and purchases are only visible when logged in.</p>
+  <a href="index.html" class="btn-p">Go to Homepage →</a>
+</div>
+
+<!-- ACCOUNT LAYOUT -->
+<div class="acc-layout" id="accLayout" style="display:none">
+  <div class="sidebar">
+    <div class="profile-block">
+      <div class="avatar" id="avEl">A</div>
+      <div class="prof-name" id="profName">—</div>
+      <div class="prof-phone" id="profPhone">—</div>
+      <div class="verified">✓ Verified</div>
+    </div>
+    <div>
+      <button class="snav-btn on" onclick="goTab('overview',this)">📊 Overview</button>
+      <button class="snav-btn" onclick="goTab('sells',this)">💸 My Sells <span class="snav-count" id="scBadge">0</span></button>
+      <button class="snav-btn" onclick="goTab('purchases',this)">🛒 My Purchases</button>
+      <button class="snav-btn" onclick="goTab('profile',this)">👤 Profile</button>
+    </div>
+  </div>
+  <div class="main-col">
+    <!-- OVERVIEW -->
+    <div class="tab-panel on" id="tab-overview">
+      <div class="stats-strip">
+        <div class="stat-tile"><div class="st-num" id="ovSells">0</div><div class="st-lbl">Phones Sold</div></div>
+        <div class="stat-tile"><div class="st-num" id="ovBuys">0</div><div class="st-lbl">Phones Bought</div></div>
+        <div class="stat-tile"><div class="st-num" id="ovEarned">₹0</div><div class="st-lbl">Total Earned</div></div>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px">Recent Activity</div>
+      <div class="dev-list" id="recentList"></div>
+    </div>
+    <!-- MY SELLS -->
+    <div class="tab-panel" id="tab-sells">
+      <div style="font-size:11px;font-weight:700;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px">All Sell Requests</div>
+      <div class="dev-list" id="sellsList"></div>
+    </div>
+    <!-- PURCHASES -->
+    <div class="tab-panel" id="tab-purchases">
+      <div style="font-family:var(--f-display);font-size:32px;font-weight:600;color:rgba(242,237,230,.2);text-align:center;padding:60px 0">No purchases yet.<br><a href="buy.html" style="color:var(--orange);font-size:20px">Browse devices →</a></div>
+    </div>
+    <!-- PROFILE -->
+    <div class="tab-panel" id="tab-profile">
+      <div class="form-section">
+        <div class="form-section-title">Personal Information</div>
+        <div class="fg"><label>Full Name</label><input type="text" id="eName" placeholder="Your full name"></div>
+        <div class="fg"><label>Primary Mobile</label><input type="tel" id="ePhone" readonly style="opacity:.4;cursor:not-allowed"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">Primary number cannot be changed.</div></div>
+        <div class="fg"><label>Alternate Mobile <span class="opt">optional</span></label><input type="tel" id="eAlt" placeholder="Second number" maxlength="10"></div>
+        <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+      </div>
+      <div class="divider"></div>
+      <div class="form-section">
+        <div class="form-section-title">Change Password</div>
+        <div class="fg"><label>Current Password</label><input type="password" id="curPw" placeholder="Current password"></div>
+        <div class="fg"><label>New Password</label><input type="password" id="newPw" placeholder="New password (min 6 chars)"></div>
+        <div class="fg"><label>Confirm New Password</label><input type="password" id="conPw" placeholder="Repeat new password"></div>
+        <button class="save-btn" onclick="changePw()">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="authModal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2>Welcome<br><em style="font-style:italic;color:var(--orange)">back.</em></h2>
+    <p class="auth-sub">Login or create an account to track your sells & purchases</p>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabL" onclick="authSwitch('login')">Login</button>
+      <button class="auth-tab" id="tabR" onclick="authSwitch('reg')">Register</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Login →</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Primary Mobile</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap"></div>
+<footer>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="admin.html">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="account.html">My Account</a><a href="about.html">About Us</a><a href="blog.html">Blog</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
+    </div>
+  </div>
+</footer>
 <script>
-var CU = null, mySells = [];
-var ICONS = {iphone:'📱',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
-var SLBL  = {pending:'⏳ Pending',reviewing:'🔍 Reviewing',completed:'✅ Completed',rejected:'❌ Rejected'};
-var SCLS  = {pending:'st-pending',reviewing:'st-reviewing',completed:'st-completed',rejected:'st-rejected'};
 
-function init() {
-  CU = SMB.customer.current();
-  if (!CU) { document.getElementById('notLogged').classList.add('on'); return; }
-  document.getElementById('pageHero').style.display = '';
-  document.getElementById('accLayout').style.display = '';
-  document.getElementById('helloText').textContent = 'Welcome back, ' + CU.name.split(' ')[0] + '!';
-  document.getElementById('avEl').textContent = CU.name.charAt(0).toUpperCase();
-  document.getElementById('profName').textContent = CU.name;
-  document.getElementById('profPhone').textContent = '+91 ' + CU.phone;
-  mySells = SMB.sells.forCustomer(CU.id);
-  document.getElementById('scBadge').textContent = mySells.length;
-  document.getElementById('pcBadge').textContent = CU.buyCount || 0;
-  document.getElementById('ovSells').textContent = mySells.length;
-  document.getElementById('ovBuys').textContent = CU.buyCount || 0;
-  var earned = mySells.filter(function(s){return s.status==='completed';}).reduce(function(sum,s){return sum+(parseInt(s.askingPrice)||0);},0);
-  document.getElementById('ovEarned').textContent = earned ? SMB.Rs(earned) : '₹0';
-  renderSells(); renderRecent(); fillProfile();
-}
+// ── CURSOR ──────────────────────────────────────────────────────────
+(function(){
+  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
+  if(!c||!r)return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    c.style.left=mx+'px';c.style.top=my+'px';
+  });
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
+    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
+  });
+})();
 
-function renderSells() {
-  var el = document.getElementById('sellsList');
-  if (!mySells.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📱</div><h3>No sell requests yet</h3><p>Submit your first phone for instant cash</p><a href="sell.html" class="btn btn-primary">Sell a Phone →</a></div>'; return; }
-  el.innerHTML = mySells.slice().reverse().map(function(s) {
-    var dt = (s.brand||'').toLowerCase(), icon = ICONS[dt]||'📱';
-    var name = [s.brand,s.model,s.storage].filter(Boolean).join(' ') || s.device || 'Device';
-    var st = s.status||'pending';
-    return '<div class="dev-card"><div class="dev-icon">'+icon+'</div>'
-      +'<div class="dev-info"><div class="dev-name">'+name+'</div>'
-      +'<div class="dev-meta">'+SMB.fmtDate(s.createdAt)+(s.condition?' · '+s.condition:'')+'</div></div>'
-      +'<div class="dev-right"><div class="dev-price">'+(s.askingPrice?SMB.Rs(s.askingPrice):'—')+'</div>'
-      +'<div class="dev-status '+SCLS[st]+'">'+SLBL[st]+'</div></div></div>';
-  }).join('');
+// ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
+(function(){
+  function tick(){
+    var scrolled=window.scrollY,total=document.body.scrollHeight-window.innerHeight;
+    var p=document.getElementById('progress');if(p)p.style.width=(scrolled/total*100)+'%';
+    var nav=document.querySelector('nav');if(nav)nav.classList.toggle('scrolled',scrolled>50);
+    document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
+      if(el.getBoundingClientRect().top<window.innerHeight*.88)el.classList.add('in');
+    });
+  }
+  window.addEventListener('scroll',tick,{passive:true});
+  setTimeout(tick,80);
+})();
+
+// ── MOBILE NAV ──────────────────────────────────────────────────────
+function openMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+// ── AUTH ────────────────────────────────────────────────────────────
+function openAuth(){var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeAuth(){var m=document.getElementById('authModal');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+function authSwitch(tab){
+  var tl=document.getElementById('tabL'),tr=document.getElementById('tabR');
+  var fl=document.getElementById('loginForm'),fr=document.getElementById('regForm');
+  var err=document.getElementById('authErr');
+  if(tl)tl.classList.toggle('on',tab==='login');if(tr)tr.classList.toggle('on',tab==='reg');
+  if(fl)fl.style.display=tab==='login'?'':'none';if(fr)fr.style.display=tab==='reg'?'':'none';
+  if(err)err.style.display='none';
 }
-function renderRecent() {
-  var el = document.getElementById('recentList');
-  var recent = mySells.slice().reverse().slice(0,5);
-  if (!recent.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">✨</div><h3>Nothing here yet</h3><p>Start by selling your phone</p><a href="sell.html" class="btn btn-primary">Sell a Phone →</a></div>'; return; }
-  el.innerHTML = recent.map(function(s) {
-    var dt = (s.brand||'').toLowerCase(), icon = ICONS[dt]||'📱';
-    var name = [s.brand,s.model,s.storage].filter(Boolean).join(' ') || 'Device';
-    var st = s.status||'pending';
-    return '<div class="dev-card"><div class="dev-icon">'+icon+'</div>'
-      +'<div class="dev-info"><div class="dev-name">'+name+'</div><div class="dev-meta">Sell · '+SMB.fmtDate(s.createdAt)+'</div></div>'
-      +'<div class="dev-right"><div class="dev-status '+SCLS[st]+'">'+SLBL[st]+'</div></div></div>';
-  }).join('');
+function showAuthErr(msg){var e=document.getElementById('authErr');if(e){e.textContent=msg;e.style.display='block';}}
+function doLogin(){
+  var ph=(document.getElementById('lPhone').value||'').trim();
+  var pw=(document.getElementById('lPw').value||'').trim();
+  if(!ph||!pw){showAuthErr('Enter your phone number and password.');return;}
+  SMB.customer.login(ph,pw).then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome back, '+r.customer.name.split(' ')[0]+'!');
+  });
 }
-function fillProfile() {
-  document.getElementById('eName').value = CU.name||'';
-  document.getElementById('ePhone').value = CU.phone||'';
-  document.getElementById('eAlt').value = CU.altPhone||'';
+function doRegister(){
+  var name=(document.getElementById('rName').value||'').trim();
+  var ph=(document.getElementById('rPhone').value||'').trim();
+  var alt=(document.getElementById('rAlt').value||'').trim();
+  var pw=(document.getElementById('rPw').value||'').trim();
+  if(!name){showAuthErr('Enter your full name.');return;}
+  if(ph.length<10){showAuthErr('Enter a valid 10-digit mobile number.');return;}
+  if(pw.length<6){showAuthErr('Password must be at least 6 characters.');return;}
+  SMB.customer.register(name,ph,alt,pw,'').then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome, '+name.split(' ')[0]+'! Account created.');
+  });
 }
-function goTab(tab, btn) {
-  document.querySelectorAll('.tab-panel').forEach(function(el){el.classList.remove('on');});
-  document.querySelectorAll('.snav-btn').forEach(function(el){el.classList.remove('on');});
-  document.getElementById('tab-'+tab).classList.add('on');
-  btn.classList.add('on');
-}
-function saveProfile() {
-  var name = (document.getElementById('eName').value||'').trim();
-  var alt  = (document.getElementById('eAlt').value||'').trim();
-  if (!name) { showToast('Name cannot be empty','red'); return; }
-  SMB.customer.update(CU.id, {name:name, altPhone:alt});
-  CU = SMB.customer.current();
-  document.getElementById('profName').textContent = name;
-  document.getElementById('avEl').textContent = name.charAt(0).toUpperCase();
-  showToast('Profile updated!','green');
-}
-function changePw() {
-  var cur  = (document.getElementById('curPw').value||'').trim();
-  var nw   = (document.getElementById('newPw').value||'').trim();
-  var conf = (document.getElementById('conPw').value||'').trim();
-  if (!cur||!nw) { showToast('Fill all password fields','red'); return; }
-  if (SMB.hash(cur) !== CU.pwHash) { showToast('Current password incorrect','red'); return; }
-  if (nw.length < 6) { showToast('New password must be 6+ chars','red'); return; }
-  if (nw !== conf) { showToast('New passwords do not match','red'); return; }
-  SMB.customer.update(CU.id, {pwHash: SMB.hash(nw)});
-  ['curPw','newPw','conPw'].forEach(function(id){document.getElementById(id).value='';});
-  showToast('Password updated!','green');
-}
-function doLogout() { SMB.customer.logout(); location.href = 'index.html'; }
-function showToast(msg, type) {
-  var w=document.getElementById('tw');var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;w.appendChild(t);
+function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out.');}
+
+// ── TOAST ────────────────────────────────────────────────────────────
+function showToast(msg,type){
+  var wrap=document.querySelector('.toast-wrap');if(!wrap)return;
+  var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  wrap.appendChild(t);
   requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
-  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},300);},3200);
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},3800);
 }
-document.addEventListener('DOMContentLoaded', init);
+
+// ── BACKDROP CLOSE ────────────────────────────────────────────────────
+document.addEventListener('click',function(e){
+  if(e.target.id==='authModal')closeAuth();
+});
+
+var CU=null,mySells=[];
+var ICONS={iphone:'📱',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕',airpods:'🎧',applewatch:'⌚',playstation:'🎮'};
+var SLBL={pending:'⏳ Pending',reviewing:'🔍 Reviewing',completed:'✅ Completed',rejected:'❌ Rejected'};
+var SCLS={pending:'ds-pending',reviewing:'ds-reviewing',completed:'ds-completed',rejected:'ds-rejected'};
+
+function init(){
+  CU=SMB.customer.current();
+  if(!CU){document.getElementById('notLogged').style.display='block';return;}
+  document.getElementById('accLayout').style.display='grid';
+  document.getElementById('helloH1').innerHTML='Hi, <em>'+CU.name.split(' ')[0]+'.</em>';
+  document.getElementById('avEl').textContent=CU.name.charAt(0).toUpperCase();
+  document.getElementById('profName').textContent=CU.name;
+  document.getElementById('profPhone').textContent='+91 '+CU.phone;
+  if(SB.configured()){SMB.sells.loadFromDB(CU.id).then(function(){mySells=SMB.sells.forCustomer(CU.id);refresh();});}
+  mySells=SMB.sells.forCustomer(CU.id);refresh();
+  fillProfile();
+}
+function refresh(){
+  document.getElementById('scBadge').textContent=mySells.length;
+  document.getElementById('ovSells').textContent=mySells.length;
+  document.getElementById('ovBuys').textContent=CU.buyCount||0;
+  var earned=mySells.filter(function(s){return s.status==='completed';}).reduce(function(sum,s){return sum+(parseInt(s.askingPrice)||0);},0);
+  document.getElementById('ovEarned').textContent=earned?SMB.Rs(earned):'₹0';
+  renderSells();renderRecent();
+}
+function devCard(s){
+  var dt=(s.brand||s.devType||'').toLowerCase(),icon=ICONS[dt]||'📱';
+  var name=[s.brand,s.model,s.storage].filter(Boolean).join(' ')||s.device||'Device';
+  var st=s.status||'pending';
+  return '<div class="dev-card"><div class="dev-icon">'+icon+'</div><div class="dev-info"><div class="dev-name">'+name+'</div><div class="dev-meta">'+SMB.fmtDate(s.createdAt)+(s.condition?' · '+s.condition:'')+'</div></div><div class="dev-right"><div class="dev-price">'+(s.askingPrice?SMB.Rs(s.askingPrice):'—')+'</div><div class="dev-status '+(SCLS[st]||'ds-pending')+'">'+(SLBL[st]||st)+'</div></div></div>';
+}
+function renderSells(){var el=document.getElementById('sellsList');if(!mySells.length){el.innerHTML='<div style="text-align:center;padding:60px;font-family:var(--f-display);font-size:28px;font-weight:600;color:rgba(242,237,230,.2)">No sells yet.<br><a href="sell.html" style="color:var(--orange);font-size:20px">Sell a phone →</a></div>';return;}el.innerHTML=mySells.slice().reverse().map(devCard).join('');}
+function renderRecent(){var el=document.getElementById('recentList');var recent=mySells.slice().reverse().slice(0,5);if(!recent.length){el.innerHTML='<div style="text-align:center;padding:60px;font-family:var(--f-display);font-size:28px;font-weight:600;color:rgba(242,237,230,.2)">Nothing yet.<br><a href="sell.html" style="color:var(--orange);font-size:20px">Sell your first phone →</a></div>';return;}el.innerHTML=recent.map(devCard).join('');}
+function fillProfile(){document.getElementById('eName').value=CU.name||'';document.getElementById('ePhone').value=CU.phone||'';document.getElementById('eAlt').value=CU.altPhone||'';}
+function goTab(tab,btn){document.querySelectorAll('.tab-panel').forEach(function(el){el.classList.remove('on');});document.querySelectorAll('.snav-btn').forEach(function(el){el.classList.remove('on');});document.getElementById('tab-'+tab).classList.add('on');btn.classList.add('on');}
+function saveProfile(){var name=(document.getElementById('eName').value||'').trim();var alt=(document.getElementById('eAlt').value||'').trim();if(!name){showToast('Name cannot be empty','error');return;}SMB.customer.update(CU.id,{name:name,altPhone:alt});CU=SMB.customer.current();document.getElementById('profName').textContent=name;document.getElementById('avEl').textContent=name.charAt(0).toUpperCase();showToast('Profile updated!','success');}
+function changePw(){var cur=(document.getElementById('curPw').value||'').trim();var nw=(document.getElementById('newPw').value||'').trim();var conf=(document.getElementById('conPw').value||'').trim();if(!cur||!nw){showToast('Fill all password fields','error');return;}if(SMB.hash(cur)!==CU.pwHash){showToast('Current password incorrect','error');return;}if(nw.length<6){showToast('New password must be 6+ chars','error');return;}if(nw!==conf){showToast('New passwords do not match','error');return;}SMB.customer.update(CU.id,{pwHash:SMB.hash(nw)});['curPw','newPw','conPw'].forEach(function(id){document.getElementById(id).value='';});showToast('Password updated!','success');}
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>

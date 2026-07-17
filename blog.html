@@ -3,185 +3,498 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blog — Sambhi Mobiles | Buy &amp; Sell Phones Delhi</title>
-<meta name="description" content="Expert guides on selling your phone for the best price in Delhi, buying certified pre-owned devices, and getting the most from your gadgets.">
+<title>Blog — Sambhi Mobiles | Sell & Buy Phones Delhi</title>
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* SAMBHI MOBILES — SHARED DESIGN SYSTEM */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--green:#16A34A;--green-l:#F0FDF4;--orange:#F97316;--ink:#0F172A;--muted:#64748B;--light:#94A3B8;--bg:#F8FAFC;--white:#fff;--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6}
-nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
-.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
-.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
-.logo-text strong{color:var(--blue)}
-.nav-links{display:flex;gap:2px;margin-left:16px}
-.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
-.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none}
-.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s}
-.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
-.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:99;box-shadow:var(--shadow-md)}
-.mobile-nav.open{display:flex}
-.mobile-nav a{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--bg)}
-/* HERO */
-.hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:64px 20px 52px}
-.hero-in{max-width:780px;margin:0 auto;text-align:center}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:16px;border:1px solid #BFDBFE}
-.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:900;color:var(--ink);line-height:1.1;letter-spacing:-1px;margin-bottom:14px}
-.hero p{font-size:16px;color:var(--muted);line-height:1.75}
-/* FEATURED */
-.featured{max-width:1200px;margin:0 auto;padding:52px 20px}
-.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:24px}
-.featured-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;margin-bottom:52px}
-.article-main{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-.article-main:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
-.art-img-main{height:260px;background:linear-gradient(135deg,#1e3a8a,#2563EB);display:flex;align-items:center;justify-content:center;font-size:72px;position:relative;overflow:hidden}
-.art-img-main::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.4))}
-.art-body{padding:24px}
-.art-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:8px}
-.art-title-main{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.25}
-.art-excerpt{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:14px}
-.art-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--light)}
-.art-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--light)}
-/* SIDE ARTICLES */
-.side-articles{display:flex;flex-direction:column;gap:14px}
-.article-side{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;gap:0;flex-direction:column}
-.article-side:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.art-img-side{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px}
-.art-body-side{padding:16px}
-.art-title-side{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.3}
-.art-excerpt-side{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
-/* ALL ARTICLES GRID */
-.all-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.article-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-.article-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
-.art-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:48px}
-.art-body-card{padding:20px}
-.art-title-card{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.3}
-.art-excerpt-card{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px}
-.read-more{font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:4px}
-/* ARTICLE MODAL */
-.art-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:500;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(4px)}
-.art-overlay.open{display:flex}
-.art-modal{background:var(--white);border-radius:20px;max-width:760px;width:100%;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
-.art-modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.9);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;font-family:inherit;z-index:1;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.art-modal-hero{height:200px;display:flex;align-items:center;justify-content:center;font-size:64px}
-.art-modal-body{padding:32px}
-.art-modal-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:10px}
-.art-modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--ink);margin-bottom:8px;line-height:1.2}
-.art-modal-meta{font-size:13px;color:var(--light);margin-bottom:28px}
-.art-modal-content h3{font-size:18px;font-weight:700;color:var(--ink);margin:24px 0 10px}
-.art-modal-content p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px}
-.art-modal-content ul{padding-left:20px;margin-bottom:16px}
-.art-modal-content li{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:8px}
-.art-modal-content strong{color:var(--ink);font-weight:700}
-.art-cta-box{background:linear-gradient(135deg,var(--blue-l),var(--green-l));border-radius:14px;padding:24px;margin-top:28px;text-align:center}
-.art-cta-box h4{font-size:18px;font-weight:800;margin-bottom:6px}
-.art-cta-box p{font-size:14px;color:var(--muted);margin-bottom:16px}
-.art-cta-box a{background:var(--blue);color:#fff;padding:11px 24px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
-/* NEWSLETTER */
-.newsletter{background:var(--ink);padding:56px 20px;text-align:center}
-.newsletter h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;margin-bottom:8px}
-.newsletter p{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:24px}
-.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
-.nl-input{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:12px 16px;border-radius:10px;font-size:14px;font-family:inherit;outline:none;min-width:200px}
-.nl-input::placeholder{color:rgba(255,255,255,.35)}
-.nl-input:focus{border-color:var(--blue)}
-.nl-btn{background:var(--blue);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+:root{
+  --ink:#0A0A0A;--ink2:#1C1C24;
+  --cream:#F2EDE6;--cream2:#EAE3DA;
+  --orange:#FF4D00;--orange-d:#CC3D00;
+  --white:#FFFFFF;--muted:#6B6B6B;--light:#94A3B8;
+  --border:rgba(255,255,255,.09);--border-d:rgba(0,0,0,.1);
+  --bg-dark:#0A0A0A;--bg-light:#F2EDE6;
+  --f-display:"Cormorant Garamond",Georgia,serif;
+  --f-body:"Inter",system-ui,sans-serif
+}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
+a,button{cursor:none}
+
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
+@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;letter-spacing:-.3px;flex-shrink:0}
+.nav-logo span{color:var(--orange)}
+.nav-links{display:flex;gap:28px;align-items:center;margin:0 auto}
+.nl{color:rgba(242,237,230,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;transition:color .2s}
+.nl:hover,.nl.active{color:var(--cream)}
+.nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.nav-cta{background:var(--orange);color:var(--white);padding:9px 22px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.nav-cta:hover{background:var(--orange-d)}
+.nav-acct{color:rgba(242,237,230,.5);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:inherit}
+.nav-acct:hover{color:var(--cream)}
+.burger{display:none;background:none;border:none;color:var(--cream);font-size:22px;padding:4px;cursor:none}
+.mob-nav{display:none;position:fixed;inset:0;background:var(--ink);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-nav.open{display:flex}
+.mob-nl{color:var(--cream);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
+.mob-nl:hover{color:var(--orange)}
+.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(242,237,230,.4);font-size:26px;cursor:none}
+
+/* PAGE HERO (dark) */
+.pg-hero{padding:140px 48px 72px;background:var(--ink);position:relative;overflow:hidden}
+.pg-hero-in{max-width:1280px;margin:0 auto}
+.pg-eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.pg-eyebrow::before{content:'';width:20px;height:1px;background:var(--orange)}
+.pg-h1{font-family:var(--f-display);font-size:clamp(44px,7vw,96px);font-weight:600;line-height:.95;letter-spacing:-2px;color:var(--cream);margin-bottom:18px}
+.pg-h1 em{font-style:italic;color:var(--orange)}
+.pg-h1 .outline{-webkit-text-stroke:1.5px rgba(242,237,230,.4);color:transparent}
+.pg-sub{font-size:15px;color:rgba(242,237,230,.45);max-width:520px;line-height:1.8;font-weight:300}
+.pg-hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,0,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
+
+/* SECTION LABELS */
+.sec-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.sec-eyebrow-light{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.35);margin-bottom:16px}
+.sec-title{font-family:var(--f-display);font-size:clamp(32px,5vw,64px);font-weight:600;line-height:1.0;letter-spacing:-1.5px}
+.sec-title em{font-style:italic;color:var(--orange)}
+.sec-title.dark{color:var(--ink)}
+.sec-title.light{color:var(--cream)}
+.sec-title .outline{-webkit-text-stroke:1px currentColor;color:transparent}
+
+/* BUTTONS */
+.btn-p{display:inline-block;background:var(--orange);color:var(--white);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-p:hover{background:var(--orange-d);transform:translateY(-2px)}
+.btn-dark{display:inline-block;background:var(--ink);color:var(--cream);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-dark:hover{background:var(--orange)}
+.btn-ghost{display:inline-block;background:transparent;color:var(--cream);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(242,237,230,.25);transition:all .2s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--cream)}
+.btn-ghost-dark{display:inline-block;background:transparent;color:var(--ink);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(10,10,10,.25);transition:all .2s;font-family:inherit}
+.btn-ghost-dark:hover{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+
+/* TICKER */
+.ticker{background:var(--orange);padding:15px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);padding:0 28px}
+.ticker-item .sep{color:rgba(255,255,255,.4);margin:0 12px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 /* FOOTER */
-footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:24px 20px}
-.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
-.footer-links{display:flex;gap:16px}
-.footer-links a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
-.footer-links a:hover{color:#fff}
-@media(max-width:1024px){.featured-grid{grid-template-columns:1fr}.all-grid{grid-template-columns:repeat(2,1fr)}.nav-links{display:none}.burger{display:block}}
-@media(max-width:640px){.all-grid{grid-template-columns:1fr}.nl-form{flex-direction:column}}
+footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,255,255,.04)}
+.foot-in{max-width:1280px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.foot-logo{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--cream);margin-bottom:14px;display:block}
+.foot-logo span{color:var(--orange)}
+.foot-desc{font-size:13px;color:rgba(242,237,230,.28);line-height:1.85;margin-bottom:18px;font-weight:300}
+.foot-contact a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:6px;transition:color .15s;font-weight:300}
+.foot-contact a:hover{color:var(--cream)}
+.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.2);margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:10px;transition:color .15s;font-weight:300}
+.foot-col a:hover{color:var(--cream)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-bottom p{font-size:11px;color:rgba(242,237,230,.18);letter-spacing:.3px}
+
+/* AUTH MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
+.modal-bg.open{display:flex}
+.auth-box{background:#141418;border:1px solid rgba(255,255,255,.09);padding:48px;width:100%;max-width:400px;position:relative}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(242,237,230,.3);font-size:20px;cursor:none;font-family:inherit;transition:color .15s}
+.auth-close:hover{color:var(--cream)}
+.auth-box h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:-.5px}
+.auth-box .auth-sub{font-size:13px;color:rgba(242,237,230,.3);margin-bottom:28px;font-weight:300}
+.auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08)}
+.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);cursor:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab.on{color:var(--orange);border-bottom-color:var(--orange)}
+.auth-err{background:rgba(255,77,0,.12);color:var(--orange);border:1px solid rgba(255,77,0,.25);padding:10px 13px;font-size:12px;margin-bottom:12px;display:none;font-weight:500}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);margin-bottom:7px}
+.fg label .opt{color:rgba(242,237,230,.18);font-weight:400;text-transform:none;letter-spacing:0}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:var(--cream);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--orange)}
+.fg input.err{border-color:var(--orange);background:rgba(255,77,0,.06)}
+.fg input.ok{border-color:rgba(100,200,100,.4)}
+.fg textarea{resize:none;height:80px}
+.fg .hint{font-size:11px;color:rgba(242,237,230,.25);margin-top:5px;line-height:1.5}
+.fg .hint.ok{color:rgba(100,200,100,.7)}
+.fg .hint.err{color:var(--orange)}
+.auth-btn{width:100%;background:var(--orange);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.auth-btn:hover{background:var(--orange-d)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease}
+.reveal-left.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:9999;pointer-events:none}
+.toast{background:var(--orange);color:var(--white);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 32px rgba(255,77,0,.35);transform:translateY(16px);opacity:0;transition:all .3s;margin-top:8px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#1A4A1A;box-shadow:0 8px 32px rgba(0,200,0,.2)}
+.toast.error{background:#4A1A1A}
+
+/* RESPONSIVE NAV */
+@media(max-width:1100px){nav{padding:18px 28px}nav.scrolled{padding:12px 28px}.pg-hero{padding:120px 28px 60px}footer{padding:60px 28px 28px}.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links,.nav-right{display:none}.burger{display:block}.foot-top{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.reveal,.reveal-left{opacity:1;transform:none;transition:none}.ticker-track{animation-duration:.001ms}}
+/* BLOG */
+.blog-grid{max-width:1280px;margin:0 auto;padding:48px 48px 80px;display:grid;grid-template-columns:1.5fr 1fr;gap:1px;background:rgba(255,255,255,.05)}
+.featured-card{background:var(--ink);cursor:none;transition:background .2s}
+.featured-card:hover{background:#111118}
+.fc-img{height:300px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden}
+.fc-body{padding:32px 36px}
+.fc-cat{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.fc-title{font-family:var(--f-display);font-size:clamp(22px,3vw,32px);font-weight:600;color:var(--cream);margin-bottom:12px;line-height:1.2;letter-spacing:-.4px}
+.fc-excerpt{font-size:13px;color:rgba(242,237,230,.35);line-height:1.8;margin-bottom:16px;font-weight:300}
+.fc-meta{font-size:11px;color:rgba(242,237,230,.2);letter-spacing:.3px}
+.read-link{color:var(--orange);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.side-cards{background:var(--ink);display:flex;flex-direction:column;gap:1px}
+.side-card{background:#0D0D10;padding:24px 28px;cursor:none;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.04)}
+.side-card:last-child{border:none}
+.side-card:hover{background:#111118}
+.sc-cat{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.sc-title{font-family:var(--f-display);font-size:18px;font-weight:600;color:var(--cream);margin-bottom:6px;line-height:1.25;letter-spacing:-.2px}
+.sc-excerpt{font-size:12px;color:rgba(242,237,230,.3);line-height:1.7;font-weight:300}
+.all-grid{max-width:1280px;margin:0 auto;padding:0 48px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.blog-card{background:var(--ink);cursor:none;transition:background .2s}
+.blog-card:hover{background:#111118}
+.bc-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:52px}
+.bc-body{padding:24px 28px}
+.bc-cat{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.bc-title{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--cream);margin-bottom:8px;line-height:1.25;letter-spacing:-.2px}
+.bc-excerpt{font-size:12px;color:rgba(242,237,230,.3);line-height:1.7;font-weight:300;margin-bottom:12px}
+/* ARTICLE MODAL */
+.art-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,.92);z-index:600;align-items:flex-start;justify-content:center;padding:80px 20px 40px;overflow-y:auto;backdrop-filter:blur(16px)}
+.art-overlay.open{display:flex}
+.art-modal{background:#0D0D10;border:1px solid rgba(255,255,255,.07);max-width:760px;width:100%;position:relative}
+.art-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:none;color:rgba(242,237,230,.4);font-size:18px;cursor:none;font-family:inherit;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.art-close:hover{background:rgba(255,77,0,.15);color:var(--orange)}
+.art-modal-hero{height:220px;display:flex;align-items:center;justify-content:center;font-size:72px}
+.art-modal-body{padding:36px}
+.art-modal-cat{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.art-modal-title{font-family:var(--f-display);font-size:clamp(24px,4vw,40px);font-weight:600;color:var(--cream);margin-bottom:8px;line-height:1.1;letter-spacing:-.5px}
+.art-modal-meta{font-size:11px;color:rgba(242,237,230,.2);margin-bottom:28px;letter-spacing:.3px}
+.art-modal-content h3{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--cream);margin:24px 0 10px;letter-spacing:-.2px}
+.art-modal-content p{font-size:14px;color:rgba(242,237,230,.45);line-height:1.85;margin-bottom:16px;font-weight:300}
+.art-modal-content ul{padding-left:20px;margin-bottom:16px}
+.art-modal-content li{font-size:14px;color:rgba(242,237,230,.45);line-height:1.85;margin-bottom:8px;font-weight:300}
+.art-modal-content strong{color:var(--cream);font-weight:600}
+.art-cta{background:rgba(255,77,0,.08);border:1px solid rgba(255,77,0,.2);padding:24px;margin-top:28px;text-align:center}
+.art-cta h4{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--cream);margin-bottom:6px}
+.art-cta p{font-size:13px;color:rgba(242,237,230,.35);margin-bottom:16px;font-weight:300}
+.section-divider{background:rgba(255,255,255,.04);padding:14px 48px;max-width:1280px;margin:0 auto;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.25)}
+@media(max-width:1024px){.blog-grid{grid-template-columns:1fr}.all-grid{grid-template-columns:1fr 1fr}.blog-grid,.all-grid,.section-divider{padding-left:28px;padding-right:28px}}
+@media(max-width:640px){.all-grid{grid-template-columns:1fr}}
 </style>
+<script>// ================================================================
+// SAMBHI MOBILES — SHARED.JS v3
+// Central data layer, auth, and utilities
+// All pages load this file first
+// ================================================================
+'use strict';
+
+var SMB = (function() {
+
+  // ── STORAGE KEYS ───────────────────────────────────────────────
+  var K = {
+    customers:    'smb_customers',
+    cust_sess:    'smb_cust_sess',
+    sell_reqs:    'smb_sell_reqs',
+    inv:          'smb_inv',
+    leads:        'smb_leads',
+    bills:        'smb_bills',
+    riders:       'smb_riders',
+    camps:        'smb_camps',
+    active_camp:  'smb_active_camp',
+    team:         'smb_team',
+    mult:         'smb_mult',
+    admin_sess:   'smb_sess',
+    notifs:       'smb_notifs',
+    invn:         'smb_invn',
+    videos:       'smb_videos'
+  };
+
+  // ── SAFE STORAGE ───────────────────────────────────────────────
+  function get(key) {
+    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
+    catch(e) { return null; }
+  }
+  function set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch(e) { return false; }
+  }
+  function arr(key) {
+    var v = get(key); return Array.isArray(v) ? v : [];
+  }
+
+  // ── HASH (djb2 — no plain text passwords stored) ──────────────
+  function hash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i);
+      h = h & h;
+    }
+    return 'smb_' + Math.abs(h).toString(16) + '_' + str.length;
+  }
+
+  // ── UTILITIES ──────────────────────────────────────────────────
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function now() { return new Date().toISOString(); }
+  function Rs(n) { return n ? '₹' + parseInt(n).toLocaleString('en-IN') : '—'; }
+  function fmtDate(d) {
+    return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  // ── CUSTOMER AUTH ──────────────────────────────────────────────
+  var SESSION_TTL = 12 * 60 * 60 * 1000; // 12 hours
+
+  var customer = {
+    all: function() { return arr(K.customers); },
+    save: function(list) { set(K.customers, list); },
+
+    byPhone: function(phone) {
+      var clean = (phone + '').replace(/\D/g, '').slice(-10);
+      return customer.all().find(function(c) {
+        return c.phone === clean || (c.altPhone && c.altPhone === clean);
+      }) || null;
+    },
+
+    register: function(name, phone, altPhone, password) {
+      phone = (phone + '').replace(/\D/g, '').slice(-10);
+      altPhone = altPhone ? (altPhone + '').replace(/\D/g, '').slice(-10) : '';
+      if (customer.byPhone(phone)) return { ok: false, err: 'Phone number already registered. Please login.' };
+      if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
+      var c = {
+        id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
+        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+      };
+      var list = customer.all(); list.push(c); customer.save(list);
+      customer.startSession(c);
+      notify.log(phone, 'registration', { name: name });
+      return { ok: true, customer: c };
+    },
+
+    login: function(phone, password) {
+      var c = customer.byPhone(phone);
+      if (!c) return { ok: false, err: 'No account found. Please register first.' };
+      if (c.pwHash !== hash(password)) return { ok: false, err: 'Incorrect password.' };
+      customer.startSession(c);
+      return { ok: true, customer: c };
+    },
+
+    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    logout: function() { localStorage.removeItem(K.cust_sess); },
+
+    current: function() {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return null;
+      if (Date.now() - sess.ts > SESSION_TTL) { localStorage.removeItem(K.cust_sess); return null; }
+      return customer.all().find(function(c) { return c.id === sess.id; }) || null;
+    },
+
+    update: function(id, changes) {
+      var list = customer.all();
+      var i = list.findIndex(function(c) { return c.id === id; });
+      if (i < 0) return false;
+      list[i] = Object.assign(list[i], changes);
+      customer.save(list); return true;
+    }
+  };
+
+  // ── SELL REQUESTS ──────────────────────────────────────────────
+  var sells = {
+    all: function() { return arr(K.sell_reqs); },
+    save: function(list) { set(K.sell_reqs, list); },
+
+    submit: function(data, custId) {
+      var req = Object.assign({}, data, {
+        id: uid(), customerId: custId || null,
+        status: 'pending', createdAt: now(), adminNote: ''
+      });
+      var list = sells.all(); list.push(req); sells.save(list);
+
+      // Mirror to admin leads
+      var leads = arr(K.leads);
+      leads.push({
+        id: req.id, name: data.name || '', phone: data.phone || '',
+        device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
+        devType: (data.brand || '').toLowerCase(),
+        model: data.model || '', storage: data.storage || '',
+        color: data.color || '', condition: data.condition || '',
+        battery: data.batteryHealth || '', imei: data.imei || '',
+        ram: data.ram || '',
+        accessories: data.accessories || [],
+        photos: data.photos || [],
+        askPrice: data.askingPrice || 0,
+        notes: [{ t: 'Website submission', at: now() }],
+        status: 'new', slot: data.slot || 'morning',
+        source: 'website', createdAt: now(), customerId: custId || null
+      });
+      set(K.leads, leads);
+
+      notify.log(data.phone || '', 'sell_received', { name: data.name, device: data.model });
+      return req;
+    },
+
+    forCustomer: function(custId) {
+      return sells.all().filter(function(r) { return r.customerId === custId; });
+    }
+  };
+
+  // ── INVENTORY ──────────────────────────────────────────────────
+  var inventory = {
+    all: function() { return arr(K.inv); },
+    visible: function() { return inventory.all().filter(function(i) { return i.visible; }); }
+  };
+
+  // ── NOTIFICATION STUB ──────────────────────────────────────────
+  // Structured for easy drop-in of paid API later
+  var notify = {
+    log: function(phone, template, data) {
+      console.log('[NOTIFY] phone=' + phone + ' tpl=' + template, data);
+      // Future: if (window.SMB_NOTIFY === 'twilio') { ... }
+      // Future: if (window.SMB_NOTIFY === 'interakt') { ... }
+    },
+    templates: {
+      registration:  'Welcome {name}! You are registered with Sambhi Mobiles. +91 7827505579',
+      sell_received: 'Hi {name}! We received your sell request for {device}. We will call within 2 hours.',
+      pickup_booked: 'Pickup confirmed for {device}. Rider on the way. +91 7827505579'
+    }
+  };
+
+  // Public API
+  return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
+})();
+
+// ── NAV STATE ──────────────────────────────────────────────────────
+function smbUpdateNav() {
+  var c = SMB.customer.current();
+  document.querySelectorAll('[data-guest]').forEach(function(el) {
+    el.style.display = c ? 'none' : '';
+  });
+  document.querySelectorAll('[data-auth]').forEach(function(el) {
+    el.style.display = c ? '' : 'none';
+  });
+  document.querySelectorAll('[data-cname]').forEach(function(el) {
+    el.textContent = c ? c.name.split(' ')[0] : '';
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', smbUpdateNav);
+} else { smbUpdateNav(); }
+</script>
 </head>
 <body>
-<nav>
-  <div class="nav-wrap">
-    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
-    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl">About</a><a href="blog.html" class="nl active">Blog</a></div>
-    <div class="nav-right">
-      <a href="sell.html" class="cta-btn">Sell Now →</a>
-      <a href="index.html" class="acct-btn" data-guest>Login</a>
-      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
-    </div>
-    <button class="burger" onclick="document.getElementById('mn').classList.toggle('open')">☰</button>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
+  <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl">About</a><a href="blog.html" class="nl active">Blog</a></div>
+  <div class="nav-right">
+    <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
+    <a href="account.html" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
+    <button class="nav-acct" data-auth style="display:none;font-size:12px;letter-spacing:.4px" onclick="doLogout()">Logout</button>
+    <a href="sell.html" class="nav-cta">Get My Price</a>
   </div>
-  <div class="mobile-nav" id="mn"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="blog.html">Blog</a></div>
+  <button class="burger" onclick="openMobNav()">☰</button>
 </nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="index.html" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="sell.html" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="buy.html" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="about.html" onclick="closeMobNav()">About</a>
+  <a class="mob-nl" href="blog.html" onclick="closeMobNav()">Blog</a>
+  <a class="mob-nl" href="sell.html">Sell Now →</a>
+</div>
 
-<section class="hero">
-  <div class="hero-in">
-    <div class="hero-tag">📖 Expert guides for Delhi</div>
-    <h1>Smart phone buying &amp; selling in Delhi</h1>
-    <p>Honest guides on getting the best price, choosing certified devices, and making secondhand phones work for you.</p>
+<div class="pg-hero">
+  <div class="pg-hero-bg-grid"></div>
+  <div class="pg-hero-in">
+    <div class="pg-eyebrow">Expert guides</div>
+    <h1 class="pg-h1">Buy & sell<br><em>smarter.</em></h1>
+    <p class="pg-sub">Honest guides on getting the best price, choosing certified devices, and making secondhand phones work for you.</p>
   </div>
-</section>
-
-<div class="featured">
-  <div class="section-title">Featured Articles</div>
-  <div class="featured-grid">
-    <a class="article-main" onclick="openArt(0);return false" href="#">
-      <div class="art-img-main" style="background:linear-gradient(135deg,#1e3a8a,#2563EB)">📱</div>
-      <div class="art-body">
-        <div class="art-cat">Selling Guide</div>
-        <div class="art-title-main">Why you should sell your old phone — right now, not later</div>
-        <div class="art-excerpt">Every month you wait, your phone loses 3–8% of its value. Here's exactly how much you're losing and how to stop the bleeding.</div>
-        <div class="art-meta"><span>Sambhi Mobiles</span><span class="dot"></span><span>8 min read</span><span class="dot"></span><span>Selling</span></div>
-      </div>
-    </a>
-    <div class="side-articles">
-      <a class="article-side" onclick="openArt(1);return false" href="#">
-        <div class="art-img-side" style="background:linear-gradient(135deg,#064e3b,#16A34A)">🛡️</div>
-        <div class="art-body-side">
-          <div class="art-cat" style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Buying Guide</div>
-          <div class="art-title-side">How to buy a secondhand iPhone safely in Delhi — the complete checklist</div>
-          <div class="art-excerpt-side">IMEI check, Face ID test, battery health — the 12 things to verify before you pay.</div>
-          <div class="art-meta"><span>6 min read</span></div>
-        </div>
-      </a>
-      <a class="article-side" onclick="openArt(2);return false" href="#">
-        <div class="art-img-side" style="background:linear-gradient(135deg,#7c2d12,#F97316)">💰</div>
-        <div class="art-body-side">
-          <div class="art-cat" style="font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Price Guide</div>
-          <div class="art-title-side">iPhone resale value in 2025 — which models hold value best</div>
-          <div class="art-excerpt-side">Pro models depreciate 40% slower than base models. Here's the full breakdown.</div>
-          <div class="art-meta"><span>5 min read</span></div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <div class="section-title">All Articles</div>
-  <div class="all-grid">
-    <a class="article-card" onclick="openArt(3);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#1e1b4b,#4338CA)">🔍</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#4338CA;text-transform:uppercase;margin-bottom:6px">Trust & Safety</div><div class="art-title-card">Why Sambhi Mobiles over OLX, Cashify, or local buyers in Delhi</div><div class="art-excerpt-card">We compared 6 ways to sell your phone in Delhi. The difference in final payout and safety is shocking.</div><div class="read-more">Read article →</div></div></a>
-    <a class="article-card" onclick="openArt(4);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#064e3b,#059669)">🏆</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#059669;text-transform:uppercase;margin-bottom:6px">Tips & Tricks</div><div class="art-title-card">5 things to do before selling your phone that add ₹2,000+ to your payout</div><div class="art-excerpt-card">Clean your phone, gather accessories, check battery health. Simple prep that makes a real difference.</div><div class="read-more">Read article →</div></div></a>
-    <a class="article-card" onclick="openArt(5);return false" href="#"><div class="art-img" style="background:linear-gradient(135deg,#831843,#DB2777)">♻️</div><div class="art-body-card"><div class="art-cat" style="font-size:10px;font-weight:700;color:#DB2777;text-transform:uppercase;margin-bottom:6px">Sustainability</div><div class="art-title-card">The environmental case for secondhand phones — why it matters in India</div><div class="art-excerpt-card">India generates 3.2 million tonnes of e-waste per year. Buying secondhand is the single biggest thing you can do.</div><div class="read-more">Read article →</div></div></a>
+</div>
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
   </div>
 </div>
 
-<section class="newsletter">
-  <h2>Get price alerts and selling tips</h2>
-  <p>Join 1,200+ Delhi customers who stay ahead of phone prices</p>
-  <div class="nl-form">
-    <input class="nl-input" type="tel" id="nlPhone" placeholder="Your WhatsApp number">
-    <button class="nl-btn" onclick="subNewsletter()">Subscribe →</button>
+<!-- FEATURED -->
+<div class="blog-grid">
+  <div class="featured-card" onclick="openArt(0)">
+    <div class="fc-img" style="background:linear-gradient(135deg,#1e3a8a,#2563EB)">📱</div>
+    <div class="fc-body">
+      <div class="fc-cat">Selling Guide</div>
+      <h2 class="fc-title">Why you should sell your old phone — right now, not later</h2>
+      <p class="fc-excerpt">Every month you wait, your phone loses 3–8% of its value. Here's exactly how much you're losing and how to stop it.</p>
+      <div class="fc-meta">Sambhi Mobiles · 8 min read · <span class="read-link">Read article →</span></div>
+    </div>
   </div>
-</section>
+  <div class="side-cards">
+    <div class="side-card" onclick="openArt(1)">
+      <div class="sc-cat">Buying Guide</div>
+      <h3 class="sc-title">How to buy a secondhand iPhone safely — the complete checklist</h3>
+      <p class="sc-excerpt">IMEI check, Face ID test, battery health — the 12 things to verify before you pay.</p>
+    </div>
+    <div class="side-card" onclick="openArt(2)">
+      <div class="sc-cat">Price Guide</div>
+      <h3 class="sc-title">iPhone resale value in 2025 — which models hold value best</h3>
+      <p class="sc-excerpt">Pro models depreciate 40% slower than base models. Here's the full breakdown.</p>
+    </div>
+    <div class="side-card" onclick="openArt(3)">
+      <div class="sc-cat">Trust & Safety</div>
+      <h3 class="sc-title">Sambhi Mobiles vs OLX, Cashify — an honest comparison</h3>
+      <p class="sc-excerpt">We compared 6 ways to sell your phone in Delhi. The difference in payout is shocking.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider">More articles</div>
+<div class="all-grid">
+  <div class="blog-card" onclick="openArt(4)">
+    <div class="bc-img" style="background:linear-gradient(135deg,#064e3b,#059669)">🏆</div>
+    <div class="bc-body"><div class="bc-cat">Tips & Tricks</div><h3 class="bc-title">5 things before selling that add ₹2,000+ to your payout</h3><p class="bc-excerpt">Simple prep steps that make a real difference to your final offer.</p><span class="read-link">Read article →</span></div>
+  </div>
+  <div class="blog-card" onclick="openArt(5)">
+    <div class="bc-img" style="background:linear-gradient(135deg,#831843,#DB2777)">♻️</div>
+    <div class="bc-body"><div class="bc-cat">Sustainability</div><h3 class="bc-title">The environmental case for secondhand phones in India</h3><p class="bc-excerpt">India generates 3.2 million tonnes of e-waste per year. Buying secondhand is the single biggest thing you can do.</p><span class="read-link">Read article →</span></div>
+  </div>
+</div>
 
 <!-- ARTICLE MODAL -->
 <div class="art-overlay" id="artOverlay" onclick="if(event.target===this)closeArt()">
-  <div class="art-modal" id="artModal">
-    <button class="art-modal-close" onclick="closeArt()">✕</button>
+  <div class="art-modal">
+    <button class="art-close" onclick="closeArt()">✕</button>
     <div class="art-modal-hero" id="artHero"></div>
     <div class="art-modal-body">
       <div class="art-modal-cat" id="artCat"></div>
@@ -192,15 +505,140 @@ footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.07);padding:
   </div>
 </div>
 
+<div class="modal-bg" id="authModal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2>Welcome<br><em style="font-style:italic;color:var(--orange)">back.</em></h2>
+    <p class="auth-sub">Login or create an account to track your sells & purchases</p>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabL" onclick="authSwitch('login')">Login</button>
+      <button class="auth-tab" id="tabR" onclick="authSwitch('reg')">Register</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Login →</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Primary Mobile</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap"></div>
 <footer>
-  <div class="footer-bottom">
-    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · +91 7827505579</p>
-    <div class="footer-links"><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="admin.html">Admin</a></div>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="admin.html">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="account.html">My Account</a><a href="about.html">About Us</a><a href="blog.html">Blog</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
+    </div>
   </div>
 </footer>
-
-<script src="shared.js"></script>
 <script>
+
+// ── CURSOR ──────────────────────────────────────────────────────────
+(function(){
+  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
+  if(!c||!r)return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    c.style.left=mx+'px';c.style.top=my+'px';
+  });
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
+    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
+  });
+})();
+
+// ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
+(function(){
+  function tick(){
+    var scrolled=window.scrollY,total=document.body.scrollHeight-window.innerHeight;
+    var p=document.getElementById('progress');if(p)p.style.width=(scrolled/total*100)+'%';
+    var nav=document.querySelector('nav');if(nav)nav.classList.toggle('scrolled',scrolled>50);
+    document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
+      if(el.getBoundingClientRect().top<window.innerHeight*.88)el.classList.add('in');
+    });
+  }
+  window.addEventListener('scroll',tick,{passive:true});
+  setTimeout(tick,80);
+})();
+
+// ── MOBILE NAV ──────────────────────────────────────────────────────
+function openMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+// ── AUTH ────────────────────────────────────────────────────────────
+function openAuth(){var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeAuth(){var m=document.getElementById('authModal');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+function authSwitch(tab){
+  var tl=document.getElementById('tabL'),tr=document.getElementById('tabR');
+  var fl=document.getElementById('loginForm'),fr=document.getElementById('regForm');
+  var err=document.getElementById('authErr');
+  if(tl)tl.classList.toggle('on',tab==='login');if(tr)tr.classList.toggle('on',tab==='reg');
+  if(fl)fl.style.display=tab==='login'?'':'none';if(fr)fr.style.display=tab==='reg'?'':'none';
+  if(err)err.style.display='none';
+}
+function showAuthErr(msg){var e=document.getElementById('authErr');if(e){e.textContent=msg;e.style.display='block';}}
+function doLogin(){
+  var ph=(document.getElementById('lPhone').value||'').trim();
+  var pw=(document.getElementById('lPw').value||'').trim();
+  if(!ph||!pw){showAuthErr('Enter your phone number and password.');return;}
+  SMB.customer.login(ph,pw).then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome back, '+r.customer.name.split(' ')[0]+'!');
+  });
+}
+function doRegister(){
+  var name=(document.getElementById('rName').value||'').trim();
+  var ph=(document.getElementById('rPhone').value||'').trim();
+  var alt=(document.getElementById('rAlt').value||'').trim();
+  var pw=(document.getElementById('rPw').value||'').trim();
+  if(!name){showAuthErr('Enter your full name.');return;}
+  if(ph.length<10){showAuthErr('Enter a valid 10-digit mobile number.');return;}
+  if(pw.length<6){showAuthErr('Password must be at least 6 characters.');return;}
+  SMB.customer.register(name,ph,alt,pw,'').then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome, '+name.split(' ')[0]+'! Account created.');
+  });
+}
+function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out.');}
+
+// ── TOAST ────────────────────────────────────────────────────────────
+function showToast(msg,type){
+  var wrap=document.querySelector('.toast-wrap');if(!wrap)return;
+  var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},3800);
+}
+
+// ── BACKDROP CLOSE ────────────────────────────────────────────────────
+document.addEventListener('click',function(e){
+  if(e.target.id==='authModal')closeAuth();
+});
+
 var ARTICLES = [
   {
     cat:'Selling Guide', icon:'📱', bg:'linear-gradient(135deg,#1e3a8a,#2563EB)',
@@ -321,31 +759,16 @@ var ARTICLES = [
     <p>Every phone we buy either gets resold (extending its life) or responsibly recycled through certified e-waste partners. We issue IMEI certificates for every transaction, creating a documented chain of custody for each device.</p>`
   }
 ];
-
-function openArt(idx) {
-  var a = ARTICLES[idx];
-  document.getElementById('artHero').style.background = a.bg;
-  document.getElementById('artHero').textContent = a.icon;
-  document.getElementById('artCat').textContent = a.cat;
-  document.getElementById('artTitle').textContent = a.title;
-  document.getElementById('artMeta').textContent = a.meta;
-  document.getElementById('artContent').innerHTML = a.content
-    + '<div class="art-cta-box"><h4>Ready to sell your phone?</h4><p>Get an instant price estimate — takes 2 minutes</p><a href="sell.html">Get My Price →</a></div>';
-  document.getElementById('artOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+function openArt(idx){
+  var a=ARTICLES[idx];if(!a)return;
+  document.getElementById('artHero').style.background=a.bg;document.getElementById('artHero').textContent=a.icon;
+  document.getElementById('artCat').textContent=a.cat;document.getElementById('artTitle').textContent=a.title;
+  document.getElementById('artMeta').textContent=a.meta;
+  document.getElementById('artContent').innerHTML=a.content+'<div class="art-cta"><h4>Ready to sell your phone?</h4><p>Get an instant price — takes 2 minutes</p><a href="sell.html" class="btn-p">Get My Price →</a></div>';
+  document.getElementById('artOverlay').classList.add('open');document.body.style.overflow='hidden';
 }
-function closeArt() {
-  document.getElementById('artOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function subNewsletter() {
-  var ph = (document.getElementById('nlPhone').value||'').trim();
-  if (ph.length < 10) { alert('Enter a valid WhatsApp number'); return; }
-  var subs = JSON.parse(localStorage.getItem('smb_newsletter')||'[]');
-  if (!subs.includes(ph)) { subs.push(ph); localStorage.setItem('smb_newsletter', JSON.stringify(subs)); }
-  document.getElementById('nlPhone').value = '';
-  alert('Subscribed! We\'ll send price alerts to your WhatsApp.');
-}
+function closeArt(){document.getElementById('artOverlay').classList.remove('open');document.body.style.overflow='';}
+smbUpdateNav();
 </script>
 </body>
 </html>

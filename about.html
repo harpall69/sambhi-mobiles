@@ -4,251 +4,513 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>About Us — Sambhi Mobiles Delhi</title>
-<meta name="description" content="Sambhi Mobiles — Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill.">
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* SAMBHI MOBILES — SHARED DESIGN SYSTEM */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#2563EB;--blue-d:#1d4ed8;--blue-l:#EFF6FF;--green:#16A34A;--green-l:#F0FDF4;--orange:#F97316;--ink:#0F172A;--muted:#64748B;--light:#94A3B8;--bg:#F8FAFC;--white:#fff;--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.10)}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6}
-nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
-.nav-wrap{max-width:1200px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:12px}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--orange));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
-.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--ink)}
-.logo-text strong{color:var(--blue)}
-.nav-links{display:flex;gap:2px;margin-left:16px}
-.nl{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .15s}
-.nl:hover,.nl.active{background:var(--blue-l);color:var(--blue)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.cta-btn{background:var(--blue);color:#fff;padding:8px 18px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none}
-.acct-btn{color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;padding:6px 11px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s}
-.acct-btn:hover{border-color:var(--blue);color:var(--blue)}
-.burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:6px;color:var(--ink)}
-.mobile-nav{display:none;flex-direction:column;border-top:1px solid var(--border);background:#fff;position:absolute;top:62px;left:0;right:0;z-index:99;box-shadow:var(--shadow-md)}
-.mobile-nav.open{display:flex}
-.mobile-nav a{padding:13px 20px;color:var(--ink);text-decoration:none;font-size:15px;border-bottom:1px solid var(--bg)}
+:root{
+  --ink:#0A0A0A;--ink2:#1C1C24;
+  --cream:#F2EDE6;--cream2:#EAE3DA;
+  --orange:#FF4D00;--orange-d:#CC3D00;
+  --white:#FFFFFF;--muted:#6B6B6B;--light:#94A3B8;
+  --border:rgba(255,255,255,.09);--border-d:rgba(0,0,0,.1);
+  --bg-dark:#0A0A0A;--bg-light:#F2EDE6;
+  --f-display:"Cormorant Garamond",Georgia,serif;
+  --f-body:"Inter",system-ui,sans-serif
+}
+html{scroll-behavior:smooth;cursor:none}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
+a,button{cursor:none}
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#EFF6FF,#F0FDF4);padding:72px 20px}
-.hero-in{max-width:800px;margin:0 auto;text-align:center}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:18px;border:1px solid #BFDBFE}
-.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,5vw,52px);font-weight:900;color:var(--ink);line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
-.hero p{font-size:17px;color:var(--muted);line-height:1.75;max-width:580px;margin:0 auto}
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
+@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
 
-/* SECTIONS */
-.sec{padding:72px 20px}
-.sec-in{max-width:1200px;margin:0 auto}
-.sec-sm{padding:48px 20px}
-.sec-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
-.sec-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:800;color:var(--ink);margin-bottom:10px;letter-spacing:-.4px}
-.sec-sub{font-size:15px;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:40px}
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
 
-/* STORY */
-.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.story-content p{font-size:16px;color:var(--muted);line-height:1.85;margin-bottom:16px}
-.story-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.story-stat{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center}
-.ss-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:900;color:var(--blue);margin-bottom:4px}
-.ss-lbl{font-size:13px;color:var(--muted)}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(20px);padding:14px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--cream);text-decoration:none;letter-spacing:-.3px;flex-shrink:0}
+.nav-logo span{color:var(--orange)}
+.nav-links{display:flex;gap:28px;align-items:center;margin:0 auto}
+.nl{color:rgba(242,237,230,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;transition:color .2s}
+.nl:hover,.nl.active{color:var(--cream)}
+.nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.nav-cta{background:var(--orange);color:var(--white);padding:9px 22px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.nav-cta:hover{background:var(--orange-d)}
+.nav-acct{color:rgba(242,237,230,.5);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:inherit}
+.nav-acct:hover{color:var(--cream)}
+.burger{display:none;background:none;border:none;color:var(--cream);font-size:22px;padding:4px;cursor:none}
+.mob-nav{display:none;position:fixed;inset:0;background:var(--ink);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-nav.open{display:flex}
+.mob-nl{color:var(--cream);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
+.mob-nl:hover{color:var(--orange)}
+.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(242,237,230,.4);font-size:26px;cursor:none}
 
-/* VALUES */
-.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.val-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;transition:box-shadow .2s}
-.val-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1)}
-.val-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
-.val-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
-.val-card p{font-size:14px;color:var(--muted);line-height:1.7}
+/* PAGE HERO (dark) */
+.pg-hero{padding:140px 48px 72px;background:var(--ink);position:relative;overflow:hidden}
+.pg-hero-in{max-width:1280px;margin:0 auto}
+.pg-eyebrow{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.pg-eyebrow::before{content:'';width:20px;height:1px;background:var(--orange)}
+.pg-h1{font-family:var(--f-display);font-size:clamp(44px,7vw,96px);font-weight:600;line-height:.95;letter-spacing:-2px;color:var(--cream);margin-bottom:18px}
+.pg-h1 em{font-style:italic;color:var(--orange)}
+.pg-h1 .outline{-webkit-text-stroke:1.5px rgba(242,237,230,.4);color:transparent}
+.pg-sub{font-size:15px;color:rgba(242,237,230,.45);max-width:520px;line-height:1.8;font-weight:300}
+.pg-hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,0,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,0,.04) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
 
-/* PROMISE */
-.promise{background:var(--ink)}
-.promise-in{max-width:1200px;margin:0 auto;padding:72px 20px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-.promise-left h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,3vw,38px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.15}
-.promise-left p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8}
-.promise-items{display:flex;flex-direction:column;gap:16px}
-.pi{display:flex;gap:14px;align-items:flex-start}
-.pi-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.pi h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
-.pi p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6}
+/* SECTION LABELS */
+.sec-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.sec-eyebrow-light{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.35);margin-bottom:16px}
+.sec-title{font-family:var(--f-display);font-size:clamp(32px,5vw,64px);font-weight:600;line-height:1.0;letter-spacing:-1.5px}
+.sec-title em{font-style:italic;color:var(--orange)}
+.sec-title.dark{color:var(--ink)}
+.sec-title.light{color:var(--cream)}
+.sec-title .outline{-webkit-text-stroke:1px currentColor;color:transparent}
 
-/* TEAM */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.team-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center}
-.team-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--orange));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;margin:0 auto 14px}
-.team-card h3{font-size:16px;font-weight:700;margin-bottom:3px}
-.team-role{font-size:12px;color:var(--blue);font-weight:600;background:var(--blue-l);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px}
-.team-card p{font-size:13px;color:var(--muted);line-height:1.6}
+/* BUTTONS */
+.btn-p{display:inline-block;background:var(--orange);color:var(--white);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-p:hover{background:var(--orange-d);transform:translateY(-2px)}
+.btn-dark{display:inline-block;background:var(--ink);color:var(--cream);padding:14px 32px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:all .2s;border:none;font-family:inherit}
+.btn-dark:hover{background:var(--orange)}
+.btn-ghost{display:inline-block;background:transparent;color:var(--cream);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(242,237,230,.25);transition:all .2s;font-family:inherit}
+.btn-ghost:hover{border-color:var(--cream)}
+.btn-ghost-dark{display:inline-block;background:transparent;color:var(--ink);padding:13px 30px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;border:1px solid rgba(10,10,10,.25);transition:all .2s;font-family:inherit}
+.btn-ghost-dark:hover{border-color:var(--ink);background:var(--ink);color:var(--cream)}
 
-/* CONTACT */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
-.contact-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px}
-.contact-card h3{font-size:16px;font-weight:700;margin-bottom:18px}
-.contact-item{display:flex;gap:13px;align-items:flex-start;margin-bottom:16px}
-.ci-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.ci-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
-.ci-value{font-size:14px;font-weight:600;color:var(--ink)}
-.ci-value a{color:var(--blue);text-decoration:none}
-.ci-value a:hover{text-decoration:underline}
-.gst-card{background:var(--ink);border-radius:16px;padding:28px}
-.gst-card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:18px}
-.gst-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
-.gst-row:last-child{border:none}
-.gst-lbl{color:rgba(255,255,255,.4)}
-.gst-val{color:#fff;font-weight:600}
-.bank-section{margin-top:18px;background:rgba(255,255,255,.06);border-radius:10px;padding:14px}
-.bank-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.bank-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
-.bank-lbl{color:rgba(255,255,255,.35)}
-.bank-val{color:rgba(255,255,255,.8);font-weight:600}
-
-/* WHY SELL */
-.why-bg{background:var(--bg)}
-.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.why-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px}
-.wc-icon{font-size:28px;margin-bottom:12px}
-.wc-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:900;color:var(--blue);margin-bottom:4px}
-.wc-label{font-size:13px;font-weight:700;margin-bottom:6px}
-.wc-desc{font-size:12px;color:var(--muted);line-height:1.6}
-
-/* CTA */
-.cta-sec{background:linear-gradient(135deg,var(--blue),var(--blue-d));padding:72px 20px;text-align:center}
-.cta-sec h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:-.5px}
-.cta-sec p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:28px}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.cta-btn-w{background:#fff;color:var(--blue);padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all .18s}
-.cta-btn-w:hover{background:rgba(255,255,255,.9);transform:translateY(-2px)}
-.cta-btn-t{background:rgba(255,255,255,.15);color:#fff;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,.3);transition:all .18s}
-.cta-btn-t:hover{background:rgba(255,255,255,.25)}
+/* TICKER */
+.ticker{background:var(--orange);padding:15px 0;overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;animation:ticker 22s linear infinite}
+.ticker-item{font-size:12px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);padding:0 28px}
+.ticker-item .sep{color:rgba(255,255,255,.4);margin:0 12px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* FOOTER */
-footer{background:var(--ink);padding:32px 20px}
-.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.footer-bottom p{font-size:12px;color:rgba(255,255,255,.2)}
-.footer-links{display:flex;gap:16px}
-.footer-links a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none}
-.footer-links a:hover{color:#fff}
+footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,255,255,.04)}
+.foot-in{max-width:1280px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.foot-logo{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--cream);margin-bottom:14px;display:block}
+.foot-logo span{color:var(--orange)}
+.foot-desc{font-size:13px;color:rgba(242,237,230,.28);line-height:1.85;margin-bottom:18px;font-weight:300}
+.foot-contact a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:6px;transition:color .15s;font-weight:300}
+.foot-contact a:hover{color:var(--cream)}
+.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.2);margin-bottom:16px}
+.foot-col a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:10px;transition:color .15s;font-weight:300}
+.foot-col a:hover{color:var(--cream)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-bottom p{font-size:11px;color:rgba(242,237,230,.18);letter-spacing:.3px}
 
-@media(max-width:1024px){.story-grid,.contact-grid,.promise-in{grid-template-columns:1fr}.values-grid,.team-grid{grid-template-columns:1fr 1fr}.why-grid{grid-template-columns:repeat(2,1fr)}.nav-links{display:none}.burger{display:block}}
-@media(max-width:640px){.values-grid,.team-grid,.why-grid,.story-stats{grid-template-columns:1fr}}
+/* AUTH MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
+.modal-bg.open{display:flex}
+.auth-box{background:#141418;border:1px solid rgba(255,255,255,.09);padding:48px;width:100%;max-width:400px;position:relative}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(242,237,230,.3);font-size:20px;cursor:none;font-family:inherit;transition:color .15s}
+.auth-close:hover{color:var(--cream)}
+.auth-box h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--cream);margin-bottom:4px;letter-spacing:-.5px}
+.auth-box .auth-sub{font-size:13px;color:rgba(242,237,230,.3);margin-bottom:28px;font-weight:300}
+.auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08)}
+.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);cursor:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab.on{color:var(--orange);border-bottom-color:var(--orange)}
+.auth-err{background:rgba(255,77,0,.12);color:var(--orange);border:1px solid rgba(255,77,0,.25);padding:10px 13px;font-size:12px;margin-bottom:12px;display:none;font-weight:500}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(242,237,230,.3);margin-bottom:7px}
+.fg label .opt{color:rgba(242,237,230,.18);font-weight:400;text-transform:none;letter-spacing:0}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:var(--cream);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--orange)}
+.fg input.err{border-color:var(--orange);background:rgba(255,77,0,.06)}
+.fg input.ok{border-color:rgba(100,200,100,.4)}
+.fg textarea{resize:none;height:80px}
+.fg .hint{font-size:11px;color:rgba(242,237,230,.25);margin-top:5px;line-height:1.5}
+.fg .hint.ok{color:rgba(100,200,100,.7)}
+.fg .hint.err{color:var(--orange)}
+.auth-btn{width:100%;background:var(--orange);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.auth-btn:hover{background:var(--orange-d)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease}
+.reveal-left.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:28px;right:28px;z-index:9999;pointer-events:none}
+.toast{background:var(--orange);color:var(--white);padding:14px 22px;font-size:13px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 32px rgba(255,77,0,.35);transform:translateY(16px);opacity:0;transition:all .3s;margin-top:8px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#1A4A1A;box-shadow:0 8px 32px rgba(0,200,0,.2)}
+.toast.error{background:#4A1A1A}
+
+/* RESPONSIVE NAV */
+@media(max-width:1100px){nav{padding:18px 28px}nav.scrolled{padding:12px 28px}.pg-hero{padding:120px 28px 60px}footer{padding:60px 28px 28px}.foot-top{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links,.nav-right{display:none}.burger{display:block}.foot-top{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.reveal,.reveal-left{opacity:1;transform:none;transition:none}.ticker-track{animation-duration:.001ms}}
+/* ABOUT */
+.sec{padding:96px 48px;max-width:1280px;margin:0 auto}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.story-text p{font-size:15px;color:rgba(242,237,230,.45);line-height:1.9;margin-bottom:18px;font-weight:300}
+.story-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.05)}
+.ss-item{background:var(--ink2);padding:28px 24px;text-align:center}
+.ss-num{font-family:var(--f-display);font-size:44px;font-weight:600;color:var(--orange);line-height:1;margin-bottom:5px;letter-spacing:-1px}
+.ss-lbl{font-size:10px;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:1px}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);margin-top:48px}
+.val-card{background:var(--ink);padding:40px 32px;transition:background .2s}
+.val-card:hover{background:#111118}
+.val-icon{font-size:28px;margin-bottom:16px}
+.val-title{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--cream);margin-bottom:10px;letter-spacing:-.3px}
+.val-body{font-size:13px;color:rgba(242,237,230,.35);line-height:1.8;font-weight:300}
+.promise-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,.06);margin-top:48px}
+.pc{background:var(--ink2);padding:36px;transition:background .2s}
+.pc:hover{background:#111118}
+.pc-icon{font-size:28px;margin-bottom:16px}
+.pc-title{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--cream);margin-bottom:8px;letter-spacing:-.2px}
+.pc-body{font-size:13px;color:rgba(242,237,230,.35);line-height:1.8;font-weight:300}
+.pc-badge{display:inline-block;background:var(--orange);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;margin-top:12px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.05);margin-top:48px}
+.contact-card{background:var(--ink2);padding:36px}
+.contact-card h3{font-family:var(--f-display);font-size:24px;font-weight:600;color:var(--cream);margin-bottom:20px;letter-spacing:-.3px}
+.ci{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ci:last-child{margin:0}
+.ci-icon{width:38px;height:38px;background:rgba(255,77,0,.08);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ci-lbl{font-size:10px;font-weight:700;color:rgba(242,237,230,.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.ci-val{font-size:13px;color:var(--cream);font-weight:400}
+.ci-val a{color:var(--orange);text-decoration:none}
+.gst-card{background:#0D0D10}
+.gst-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+.gst-row:last-child{border:none}
+.gst-lbl{color:rgba(242,237,230,.3);font-weight:300}.gst-val{color:var(--cream);font-weight:500}
+.bank-sec{margin-top:18px;background:rgba(255,255,255,.03);padding:14px}
+.bank-title{font-size:10px;font-weight:700;color:rgba(242,237,230,.2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.bank-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.bank-lbl{color:rgba(242,237,230,.25);font-weight:300}.bank-val{color:rgba(242,237,230,.6);font-weight:500}
+.cta-sec{background:var(--orange);padding:96px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-sec h2{font-family:var(--f-display);font-size:clamp(44px,8vw,100px);font-weight:700;color:#fff;line-height:.95;letter-spacing:-2px;margin-bottom:20px}
+.cta-sec h2 em{font-style:italic;font-weight:400}
+.cta-sec p{font-size:15px;color:rgba(255,255,255,.65);margin-bottom:32px;font-weight:300}
+.cta-bg{position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);font-family:var(--f-display);font-size:clamp(100px,20vw,260px);font-weight:700;color:rgba(255,255,255,.06);white-space:nowrap;pointer-events:none;letter-spacing:-6px}
+@media(max-width:1024px){.story-grid,.contact-grid{grid-template-columns:1fr}.values-grid{grid-template-columns:1fr 1fr}.promise-grid{grid-template-columns:1fr}.sec{padding:64px 28px}}
+@media(max-width:640px){.story-stats,.values-grid{grid-template-columns:1fr}}
 </style>
+<script>// ================================================================
+// SAMBHI MOBILES — SHARED.JS v3
+// Central data layer, auth, and utilities
+// All pages load this file first
+// ================================================================
+'use strict';
+
+var SMB = (function() {
+
+  // ── STORAGE KEYS ───────────────────────────────────────────────
+  var K = {
+    customers:    'smb_customers',
+    cust_sess:    'smb_cust_sess',
+    sell_reqs:    'smb_sell_reqs',
+    inv:          'smb_inv',
+    leads:        'smb_leads',
+    bills:        'smb_bills',
+    riders:       'smb_riders',
+    camps:        'smb_camps',
+    active_camp:  'smb_active_camp',
+    team:         'smb_team',
+    mult:         'smb_mult',
+    admin_sess:   'smb_sess',
+    notifs:       'smb_notifs',
+    invn:         'smb_invn',
+    videos:       'smb_videos'
+  };
+
+  // ── SAFE STORAGE ───────────────────────────────────────────────
+  function get(key) {
+    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
+    catch(e) { return null; }
+  }
+  function set(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch(e) { return false; }
+  }
+  function arr(key) {
+    var v = get(key); return Array.isArray(v) ? v : [];
+  }
+
+  // ── HASH (djb2 — no plain text passwords stored) ──────────────
+  function hash(str) {
+    var h = 5381;
+    for (var i = 0; i < str.length; i++) {
+      h = ((h << 5) + h) + str.charCodeAt(i);
+      h = h & h;
+    }
+    return 'smb_' + Math.abs(h).toString(16) + '_' + str.length;
+  }
+
+  // ── UTILITIES ──────────────────────────────────────────────────
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function now() { return new Date().toISOString(); }
+  function Rs(n) { return n ? '₹' + parseInt(n).toLocaleString('en-IN') : '—'; }
+  function fmtDate(d) {
+    return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  // ── CUSTOMER AUTH ──────────────────────────────────────────────
+  var SESSION_TTL = 12 * 60 * 60 * 1000; // 12 hours
+
+  var customer = {
+    all: function() { return arr(K.customers); },
+    save: function(list) { set(K.customers, list); },
+
+    byPhone: function(phone) {
+      var clean = (phone + '').replace(/\D/g, '').slice(-10);
+      return customer.all().find(function(c) {
+        return c.phone === clean || (c.altPhone && c.altPhone === clean);
+      }) || null;
+    },
+
+    register: function(name, phone, altPhone, password) {
+      phone = (phone + '').replace(/\D/g, '').slice(-10);
+      altPhone = altPhone ? (altPhone + '').replace(/\D/g, '').slice(-10) : '';
+      if (customer.byPhone(phone)) return { ok: false, err: 'Phone number already registered. Please login.' };
+      if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
+      var c = {
+        id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
+        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+      };
+      var list = customer.all(); list.push(c); customer.save(list);
+      customer.startSession(c);
+      notify.log(phone, 'registration', { name: name });
+      return { ok: true, customer: c };
+    },
+
+    login: function(phone, password) {
+      var c = customer.byPhone(phone);
+      if (!c) return { ok: false, err: 'No account found. Please register first.' };
+      if (c.pwHash !== hash(password)) return { ok: false, err: 'Incorrect password.' };
+      customer.startSession(c);
+      return { ok: true, customer: c };
+    },
+
+    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    logout: function() { localStorage.removeItem(K.cust_sess); },
+
+    current: function() {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return null;
+      if (Date.now() - sess.ts > SESSION_TTL) { localStorage.removeItem(K.cust_sess); return null; }
+      return customer.all().find(function(c) { return c.id === sess.id; }) || null;
+    },
+
+    update: function(id, changes) {
+      var list = customer.all();
+      var i = list.findIndex(function(c) { return c.id === id; });
+      if (i < 0) return false;
+      list[i] = Object.assign(list[i], changes);
+      customer.save(list); return true;
+    }
+  };
+
+  // ── SELL REQUESTS ──────────────────────────────────────────────
+  var sells = {
+    all: function() { return arr(K.sell_reqs); },
+    save: function(list) { set(K.sell_reqs, list); },
+
+    submit: function(data, custId) {
+      var req = Object.assign({}, data, {
+        id: uid(), customerId: custId || null,
+        status: 'pending', createdAt: now(), adminNote: ''
+      });
+      var list = sells.all(); list.push(req); sells.save(list);
+
+      // Mirror to admin leads
+      var leads = arr(K.leads);
+      leads.push({
+        id: req.id, name: data.name || '', phone: data.phone || '',
+        device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
+        devType: (data.brand || '').toLowerCase(),
+        model: data.model || '', storage: data.storage || '',
+        color: data.color || '', condition: data.condition || '',
+        battery: data.batteryHealth || '', imei: data.imei || '',
+        ram: data.ram || '',
+        accessories: data.accessories || [],
+        photos: data.photos || [],
+        askPrice: data.askingPrice || 0,
+        notes: [{ t: 'Website submission', at: now() }],
+        status: 'new', slot: data.slot || 'morning',
+        source: 'website', createdAt: now(), customerId: custId || null
+      });
+      set(K.leads, leads);
+
+      notify.log(data.phone || '', 'sell_received', { name: data.name, device: data.model });
+      return req;
+    },
+
+    forCustomer: function(custId) {
+      return sells.all().filter(function(r) { return r.customerId === custId; });
+    }
+  };
+
+  // ── INVENTORY ──────────────────────────────────────────────────
+  var inventory = {
+    all: function() { return arr(K.inv); },
+    visible: function() { return inventory.all().filter(function(i) { return i.visible; }); }
+  };
+
+  // ── NOTIFICATION STUB ──────────────────────────────────────────
+  // Structured for easy drop-in of paid API later
+  var notify = {
+    log: function(phone, template, data) {
+      console.log('[NOTIFY] phone=' + phone + ' tpl=' + template, data);
+      // Future: if (window.SMB_NOTIFY === 'twilio') { ... }
+      // Future: if (window.SMB_NOTIFY === 'interakt') { ... }
+    },
+    templates: {
+      registration:  'Welcome {name}! You are registered with Sambhi Mobiles. +91 7827505579',
+      sell_received: 'Hi {name}! We received your sell request for {device}. We will call within 2 hours.',
+      pickup_booked: 'Pickup confirmed for {device}. Rider on the way. +91 7827505579'
+    }
+  };
+
+  // Public API
+  return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
+})();
+
+// ── NAV STATE ──────────────────────────────────────────────────────
+function smbUpdateNav() {
+  var c = SMB.customer.current();
+  document.querySelectorAll('[data-guest]').forEach(function(el) {
+    el.style.display = c ? 'none' : '';
+  });
+  document.querySelectorAll('[data-auth]').forEach(function(el) {
+    el.style.display = c ? '' : 'none';
+  });
+  document.querySelectorAll('[data-cname]').forEach(function(el) {
+    el.textContent = c ? c.name.split(' ')[0] : '';
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', smbUpdateNav);
+} else { smbUpdateNav(); }
+</script>
 </head>
 <body>
-<nav>
-  <div class="nav-wrap">
-    <a href="index.html" class="logo"><div class="logo-icon">📱</div><span class="logo-text">Sambhi <strong>Mobiles</strong></span></a>
-    <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl active">About</a><a href="blog.html" class="nl">Blog</a></div>
-    <div class="nav-right">
-      <a href="sell.html" class="cta-btn">Sell Now →</a>
-      <a href="index.html" class="acct-btn" data-guest>Login</a>
-      <a href="account.html" class="acct-btn" data-auth style="display:none">👤 <span data-cname></span></a>
-    </div>
-    <button class="burger" onclick="document.getElementById('mn').classList.toggle('open')">☰</button>
+<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
+  <div class="nav-links"><a href="index.html" class="nl">Home</a><a href="sell.html" class="nl">Sell</a><a href="buy.html" class="nl">Buy</a><a href="about.html" class="nl active">About</a><a href="blog.html" class="nl">Blog</a></div>
+  <div class="nav-right">
+    <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
+    <a href="account.html" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
+    <button class="nav-acct" data-auth style="display:none;font-size:12px;letter-spacing:.4px" onclick="doLogout()">Logout</button>
+    <a href="sell.html" class="nav-cta">Get My Price</a>
   </div>
-  <div class="mobile-nav" id="mn"><a href="index.html">Home</a><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="about.html">About</a><a href="blog.html">Blog</a><a href="account.html" data-auth style="display:none">My Account</a></div>
+  <button class="burger" onclick="openMobNav()">☰</button>
 </nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="index.html" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="sell.html" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="buy.html" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="about.html" onclick="closeMobNav()">About</a>
+  <a class="mob-nl" href="blog.html" onclick="closeMobNav()">Blog</a>
+  <a class="mob-nl" href="sell.html">Sell Now →</a>
+</div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-in">
-    <div class="hero-tag">📍 Govind Puri, New Delhi</div>
-    <h1>Delhi's most trusted place to sell &amp; buy phones</h1>
-    <p>We started Sambhi Mobiles because selling a phone in Delhi was broken — too many middlemen, too little trust, too much haggling. We fixed that.</p>
+<div class="pg-hero">
+  <div class="pg-hero-bg-grid"></div>
+  <div class="pg-hero-in">
+    <div class="pg-eyebrow">Our story</div>
+    <h1 class="pg-h1">Delhi's most<br><em>trusted reseller.</em></h1>
+    <p class="pg-sub">Built on transparency, fairness, and a genuine respect for your time and money.</p>
   </div>
-</section>
+</div>
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
+    <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+    <span class="ticker-item">Zero processing fee<span class="sep">·</span></span>
+    <span class="ticker-item">GST bill provided<span class="sep">·</span></span>
+    <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+    <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+    <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+    <span class="ticker-item">Best price in Delhi<span class="sep">·</span></span>
+  </div>
+</div>
 
-<!-- WHY WE EXIST -->
-<section class="sec">
-  <div class="sec-in">
-    <div class="story-grid">
-      <div class="story-content">
-        <div class="sec-lbl">Our Story</div>
-        <h2 class="sec-title">Built for Delhi. Built on trust.</h2>
-        <p>In Delhi's secondhand phone market, customers were getting underpaid, deceived, and scammed daily. Retailers with no transparency, buyers who vanished after inspection, and a complete lack of documentation.</p>
-        <p>Amrik Singh started Sambhi Mobiles in 2021 with one mission: make selling your phone as simple and transparent as ordering food. No hidden charges. No haggling. Just a fair price, free pickup, and instant payment.</p>
-        <p>Today we've bought over 2,400 devices across Delhi NCR and built a reputation that speaks for itself — 4.9 stars across every platform.</p>
-      </div>
-      <div>
-        <div class="story-stats">
-          <div class="story-stat"><div class="ss-num">2,400+</div><div class="ss-lbl">Devices purchased</div></div>
-          <div class="story-stat"><div class="ss-num">4.9★</div><div class="ss-lbl">Average rating</div></div>
-          <div class="story-stat"><div class="ss-num">90 min</div><div class="ss-lbl">Avg pickup time</div></div>
-          <div class="story-stat"><div class="ss-num">100%</div><div class="ss-lbl">IMEI verified</div></div>
-        </div>
-      </div>
+<div class="sec">
+  <div class="story-grid">
+    <div class="story-text">
+      <div class="sec-eyebrow">Est. 2021</div>
+      <h2 class="sec-title light reveal">Built for Delhi.<br>Built on trust.</h2>
+      <div style="height:20px"></div>
+      <p class="reveal d1">In Delhi's secondhand phone market, customers were getting underpaid, deceived, and scammed daily. Retailers with no transparency, buyers who vanished after inspection, and a complete lack of documentation.</p>
+      <p class="reveal d2">Amrik Singh started Sambhi Mobiles in 2021 with one mission: make selling your phone as simple and transparent as ordering food. No hidden charges. No haggling. Just a fair price, free pickup, and instant payment.</p>
+      <p class="reveal d3">Today we've bought over 2,400 devices across Delhi NCR and built a reputation that speaks for itself — 4.9 stars across every platform.</p>
+    </div>
+    <div class="story-stats reveal">
+      <div class="ss-item"><div class="ss-num">2,400+</div><div class="ss-lbl">Devices purchased</div></div>
+      <div class="ss-item"><div class="ss-num">4.9★</div><div class="ss-lbl">Customer rating</div></div>
+      <div class="ss-item"><div class="ss-num">90 min</div><div class="ss-lbl">Avg pickup time</div></div>
+      <div class="ss-item"><div class="ss-num">100%</div><div class="ss-lbl">IMEI verified</div></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- VALUES -->
-<section class="sec" style="background:var(--bg);padding:72px 20px">
-  <div class="sec-in">
-    <div class="sec-lbl">Our Values</div>
-    <h2 class="sec-title">What makes us different</h2>
-    <p class="sec-sub">Three principles we never compromise on, no matter what.</p>
+<div style="background:#0D0D10;padding:80px 48px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="sec-eyebrow">What makes us different</div>
+    <h2 class="sec-title light reveal">Our values.</h2>
     <div class="values-grid">
-      <div class="val-card"><div class="val-icon" style="background:#EFF6FF">🤝</div><h3>Radical transparency</h3><p>We show you exactly how we calculate your price — model, year, battery, condition. No black box. No surprises at the door.</p></div>
-      <div class="val-card"><div class="val-icon" style="background:#F0FDF4">🔒</div><h3>Zero pressure, one call</h3><p>We call you once to confirm pickup. That's it. No repeated follow-ups, no WhatsApp spam, no sales pressure. Respect is non-negotiable.</p></div>
-      <div class="val-card"><div class="val-icon" style="background:#FFF7ED">⚡</div><h3>Speed above all</h3><p>We're available same-day. Most pickups happen within 90 minutes of you filling the form. Cash or UPI the moment inspection is done.</p></div>
+      <div class="val-card reveal"><div class="val-icon">🤝</div><h3 class="val-title">Radical transparency</h3><p class="val-body">We show you exactly how we calculate your price — model, year, battery, condition. No black box. No surprises at the door. Ever.</p></div>
+      <div class="val-card reveal d1"><div class="val-icon">🔒</div><h3 class="val-title">Zero pressure</h3><p class="val-body">We call once to confirm pickup. That's it. No repeated follow-ups, no WhatsApp spam, no sales pressure. Respect is non-negotiable.</p></div>
+      <div class="val-card reveal d2"><div class="val-icon">⚡</div><h3 class="val-title">Speed above all</h3><p class="val-body">Most pickups happen within 90 minutes of you filling the form. Cash or UPI the moment inspection is done. No waiting.</p></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- SAMBHI PROMISE -->
-<section class="promise">
-  <div class="promise-in">
-    <div class="promise-left">
-      <div class="sec-lbl" style="color:var(--orange)">The Sambhi Promise</div>
-      <h2>Every single customer. Every single time.</h2>
-      <p>These aren't marketing claims. They're guarantees. If we don't deliver on any of these, contact us and we'll make it right.</p>
-    </div>
-    <div class="promise-items">
-      <div class="pi"><div class="pi-icon" style="background:rgba(249,115,22,.15)">🚫</div><div><h4>Zero processing fee — guaranteed</h4><p>The price we quote is exactly what you receive. No deductions at the door.</p></div></div>
-      <div class="pi"><div class="pi-icon" style="background:rgba(22,163,74,.15)">🚗</div><div><h4>Free doorstep pickup — always</h4><p>Our rider comes to you. No travel cost, no minimum distance, no exceptions.</p></div></div>
-      <div class="pi"><div class="pi-icon" style="background:rgba(37,99,235,.15)">🧾</div><div><h4>GST bill + IMEI certificate</h4><p>Full legal documentation for every transaction. Safe, legal, verifiable.</p></div></div>
-      <div class="pi"><div class="pi-icon" style="background:rgba(234,179,8,.12)">🏆</div><div><h4>Lifetime 10% loyalty bonus</h4><p>Every return sale gets 10% extra on top of market price. Forever. No conditions.</p></div></div>
+<div style="background:var(--ink);padding:80px 48px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="sec-eyebrow">The Sambhi Promise</div>
+    <h2 class="sec-title light reveal">Every customer.<br><em>Every single time.</em></h2>
+    <div class="promise-grid">
+      <div class="pc reveal"><div class="pc-icon">🚫</div><h3 class="pc-title">Zero processing fee — guaranteed</h3><p class="pc-body">The price we quote is exactly what lands in your hand. No deductions at the door, no last-minute surprises. What we quote — you get.</p><span class="pc-badge">Guaranteed</span></div>
+      <div class="pc reveal d1"><div class="pc-icon">🚗</div><h3 class="pc-title">Free doorstep pickup — always</h3><p class="pc-body">Our rider comes to you. No minimum distance, no travel cost. Anywhere in Delhi NCR. No exceptions.</p><span class="pc-badge">Always free</span></div>
+      <div class="pc reveal d2"><div class="pc-icon">🧾</div><h3 class="pc-title">GST bill + IMEI certificate</h3><p class="pc-body">Full legal documentation for every transaction. Safe, legal, verifiable. Sent to your WhatsApp immediately after payment.</p><span class="pc-badge">Always provided</span></div>
+      <div class="pc reveal d3"><div class="pc-icon">🏆</div><h3 class="pc-title">10% loyalty — forever</h3><p class="pc-body">Every return sale earns 10% extra on top of our best market price. Automatically applied. No expiry. No conditions. Forever.</p><span class="pc-badge">Lifetime</span></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- WHY SELL SECONDHAND -->
-<section class="sec why-bg">
-  <div class="sec-in">
-    <div class="sec-lbl">Why Secondhand?</div>
-    <h2 class="sec-title">The smart choice for Delhi</h2>
-    <p class="sec-sub">Selling or buying secondhand isn't just good for your wallet — it's good for everyone.</p>
-    <div class="why-grid">
-      <div class="why-card"><div class="wc-icon">💰</div><div class="wc-num">₹15,000+</div><div class="wc-label">Average saved vs new</div><div class="wc-desc">Certified pre-owned devices give you flagship features at mid-range prices.</div></div>
-      <div class="why-card"><div class="wc-icon">♻️</div><div class="wc-num">2.4K</div><div class="wc-label">Devices given a second life</div><div class="wc-desc">Every resold phone is one less device in a landfill. Responsible consumption.</div></div>
-      <div class="why-card"><div class="wc-icon">⏱️</div><div class="wc-num">90 min</div><div class="wc-label">From form to cash</div><div class="wc-desc">No waiting weeks for a buyer. We're there in 90 minutes with cash in hand.</div></div>
-      <div class="why-card"><div class="wc-icon">📋</div><div class="wc-num">100%</div><div class="wc-label">IMEI verified and documented</div><div class="wc-desc">Every device checked against CEIR India. You know exactly what you're getting.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="sec">
-  <div class="sec-in">
-    <div class="sec-lbl">Get in touch</div>
-    <h2 class="sec-title">We're based in South Delhi</h2>
-    <p class="sec-sub">Walk in, call, or WhatsApp us. We respond within minutes.</p>
+<div style="background:#0D0D10;padding:80px 48px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="sec-eyebrow">Get in touch</div>
+    <h2 class="sec-title light reveal">We're in South Delhi.</h2>
     <div class="contact-grid">
       <div class="contact-card">
         <h3>Contact Details</h3>
-        <div class="contact-item"><div class="ci-icon" style="background:#EFF6FF">📞</div><div><div class="ci-label">Phone / WhatsApp</div><div class="ci-value"><a href="tel:+917827505579">+91 7827505579</a></div></div></div>
-        <div class="contact-item"><div class="ci-icon" style="background:#F0FDF4">📍</div><div><div class="ci-label">Address</div><div class="ci-value">1498, Bhagat Niwas, 13 Govind Puri<br>New Delhi – 110019</div></div></div>
-        <div class="contact-item"><div class="ci-icon" style="background:#FFF7ED">🕐</div><div><div class="ci-label">Working Hours</div><div class="ci-value">Mon – Sat: 9 AM – 8 PM<br>Sunday: 10 AM – 6 PM</div></div></div>
-        <div class="contact-item" style="margin:0"><div class="ci-icon" style="background:#F3E8FF">💬</div><div><div class="ci-label">WhatsApp</div><div class="ci-value"><a href="https://wa.me/917827505579" target="_blank">Chat with us →</a></div></div></div>
+        <div class="ci"><div class="ci-icon">📞</div><div><div class="ci-lbl">Phone / WhatsApp</div><div class="ci-val"><a href="tel:+917827505579">+91 7827505579</a></div></div></div>
+        <div class="ci"><div class="ci-icon">📧</div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:mobilessambhi@gmail.com">mobilessambhi@gmail.com</a></div></div></div>
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-lbl">Address</div><div class="ci-val">1498, Bhagat Niwas, 13 Govind Puri<br>New Delhi – 110019</div></div></div>
+        <div class="ci"><div class="ci-icon">🕐</div><div><div class="ci-lbl">Working Hours</div><div class="ci-val">Mon–Sat: 9 AM – 8 PM<br>Sunday: 10 AM – 6 PM</div></div></div>
       </div>
-      <div class="gst-card">
+      <div class="contact-card gst-card">
         <h3>Business Details</h3>
         <div class="gst-row"><span class="gst-lbl">Business Name</span><span class="gst-val">Sambhi Mobiles</span></div>
         <div class="gst-row"><span class="gst-lbl">Proprietor</span><span class="gst-val">Amrik Singh</span></div>
         <div class="gst-row"><span class="gst-lbl">GSTIN</span><span class="gst-val">07BWPPS6835M1ZI</span></div>
         <div class="gst-row"><span class="gst-lbl">PAN</span><span class="gst-val">BWPPS6835M</span></div>
         <div class="gst-row"><span class="gst-lbl">State Code</span><span class="gst-val">07 — Delhi</span></div>
-        <div class="bank-section">
-          <div class="bank-title">Bank Details (for payment)</div>
+        <div class="bank-sec">
+          <div class="bank-title">Bank Details</div>
           <div class="bank-row"><span class="bank-lbl">Bank</span><span class="bank-val">IDFC First Bank</span></div>
           <div class="bank-row"><span class="bank-lbl">Account No</span><span class="bank-val">10084177443</span></div>
           <div class="bank-row"><span class="bank-lbl">IFSC</span><span class="bank-val">IDFB0020107</span></div>
@@ -257,27 +519,151 @@ footer{background:var(--ink);padding:32px 20px}
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- CTA -->
-<section class="cta-sec">
-  <h2>Ready to get the best price for your phone?</h2>
-  <p>Join 2,400+ Delhi customers who trust Sambhi Mobiles</p>
-  <div class="cta-btns">
-    <a href="sell.html" class="cta-btn-w">💸 Sell My Phone →</a>
-    <a href="buy.html" class="cta-btn-t">🛒 Browse Devices</a>
+<div class="cta-sec">
+  <div class="cta-bg">SELL</div>
+  <h2>Ready to get<br><em>paid today?</em></h2>
+  <p>Join 2,400+ Delhi customers who've chosen the smarter way.</p>
+  <a href="sell.html" style="display:inline-block;background:#fff;color:var(--orange);padding:15px 40px;font-size:12px;font-weight:800;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;margin-right:12px;transition:all .2s">Get My Price →</a>
+  <a href="tel:+917827505579" style="display:inline-block;border:2px solid rgba(255,255,255,.4);color:#fff;padding:14px 36px;font-size:12px;font-weight:600;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;transition:all .2s">📞 Call Us</a>
+</div>
+
+<div class="modal-bg" id="authModal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2>Welcome<br><em style="font-style:italic;color:var(--orange)">back.</em></h2>
+    <p class="auth-sub">Login or create an account to track your sells & purchases</p>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabL" onclick="authSwitch('login')">Login</button>
+      <button class="auth-tab" id="tabR" onclick="authSwitch('reg')">Register</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Login →</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Primary Mobile</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Alternate Mobile <span class="opt">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+    </div>
   </div>
-</section>
-
+</div>
+<div class="toast-wrap"></div>
 <footer>
-  <div class="footer-bottom">
-    <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
-    <div class="footer-links"><a href="sell.html">Sell</a><a href="buy.html">Buy</a><a href="blog.html">Blog</a><a href="admin.html">Admin</a></div>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="admin.html">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="account.html">My Account</a><a href="about.html">About Us</a><a href="blog.html">Blog</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
+    </div>
   </div>
 </footer>
-<script src="shared.js"></script>
 <script>
-document.querySelector('.burger').onclick = function(){ document.getElementById('mn').classList.toggle('open'); };
+
+// ── CURSOR ──────────────────────────────────────────────────────────
+(function(){
+  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
+  if(!c||!r)return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    c.style.left=mx+'px';c.style.top=my+'px';
+  });
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(function(el){
+    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
+    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
+  });
+})();
+
+// ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
+(function(){
+  function tick(){
+    var scrolled=window.scrollY,total=document.body.scrollHeight-window.innerHeight;
+    var p=document.getElementById('progress');if(p)p.style.width=(scrolled/total*100)+'%';
+    var nav=document.querySelector('nav');if(nav)nav.classList.toggle('scrolled',scrolled>50);
+    document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
+      if(el.getBoundingClientRect().top<window.innerHeight*.88)el.classList.add('in');
+    });
+  }
+  window.addEventListener('scroll',tick,{passive:true});
+  setTimeout(tick,80);
+})();
+
+// ── MOBILE NAV ──────────────────────────────────────────────────────
+function openMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeMobNav(){var m=document.getElementById('mobNav');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+// ── AUTH ────────────────────────────────────────────────────────────
+function openAuth(){var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeAuth(){var m=document.getElementById('authModal');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+function authSwitch(tab){
+  var tl=document.getElementById('tabL'),tr=document.getElementById('tabR');
+  var fl=document.getElementById('loginForm'),fr=document.getElementById('regForm');
+  var err=document.getElementById('authErr');
+  if(tl)tl.classList.toggle('on',tab==='login');if(tr)tr.classList.toggle('on',tab==='reg');
+  if(fl)fl.style.display=tab==='login'?'':'none';if(fr)fr.style.display=tab==='reg'?'':'none';
+  if(err)err.style.display='none';
+}
+function showAuthErr(msg){var e=document.getElementById('authErr');if(e){e.textContent=msg;e.style.display='block';}}
+function doLogin(){
+  var ph=(document.getElementById('lPhone').value||'').trim();
+  var pw=(document.getElementById('lPw').value||'').trim();
+  if(!ph||!pw){showAuthErr('Enter your phone number and password.');return;}
+  SMB.customer.login(ph,pw).then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome back, '+r.customer.name.split(' ')[0]+'!');
+  });
+}
+function doRegister(){
+  var name=(document.getElementById('rName').value||'').trim();
+  var ph=(document.getElementById('rPhone').value||'').trim();
+  var alt=(document.getElementById('rAlt').value||'').trim();
+  var pw=(document.getElementById('rPw').value||'').trim();
+  if(!name){showAuthErr('Enter your full name.');return;}
+  if(ph.length<10){showAuthErr('Enter a valid 10-digit mobile number.');return;}
+  if(pw.length<6){showAuthErr('Password must be at least 6 characters.');return;}
+  SMB.customer.register(name,ph,alt,pw,'').then(function(r){
+    if(!r.ok){showAuthErr(r.err);return;}
+    closeAuth();smbUpdateNav();showToast('Welcome, '+name.split(' ')[0]+'! Account created.');
+  });
+}
+function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out.');}
+
+// ── TOAST ────────────────────────────────────────────────────────────
+function showToast(msg,type){
+  var wrap=document.querySelector('.toast-wrap');if(!wrap)return;
+  var t=document.createElement('div');t.className='toast'+(type?' '+type:'');t.textContent=msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
+  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},3800);
+}
+
+// ── BACKDROP CLOSE ────────────────────────────────────────────────────
+document.addEventListener('click',function(e){
+  if(e.target.id==='authModal')closeAuth();
+});
+
+smbUpdateNav();
 </script>
 </body>
 </html>
