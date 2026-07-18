@@ -78,7 +78,12 @@ var SMB = (function() {
       if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
       var c = {
         id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
-        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+        pwHash: hash(password), createdAt: now(),
+        sellCount: 0, buyCount: 0, totalEarned: 0,
+        homeAddress: '', pickupAddress: '', pincode: '',
+        lat: null, lng: null,
+        aadhaarSame: false,
+        visitCount: 1, lastSeen: now()
       };
       var list = customer.all(); list.push(c); customer.save(list);
       customer.startSession(c);
@@ -94,7 +99,13 @@ var SMB = (function() {
       return { ok: true, customer: c };
     },
 
-    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    startSession: function(c) {
+      set(K.cust_sess, { id: c.id, ts: Date.now() });
+      // Bump visit count
+      var list = customer.all();
+      var i = list.findIndex(function(x){ return x.id === c.id; });
+      if (i > -1) { list[i].visitCount = (list[i].visitCount||0) + 1; list[i].lastSeen = now(); customer.save(list); }
+    },
     logout: function() { localStorage.removeItem(K.cust_sess); },
 
     current: function() {
@@ -175,6 +186,17 @@ var SMB = (function() {
   };
 
   // Public API
+  // Track page views for logged-in customer
+  (function trackPage(){
+    try {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return;
+      var key = 'smb_pv_' + new Date().toDateString().replace(/ /g,'_');
+      var pv = get(key) || {};
+      pv[sess.id] = (pv[sess.id]||0) + 1;
+      set(key, pv);
+    } catch(e){}
+  })();
   return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
 })();
 
