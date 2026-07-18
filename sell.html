@@ -21,14 +21,14 @@
   --f-display:"Cormorant Garamond",Georgia,serif;
   --f-body:"Inter",system-ui,sans-serif
 }
-html{scroll-behavior:smooth;cursor:none}
-body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
-a,button{cursor:none}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden}
+a,button{cursor:pointer}
 
 /* CURSOR */
-#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
-#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
-@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
+
+
+@media(max-width:768px){#cursor,html,body,a,button{cursor:auto}}
 
 /* PROGRESS */
 #progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
@@ -243,7 +243,57 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 @media(max-width:1100px){.sell-layout{grid-template-columns:1fr;padding:0 28px 60px}.sidebar{position:static}}
 @media(max-width:640px){.cond-grid{grid-template-columns:1fr 1fr}.form-body{padding:20px}.form-header{padding:18px 20px}.submit-area{padding:18px 20px}}
 </style>
-<script>// ================================================================
+<script>
+// ── SUPABASE CLIENT ─────────────────────────────────────────────
+var SB = (function() {
+  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
+  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
+  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  async function query(table, opts) {
+    if (!configured()) return null;
+    opts = opts || {};
+    var url = URL + '/rest/v1/' + table;
+    var params = [];
+    if (opts.select) params.push('select='+opts.select);
+    if (opts.filter) params.push(opts.filter);
+    if (opts.order)  params.push('order='+opts.order);
+    if (opts.limit)  params.push('limit='+opts.limit);
+    if (params.length) url += '?' + params.join('&');
+    try {
+      var r = await fetch(url, {method:'GET', headers:headers()});
+      if (!r.ok) return null;
+      if (r.status === 204) return [];
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function insert(table, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function update(table, filter, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function remove(table, filter) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
+      return r.ok;
+    } catch(e) { return false; }
+  }
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
+})();
+
+// ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
 // All pages load this file first
@@ -323,7 +373,12 @@ var SMB = (function() {
       if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
       var c = {
         id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
-        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+        pwHash: hash(password), createdAt: now(),
+        sellCount: 0, buyCount: 0, totalEarned: 0,
+        homeAddress: '', pickupAddress: '', pincode: '',
+        lat: null, lng: null,
+        aadhaarSame: false,
+        visitCount: 1, lastSeen: now()
       };
       var list = customer.all(); list.push(c); customer.save(list);
       customer.startSession(c);
@@ -339,7 +394,13 @@ var SMB = (function() {
       return { ok: true, customer: c };
     },
 
-    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    startSession: function(c) {
+      set(K.cust_sess, { id: c.id, ts: Date.now() });
+      // Bump visit count
+      var list = customer.all();
+      var i = list.findIndex(function(x){ return x.id === c.id; });
+      if (i > -1) { list[i].visitCount = (list[i].visitCount||0) + 1; list[i].lastSeen = now(); customer.save(list); }
+    },
     logout: function() { localStorage.removeItem(K.cust_sess); },
 
     current: function() {
@@ -368,7 +429,8 @@ var SMB = (function() {
         id: uid(), customerId: custId || null,
         status: 'pending', createdAt: now(), adminNote: ''
       });
-      var list = sells.all(); list.push(req); sells.save(list);
+      var reqToSave = Object.assign({}, req, {photos: []}); // strip base64 to prevent localStorage overflow
+      var list = sells.all(); list.push(reqToSave); sells.save(list);
 
       // Mirror to admin leads
       var leads = arr(K.leads);
@@ -381,7 +443,7 @@ var SMB = (function() {
         battery: data.batteryHealth || '', imei: data.imei || '',
         ram: data.ram || '',
         accessories: data.accessories || [],
-        photos: data.photos || [],
+        photos: [], // not stored in leads (too large)
         askPrice: data.askingPrice || 0,
         notes: [{ t: 'Website submission', at: now() }],
         status: 'new', slot: data.slot || 'morning',
@@ -420,6 +482,17 @@ var SMB = (function() {
   };
 
   // Public API
+  // Track page views for logged-in customer
+  (function trackPage(){
+    try {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return;
+      var key = 'smb_pv_' + new Date().toDateString().replace(/ /g,'_');
+      var pv = get(key) || {};
+      pv[sess.id] = (pv[sess.id]||0) + 1;
+      set(key, pv);
+    } catch(e){}
+  })();
   return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
 })();
 
@@ -439,10 +512,11 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
+
 </script>
 </head>
 <body>
-<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<div id="progress"></div>
 <nav id="nav">
   <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
   <div class="nav-links">
@@ -544,9 +618,23 @@ if (document.readyState === 'loading') {
           <div class="fg"><label>WhatsApp <span class="opt">required</span></label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
         </div>
         <div class="fg"><label>Email <span class="opt">optional</span></label><input type="email" id="fEmail" placeholder="yourname@gmail.com"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">📧 Confirmation sent to mobilessambhi@gmail.com</div></div>
+        <div class="fg"><label>House / Street Address <span class="req" style="color:#FF4D00">*</span></label><input type="text" id="fAddress" placeholder="House no., street, landmark"></div>
         <div class="g2">
-          <div class="fg"><label>Pickup Address <span class="opt">optional</span></label><input type="text" id="fAddress" placeholder="House / street / area"></div>
-          <div class="fg"><label>Delhi PIN <span class="opt">starts with 110</span></label><input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)"><div class="pin-hint" id="pinHint"></div></div>
+          <div class="fg"><label>Delhi Zone <span class="req" style="color:#FF4D00">*</span></label>
+            <select id="fZone" onchange="onZone()">
+              <option value="">Select zone *</option>
+              <option>Central Delhi</option><option>South Delhi</option><option>South West Delhi</option>
+              <option>West Delhi</option><option>North Delhi</option><option>North East Delhi</option>
+              <option>East Delhi</option><option>New Delhi</option><option>NCR</option>
+            </select>
+          </div>
+          <div class="fg"><label>Area / Colony <span class="req" style="color:#FF4D00">*</span></label>
+            <select id="fArea"><option value="">Select area *</option></select>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="fg"><label>Delhi PIN Code <span class="opt">optional</span></label><input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)"><div class="pin-hint" id="pinHint"></div></div>
+          <div class="fg"><label>Full Address</label><input type="text" id="fFullAddr" placeholder="Auto-filled from above" readonly style="opacity:.5"></div>
         </div>
 
         <div class="sec-div">Device Details</div>
@@ -716,22 +804,6 @@ if (document.readyState === 'loading') {
 </footer>
 <script>
 
-// ── CURSOR ──────────────────────────────────────────────────────────
-(function(){
-  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
-  if(!c||!r)return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){
-    mx=e.clientX;my=e.clientY;
-    c.style.left=mx+'px';c.style.top=my+'px';
-  });
-  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
-    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
-  });
-})();
-
 // ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
 (function(){
   function tick(){
@@ -849,6 +921,16 @@ window.addEventListener('DOMContentLoaded',function(){
       document.getElementById('ppBonus').style.display='inline-block';
     }
   }
+    if(CU.homeAddress){document.getElementById('fAddress').value=CU.homeAddress;}
+    if(CU.homeArea){
+      var zoneEl=document.getElementById('fZone');
+      // find zone for this area
+      Object.keys(DELHI_AREAS||{}).forEach(function(z){
+        if((DELHI_AREAS[z]||[]).indexOf(CU.homeArea)>-1){zoneEl.value=z;onZone();}
+      });
+      setTimeout(function(){document.getElementById('fArea').value=CU.homeArea||'';updateFullAddr();},50);
+    }
+    if(CU.pincode){document.getElementById('fPincode').value=CU.pincode;validatePin(document.getElementById('fPincode'));}
   var p=new URLSearchParams(location.search).get('brand');
   if(p){var s=document.getElementById('fBrand');if(s.querySelector('option[value="'+p+'"]')){s.value=p;onBrand();}}
 });
@@ -906,6 +988,43 @@ function updatePricePreview(){
   else preview.classList.remove('on');
 }
 function markErr(id){var el=document.getElementById(id);if(el){el.classList.add('err');el.addEventListener('input',function(){el.classList.remove('err');},{once:true});}}
+var DELHI_AREAS={
+  'Central Delhi':['Connaught Place','Paharganj','Karol Bagh','Rajendra Place','Patel Nagar','Sadar Bazaar','Daryaganj','Chandni Chowk'],
+  'South Delhi':['Lajpat Nagar','Greater Kailash','Saket','Malviya Nagar','Hauz Khas','Green Park','Safdarjung','Vasant Vihar','Vasant Kunj','Mehrauli','Govind Puri','Kalkaji','Okhla','Tughlakabad','Badarpur'],
+  'South West Delhi':['Dwarka','Uttam Nagar','Janakpuri','Tilak Nagar','Vikaspuri','Najafgarh','Palam'],
+  'West Delhi':['Rajouri Garden','Punjabi Bagh','Paschim Vihar','Shalimar Bagh','Pitampura','Rani Bagh'],
+  'North Delhi':['Model Town','Ashok Vihar','Rohini','Prashant Vihar','Mukherjee Nagar','Adarsh Nagar','Azadpur'],
+  'North East Delhi':['Shahdara','Preet Vihar','Vivek Vihar','Laxmi Nagar','Krishna Nagar','Dilshad Garden'],
+  'East Delhi':['Mayur Vihar','Patparganj','IP Extension','Geeta Colony','Gandhi Nagar'],
+  'New Delhi':['Lodhi Colony','Khan Market','Jor Bagh','Chanakyapuri','RK Puram','Kidwai Nagar'],
+  'NCR':['Noida Sec 18','Noida Sec 62','Gurugram','Faridabad','Ghaziabad']
+};
+function updateFullAddr(){
+  var addr=(document.getElementById('fAddress').value||'').trim();
+  var area=(document.getElementById('fArea').value||'');
+  var zone=(document.getElementById('fZone').value||'');
+  var pin=(document.getElementById('fPincode').value||'');
+  var full=[addr,area,zone,pin?('PIN: '+pin):''].filter(Boolean).join(', ');
+  document.getElementById('fFullAddr').value=full;
+}
+document.addEventListener('DOMContentLoaded',function(){
+  ['fAddress','fPincode'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.addEventListener('input',updateFullAddr);
+  });
+  document.getElementById('fArea').addEventListener('change',updateFullAddr);
+  document.getElementById('fZone').addEventListener('change',function(){onZone();updateFullAddr();});
+});
+function onZone(){
+  var zone=document.getElementById('fZone').value;
+  var sub=document.getElementById('fArea');
+  sub.innerHTML='<option value="">Select area *</option>';
+  if(zone&&DELHI_AREAS[zone]){
+    DELHI_AREAS[zone].forEach(function(a){
+      var o=document.createElement('option');o.value=a;o.textContent=a;sub.appendChild(o);
+    });
+  }
+}
 function submitSell(){
   var name=(document.getElementById('fName').value||'').trim();
   var phone=(document.getElementById('fPhone').value||'').trim();
@@ -915,6 +1034,9 @@ function submitSell(){
   var errs=[];
   if(!name){markErr('fName');errs.push('Please enter your full name.');}
   if(phone.length<10){markErr('fPhone');errs.push('Please enter a valid 10-digit number.');}
+  if(!(document.getElementById('fAddress').value||'').trim()){markErr('fAddress');errs.push('Please enter your street address.');}
+  if(!document.getElementById('fZone').value){markErr('fZone');errs.push('Please select your Delhi zone.');}
+  if(!document.getElementById('fArea').value){markErr('fArea');errs.push('Please select your area / colony.');}
   if(!brand){markErr('fBrand');errs.push('Please select a brand.');}
   if(!model){markErr('fModel');errs.push('Please select a model.');}
   if(!selCond){errs.push('Please select device condition.');}
@@ -925,7 +1047,10 @@ function submitSell(){
   document.getElementById('submitText').textContent='Submitting...';
   btn.disabled=true;
   var CU=SMB.customer.current();
-  var data={name:name,phone:phone,email:(document.getElementById('fEmail').value||'').trim(),address:(document.getElementById('fAddress').value||'').trim(),pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
+  var data={name:name,phone:phone,email:(document.getElementById('fEmail').value||'').trim(),address:(document.getElementById('fAddress').value||'').trim(),
+    zone:(document.getElementById('fZone').value||'').trim(),
+    area:(document.getElementById('fArea').value||'').trim(),
+    pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
   try{SMB.sells.submit(data,CU?CU.id:null);}catch(e){btn.disabled=false;document.getElementById('submitIcon').textContent='🚀';document.getElementById('submitText').textContent='Submit Sell Request';showToast('Something went wrong. Please try again.','error');return;}
   btn.disabled=false;
   document.getElementById('formCard').style.display='none';

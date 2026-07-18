@@ -20,14 +20,14 @@
   --f-display:"Cormorant Garamond",Georgia,serif;
   --f-body:"Inter",system-ui,sans-serif
 }
-html{scroll-behavior:smooth;cursor:none}
-body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
-a,button{cursor:none}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;}
+a,button{cursor:pointer}
 
 /* ── CUSTOM CURSOR ─────────────────────────────────────────── */
-#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference}
-#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,transform .08s ease-out,border-color .2s;opacity:.6}
-body:hover #cursor{opacity:1}
+
+
+body:hover 
 .cursor-text{display:none;color:var(--ink);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1}
 
 /* ── SCROLL PROGRESS ──────────────────────────────────────── */
@@ -253,7 +253,7 @@ footer{background:var(--ink2);padding:72px 48px 36px;border-top:1px solid rgba(2
   html{cursor:auto}
   body{cursor:auto}
   a,button{cursor:pointer}
-  #cursor,#cursor-ring{display:none}
+  #cursor,
   .nav-links,.nav-right{display:none}
   .burger{display:block}
   .hero h1{font-size:clamp(40px,12vw,72px)}
@@ -399,7 +399,57 @@ footer{background:var(--ink2);padding:72px 48px 36px;border-top:1px solid rgba(2
 @media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.analytics-grid{grid-template-columns:1fr}}
 </style>
 </style>
-<script>// ================================================================
+<script>
+// ── SUPABASE CLIENT ─────────────────────────────────────────────
+var SB = (function() {
+  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
+  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
+  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  async function query(table, opts) {
+    if (!configured()) return null;
+    opts = opts || {};
+    var url = URL + '/rest/v1/' + table;
+    var params = [];
+    if (opts.select) params.push('select='+opts.select);
+    if (opts.filter) params.push(opts.filter);
+    if (opts.order)  params.push('order='+opts.order);
+    if (opts.limit)  params.push('limit='+opts.limit);
+    if (params.length) url += '?' + params.join('&');
+    try {
+      var r = await fetch(url, {method:'GET', headers:headers()});
+      if (!r.ok) return null;
+      if (r.status === 204) return [];
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function insert(table, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function update(table, filter, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function remove(table, filter) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
+      return r.ok;
+    } catch(e) { return false; }
+  }
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
+})();
+
+// ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
 // All pages load this file first
@@ -535,7 +585,8 @@ var SMB = (function() {
         id: uid(), customerId: custId || null,
         status: 'pending', createdAt: now(), adminNote: ''
       });
-      var list = sells.all(); list.push(req); sells.save(list);
+      var reqToSave = Object.assign({}, req, {photos: []}); // strip base64 to prevent localStorage overflow
+      var list = sells.all(); list.push(reqToSave); sells.save(list);
 
       // Mirror to admin leads
       var leads = arr(K.leads);
@@ -548,7 +599,7 @@ var SMB = (function() {
         battery: data.batteryHealth || '', imei: data.imei || '',
         ram: data.ram || '',
         accessories: data.accessories || [],
-        photos: data.photos || [],
+        photos: [], // not stored in leads (too large)
         askPrice: data.askingPrice || 0,
         notes: [{ t: 'Website submission', at: now() }],
         status: 'new', slot: data.slot || 'morning',
@@ -617,14 +668,15 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
+
 </script>
 </head>
 <body>
-<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<div id="progress"></div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
+  <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#FF4D00"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#FF4D00" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#FF4D00"/><circle cx="24" cy="9" r="2.5" fill="#FF4D00"/><circle cx="24" cy="9" r="1" fill="white"/></svg><span>Sambhi <strong style="color:#FF4D00">Mobiles</strong></span></a>
   <div class="nav-links">
     <a href="index.html" class="nl">Home</a>
     <a href="sell.html" class="nl">Sell</a>
@@ -1218,19 +1270,6 @@ function showToast(msg,type){
     });
   }
   window.addEventListener('scroll',tick,{passive:true}); setTimeout(tick,80);
-})();
-
-// ── CURSOR ────────────────────────────────────────────────────────────
-(function(){
-  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
-  if(!c||!r) return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; c.style.left=mx+'px'; c.style.top=my+'px'; });
-  (function anim(){ rx+=(mx-rx)*.1; ry+=(my-ry)*.1; r.style.left=rx+'px'; r.style.top=ry+'px'; requestAnimationFrame(anim); })();
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){ c.style.width='5px'; c.style.height='5px'; r.style.width='52px'; r.style.height='52px'; });
-    el.addEventListener('mouseleave',function(){ c.style.width='12px'; c.style.height='12px'; r.style.width='40px'; r.style.height='40px'; });
-  });
 })();
 
 document.addEventListener('DOMContentLoaded', init);

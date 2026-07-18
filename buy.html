@@ -21,14 +21,14 @@
   --f-display:"Cormorant Garamond",Georgia,serif;
   --f-body:"Inter",system-ui,sans-serif
 }
-html{scroll-behavior:smooth;cursor:none}
-body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden;cursor:none}
-a,button{cursor:none}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--ink);color:var(--cream);line-height:1.6;overflow-x:hidden}
+a,button{cursor:pointer}
 
 /* CURSOR */
-#cursor{position:fixed;width:12px;height:12px;background:var(--orange);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
-#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--orange);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,transform .06s linear;opacity:.55}
-@media(max-width:768px){#cursor,#cursor-ring{display:none}html,body,a,button{cursor:auto}}
+
+
+@media(max-width:768px){#cursor,html,body,a,button{cursor:auto}}
 
 /* PROGRESS */
 #progress{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:600;width:0%;transition:width .08s}
@@ -208,7 +208,57 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 @media(max-width:1100px){.products-grid{grid-template-columns:repeat(2,1fr)}.trust-bar,.filters-bar,.products-grid{padding-left:28px;padding-right:28px}.trust-bar-in{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.products-grid{grid-template-columns:1fr}.srch-wrap{display:none}}
 </style>
-<script>// ================================================================
+<script>
+// ── SUPABASE CLIENT ─────────────────────────────────────────────
+var SB = (function() {
+  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
+  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
+  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  async function query(table, opts) {
+    if (!configured()) return null;
+    opts = opts || {};
+    var url = URL + '/rest/v1/' + table;
+    var params = [];
+    if (opts.select) params.push('select='+opts.select);
+    if (opts.filter) params.push(opts.filter);
+    if (opts.order)  params.push('order='+opts.order);
+    if (opts.limit)  params.push('limit='+opts.limit);
+    if (params.length) url += '?' + params.join('&');
+    try {
+      var r = await fetch(url, {method:'GET', headers:headers()});
+      if (!r.ok) return null;
+      if (r.status === 204) return [];
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function insert(table, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function update(table, filter, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function remove(table, filter) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
+      return r.ok;
+    } catch(e) { return false; }
+  }
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
+})();
+
+// ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
 // All pages load this file first
@@ -288,7 +338,12 @@ var SMB = (function() {
       if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
       var c = {
         id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
-        pwHash: hash(password), createdAt: now(), sellCount: 0, buyCount: 0
+        pwHash: hash(password), createdAt: now(),
+        sellCount: 0, buyCount: 0, totalEarned: 0,
+        homeAddress: '', pickupAddress: '', pincode: '',
+        lat: null, lng: null,
+        aadhaarSame: false,
+        visitCount: 1, lastSeen: now()
       };
       var list = customer.all(); list.push(c); customer.save(list);
       customer.startSession(c);
@@ -304,7 +359,13 @@ var SMB = (function() {
       return { ok: true, customer: c };
     },
 
-    startSession: function(c) { set(K.cust_sess, { id: c.id, ts: Date.now() }); },
+    startSession: function(c) {
+      set(K.cust_sess, { id: c.id, ts: Date.now() });
+      // Bump visit count
+      var list = customer.all();
+      var i = list.findIndex(function(x){ return x.id === c.id; });
+      if (i > -1) { list[i].visitCount = (list[i].visitCount||0) + 1; list[i].lastSeen = now(); customer.save(list); }
+    },
     logout: function() { localStorage.removeItem(K.cust_sess); },
 
     current: function() {
@@ -333,7 +394,8 @@ var SMB = (function() {
         id: uid(), customerId: custId || null,
         status: 'pending', createdAt: now(), adminNote: ''
       });
-      var list = sells.all(); list.push(req); sells.save(list);
+      var reqToSave = Object.assign({}, req, {photos: []}); // strip base64 to prevent localStorage overflow
+      var list = sells.all(); list.push(reqToSave); sells.save(list);
 
       // Mirror to admin leads
       var leads = arr(K.leads);
@@ -346,7 +408,7 @@ var SMB = (function() {
         battery: data.batteryHealth || '', imei: data.imei || '',
         ram: data.ram || '',
         accessories: data.accessories || [],
-        photos: data.photos || [],
+        photos: [], // not stored in leads (too large)
         askPrice: data.askingPrice || 0,
         notes: [{ t: 'Website submission', at: now() }],
         status: 'new', slot: data.slot || 'morning',
@@ -385,6 +447,17 @@ var SMB = (function() {
   };
 
   // Public API
+  // Track page views for logged-in customer
+  (function trackPage(){
+    try {
+      var sess = get(K.cust_sess);
+      if (!sess || !sess.id) return;
+      var key = 'smb_pv_' + new Date().toDateString().replace(/ /g,'_');
+      var pv = get(key) || {};
+      pv[sess.id] = (pv[sess.id]||0) + 1;
+      set(key, pv);
+    } catch(e){}
+  })();
   return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
 })();
 
@@ -404,10 +477,11 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
+
 </script>
 </head>
 <body>
-<div id="cursor"></div><div id="cursor-ring"></div><div id="progress"></div>
+<div id="progress"></div>
 <nav id="nav">
   <a href="index.html" class="nav-logo">Sambhi <span>Mobiles</span></a>
   <div class="nav-links">
@@ -550,20 +624,6 @@ if (document.readyState === 'loading') {
 <script>
 
 // ── CURSOR ──────────────────────────────────────────────────────────
-(function(){
-  var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring');
-  if(!c||!r)return;
-  var mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',function(e){
-    mx=e.clientX;my=e.clientY;
-    c.style.left=mx+'px';c.style.top=my+'px';
-  });
-  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(anim);})();
-  document.querySelectorAll('a,button').forEach(function(el){
-    el.addEventListener('mouseenter',function(){c.style.width='5px';c.style.height='5px';r.style.width='52px';r.style.height='52px';});
-    el.addEventListener('mouseleave',function(){c.style.width='12px';c.style.height='12px';r.style.width='40px';r.style.height='40px';});
-  });
-})();
 
 // ── SCROLL: NAV + PROGRESS + REVEAL ────────────────────────────────
 (function(){
@@ -703,13 +763,24 @@ function saveNotify(devId,devName){
 document.getElementById('enqModal').addEventListener('click',function(e){if(e.target===this)closeEnq();});
 // Load inventory from Supabase
 (async function(){
+  // Always try Supabase first (works for ALL users, not just admin's device)
+  var loaded = false;
   if(SB.configured()){
-    var rows=await SB.query('inventory',{order:'added_at.desc'});
-    if(rows&&rows.length){
-      var inv=rows.map(function(r){return{id:r.id,cat:r.cat,name:r.name,storage:r.storage,color:r.color,grade:r.grade,battery:r.battery,year:r.year,qty:r.qty,price:r.price,mrp:r.mrp,imei:r.imei,features:r.features||[],visible:r.visible,addedAt:r.added_at};}); 
-      localStorage.setItem('smb_inv',JSON.stringify(inv));
-    }
+    try {
+      var rows = await SB.query('inventory', {order:'added_at.desc'});
+      if(rows && rows.length){
+        var inv = rows.map(function(r){
+          return {id:r.id,cat:r.cat,name:r.name,storage:r.storage,color:r.color,
+                  grade:r.grade,battery:r.battery,year:r.year,qty:r.qty,
+                  price:r.price,mrp:r.mrp,imei:r.imei,
+                  features:r.features||[],visible:r.visible,addedAt:r.added_at};
+        });
+        localStorage.setItem('smb_inv', JSON.stringify(inv));
+        loaded = true;
+      }
+    } catch(e){ console.error('Supabase inventory load failed:', e); }
   }
+  // Fall back to localStorage (admin's device or previously cached)
   renderProducts();
 })();
 smbUpdateNav();

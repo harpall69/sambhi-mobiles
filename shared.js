@@ -1,3 +1,52 @@
+// ── SUPABASE CLIENT ─────────────────────────────────────────────
+var SB = (function() {
+  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
+  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
+  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  async function query(table, opts) {
+    if (!configured()) return null;
+    opts = opts || {};
+    var url = URL + '/rest/v1/' + table;
+    var params = [];
+    if (opts.select) params.push('select='+opts.select);
+    if (opts.filter) params.push(opts.filter);
+    if (opts.order)  params.push('order='+opts.order);
+    if (opts.limit)  params.push('limit='+opts.limit);
+    if (params.length) url += '?' + params.join('&');
+    try {
+      var r = await fetch(url, {method:'GET', headers:headers()});
+      if (!r.ok) return null;
+      if (r.status === 204) return [];
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function insert(table, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function update(table, filter, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function remove(table, filter) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
+      return r.ok;
+    } catch(e) { return false; }
+  }
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
+})();
+
 // ================================================================
 // SAMBHI MOBILES — SHARED.JS v3
 // Central data layer, auth, and utilities
@@ -134,7 +183,8 @@ var SMB = (function() {
         id: uid(), customerId: custId || null,
         status: 'pending', createdAt: now(), adminNote: ''
       });
-      var list = sells.all(); list.push(req); sells.save(list);
+      var reqToSave = Object.assign({}, req, {photos: []}); // strip base64 to prevent localStorage overflow
+      var list = sells.all(); list.push(reqToSave); sells.save(list);
 
       // Mirror to admin leads
       var leads = arr(K.leads);
@@ -147,7 +197,7 @@ var SMB = (function() {
         battery: data.batteryHealth || '', imei: data.imei || '',
         ram: data.ram || '',
         accessories: data.accessories || [],
-        photos: data.photos || [],
+        photos: [], // not stored in leads (too large)
         askPrice: data.askingPrice || 0,
         notes: [{ t: 'Website submission', at: now() }],
         status: 'new', slot: data.slot || 'morning',
