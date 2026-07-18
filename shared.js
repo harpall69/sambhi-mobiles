@@ -140,6 +140,7 @@ var SMB = (function() {
       return { ok: true, customer: c };
     },
 
+    byPhone: function(phone) { phone=(phone+"").replace(/\D/g,"").slice(-10); return SMB.arr(SMB.K.customers).find(function(c){return c.phone===phone;})||null; },
     login: function(phone, password) {
       var c = customer.byPhone(phone);
       if (!c) return { ok: false, err: 'No account found. Please register first.' };
@@ -266,3 +267,65 @@ function smbUpdateNav() {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', smbUpdateNav);
 } else { smbUpdateNav(); }
+
+
+// ── OTP AUTH ──────────────────────────────────────────────────────────
+var otpStore = {};  // {phone: {code, expires, name}}
+
+SMB.otp = {
+  generate: function(phone, name) {
+    phone = (phone + '').replace(/\D/g, '').slice(-10);
+    var code = String(Math.floor(100000 + Math.random() * 900000));
+    otpStore[phone] = { code: code, expires: Date.now() + 10 * 60 * 1000, name: name || '' };
+    return { phone: phone, code: code };
+  },
+  verify: function(phone, inputCode) {
+    phone = (phone + '').replace(/\D/g, '').slice(-10);
+    var entry = otpStore[phone];
+    if (!entry) return { ok: false, err: 'No OTP sent for this number. Please request again.' };
+    if (Date.now() > entry.expires) { delete otpStore[phone]; return { ok: false, err: 'OTP expired. Please request a new one.' }; }
+    if (entry.code !== inputCode.trim()) return { ok: false, err: 'Incorrect OTP. Please check and try again.' };
+    delete otpStore[phone];
+    // Find or create customer
+    var c = SMB.customer.byPhone ? SMB.customer.byPhone(phone) : null;
+    if (!c) {
+      // Auto-register with phone only (no password)
+      c = { id: SMB.uid(), name: entry.name || 'Customer', phone: phone, altPhone: '',
+            pwHash: SMB.hash(SMB.uid()), // random pw hash
+            createdAt: SMB.now(), sellCount: 0, buyCount: 0,
+            visitCount: 1, lastSeen: SMB.now(), homeAddress: '', pickupAddress: '',
+            aadhaarSame: false, lat: null, lng: null };
+      var list = SMB.arr(SMB.K.customers); list.push(c); SMB.set(SMB.K.customers, list);
+    }
+    SMB.customer.startSession(c);
+    return { ok: true, customer: c };
+  }
+};
+
+// ── GOOGLE AUTH HELPER ────────────────────────────────────────────────
+SMB.googleAuth = {
+  handleUser: function(googleUser) {
+    // Called after Firebase Google sign-in
+    var email = googleUser.email || '';
+    var name  = googleUser.displayName || email.split('@')[0] || 'User';
+    var uid   = googleUser.uid || googleUser.providerData?.[0]?.uid || email;
+    var phone = ''; // Google doesn't give phone
+    // Try to find by email first
+    var list = SMB.arr(SMB.K.customers);
+    var c = list.find(function(x) { return x.email === email || x.googleUid === uid; });
+    if (!c) {
+      c = { id: SMB.uid(), name: name, phone: phone, altPhone: '',
+            pwHash: SMB.hash(uid), email: email, googleUid: uid,
+            createdAt: SMB.now(), sellCount: 0, buyCount: 0,
+            visitCount: 1, lastSeen: SMB.now(), homeAddress: '', pickupAddress: '',
+            aadhaarSame: false, lat: null, lng: null };
+      list.push(c); SMB.set(SMB.K.customers, list);
+    } else {
+      c.name = name; c.email = email; c.googleUid = uid;
+      var i = list.findIndex(function(x){return x.id===c.id;}); if(i>-1) list[i]=c;
+      SMB.set(SMB.K.customers, list);
+    }
+    SMB.customer.startSession(c);
+    return { ok: true, customer: c };
+  }
+};
