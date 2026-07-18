@@ -603,8 +603,8 @@ if (document.readyState === 'loading') {
       <div class="returning-bar" id="returningBar">
         <span class="rb-icon">🏆</span>
         <div class="rb-text">
-          <h4>Returning customer bonus applied — +10%</h4>
-          <p id="returningBarSub">You've sold to us before. You automatically get 10% extra on your offer.</p>
+          <h4 id="returningBarTitle">Welcome back! +10% loyalty bonus applied.</h4>
+          <p id="returningBarSub">You've sold to us before — you get 10% extra automatically.</p>
         </div>
       </div>
 
@@ -666,7 +666,7 @@ if (document.readyState === 'loading') {
           <div class="fg"><label>Year <span class="opt">optional</span></label><select id="fYear"><option value="">Year</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016 or older</option></select></div>
         </div>
         <div class="fg"><label>IMEI <span class="opt">dial *#06# — optional</span></label><input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)"><div class="imei-hint" id="imeiHint"></div></div>
-        <div id="batterySection" style="display:none" class="fg"><label>Battery Health % <span class="opt">Settings → Battery → Battery Health</span></label><input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">⚡ Higher battery = higher payout</div></div>
+        <div id="batterySection" style="display:none" class="fg"><label>Battery Health % <span class="opt">Settings → Battery → Battery Health</span></label><input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100" oninput="showEstimate()"><div class="hint" style="color:rgba(242,237,230,.2);font-size:11px;margin-top:4px">⚡ Higher battery = higher payout</div></div>
 
         <div class="sec-div">Condition <span style="color:var(--orange)">*</span></div>
         <div class="cond-grid">
@@ -674,6 +674,19 @@ if (document.readyState === 'loading') {
           <button class="cb" onclick="pickCond('Good',this)"><span class="cb-em">👍</span><span class="cb-lbl">Good</span><span class="cb-sub">Minor wear, fully working</span></button>
           <button class="cb" onclick="pickCond('Fair',this)"><span class="cb-em">👌</span><span class="cb-lbl">Fair</span><span class="cb-sub">Visible wear, working</span></button>
           <button class="cb" onclick="pickCond('Poor',this)"><span class="cb-em">🔧</span><span class="cb-lbl">Needs Repair</span><span class="cb-sub">Damage or issues</span></button>
+        </div>
+
+        <!-- PRICE ESTIMATE -->
+        <div id="estimateBox" style="display:none;background:linear-gradient(135deg,#0D1117,#161B22);border:1px solid rgba(255,77,0,.3);padding:20px 22px;margin-bottom:4px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:rgba(255,77,0,.7);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">📊 Estimated offer</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:#F2EDE6;letter-spacing:-1px" id="estVal">₹0</div>
+            <div style="font-size:11px;color:rgba(242,237,230,.35);margin-top:2px"><span id="estBase"></span> · Condition: <span id="estCond"></span></div>
+          </div>
+          <div style="text-align:right">
+            <div id="estLoyal" style="display:none;background:#FF4D00;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">🏆 +10% Loyalty</div>
+            <div style="font-size:11px;color:rgba(242,237,230,.3);line-height:1.6">Final offer confirmed<br>after inspection</div>
+          </div>
         </div>
 
         <div class="sec-div">Accessories</div>
@@ -753,6 +766,7 @@ if (document.readyState === 'loading') {
       <a href="tel:+917827505579" class="contact-link">📞 +91 7827505579</a>
       <a href="https://wa.me/917827505579" target="_blank" class="contact-link">💬 WhatsApp us</a>
       <a href="mailto:mobilessambhi@gmail.com" class="contact-link">📧 mobilessambhi@gmail.com</a>
+      <a href="https://www.instagram.com/secondhandmobilesdelhi/" target="_blank" class="contact-link">📸 @secondhandmobilesdelhi</a>
     </div>
   </div>
 </div>
@@ -919,7 +933,9 @@ window.addEventListener('DOMContentLoaded',function(){
       var last=prev[prev.length-1];
       var ld=[last.brand,last.model].filter(Boolean).join(' ');
       var dt=last.createdAt?SMB.fmtDate(last.createdAt):'';
-      if(ld)document.getElementById('returningBarSub').textContent='Last sale: '+ld+(dt?' on '+dt:'')+'. +10% applied automatically.';
+      var titleEl=document.getElementById('returningBarTitle');
+      if(titleEl) titleEl.textContent='Welcome back, '+CU.name.split(' ')[0]+'! 🏆 Your +10% loyalty bonus is ready.';
+      if(ld)document.getElementById('returningBarSub').textContent='Last sale: '+ld+(dt?' on '+dt:'')+'. Amount added automatically to your offer.';
       document.getElementById('ppBonus').style.display='inline-block';
     }
   }
@@ -950,9 +966,9 @@ function onModel(){
   document.getElementById('fStorage').value='';
   if(opts.length){document.getElementById('storageSection').style.display='';
     opts.forEach(function(s){var btn=document.createElement('button');btn.className='sc';btn.textContent=s;btn.type='button';
-      btn.onclick=function(){document.querySelectorAll('.sc').forEach(function(b){b.classList.remove('on');});this.classList.add('on');document.getElementById('fStorage').value=s;};chips.appendChild(btn);});}
+      btn.onclick=function(){document.querySelectorAll('.sc').forEach(function(b){b.classList.remove('on');});this.classList.add('on');document.getElementById('fStorage').value=s;showEstimate();};chips.appendChild(btn);});}
 }
-function pickCond(v,btn){document.querySelectorAll('.cb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');selCond=v;}
+function pickCond(v,btn){document.querySelectorAll('.cb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');selCond=v;showEstimate();}
 function togAcc(btn,v){btn.classList.toggle('on');if(btn.classList.contains('on')){if(!selAccs.includes(v))selAccs.push(v);}else{selAccs=selAccs.filter(function(a){return a!==v;});}}
 function pickSlot(v){selSlot=v;document.getElementById('slotMorn').classList.toggle('on',v==='morning');document.getElementById('slotEve').classList.toggle('on',v==='evening');}
 function handlePhotos(input){
@@ -1026,6 +1042,60 @@ function onZone(){
       var o=document.createElement('option');o.value=a;o.textContent=a;sub.appendChild(o);
     });
   }
+}
+var PRICE_DB={"iphone": {"iPhone 16 Pro Max": 95000, "iPhone 16 Pro": 85000, "iPhone 16 Plus": 72000, "iPhone 16": 62000, "iPhone 15 Pro Max": 82000, "iPhone 15 Pro": 72000, "iPhone 15 Plus": 62000, "iPhone 15": 52000, "iPhone 14 Pro Max": 68000, "iPhone 14 Pro": 58000, "iPhone 14 Plus": 48000, "iPhone 14": 42000, "iPhone 13 Pro Max": 55000, "iPhone 13 Pro": 48000, "iPhone 13": 38000, "iPhone 13 Mini": 30000, "iPhone 12 Pro Max": 42000, "iPhone 12 Pro": 36000, "iPhone 12": 28000, "iPhone 12 Mini": 22000, "iPhone 11 Pro Max": 30000, "iPhone 11 Pro": 25000, "iPhone 11": 20000, "iPhone SE (2022)": 18000, "iPhone SE (2020)": 12000, "iPhone XR": 14000, "iPhone XS Max": 16000, "iPhone XS": 13000, "iPhone X": 10000}, "samsung": {"Galaxy S24 Ultra": 78000, "Galaxy S24+": 60000, "Galaxy S24": 48000, "Galaxy S23 Ultra": 62000, "Galaxy S23+": 48000, "Galaxy S23": 38000, "Galaxy S22 Ultra": 48000, "Galaxy S22+": 36000, "Galaxy S22": 28000, "Galaxy A55": 22000, "Galaxy A54": 18000, "Galaxy A35": 14000, "Galaxy A34": 12000, "Galaxy M55": 18000, "Galaxy M35": 12000}, "oneplus": {"OnePlus 12": 42000, "OnePlus 12R": 28000, "OnePlus 11": 32000, "OnePlus 11R": 22000, "Nord 4": 20000, "Nord CE4": 14000, "Nord 3": 16000, "OnePlus 10 Pro": 25000, "OnePlus 10T": 20000, "OnePlus 9 Pro": 18000}, "pixel": {"Pixel 9 Pro XL": 62000, "Pixel 9 Pro": 52000, "Pixel 9": 42000, "Pixel 8 Pro": 42000, "Pixel 8a": 28000, "Pixel 8": 35000, "Pixel 7 Pro": 30000, "Pixel 7a": 22000, "Pixel 7": 25000}, "realme": {"Realme GT 6": 22000, "Realme 13 Pro+": 20000, "Realme 13 Pro": 16000, "Realme 12 Pro+": 18000, "Realme 12 Pro": 14000}, "oppo": {"Find X7 Pro": 48000, "Reno 12 Pro": 24000, "Reno 12": 18000, "Reno 11 Pro": 20000}, "vivo": {"X100 Pro": 42000, "X100": 32000, "V40 Pro": 22000, "V40": 18000, "V30 Pro": 18000}, "xiaomi": {"Xiaomi 14 Ultra": 55000, "Xiaomi 14": 38000, "Redmi Note 13 Pro+": 18000, "Redmi Note 13 Pro": 14000, "POCO X6 Pro": 18000, "POCO F6 Pro": 22000, "POCO F6": 16000}, "nothing": {"Nothing Phone (2a) Plus": 20000, "Nothing Phone (2a)": 16000, "Nothing Phone (2)": 22000, "Nothing Phone (1)": 14000}, "airpods": {"AirPods Pro 2nd Gen (USB-C)": 14000, "AirPods Pro 2nd Gen": 12000, "AirPods Pro 1st Gen": 8000, "AirPods Max (USB-C)": 32000, "AirPods Max": 28000, "AirPods 4 (ANC)": 10000, "AirPods 4": 8000, "AirPods 3rd Gen": 5000, "AirPods 2nd Gen": 3000}, "applewatch": {"Apple Watch Ultra 2": 55000, "Apple Watch Series 9 45mm": 32000, "Apple Watch Series 9 41mm": 28000, "Apple Watch SE 2 44mm": 18000}, "playstation": {"PS5 Disc Edition": 34000, "PS5 Digital Edition": 28000, "PS5 Slim Disc Edition": 32000, "PS4 Pro": 16000, "PS4 Slim (1TB)": 10000, "PS4 (Original)": 8000, "PS3 Super Slim": 3000, "PS3 Slim": 2500}};
+var COND_MULT={'Like New':1.0,'Good':0.88,'Fair':0.72,'Poor':0.52};
+var BATT_DEDUCT={100:0,95:0,90:0,85:-0.03,80:-0.06,75:-0.10,70:-0.15,60:-0.22,50:-0.30};
+
+function getEstimate() {
+  var brand = document.getElementById('fBrand').value;
+  var model = document.getElementById('fModel').value;
+  var cond  = selCond || 'Good';
+  var batt  = parseInt(document.getElementById('fBattery').value) || 100;
+  var stor  = document.getElementById('fStorage').value;
+  var loyal = isReturning;
+
+  if (!brand || !model) return null;
+  var base = (PRICE_DB[brand] && PRICE_DB[brand][model]) || 0;
+  if (!base) return null;
+
+  // Storage adjustment
+  if (stor) {
+    var storGB = parseInt(stor);
+    if (storGB >= 512) base = Math.round(base * 1.12);
+    else if (storGB >= 256) base = Math.round(base * 1.06);
+    else if (storGB <= 64) base = Math.round(base * 0.90);
+    else if (storGB <= 16 || storGB <= 32) base = Math.round(base * 0.78);
+  }
+
+  // Condition multiplier
+  var cMult = COND_MULT[cond] || 0.85;
+  var est = Math.round(base * cMult);
+
+  // Battery deduction (iPhone only)
+  if (brand === 'iphone' && batt < 100) {
+    var battKey = Math.floor(batt / 5) * 5;
+    var deduct = BATT_DEDUCT[battKey] || (batt < 60 ? -0.35 : 0);
+    est = Math.round(est * (1 + deduct));
+  }
+
+  // Loyalty bonus
+  if (loyal) est = Math.round(est * 1.10);
+
+  return {base: base, est: est, loyal: loyal, cond: cond};
+}
+
+function showEstimate() {
+  var result = getEstimate();
+  var box = document.getElementById('estimateBox');
+  if (!box) return;
+  if (!result || !result.est) { box.style.display = 'none'; return; }
+  box.style.display = 'flex';
+  document.getElementById('estVal').textContent = '₹' + result.est.toLocaleString('en-IN');
+  document.getElementById('estBase').textContent = 'Base: ₹' + result.base.toLocaleString('en-IN');
+  document.getElementById('estCond').textContent = result.cond;
+  var loyEl = document.getElementById('estLoyal');
+  if (loyEl) loyEl.style.display = result.loyal ? 'inline-block' : 'none';
 }
 function submitSell(){
   var name=(document.getElementById('fName').value||'').trim();
