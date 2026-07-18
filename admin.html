@@ -256,6 +256,7 @@ select.si{min-width:140px}
       <button class="sb-btn" data-pg="prices" onclick="gt('prices',this)"><span class="sb-icon">💰</span>Price List</button>
       <button class="sb-btn" data-pg="camps" onclick="gt('camps',this)"><span class="sb-icon">🎯</span>Campaigns</button>
       <button class="sb-btn" data-pg="team" onclick="gt('team',this)"><span class="sb-icon">🔒</span>Team Access</button>
+      <button class="sb-btn" data-pg="dbview" onclick="gt('dbview',this)"><span class="sb-icon">🗄️</span>Database</button>
     </div>
     <div class="sb-footer">
       <button class="sb-logout" onclick="doLogout()">↩ Logout</button>
@@ -543,6 +544,67 @@ select.si{min-width:140px}
   </div>
 </div>
 
+
+<!-- DATABASE VIEWER -->
+<div class="pg" id="pg-dbview">
+  <div class="tw">
+    <div class="tw-header">
+      <div><div class="tw-title">🗄️ Database Explorer</div><div class="tw-sub">View and query all stored data</div></div>
+      <div class="tw-actions">
+        <button class="ab secondary" onclick="refreshDB()">↻ Refresh</button>
+        <button class="ab" onclick="exportDB()">⬇ Export JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connection Status -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Supabase Connection</div>
+      <div id="dbSupaStatus" style="font-size:14px;font-weight:600">Checking…</div>
+      <div style="font-size:11px;color:var(--light);margin-top:4px" id="dbSupaUrl">—</div>
+      <a href="https://supabase.com/dashboard" target="_blank" style="display:inline-block;margin-top:10px;font-size:12px;color:var(--b);font-weight:600;text-decoration:none">Open Supabase Dashboard ↗</a>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Local Storage</div>
+      <div id="dbLocalSize" style="font-size:14px;font-weight:600">—</div>
+      <div style="font-size:11px;color:var(--light);margin-top:4px" id="dbLocalKeys">—</div>
+    </div>
+  </div>
+
+  <!-- Table Selector -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+    <button class="ab secondary" onclick="viewTable('smb_sell_reqs','sell_requests')">📱 Sell Requests</button>
+    <button class="ab secondary" onclick="viewTable('smb_leads','leads')">📋 Leads</button>
+    <button class="ab secondary" onclick="viewTable('smb_customers','customers')">👥 Customers</button>
+    <button class="ab secondary" onclick="viewTable('smb_inv','inventory')">📦 Inventory</button>
+    <button class="ab secondary" onclick="viewTable('smb_bills','bills')">🧾 Bills</button>
+    <button class="ab secondary" onclick="viewTable('smb_riders','riders')">🏍️ Riders</button>
+    <button class="ab secondary" onclick="viewTable('smb_camps','campaigns')">🎯 Campaigns</button>
+  </div>
+
+  <!-- Query Box -->
+  <div class="tw" style="margin-bottom:16px">
+    <div class="tw-header"><div class="tw-title">Search / Filter</div></div>
+    <div style="padding:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input class="si" id="dbQuery" placeholder="🔍 Filter records by any field…" style="flex:1;min-width:220px" oninput="filterDBTable()">
+      <select class="si" id="dbSort" onchange="filterDBTable()">
+        <option value="">No sort</option>
+        <option value="createdAt_desc">Newest first</option>
+        <option value="createdAt_asc">Oldest first</option>
+      </select>
+      <span id="dbRowCount" style="font-size:12px;color:var(--muted);font-weight:600">0 records</span>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="tw">
+    <div class="tw-header"><div class="tw-title" id="dbTableTitle">Select a table above</div></div>
+    <div style="overflow-x:auto;max-height:500px;overflow-y:auto">
+      <table id="dbTable"><thead id="dbHead"></thead><tbody id="dbBody"></tbody></table>
+    </div>
+  </div>
+</div>
 <!-- LEAD MODAL -->
 <div class="mbg" id="lm"><div class="modal"><div class="mh"><h2 id="lmt">Lead</h2><button class="mx" onclick="cm('lm')">✕</button></div><div class="mb" id="lmb"></div></div></div>
 
@@ -1184,6 +1246,7 @@ function gt(pg, btn) {
   if (pg === 'team')      rTm();
   if (pg === 'sellreqs')  rSellReqs();
   if (pg === 'customers') rCustomers();
+  if (pg === 'dbview') refreshDB();
 }
 
 // ── SORT ─────────────────────────────────────────────────────────
@@ -1460,7 +1523,15 @@ function saveLead() {
     notes:[{t:'Added by '+(CU?CU.name:'admin'), at:new Date().toISOString()}],
     status:'new', createdAt:new Date().toISOString()
   });
-  savL(); toast('Lead saved for ' + n);
+  savL(); toast('Lead saved for ' + n + ' ✅');
+  // WhatsApp notification to owner
+  var devStr = [rn('abr'),rn('amo')].filter(Boolean).join(' ');
+  var areaStr = rn('aa') || 'Area not specified';
+  var slotStr = rn('ast') === 'morning' ? '🌅 Morning' : '🌆 Evening';
+  var waMsg = '🔔 *New Lead — Sambhi Mobiles*\n\n👤 *' + n + '*\n📞 ' + rn('ap') + '\n📱 ' + (devStr||'TBD') + '\n📍 ' + areaStr + '\n⏰ ' + slotStr + '\n\nAdmin: https://sambhi-mobiles.vercel.app/admin';
+  if (confirm('📲 Send WhatsApp notification to owner about this new lead?')) {
+    window.open('https://wa.me/917827505579?text=' + encodeURIComponent(waMsg), '_blank');
+  }
   ['an','ap','aa','aad','ast','aco','aim','aba','ano'].forEach(function(id){
     var e = document.getElementById(id); if (e) e.value = '';
   });
@@ -2203,7 +2274,27 @@ function updSR(id, status) {
   var leads2 = []; try { leads2 = JSON.parse(localStorage.getItem('smb_leads') || '[]'); } catch(e) {}
   var li = leads2.findIndex(function(l) { return l.id === id; });
   if (li > -1) { leads2[li].status = status === 'completed' ? 'completed' : status === 'rejected' ? 'cancelled' : 'new'; localStorage.setItem('smb_leads', JSON.stringify(leads2)); }
-  toast('Status: ' + status); rSellReqs();
+  toast('Status: ' + status + ' ✅');
+  // Notify customer via WhatsApp
+  try {
+    var allReqs = JSON.parse(localStorage.getItem('smb_sell_reqs')||'[]');
+    var theReq = allReqs.find(function(r){ return r.id===id||r.dbId===id; });
+    if (theReq && theReq.phone && (status==='completed'||status==='scheduled'||status==='reviewing')) {
+      var cName = theReq.name||'Customer';
+      var dName = [theReq.brand,theReq.model].filter(Boolean).join(' ')||'your device';
+      var msgs = {
+        completed: 'Payment sent for '+dName+'. Thank you, '+cName+'! Sambhi Mobiles 🙏',
+        scheduled: 'Pickup confirmed for '+dName+'! Our rider will arrive shortly. Sambhi Mobiles 🚗',
+        reviewing: 'We received your '+dName+' request, '+cName+'. We will call within 2 hours. Sambhi Mobiles 📞'
+      };
+      var custMsg = msgs[status] || ('Your '+dName+' request status: '+status+'. Sambhi Mobiles.');
+      if (confirm('Send WhatsApp to '+cName+' ('+theReq.phone+')?')) {
+        window.open('https://wa.me/91'+String(theReq.phone).replace(/[^0-9]/g,'')+
+          '?text='+encodeURIComponent('🔔 Sambhi Mobiles: '+custMsg), '_blank');
+      }
+    }
+  } catch(e) {}
+  rSellReqs();
 }
 
 // ── REGISTERED CUSTOMERS ─────────────────────────────────────────
@@ -2310,6 +2401,95 @@ function toast(msg, type) {
 }
 
 setInterval(updateSRBadge, 30000);
+
+
+// ── DATABASE VIEWER ────────────────────────────────────────────────────
+var _dbCurrentKey = '', _dbCurrentData = [], _dbFilteredData = [];
+
+function viewTable(key, label) {
+  _dbCurrentKey = key;
+  document.getElementById('dbTableTitle').textContent = '📋 ' + label + ' — ' + key;
+  try {
+    _dbCurrentData = JSON.parse(localStorage.getItem(key) || '[]');
+  } catch(e) { _dbCurrentData = []; }
+  if (!Array.isArray(_dbCurrentData)) _dbCurrentData = [_dbCurrentData];
+  filterDBTable();
+}
+
+function filterDBTable() {
+  var q = (document.getElementById('dbQuery').value || '').toLowerCase();
+  var sort = document.getElementById('dbSort').value;
+  _dbFilteredData = _dbCurrentData.filter(function(row) {
+    return !q || JSON.stringify(row).toLowerCase().indexOf(q) > -1;
+  });
+  if (sort === 'createdAt_desc') _dbFilteredData.sort(function(a,b){ return new Date(b.createdAt||b.created_at||0) - new Date(a.createdAt||a.created_at||0); });
+  if (sort === 'createdAt_asc')  _dbFilteredData.sort(function(a,b){ return new Date(a.createdAt||a.created_at||0) - new Date(b.createdAt||b.created_at||0); });
+  document.getElementById('dbRowCount').textContent = _dbFilteredData.length + ' records';
+  renderDBTable(_dbFilteredData);
+}
+
+function renderDBTable(data) {
+  var head = document.getElementById('dbHead');
+  var body = document.getElementById('dbBody');
+  if (!data.length) {
+    head.innerHTML = ''; body.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:#94A3B8">No records found</td></tr>';
+    return;
+  }
+  var keys = Object.keys(data[0]).slice(0, 10);
+  head.innerHTML = '<tr>' + keys.map(function(k){ return '<th>' + k + '</th>'; }).join('') + '</tr>';
+  body.innerHTML = data.slice(0, 200).map(function(row) {
+    return '<tr>' + keys.map(function(k) {
+      var v = row[k];
+      if (typeof v === 'object' && v !== null) v = JSON.stringify(v).slice(0, 50) + '…';
+      if (typeof v === 'string' && v.length > 60) v = v.slice(0, 60) + '…';
+      return '<td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + (row[k]||'') + '">' + (v || '—') + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+}
+
+function refreshDB() {
+  // Connection status
+  var supUrl = (window.SUPABASE_URL || '');
+  var supKey = (window.SUPABASE_KEY || '');
+  var configured = supUrl && supUrl !== 'YOUR_PROJECT_URL_HERE';
+  var statEl = document.getElementById('dbSupaStatus');
+  var urlEl = document.getElementById('dbSupaUrl');
+  if (configured) {
+    statEl.innerHTML = '<span style="color:var(--g)">● Connected</span>';
+    urlEl.textContent = supUrl.replace('https://','').slice(0,40) + '…';
+  } else {
+    statEl.innerHTML = '<span style="color:var(--r)">● Not configured</span>';
+    urlEl.textContent = 'Add URL + Key to config.js';
+  }
+  // Local storage stats
+  var totalSize = 0, keys = [];
+  for (var k in localStorage) {
+    if (k.startsWith('smb_')) {
+      totalSize += (localStorage.getItem(k)||'').length;
+      keys.push(k);
+    }
+  }
+  document.getElementById('dbLocalSize').textContent = (totalSize/1024).toFixed(1) + ' KB used';
+  document.getElementById('dbLocalKeys').textContent = keys.length + ' tables: ' + keys.join(', ');
+  // Reload current table if any
+  if (_dbCurrentKey) viewTable(_dbCurrentKey, _dbCurrentKey);
+}
+
+function exportDB() {
+  var allData = {};
+  ['smb_sell_reqs','smb_leads','smb_customers','smb_inv','smb_bills','smb_riders','smb_camps'].forEach(function(k) {
+    try { allData[k] = JSON.parse(localStorage.getItem(k)||'[]'); } catch(e) { allData[k] = []; }
+  });
+  var blob = new Blob([JSON.stringify(allData, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'sambhi-db-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('Database exported! 📥', 's');
+}
+
+// Init DB view on tab open
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(refreshDB, 1000);
+});
 </script>
-</body>
-</html>
