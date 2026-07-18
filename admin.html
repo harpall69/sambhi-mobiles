@@ -1115,38 +1115,75 @@ function doLogout() {
 }
 
 function startCRM(u) {
-  // Show UI
-  document.getElementById('TOP').style.display = 'flex';
-  document.getElementById('TABS').style.display = 'block';
-  document.getElementById('tav').textContent = u.init;
-  document.getElementById('tav').style.background = u.color;
-  document.getElementById('tname').textContent = u.name;
-  document.getElementById('trole').textContent = u.role;
-  // Wire up tabs
-  document.querySelectorAll('.tb').forEach(function(btn) {
-    btn.onclick = function() { gt(this.dataset.pg); };
-  });
-  // Load data and show dashboard
+  // ── NEW DESIGN: hide login, show sidebar app ──────────────────
+  var ls = document.getElementById('LS');
+  var app = document.getElementById('APP');
+  if (ls)  ls.style.display  = 'none';
+  if (app) app.style.display = 'block';
+
+  // Sidebar user card
+  var sbN = document.getElementById('sbName');
+  var sbR = document.getElementById('sbRole');
+  var sbA = document.getElementById('sbAvatar');
+  if (sbN) sbN.textContent = u.name || u.u;
+  if (sbR) sbR.textContent = u.role || 'Staff';
+  if (sbA) { sbA.textContent = (u.name||u.u||'A').charAt(0).toUpperCase(); sbA.style.background = u.color||'#FF4D00'; }
+
+  // Top bar date + live clock
+  var pd = document.getElementById('pageDate');
+  if (pd) {
+    var now = new Date();
+    var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var MONS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    pd.textContent = DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONS[now.getMonth()] + ' ' + now.getFullYear();
+  }
+  (function tick() {
+    var n = new Date(), h = n.getHours(), m = n.getMinutes(), s = n.getSeconds();
+    var el = document.getElementById('liveTime');
+    if (el) el.textContent = (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    setTimeout(tick, 1000);
+  })();
+
+  // Load data and go to dashboard
   load();
   seedD();
   gt('dash');
+  setTimeout(function() { updateDashExtra(); updateSRBadge(); }, 300);
 }
 
 // ── NAVIGATION ───────────────────────────────────────────────────
-function gt(pg) {
+function gt(pg, btn) {
+  // Hide all pages, show selected
   document.querySelectorAll('.pg').forEach(function(p) { p.classList.remove('on'); });
-  document.querySelectorAll('.tb').forEach(function(t) { t.classList.remove('on'); });
-  var el = document.getElementById('pg-' + pg); if (el) el.classList.add('on');
-  var tb = document.querySelector('.tb[data-pg="' + pg + '"]'); if (tb) tb.classList.add('on');
-  if (pg === 'dash')    { iAF(); popR(); rd(); }
-  if (pg === 'leads')   rl();
-  if (pg === 'fu')      rk();
-  if (pg === 'bill')    rBill();
-  if (pg === 'riders')  rRid();
-  if (pg === 'camps')   rCamp();
-  if (pg === 'inv')     ri();
-  if (pg === 'prices')  rPr();
-  if (pg === 'team')    rTm();
+  var el = document.getElementById('pg-' + pg);
+  if (el) el.classList.add('on');
+
+  // Update sidebar active state
+  document.querySelectorAll('.sb-btn').forEach(function(t) { t.classList.remove('on'); });
+  var sbBtn = btn || document.querySelector('.sb-btn[data-pg="' + pg + '"]');
+  if (sbBtn) sbBtn.classList.add('on');
+
+  // Update page title
+  var titles = {
+    dash:'Dashboard', leads:'All Leads', sellreqs:'Sell Requests', customers:'Customers',
+    fu:'Follow-up', add:'Add Lead', riders:'Riders', inv:'Inventory',
+    bill:'Generate Bill', prices:'Price List', camps:'Campaigns', team:'Team Access'
+  };
+  var pt = document.getElementById('pageTitle');
+  if (pt) pt.textContent = titles[pg] || pg;
+
+  // Run page render function
+  if (pg === 'dash')      { iAF(); popR(); rd(); updateDashExtra(); }
+  if (pg === 'leads')     rl();
+  if (pg === 'fu')        rk();
+  if (pg === 'bill')      rBill();
+  if (pg === 'riders')    rRid();
+  if (pg === 'camps')     rCamp();
+  if (pg === 'inv')       ri();
+  if (pg === 'prices')    rPr();
+  if (pg === 'team')      rTm();
+  if (pg === 'sellreqs')  rSellReqs();
+  if (pg === 'customers') rCustomers();
 }
 
 // ── SORT ─────────────────────────────────────────────────────────
@@ -2231,73 +2268,21 @@ function clearAndRetry() {
 window.onload = function() { trySession(); };
 
 
-// ── OVERRIDE gt() to use new sidebar ──────────────────────────────────
-function gt(id, btn) {
-  document.querySelectorAll('.pg').forEach(function(el){ el.classList.remove('on'); });
-  var pg = document.getElementById('pg-' + id);
-  if (pg) pg.classList.add('on');
-  document.querySelectorAll('.sb-btn').forEach(function(el){ el.classList.remove('on'); });
-  if (btn) { btn.classList.add('on'); }
-  else {
-    var target = document.querySelector('.sb-btn[data-pg="' + id + '"]');
-    if (target) target.classList.add('on');
-  }
-  var titles = {
-    dash:'Dashboard', leads:'All Leads', sellreqs:'Sell Requests', customers:'Customers',
-    fu:'Follow-up', add:'Add Lead', riders:'Riders', inv:'Inventory',
-    bill:'Generate Bill', prices:'Price List', camps:'Campaigns', team:'Team Access'
-  };
-  var t = document.getElementById('pageTitle');
-  if (t) t.textContent = titles[id] || id;
-  // Run the render function for each tab
-  var renders = {leads:rl, fu:rl, bill:rBill, riders:rRid, inv:ri, prices:rPr, camps:rCamp, team:rTm, sellreqs:rSellReqs, customers:rCustomers, dash:rd};
-  if (renders[id]) renders[id]();
-}
 
-// ── OVERRIDE startCRM to update sidebar user info ─────────────────────
-var origStartCRM = startCRM;
-startCRM = function(u) {
-  origStartCRM(u);
-  // Update sidebar
-  document.getElementById('sbName').textContent = u.name || u.u;
-  document.getElementById('sbRole').textContent = u.role || 'Staff';
-  document.getElementById('sbAvatar').textContent = (u.name || u.u || 'A').charAt(0).toUpperCase();
-  document.getElementById('LS').style.display = 'none';
-  document.getElementById('APP').style.display = 'block';
-  // Update top bar
-  updateTopBar();
-  // Update dashboard extra stats
-  updateDashExtra();
-  // Show sell requests badge
-  updateSRBadge();
-};
-
-function updateTopBar() {
-  var now = new Date();
-  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('pageDate').textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
-  (function clockTick() {
-    var n = new Date();
-    var h = n.getHours(), m = n.getMinutes(), s = n.getSeconds();
-    document.getElementById('liveTime').textContent = 
-      (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-    setTimeout(clockTick, 1000);
-  })();
-}
-
+// ── DASHBOARD EXTRA STATS ──────────────────────────────────────────────
 function updateDashExtra() {
   try {
     var customers = JSON.parse(localStorage.getItem('smb_customers') || '[]');
-    var bills = JSON.parse(localStorage.getItem('smb_bills') || '[]');
+    var billsData = JSON.parse(localStorage.getItem('smb_bills') || '[]');
     var riders = JSON.parse(localStorage.getItem('smb_riders') || '[]');
     var sells = JSON.parse(localStorage.getItem('smb_sell_reqs') || '[]');
-    document.getElementById('totalCust').textContent = customers.length;
-    document.getElementById('totalBills').textContent = bills.length;
-    document.getElementById('totalRiders').textContent = riders.filter(function(r){ return r.active !== false; }).length;
-    document.getElementById('totalLeads').textContent = leads ? leads.length : 0;
-    document.getElementById('totalSR').textContent = sells.length;
-    document.getElementById('topLeadCount').textContent = leads ? leads.length : 0;
+    var el;
+    el = document.getElementById('totalCust');   if(el) el.textContent = customers.length;
+    el = document.getElementById('totalBills');  if(el) el.textContent = billsData.length;
+    el = document.getElementById('totalRiders'); if(el) el.textContent = riders.filter(function(r){ return r.active !== false; }).length;
+    el = document.getElementById('totalLeads');  if(el) el.textContent = leads ? leads.length : 0;
+    el = document.getElementById('totalSR');     if(el) el.textContent = sells.length;
+    el = document.getElementById('topLeadCount');if(el) el.textContent = leads ? leads.length : 0;
   } catch(e) {}
 }
 
@@ -2309,11 +2294,10 @@ function updateSRBadge() {
     var topBadge = document.getElementById('nbadge');
     if (badge) badge.textContent = newCount;
     if (topBadge) topBadge.textContent = '📱 ' + newCount + ' New Requests';
-    if (newCount > 0 && badge) badge.style.background = '#FF4D00';
   } catch(e) {}
 }
 
-// Override toast to use new style
+// Override toast for new design
 function toast(msg, type) {
   var w = document.getElementById('toastWrap');
   if (!w) return;
@@ -2325,7 +2309,6 @@ function toast(msg, type) {
   setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 280); }, 3200);
 }
 
-// Run sell requests badge update periodically
 setInterval(updateSRBadge, 30000);
 </script>
 </body>
