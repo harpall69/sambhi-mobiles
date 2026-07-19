@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%23FF4D00'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%23FF4D00' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%23FF4D00'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%232563EB'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%232563EB' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%232563EB'/></svg>">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sambhi Mobiles — Admin CRM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
   --b:#2563EB;--bl:#EFF6FF;--bb:#BFDBFE;
   --g:#16A34A;--gl:#F0FDF4;
   --r:#DC2626;--rl:#FEF2F2;
-  --o:#FF4D00;--ol:#FFF7ED;
+  --o:#0891B2;--ol:#F0FDFA;
   --p:#7C3AED;--pl:#F5F3FF;
   --y:#D97706;--yl:#FFFBEB;
   --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
@@ -30,14 +30,14 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .lcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:44px;width:100%;max-width:400px;backdrop-filter:blur(20px)}
 .lcard-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
 .lcard-logo h1{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.lcard-logo h1 span{color:#FF4D00}
+.lcard-logo h1 span{color:#2563EB}
 .lsub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:28px;letter-spacing:.5px;text-transform:uppercase}
 .lf{margin-bottom:16px}
 .lf label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .lf input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:11px 14px;border-radius:var(--radius);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
-.lf input:focus{border-color:#FF4D00;background:rgba(255,77,0,.05)}
-#lbtn{width:100%;background:#FF4D00;color:#fff;border:none;padding:13px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px;margin-top:4px;transition:background .15s}
-#lbtn:hover{background:#CC3D00}
+.lf input:focus{border-color:#2563EB;background:rgba(37,99,235,.05)}
+#lbtn{width:100%;background:#2563EB;color:#fff;border:none;padding:13px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px;margin-top:4px;transition:background .15s}
+#lbtn:hover{background:#1D4ED8}
 #lerr{color:#FCA5A5;font-size:12px;margin-top:10px;text-align:center;min-height:20px}
 
 /* ── APP SHELL ──────────────────────────────────────────────────── */
@@ -46,12 +46,12 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 /* ── SIDEBAR ─────────────────────────────────────────────────────── */
 .sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:#0F172A;display:flex;flex-direction:column;z-index:200;overflow-y:auto}
 .sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
-.sb-logo-icon{width:32px;height:32px;background:#FF4D00;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-icon{width:32px;height:32px;background:#2563EB;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sb-logo-icon svg{width:18px;height:18px}
 .sb-logo-text{font-size:14px;font-weight:700;color:#F8FAFC;line-height:1.2}
 .sb-logo-text small{font-size:10px;color:rgba(255,255,255,.35);font-weight:400;display:block;letter-spacing:.5px;text-transform:uppercase}
 .sb-user{padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
-.sb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FF4D00,#F97316);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+.sb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#1D4ED8);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
 .sb-user-info{flex:1;min-width:0}
 .sb-user-name{font-size:13px;font-weight:600;color:#F8FAFC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-user-role{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px}
@@ -59,9 +59,9 @@ body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--i
 .sb-section{font-size:10px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1px;padding:14px 8px 6px}
 .sb-btn{width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius);background:none;border:none;color:rgba(248,250,252,.5);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;position:relative;margin-bottom:2px}
 .sb-btn:hover{background:rgba(255,255,255,.06);color:#F8FAFC}
-.sb-btn.on{background:rgba(255,77,0,.15);color:#FF4D00;font-weight:600}
+.sb-btn.on{background:rgba(37,99,235,.15);color:#2563EB;font-weight:600}
 .sb-btn .sb-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
-.sb-badge{margin-left:auto;background:#FF4D00;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:100px;min-width:20px;text-align:center}
+.sb-badge{margin-left:auto;background:#2563EB;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:100px;min-width:20px;text-align:center}
 .sb-badge.green{background:var(--g)}
 .sb-footer{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06)}
 .sb-logout{width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius);background:none;border:none;color:rgba(248,250,252,.35);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
@@ -114,8 +114,8 @@ input.si{min-width:180px}
 select.si{min-width:140px}
 
 /* BUTTONS */
-.ab{background:var(--o);color:#fff;border:none;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.ab:hover{background:#CC3D00}
+.ab{background:var(--b);color:#fff;border:none;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ab:hover{background:#1D4ED8}
 .ab.secondary{background:var(--bg);color:var(--ink);border:1px solid var(--border)}
 .ab.secondary:hover{background:var(--border)}
 .ab.green{background:var(--g)}.ab.green:hover{background:#15803D}
@@ -131,7 +131,7 @@ select.si{min-width:140px}
 .fg .hint{font-size:11px;color:var(--light);margin-top:4px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.sl{display:block;font-size:11px;font-weight:700;color:var(--o);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.sl{display:block;font-size:11px;font-weight:700;color:var(--b);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700;white-space:nowrap}
@@ -167,7 +167,7 @@ select.si{min-width:140px}
 /* QUICK ACTIONS PANEL on Dashboard */
 .qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .qa-btn{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit}
-.qa-btn:hover{border-color:var(--o);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.qa-btn:hover{border-color:var(--b);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .qa-btn .qa-icon{font-size:24px;margin-bottom:8px}
 .qa-btn .qa-label{font-size:12px;font-weight:700;color:var(--ink)}
 .qa-btn .qa-sub{font-size:11px;color:var(--light);margin-top:2px}
@@ -208,11 +208,11 @@ select.si{min-width:140px}
 <div id="LS">
   <div class="lcard">
     <div class="lcard-logo">
-      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#FF4D00"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#FF4D00" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#FF4D00"/><circle cx="24" cy="9" r="2.5" fill="#FF4D00"/><circle cx="24" cy="9" r="1" fill="white"/></svg>
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#2563EB"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#2563EB" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#2563EB"/><circle cx="24" cy="9" r="2.5" fill="#2563EB"/><circle cx="24" cy="9" r="1" fill="white"/></svg>
       <h1>Sambhi <span>Mobiles</span></h1>
     </div>
     <p class="lsub">Admin CRM — Secure Login</p>
-    <div class="lf"><label>Username</label><input type="text" id="lu" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
+    <div class="lf"><label>Email</label><input type="email" id="lu" placeholder="Enter email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
     <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button id="lbtn" onclick="doLogin()">Sign In →</button>
     <div id="lerr"></div>
@@ -229,7 +229,7 @@ select.si{min-width:140px}
   <div class="sidebar" id="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-icon">
-        <svg viewBox="0 0 36 36" fill="none"><rect x="6" y="4" width="20" height="28" rx="3" fill="white" opacity=".9"/><rect x="9" y="7" width="12" height="16" rx="1" fill="#FF4D00" opacity=".6"/><circle cx="16" cy="28" r="2" fill="#FF4D00"/></svg>
+        <svg viewBox="0 0 36 36" fill="none"><rect x="6" y="4" width="20" height="28" rx="3" fill="white" opacity=".9"/><rect x="9" y="7" width="12" height="16" rx="1" fill="#2563EB" opacity=".6"/><circle cx="16" cy="28" r="2" fill="#2563EB"/></svg>
       </div>
       <div class="sb-logo-text">Sambhi Mobiles<small>Admin CRM</small></div>
     </div>
@@ -287,7 +287,7 @@ select.si{min-width:140px}
 <div class="pg on" id="pg-dash">
   <!-- Stats -->
   <div class="stats-grid">
-    <div class="stat-card" style="--cc:#FF4D00" onclick="gt('sellreqs',document.querySelector('[data-pg=sellreqs]'))">
+    <div class="stat-card" style="--cc:#0891B2" onclick="gt('sellreqs',document.querySelector('[data-pg=sellreqs]'))">
       <div class="sc-icon">📱</div>
       <div class="sc-num" id="s0">0</div>
       <div class="sc-lbl">New Requests Today</div>
@@ -612,7 +612,10 @@ select.si{min-width:140px}
 <div class="mbg" id="rm2"><div class="modal" style="max-width:440px"><div class="mh"><h2 id="rmt">Add Rider</h2><button class="mx" onclick="cm('rm2')">✕</button></div><div class="mb">
   <div class="g2"><div class="fg"><label>Name *</label><input id="rn" placeholder="Rider name"></div><div class="fg"><label>Phone *</label><input id="rph" placeholder="+91…"></div></div>
   <div class="g2"><div class="fg"><label>Email</label><input id="rem" placeholder="email@…"></div><div class="fg"><label>Zone</label><input id="rzo" placeholder="South Delhi…"></div></div>
+  <div class="fg"><label>Pincodes covered (for auto-assignment)</label><input id="rpin" placeholder="e.g. 110019, 110020, 110024"></div>
   <div class="g2"><div class="fg"><label>Username</label><input id="rus" placeholder="rider1"></div><div class="fg"><label>Password</label><input type="password" id="rps" placeholder="Set password"></div></div>
+  <div class="fg"><label>Aadhaar Number</label><input id="raad" placeholder="XXXX XXXX XXXX" maxlength="14"></div>
+  <div class="fg"><label>Aadhaar Card Image</label><input type="file" id="raadf" accept="image/*,.pdf"><div id="raadPrev" style="font-size:11px;color:#64748B;margin-top:5px"></div></div>
   <input type="hidden" id="reid"><button class="sb" onclick="saveR()">Save Rider</button>
 </div></div></div>
 
@@ -698,8 +701,41 @@ select.si{min-width:140px}
 var SB = (function() {
   var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
   var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  var SESS_KEY = 'smb_admin_auth';
+  var session = null; // {access_token, refresh_token, user:{id,email}}
   function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
-  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  function headers(){
+    var tok = (session && session.access_token) ? session.access_token : KEY;
+    return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+tok,'Prefer':'return=representation'};
+  }
+  function loadSession(){
+    try { var s = localStorage.getItem(SESS_KEY); session = s ? JSON.parse(s) : null; } catch(e){ session = null; }
+    return session;
+  }
+  function saveSession(s){ session = s; try { localStorage.setItem(SESS_KEY, JSON.stringify(s)); } catch(e){} }
+  function clearSession(){ session = null; try { localStorage.removeItem(SESS_KEY); } catch(e){} }
+  async function refreshSession(){
+    if (!session || !session.refresh_token) return false;
+    try {
+      var r = await fetch(URL+'/auth/v1/token?grant_type=refresh_token', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':KEY},
+        body: JSON.stringify({refresh_token: session.refresh_token})
+      });
+      if (!r.ok) { clearSession(); return false; }
+      var j = await r.json();
+      saveSession({access_token:j.access_token, refresh_token:j.refresh_token, user:{id:j.user.id, email:j.user.email}});
+      return true;
+    } catch(e) { return false; }
+  }
+  async function withAuthRetry(doFetch) {
+    var r = await doFetch();
+    if (r && r.status === 401 && session) {
+      var ok = await refreshSession();
+      if (ok) r = await doFetch();
+    }
+    return r;
+  }
   async function query(table, opts) {
     if (!configured()) return null;
     opts = opts || {};
@@ -711,7 +747,7 @@ var SB = (function() {
     if (opts.limit)  params.push('limit='+opts.limit);
     if (params.length) url += '?' + params.join('&');
     try {
-      var r = await fetch(url, {method:'GET', headers:headers()});
+      var r = await withAuthRetry(function(){ return fetch(url, {method:'GET', headers:headers()}); });
       if (!r.ok) return null;
       if (r.status === 204) return [];
       return await r.json();
@@ -720,7 +756,7 @@ var SB = (function() {
   async function insert(table, data) {
     if (!configured()) return null;
     try {
-      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
+      var r = await withAuthRetry(function(){ return fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)}); });
       if (!r.ok) return null;
       return await r.json();
     } catch(e) { return null; }
@@ -728,7 +764,7 @@ var SB = (function() {
   async function update(table, filter, data) {
     if (!configured()) return null;
     try {
-      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      var r = await withAuthRetry(function(){ return fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)}); });
       if (!r.ok) return null;
       return await r.json();
     } catch(e) { return null; }
@@ -736,11 +772,64 @@ var SB = (function() {
   async function remove(table, filter) {
     if (!configured()) return null;
     try {
-      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
+      var r = await withAuthRetry(function(){ return fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()}); });
       return r.ok;
     } catch(e) { return false; }
   }
-  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
+  async function rpc(fn, args) {
+    if (!configured()) return null;
+    try {
+      var r = await withAuthRetry(function(){ return fetch(URL+'/rest/v1/rpc/'+fn, {method:'POST', headers:headers(), body:JSON.stringify(args||{})}); });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function uploadFile(bucket, path, file){
+    if (!configured()) return null;
+    try {
+      var tok = (session && session.access_token) ? session.access_token : KEY;
+      var r = await fetch(URL+'/storage/v1/object/'+bucket+'/'+encodeURIComponent(path), {
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+tok,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+        body:file
+      });
+      return r.ok;
+    } catch(e) { return false; }
+  }
+  async function signedUrl(bucket, path, expiresIn){
+    if (!configured()) return null;
+    try {
+      var tok = (session && session.access_token) ? session.access_token : KEY;
+      var r = await fetch(URL+'/storage/v1/object/sign/'+bucket+'/'+encodeURIComponent(path), {
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+tok,'Content-Type':'application/json'},
+        body: JSON.stringify({expiresIn: expiresIn||3600})
+      });
+      if (!r.ok) return null;
+      var j = await r.json();
+      return j.signedURL ? (URL+'/storage/v1'+j.signedURL) : null;
+    } catch(e) { return null; }
+  }
+  var auth = {
+    signIn: async function(email, password){
+      if (!configured()) return {ok:false, err:'Supabase not configured'};
+      try {
+        var r = await fetch(URL+'/auth/v1/token?grant_type=password', {
+          method:'POST',
+          headers:{'Content-Type':'application/json','apikey':KEY},
+          body: JSON.stringify({email:email, password:password})
+        });
+        var j = await r.json();
+        if (!r.ok) return {ok:false, err: (j && j.error_description) || (j && j.msg) || 'Invalid email or password'};
+        saveSession({access_token:j.access_token, refresh_token:j.refresh_token, user:{id:j.user.id, email:j.user.email}});
+        return {ok:true, user:{id:j.user.id, email:j.user.email}};
+      } catch(e) { return {ok:false, err:'Network error'}; }
+    },
+    signOut: function(){ clearSession(); },
+    restore: function(){ return loadSession(); },
+    currentUser: function(){ return session ? session.user : null; }
+  };
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove, rpc:rpc, uploadFile:uploadFile, signedUrl:signedUrl, auth:auth};
 })();
 
 // ================================================================
@@ -1030,6 +1119,26 @@ var leads=[], bills=[], riders=[], camps=[], inv=[], notifs=[];
 var invN=1, addDeps={}, addBase=0, editR=null, editI=null;
 
 // ── STORAGE ──────────────────────────────────────────────────────
+function mapLeadFromSB(r) {
+  return {
+    id:r.id, name:r.name||'', phone:r.phone||'', area:r.area||'', address:r.address||'',
+    pincode:r.pincode||'', devType:r.dev_type||'', device:r.device||'', model:r.model||'',
+    storage:r.storage||'', color:r.color||'', year:r.year||'', battery:r.battery||'',
+    imei:r.imei||'', ram:r.ram||'', condition:r.condition||'', accessories:r.accessories||[],
+    photos:r.photos||[], askPrice:r.ask_price||0, basePrice:r.base_price||0,
+    isLoyalty:!!r.is_loyalty, slot:r.slot||'morning', source:r.source||'website',
+    riderId:r.rider_id||null, status:r.status||'new', notes:r.notes||[],
+    customerId:r.customer_id||null, createdAt:r.created_at
+  };
+}
+function mapRiderFromSB(r) {
+  return {
+    id:r.id, name:r.name||'', phone:r.phone||'', email:r.email||'', zone:r.zone||'',
+    pincodes:r.pincodes||[], username:r.username||'', password:r.password||'',
+    aadhaar_number:r.aadhaar_number||'', aadhaar_image_path:r.aadhaar_image_path||null,
+    active:r.active!==false
+  };
+}
 function load() {
   function safeArr(key) {
     try { var v=JSON.parse(localStorage.getItem(key)||'[]'); return Array.isArray(v)?v:[]; } catch(e){return [];}
@@ -1045,6 +1154,23 @@ function load() {
     camps = sc ? JSON.parse(sc) : dCamps();
     if (!sc) savC();
   } catch(e) { camps = dCamps(); savC(); }
+
+  // Real, shared data — overrides the local copy above once it arrives.
+  if (typeof SB !== 'undefined' && SB.configured && SB.configured()) {
+    SB.query('leads', {select:'*', order:'created_at.desc'}).then(function(rows){
+      if (!rows) return;
+      leads = rows.map(mapLeadFromSB);
+      if (typeof rl==='function') rl(); if (typeof rd==='function') rd(); if (typeof rk==='function') rk();
+      if (typeof rRid==='function') rRid();
+      if (typeof updateDashExtra==='function') updateDashExtra();
+      if (typeof updateSRBadge==='function') updateSRBadge();
+    });
+    SB.query('riders', {select:'*', order:'created_at.desc'}).then(function(rows){
+      if (!rows) return;
+      riders = rows.map(mapRiderFromSB);
+      if (typeof rRid==='function') rRid();
+    });
+  }
 }
 function savL() {
   localStorage.setItem('smb_leads', JSON.stringify(leads));
@@ -1124,50 +1250,54 @@ function dCamps() {
 }
 
 // ── LOGIN ────────────────────────────────────────────────────────
-function doLogin() {
-  var u = rn('lu').toLowerCase().trim();
+async function loadAdminProfile(userId, fallbackEmail) {
+  var rows = await SB.query('admin_users', {filter: 'id=eq.'+userId, select: 'id,name,role,phone,email'});
+  var profile = (rows && rows[0]) || null;
+  if (!profile) return null;
+  return {u: profile.email || fallbackEmail, name: profile.name, role: profile.role, ph: profile.phone, em: profile.email, color:'#2563EB'};
+}
+
+async function doLogin() {
+  var u = rn('lu').trim();
   var p = rn('lp').trim();
   var err = document.getElementById('lerr');
-  if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display = 'block'; return; }
-  // Try localStorage team first, then fall back to TEAM_DEF
-  var found = null;
-  var team = getTeam();
-  for (var i = 0; i < team.length; i++) {
-    if (team[i].u === u && team[i].pw === p) { found = team[i]; break; }
-  }
-  // Always also check TEAM_DEF in case localStorage is corrupted
-  if (!found) {
-    for (var j = 0; j < TEAM_DEF.length; j++) {
-      if (TEAM_DEF[j].u === u && TEAM_DEF[j].pw === p) { found = TEAM_DEF[j]; break; }
-    }
-  }
-  if (!found) { err.textContent = 'Incorrect username or password.'; err.style.display = 'block'; return; }
+  if (!u || !p) { err.textContent = 'Enter email and password'; err.style.display = 'block'; return; }
+  if (!SB.configured()) { err.textContent = 'Site is not connected to the database yet.'; err.style.display = 'block'; return; }
   err.style.display = 'none';
+  var btn = document.getElementById('lbtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
+  var res = await SB.auth.signIn(u, p);
+  if (!res.ok) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
+    err.textContent = res.err || 'Incorrect email or password.'; err.style.display = 'block';
+    return;
+  }
+  var found = await loadAdminProfile(res.user.id, res.user.email);
+  if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
+  if (!found) {
+    SB.auth.signOut();
+    err.textContent = 'Login succeeded but this account has no admin profile. Ask the site owner to add you.';
+    err.style.display = 'block';
+    return;
+  }
   CU = found;
-  localStorage.setItem('smb_sess', JSON.stringify({u: found.u, name: found.name, role: found.role, ts: Date.now()}));
   document.getElementById('LS').style.display = 'none';
   startCRM(found);
 }
 
-function trySession() {
-  try {
-    var s = localStorage.getItem('smb_sess');
-    if (!s) return;
-    var j = JSON.parse(s);
-    if (!j || !j.u) return;
-    if (Date.now() - j.ts > 43200000) { localStorage.removeItem('smb_sess'); return; }
-    var team = getTeam();
-    var found = team.find(function(x) { return x.u === j.u; });
-    if (!found) return;
-    CU = found;
-    document.getElementById('LS').style.display = 'none';
-    startCRM(found);
-  } catch(e) { localStorage.removeItem('smb_sess'); }
+async function trySession() {
+  var s = SB.auth.restore();
+  if (!s || !s.user) return;
+  var found = await loadAdminProfile(s.user.id, s.user.email);
+  if (!found) { SB.auth.signOut(); return; }
+  CU = found;
+  document.getElementById('LS').style.display = 'none';
+  startCRM(found);
 }
 
 function doLogout() {
   CU = null;
-  localStorage.removeItem('smb_sess');
+  SB.auth.signOut();
   document.getElementById('LS').style.display = 'flex';
   document.getElementById('TOP').style.display = 'none';
   document.getElementById('TABS').style.display = 'none';
@@ -1189,7 +1319,7 @@ function startCRM(u) {
   var sbA = document.getElementById('sbAvatar');
   if (sbN) sbN.textContent = u.name || u.u;
   if (sbR) sbR.textContent = u.role || 'Staff';
-  if (sbA) { sbA.textContent = (u.name||u.u||'A').charAt(0).toUpperCase(); sbA.style.background = u.color||'#FF4D00'; }
+  if (sbA) { sbA.textContent = (u.name||u.u||'A').charAt(0).toUpperCase(); sbA.style.background = u.color||'#2563EB'; }
 
   // Top bar date + live clock
   var pd = document.getElementById('pageDate');
@@ -1328,7 +1458,7 @@ function cL(id, ph) {
   if (l && l.status === 'new') {
     l.status = 'contacted';
     aN(l, '📞 Called — status updated to Contacted');
-    savL(); rd(); rl(); rk();
+    savL(); rd(); rl(); rk(); pushLeadToSB(l);
     toast('📞 Status → Contacted', 'i');
   }
   window.open('tel:' + ph);
@@ -1343,12 +1473,18 @@ function dL(id) {
   if (!confirm('Delete this lead permanently?')) return;
   leads = leads.filter(function(x){return x.id!==id;});
   savL(); rd(); rl(); rk(); cm('lm');
+  if (SB.configured()) SB.remove('leads', 'id=eq.'+id);
   toast('Lead deleted');
 }
 
 function aN(l, text) {
   l.notes = l.notes || [];
   l.notes.push({t: text + (CU?' ('+CU.name+')':''), at: new Date().toISOString()});
+}
+
+function pushLeadToSB(l) {
+  if (!SB.configured() || !l || !l.id) return;
+  SB.update('leads', 'id=eq.'+l.id, {status:l.status, rider_id:l.riderId||null, notes:l.notes||[]});
 }
 
 // ── LEAD MODAL ───────────────────────────────────────────────────
@@ -1399,20 +1535,20 @@ function oL(id) {
 function uS(id, s) {
   var l = leads.find(function(x){return x.id===id;}); if (!l) return;
   l.status = s; aN(l, 'Status → ' + SN[s]);
-  savL(); rd(); rl(); rk(); oL(id); toast('✅ Status → ' + SN[s]);
+  savL(); rd(); rl(); rk(); oL(id); pushLeadToSB(l); toast('✅ Status → ' + SN[s]);
 }
 
 function aR(id, rid) {
   var l = leads.find(function(x){return x.id===id;}); if (!l) return;
   l.riderId = rid; aN(l, 'Rider: ' + (rid ? getRN(rid) : 'Unassigned'));
-  savL(); toast('Rider assigned', 'i');
+  savL(); pushLeadToSB(l); toast('Rider assigned', 'i');
 }
 
 function sN(id) {
   var inp = document.getElementById('nin');
   if (!inp || !inp.value.trim()) return;
   var l = leads.find(function(x){return x.id===id;}); if (!l) return;
-  aN(l, inp.value.trim()); savL(); inp.value = ''; oL(id); toast('Note saved');
+  aN(l, inp.value.trim()); savL(); inp.value = ''; oL(id); pushLeadToSB(l); toast('Note saved');
 }
 
 // ── KANBAN ───────────────────────────────────────────────────────
@@ -1515,15 +1651,27 @@ function saveLead() {
   var cD2  = DEPS.reduce(function(s,d){return s+(deps[d.id]?Math.round(adj*d.p):0);},0);
   var base = adj ? Math.max(adj-aD2-bD2-cD2, Math.round(adj*0.15)) : 0;
   var est  = base + (loy ? Math.round(base*0.10) : 0);
-  leads.push({
+  var newLead = {
     id:uid(), name:n, phone:p, area:rn('aa').trim(), address:rn('aad').trim(),
     devType:dt, device:dev, model:dm, storage:st, color:co, year:yr, battery:ba,
     imei:rn('aim').trim(), basePrice:addBase, deps:deps, isLoyalty:loy, estPrice:est,
     slot:rn('asl'), source:rn('aso'), riderId:rid,
     notes:[{t:'Added by '+(CU?CU.name:'admin'), at:new Date().toISOString()}],
     status:'new', createdAt:new Date().toISOString()
-  });
+  };
+  leads.push(newLead);
   savL(); toast('Lead saved for ' + n + ' ✅');
+  if (SB.configured()) {
+    SB.insert('leads', {
+      name:n, phone:p, area:newLead.area, address:newLead.address,
+      dev_type:dt, device:dev, model:dm, storage:st, color:co, year:yr, battery:ba,
+      imei:newLead.imei, base_price:addBase, ask_price:est, is_loyalty:loy,
+      slot:newLead.slot, source:newLead.source||'admin', rider_id:rid||null,
+      notes:newLead.notes, status:'new'
+    }).then(function(rows){
+      if (rows && rows[0] && rows[0].id) newLead.id = rows[0].id; // adopt real Supabase id so later edits target the right row
+    });
+  }
   // WhatsApp notification to owner
   var devStr = [rn('abr'),rn('amo')].filter(Boolean).join(' ');
   var areaStr = rn('aa') || 'Area not specified';
@@ -1715,9 +1863,11 @@ function rRid() {
       +'<div style="display:flex;gap:14px;justify-content:center;margin-bottom:9px">'
       +'<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:var(--b)">'+al+'</div><div style="font-size:10px;color:#94A3B8">Assigned</div></div>'
       +'<div style="text-align:center"><div style="font-size:15px;font-weight:700;color:var(--g)">'+cl+'</div><div style="font-size:10px;color:#94A3B8">Done</div></div></div>'
-      +'<div style="display:flex;gap:6px;justify-content:center">'
+      +(r.pincodes&&r.pincodes.length?'<div style="font-size:10px;color:#64748B;margin-bottom:9px">📮 '+r.pincodes.join(', ')+'</div>':'')
+      +'<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">'
       +'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="openRM(\''+r.id+'\')">✏️ Edit</button>'
-      +'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'tel:'+r.phone+'\')">📞 Call</button></div>'
+      +'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'tel:'+r.phone+'\')">📞 Call</button>'
+      +(r.aadhaar_image_path?'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="viewAadhaar(\''+r.id+'\')">🪪 Aadhaar</button>':'')+'</div>'
       +'<div style="font-size:10px;color:#94A3B8;margin-top:8px">'+r.username+' / '+r.password+'</div></div>';
   }).join('');
 }
@@ -1730,20 +1880,63 @@ function openRM(id) {
   document.getElementById('rph').value = r ? r.phone    : '';
   document.getElementById('rem').value = r ? r.email||'' : '';
   document.getElementById('rzo').value = r ? r.zone||''  : '';
+  document.getElementById('rpin').value = r && r.pincodes ? r.pincodes.join(', ') : '';
   document.getElementById('rus').value = r ? r.username||'' : '';
   document.getElementById('rps').value = r ? r.password||'' : '';
+  document.getElementById('raad').value = r ? r.aadhaar_number||'' : '';
+  document.getElementById('raadf').value = '';
+  document.getElementById('raadPrev').textContent = r && r.aadhaar_image_path ? '📎 Aadhaar image already on file' : '';
   document.getElementById('reid').value = id || '';
   document.getElementById('rm2').classList.add('on');
 }
 
-function saveR() {
+async function saveR() {
   var n=rn('rn').trim(), p=rn('rph').trim();
   if (!n||!p) { toast('Name and phone required','e'); return; }
   var id = rn('reid') || null;
-  var d = {id:id||uid(), name:n, phone:p, email:rn('rem').trim(), zone:rn('rzo').trim(), username:rn('rus').trim(), password:rn('rps').trim()};
+  var pincodes = rn('rpin').split(',').map(function(s){return s.trim();}).filter(Boolean);
+  var d = {
+    id:id||uid(), name:n, phone:p, email:rn('rem').trim(), zone:rn('rzo').trim(),
+    pincodes:pincodes, username:rn('rus').trim(), password:rn('rps').trim(),
+    aadhaar_number:rn('raad').trim()
+  };
+  var existing = id ? riders.find(function(x){return x.id===id;}) : null;
+  d.aadhaar_image_path = existing ? existing.aadhaar_image_path : null;
+
+  var fileInput = document.getElementById('raadf');
+  var file = fileInput && fileInput.files && fileInput.files[0];
+  if (file) {
+    var path = d.id + '-' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    var ok = SB.configured() ? await SB.uploadFile('rider-docs', path, file) : false;
+    if (ok) d.aadhaar_image_path = path;
+    else if (SB.configured()) toast('Rider saved, but Aadhaar image upload failed — try again', 'e');
+  }
+
   if (id) { var idx=riders.findIndex(function(x){return x.id===id;}); if(idx>-1)riders[idx]=d; }
   else riders.push(d);
   savR(); rRid(); popR(); cm('rm2'); toast('Rider saved');
+
+  if (SB.configured()) {
+    var payload = {name:d.name, phone:d.phone, email:d.email, zone:d.zone, pincodes:d.pincodes,
+      aadhaar_number:d.aadhaar_number, aadhaar_image_path:d.aadhaar_image_path, active:true};
+    if (id) {
+      SB.update('riders', 'id=eq.'+id, payload);
+    } else {
+      // Don't send our local id — it isn't a real UUID. Adopt whatever Supabase assigns.
+      SB.insert('riders', payload).then(function(rows){
+        if (rows && rows[0] && rows[0].id) { d.id = rows[0].id; savR(); rRid(); }
+      });
+    }
+  }
+}
+
+async function viewAadhaar(id) {
+  var r = riders.find(function(x){return x.id===id;});
+  if (!r || !r.aadhaar_image_path) { toast('No Aadhaar image on file','e'); return; }
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var url = await SB.signedUrl('rider-docs', r.aadhaar_image_path, 300);
+  if (url) window.open(url, '_blank');
+  else toast('Could not open Aadhaar image','e');
 }
 
 // ── CAMPAIGNS ────────────────────────────────────────────────────
