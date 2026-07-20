@@ -28,6 +28,9 @@ where password_hash !~ '^\$2[aby]\$';
 
 -- Secure login check — verifies the password server-side and returns
 -- only the profile info (never the password/hash) on success.
+-- Accepts either username or email in p_username. Uses extensions.crypt
+-- (schema-qualified) since pgcrypto installs into the "extensions" schema
+-- on Supabase, not "public".
 create or replace function verify_admin_login(p_username text, p_password text)
 returns table(id uuid, name text, role text, phone text, email text, color text, initials text)
 language plpgsql
@@ -38,13 +41,76 @@ begin
   return query
   select t.id, t.name, t.role, t.phone, t.email, t.color, t.initials
   from team_users t
-  where t.username = p_username
-    and t.password_hash = crypt(p_password, t.password_hash)
+  where (t.username = p_username or lower(t.email) = lower(p_username))
+    and t.password_hash = extensions.crypt(p_password, t.password_hash)
     and t.is_active = true;
 end;
 $$;
 
+-- Google-login lookup — no password check (Google already verified identity),
+-- just confirms the signed-in email belongs to an active admin account.
+create or replace function check_admin_email(p_email text)
+returns table(id uuid, name text, role text, phone text, email text, color text, initials text)
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return query
+  select t.id, t.name, t.role, t.phone, t.email, t.color, t.initials
+  from team_users t
+  where lower(t.email) = lower(p_email)
+    and t.is_active = true;
+end;
+$$;
+
+grant execute on function check_admin_email(text) to anon, authenticated;
+
 grant execute on function verify_admin_login(text, text) to anon, authenticated;
+
+-- Team Access page support — list team members and let the Owner edit them,
+-- without ever exposing password hashes over the API.
+create or replace function list_team_users()
+returns table(id uuid, name text, role text, phone text, email text, color text, initials text)
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return query
+  select t.id, t.name, t.role, t.phone, t.email, t.color, t.initials
+  from team_users t
+  where t.is_active = true
+  order by t.created_at asc;
+end;
+$$;
+grant execute on function list_team_users() to anon, authenticated;
+
+create or replace function update_team_profile(p_id uuid, p_name text, p_phone text, p_email text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update team_users set name = p_name, phone = p_phone, email = p_email where id = p_id;
+  return found;
+end;
+$$;
+grant execute on function update_team_profile(uuid, text, text, text) to anon, authenticated;
+
+create or replace function reset_team_password(p_id uuid, p_new_password text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update team_users set password_hash = extensions.crypt(p_new_password, extensions.gen_salt('bf')) where id = p_id;
+  return found;
+end;
+$$;
+grant execute on function reset_team_password(uuid, text) to anon, authenticated;
 
 -- ── 2. Fix the actual live bug — new leads aren't saving ─────────
 -- Your leads table blocks ALL inserts right now (even from the website's

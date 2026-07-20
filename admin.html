@@ -6,6 +6,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sambhi Mobiles — Admin CRM</title>
 <script src="config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDHG4dABs-YHKKU1MaNL2w-4Sl9cg74hRU",
+  authDomain: "sambhi-mobiles.firebaseapp.com",
+  projectId: "sambhi-mobiles",
+  appId: "1:586493572164:web:796d629dcad7bcc12db811",
+};
+var firebaseAuth = null;
+try {
+  if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_FIREBASE_API_KEY') {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    firebaseAuth = firebase.auth();
+  }
+} catch(e) { console.warn('Firebase not configured:', e.message); }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -213,7 +230,16 @@ select.si{min-width:140px}
       <h1>Sambhi <span>Mobiles</span></h1>
     </div>
     <p class="lsub">Admin CRM — Secure Login</p>
-    <div class="lf"><label>Username</label><input type="text" id="lu" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
+    <button type="button" onclick="signInAdminWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;color:#0F172A;padding:11px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:16px">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.9 3 4 11.9 4 23s8.9 20 20 20c11 0 20-8 20-20 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.7 0-14.3 4.4-17.7 11.7z"/><path fill="#FBBC05" d="M24 43c5.9 0 10.9-2 14.5-5.4l-6.7-5.5C29.8 33.6 27 34.5 24 34.5c-6 0-11.1-4-12.9-9.5L4.2 30c3.4 7.3 10.1 12 19.8 13z"/><path fill="#EA4335" d="M43.6 20H24v8.5h11.8c-.8 2.4-2.3 4.4-4.3 5.8l6.7 5.5C41.8 36.2 44 30 44 24c0-1.3-.2-2.7-.4-4z"/></svg>
+      Continue with Google
+    </button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="flex:1;height:1px;background:#E2E8F0"></div>
+      <span style="font-size:11px;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px">or</span>
+      <div style="flex:1;height:1px;background:#E2E8F0"></div>
+    </div>
+    <div class="lf"><label>Email</label><input type="email" id="lu" placeholder="Enter email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
     <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button id="lbtn" onclick="doLogin()">Sign In →</button>
     <div id="lerr"></div>
@@ -1203,8 +1229,25 @@ function load() {
       inv = rows.map(mapInvFromSB);
       if (typeof ri==='function') ri();
     });
+    SB.query('campaigns', {select:'*', order:'created_at.asc'}).then(function(rows){
+      if (!rows || !rows.length) return;
+      camps = rows.map(mapCampFromSB);
+      if (typeof rCamp==='function') rCamp();
+    });
+    SB.rpc('list_team_users', {}).then(function(rows){
+      if (!rows) return;
+      team = rows.map(mapTeamFromSB);
+      if (typeof rTm==='function') rTm();
+    });
   }
 }
+function mapCampFromSB(r) {
+  return { id:r.id, t:r.title||'', d:r.description||'', wa:r.wa_message||'', on:!!r.is_active, fr:r.activated_at||'', to:r.deactivated_at||'' };
+}
+function mapTeamFromSB(r) {
+  return { id:r.id, u:(r.email||'').toLowerCase(), name:r.name||'', role:r.role||'Executive', ph:r.phone||'', em:r.email||'', color:r.color||'#2563EB', init:r.initials||(r.name||'?').charAt(0).toUpperCase() };
+}
+var team = [];
 function savL() {
   localStorage.setItem('smb_leads', JSON.stringify(leads));
   localStorage.setItem('smb_bills', JSON.stringify(bills));
@@ -1283,11 +1326,40 @@ function dCamps() {
 }
 
 // ── LOGIN ────────────────────────────────────────────────────────
+function loginSuccess(found) {
+  CU = found;
+  localStorage.setItem('smb_sess', JSON.stringify(Object.assign({}, found, {ts: Date.now()})));
+  document.getElementById('LS').style.display = 'none';
+  startCRM(found);
+}
+
+async function signInAdminWithGoogle() {
+  var err = document.getElementById('lerr');
+  if (!firebaseAuth) { err.textContent = 'Google login is not configured yet.'; err.style.display = 'block'; return; }
+  if (!SB.configured()) { err.textContent = 'Site is not connected to the database yet.'; err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  try {
+    var result = await firebaseAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    var email = result.user.email;
+    var rows = await SB.rpc('check_admin_email', {p_email: email});
+    var profile = rows && rows[0];
+    if (!profile) {
+      err.textContent = 'This Google account (' + email + ') is not registered as an admin. Ask the Owner to add it.';
+      err.style.display = 'block';
+      return;
+    }
+    loginSuccess({u: profile.email, name: profile.name, role: profile.role, ph: profile.phone, em: profile.email, color: profile.color||'#2563EB', init: profile.initials});
+  } catch(e) {
+    err.textContent = 'Google sign-in failed: ' + e.message;
+    err.style.display = 'block';
+  }
+}
+
 async function doLogin() {
   var u = rn('lu').trim();
   var p = rn('lp').trim();
   var err = document.getElementById('lerr');
-  if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display = 'block'; return; }
+  if (!u || !p) { err.textContent = 'Enter email and password'; err.style.display = 'block'; return; }
   if (!SB.configured()) { err.textContent = 'Site is not connected to the database yet.'; err.style.display = 'block'; return; }
   err.style.display = 'none';
   var btn = document.getElementById('lbtn');
@@ -1296,7 +1368,7 @@ async function doLogin() {
   if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
   var profile = rows && rows[0];
   if (!profile) {
-    err.textContent = 'Incorrect username or password.'; err.style.display = 'block';
+    err.textContent = 'Incorrect email or password.'; err.style.display = 'block';
     return;
   }
   var found = {u: u.toLowerCase(), name: profile.name, role: profile.role, ph: profile.phone, em: profile.email, color: profile.color||'#2563EB', init: profile.initials};
@@ -2002,10 +2074,18 @@ function rCamp() {
 function tC(i, v) {
   camps.forEach(function(c,j){if(j!==i)c.on=false;});
   camps[i].on = v; savC(); rCamp(); toast(v ? '🔥 Campaign LIVE on website!' : 'Deactivated');
+  if (SB.configured() && camps[i].id) {
+    camps.forEach(function(c){ if(c.id) SB.update('campaigns','id=eq.'+c.id,{is_active:c.on}); });
+  }
 }
 
 function sCS(i, dir, v) {
+  var col = dir==='fr' ? 'activated_at' : 'deactivated_at';
   camps[i][dir] = v ? new Date(v).toISOString() : ''; savC();
+  if (SB.configured() && camps[i].id) {
+    var payload = {}; payload[col] = camps[i][dir] || null;
+    SB.update('campaigns','id=eq.'+camps[i].id, payload);
+  }
 }
 
 // ── INVENTORY ────────────────────────────────────────────────────
@@ -2535,7 +2615,7 @@ function sm() { var v=parseFloat(document.getElementById('msl').value); localSto
 
 // ── TEAM ─────────────────────────────────────────────────────────
 function rTm() {
-  var team = getTeam(), isO = CU && CU.role === 'Owner';
+  var isO = CU && CU.role === 'Owner';
   document.getElementById('tgrid').innerHTML = team.map(function(u,i){
     return '<div class="tc">'
       +'<div class="tav2" style="background:'+u.color+'">'+u.init+'</div>'
@@ -2546,11 +2626,11 @@ function rTm() {
       +'<div class="ti" style="color:#CBD5E1">Account: ••••••••</div>'
       +(isO?'<button class="teb" onclick="oTE('+i+')">✏️ Edit</button>':'')
       +'</div>';
-  }).join('');
+  }).join('') || '<p style="color:#94A3B8;font-size:13px">No team members found — make sure list_team_users() has been created in Supabase.</p>';
 }
 
 function oTE(i) {
-  var team = getTeam(), u = team[i]; if (!u) return;
+  var u = team[i]; if (!u) return;
   document.getElementById('ttn').value = u.name||'';
   document.getElementById('ttp').value = u.ph||'';
   document.getElementById('tte').value = u.em||'';
@@ -2560,17 +2640,24 @@ function oTE(i) {
   document.getElementById('tm2').classList.add('on');
 }
 
-function saveTM() {
+async function saveTM() {
   var i = parseInt(rn('tti')); if (isNaN(i)) return;
-  var team = getTeam(); if (!team[i]) return;
-  team[i].name = rn('ttn').trim() || team[i].name;
-  team[i].ph   = rn('ttp').trim();
-  team[i].em   = rn('tte').trim();
-  var nu = rn('ttu').trim(), np = rn('ttw').trim();
-  if (nu) team[i].u  = nu;
-  if (np) team[i].pw = np;
-  team[i].init = team[i].name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
-  savTeam(team); rTm(); cm('tm2'); toast('Updated');
+  var u = team[i]; if (!u) return;
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var name = rn('ttn').trim() || u.name;
+  var email = rn('tte').trim() || u.em;
+  var phone = rn('ttp').trim();
+  var newPw = rn('ttw').trim();
+  var ok = await SB.rpc('update_team_profile', {p_id: u.id, p_name: name, p_phone: phone, p_email: email});
+  if (ok === false) { toast('Update failed — is update_team_profile set up in Supabase?','e'); return; }
+  if (newPw) {
+    if (newPw.length < 6) { toast('New password must be at least 6 characters','e'); return; }
+    var pwOk = await SB.rpc('reset_team_password', {p_id: u.id, p_new_password: newPw});
+    if (pwOk === false) { toast('Profile updated, but password reset failed','e'); }
+  }
+  u.name = name; u.em = email; u.ph = phone;
+  u.init = name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+  rTm(); cm('tm2'); toast('Updated');
 }
 
 // ── SEED DATA ────────────────────────────────────────────────────
