@@ -497,8 +497,16 @@ select.si{min-width:140px}
 <div class="pg" id="pg-inv">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:9px">
     <div><h2 style="font-size:16px;font-weight:700">Inventory</h2><p style="font-size:13px;color:#94A3B8;margin-top:2px">Available → shows on Buy page · Hidden → Coming Soon · <span id="invCount" style="color:#2563EB;font-weight:600"></span></p></div>
-    <div style="display:flex;gap:7px"><select class="si" id="ifl" onchange="ri()"><option value="">All</option><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select><button class="ab" onclick="openIM()">+ Add Device</button></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <select class="si" id="ifl" onchange="ri()"><option value="">All</option><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option><option value="playstation">PlayStation</option></select>
+      <button class="ab secondary" onclick="downloadInventoryTemplate()">📥 Download CSV Template</button>
+      <button class="ab secondary" onclick="exportInventoryCSV()">📤 Export Current CSV</button>
+      <button class="ab secondary" onclick="document.getElementById('invCsvInput').click()">📁 Import CSV</button>
+      <input type="file" id="invCsvInput" accept=".csv" style="display:none" onchange="importInventoryCSV(this)">
+      <button class="ab" onclick="openIM()">+ Add Device</button>
+    </div>
   </div>
+  <div id="csvImportStatus" style="display:none;margin-bottom:11px"></div>
   <div class="ig" id="igrid"></div>
 </div>
 
@@ -1125,11 +1133,22 @@ function mapLeadFromSB(r) {
     pincode:r.pincode||'', devType:r.dev_type||'', device:r.device||'', model:r.model||'',
     storage:r.storage||'', color:r.color||'', year:r.year||'', battery:r.battery||'',
     imei:r.imei||'', ram:r.ram||'', condition:r.condition||'', accessories:r.accessories||[],
+    screenCondition:r.screen_condition||'', bodyCondition:r.body_condition||'',
+    waterDamage:!!r.water_damage, repairedParts:r.repaired_parts||[],
+    frpCleared:!!r.frp_cleared, billPhoto:r.bill_photo||null,
     photos:r.photos||[], askPrice:r.ask_price||0, basePrice:r.base_price||0,
     isLoyalty:!!r.is_loyalty, slot:r.slot||'morning', source:r.source||'website',
     riderId:r.rider_id||null, status:r.status||'new', notes:r.notes||[],
     customerId:r.customer_id||null, createdAt:r.created_at
   };
+}
+
+async function viewLeadPhoto(path) {
+  if (!path) { toast('No photo on file','e'); return; }
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var url = await SB.signedUrl('lead-photos', path, 300);
+  if (url) window.open(url, '_blank');
+  else toast('Could not open photo','e');
 }
 function mapRiderFromSB(r) {
   return {
@@ -1137,6 +1156,14 @@ function mapRiderFromSB(r) {
     pincodes:r.pincodes||[], username:r.username||'', password:r.password||'',
     aadhaar_number:r.aadhaar_number||'', aadhaar_image_path:r.aadhaar_image_path||null,
     active:r.active!==false
+  };
+}
+function mapInvFromSB(r) {
+  return {
+    id:r.id, cat:r.cat||'', name:r.name||'', storage:r.storage||'', color:r.color||'',
+    grade:r.grade||'A', battery:r.battery||'', year:r.year||'', qty:r.qty||0,
+    price:r.price||0, mrp:r.mrp||0, imei:r.imei||'', features:r.features||[],
+    visible:r.visible!==false, addedAt:r.added_at
   };
 }
 function load() {
@@ -1169,6 +1196,11 @@ function load() {
       if (!rows) return;
       riders = rows.map(mapRiderFromSB);
       if (typeof rRid==='function') rRid();
+    });
+    SB.query('inventory', {select:'*', order:'added_at.desc'}).then(function(rows){
+      if (!rows) return;
+      inv = rows.map(mapInvFromSB);
+      if (typeof ri==='function') ri();
     });
   }
 }
@@ -1488,6 +1520,24 @@ function pushLeadToSB(l) {
 }
 
 // ── LEAD MODAL ───────────────────────────────────────────────────
+function renderLeadConditionBlock(l) {
+  var hasDetail = l.screenCondition || l.bodyCondition || l.waterDamage || (l.repairedParts&&l.repairedParts.length) || l.frpCleared || l.billPhoto || (l.photos&&l.photos.length);
+  if (!hasDetail) return '';
+  var rows = [];
+  if (l.screenCondition) rows.push('Screen: <b>'+l.screenCondition+'</b>');
+  if (l.bodyCondition) rows.push('Body: <b>'+l.bodyCondition+'</b>');
+  rows.push('Water damage: <b style="color:'+(l.waterDamage?'var(--r)':'var(--g)')+'">'+(l.waterDamage?'Yes':'No')+'</b>');
+  if (l.repairedParts && l.repairedParts.length) rows.push('Parts replaced: <b>'+l.repairedParts.join(', ')+'</b>');
+  rows.push('iCloud/Google signed out: <b style="color:'+(l.frpCleared?'var(--g)':'var(--r)')+'">'+(l.frpCleared?'Confirmed':'Not confirmed')+'</b>');
+  var photoBtns = (l.photos||[]).map(function(p,i){return '<button class="act" onclick="viewLeadPhoto(\''+p+'\')" style="font-size:11px">📷 Photo '+(i+1)+'</button>';}).join('');
+  if (l.billPhoto) photoBtns += '<button class="act" onclick="viewLeadPhoto(\''+l.billPhoto+'\')" style="font-size:11px">🧾 Bill</button>';
+  return '<div style="background:var(--gray);border-radius:10px;padding:11px;margin-bottom:11px">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--b);margin-bottom:6px">CONDITION DETAILS</div>'
+    +'<div style="font-size:12px;color:var(--ink);line-height:1.9">'+rows.join('<br>')+'</div>'
+    +(photoBtns?'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'+photoBtns+'</div>':'')
+    +'</div>';
+}
+
 function oL(id) {
   var l = leads.find(function(x){return x.id===id;}); if (!l) return;
   document.getElementById('lmt').textContent = l.name;
@@ -1524,6 +1574,7 @@ function oL(id) {
     +'<div style="margin-top:8px"><label style="font-size:10px;font-weight:700;color:#94A3B8;display:block;margin-bottom:3px">ASSIGN RIDER</label>'
     +'<select onchange="aR(\''+id+'\',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none;background:var(--gray)">'+ro+'</select></div>'
     +'</div></div>'
+    +renderLeadConditionBlock(l)
     +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
     +bbt+dbt
     +'<div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:7px">ACTIVITY LOG</div>'
@@ -1966,6 +2017,113 @@ function sCS(i, dir, v) {
 }
 
 // ── INVENTORY ────────────────────────────────────────────────────
+// ── INVENTORY CSV IMPORT/EXPORT ───────────────────────────────────
+var INV_CSV_COLS = ['cat','name','storage','color','grade','battery','year','qty','price','mrp','imei','features','visible'];
+
+function csvEscape(v) {
+  v = (v===undefined||v===null) ? '' : String(v);
+  if (/[",\n]/.test(v)) return '"' + v.replace(/"/g,'""') + '"';
+  return v;
+}
+function toCSV(rows) {
+  var lines = [INV_CSV_COLS.join(',')];
+  rows.forEach(function(r){ lines.push(INV_CSV_COLS.map(function(c){ return csvEscape(r[c]); }).join(',')); });
+  return lines.join('\r\n');
+}
+function parseCSV(text) {
+  var rows = []; var row = []; var field = ''; var inQuotes = false;
+  for (var i=0; i<text.length; i++) {
+    var c = text[i];
+    if (inQuotes) {
+      if (c === '"') { if (text[i+1] === '"') { field += '"'; i++; } else { inQuotes = false; } }
+      else field += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && text[i+1] === '\n') i++;
+        row.push(field); field=''; rows.push(row); row=[];
+      } else field += c;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(function(r){ return r.length>1 || (r[0]||'').trim()!==''; });
+}
+function downloadCSVFile(filename, content) {
+  var blob = new Blob([content], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+function downloadInventoryTemplate() {
+  var rows = [];
+  Object.keys(MDS).forEach(function(cat){
+    Object.keys(MDS[cat]).forEach(function(name){
+      rows.push({cat:cat, name:name, storage:'', color:'', grade:'A', battery:'', year:'', qty:0, price:MDS[cat][name], mrp:'', imei:'', features:'', visible:'FALSE'});
+    });
+  });
+  downloadCSVFile('sambhi-inventory-template.csv', toCSV(rows));
+  toast('Template downloaded — fill in qty/storage/color per device and re-upload it');
+}
+function exportInventoryCSV() {
+  if (!inv.length) { toast('No inventory yet to export','e'); return; }
+  downloadCSVFile('sambhi-inventory-export.csv', toCSV(inv));
+  toast('Inventory exported');
+}
+function importInventoryCSV(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var status = document.getElementById('csvImportStatus');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var rows = parseCSV(e.target.result);
+    if (!rows.length) { toast('CSV file looks empty','e'); return; }
+    var header = rows[0].map(function(h){ return h.trim().toLowerCase(); });
+    var dataRows = rows.slice(1);
+    var added = 0, updated = 0, skipped = 0;
+    var toInsert = [];
+    dataRows.forEach(function(cols){
+      var item = {};
+      header.forEach(function(h,i){ item[h] = (cols[i]||'').trim(); });
+      if (!item.name || !item.cat) { skipped++; return; }
+      var qty = parseInt(item.qty)||0;
+      var price = parseInt(item.price)||0;
+      if (!price) { skipped++; return; }
+      var existing = inv.find(function(x){ return x.cat===item.cat && x.name===item.name && (x.storage||'')===(item.storage||'') && (x.color||'')===(item.color||''); });
+      var record = {
+        id: existing ? existing.id : uid(),
+        cat: item.cat, name: item.name, storage: item.storage||'', color: item.color||'',
+        grade: item.grade||'A', battery: item.battery||'', year: item.year||'',
+        qty: qty, price: price, mrp: parseInt(item.mrp)||0, imei: item.imei||'',
+        features: item.features ? item.features.split(/[|;]/).map(function(s){return s.trim();}).filter(Boolean) : [],
+        visible: /^(true|1|yes)$/i.test(item.visible||'') || qty>0,
+        addedAt: existing ? existing.addedAt : new Date().toISOString()
+      };
+      if (existing) { var pos=inv.findIndex(function(x){return x.id===existing.id;}); inv[pos]=record; updated++; }
+      else { inv.push(record); added++; }
+      toInsert.push(record);
+    });
+    try { localStorage.setItem('smb_inv', JSON.stringify(inv)); } catch(err){}
+    if (SB.configured() && toInsert.length) {
+      toInsert.forEach(function(r){
+        var payload = {cat:r.cat, name:r.name, storage:r.storage, color:r.color, grade:r.grade, battery:r.battery, year:r.year, qty:r.qty, price:r.price, mrp:r.mrp, imei:r.imei, features:r.features, visible:r.visible};
+        SB.query('inventory', {select:'id', filter:'cat=eq.'+encodeURIComponent(r.cat)+'&name=eq.'+encodeURIComponent(r.name)}).then(function(existingRows){
+          var match = (existingRows||[]).find(function(x){return x;});
+          if (match) SB.update('inventory','id=eq.'+match.id, payload);
+          else SB.insert('inventory', payload);
+        });
+      });
+    }
+    ri();
+    status.style.display='block';
+    status.innerHTML = '<div style="background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;padding:10px 14px;border-radius:8px;font-size:13px">✅ CSV imported: '+added+' added, '+updated+' updated'+(skipped?', '+skipped+' skipped (missing name/cat/price)':'')+'.</div>';
+    toast('CSV imported: '+added+' added, '+updated+' updated');
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
 function ri() {
   var cat = rn('ifl');
   var items = cat ? inv.filter(function(x){return x.cat===cat;}) : inv;
@@ -2340,6 +2498,11 @@ function saveI() {
     alert('Storage error: ' + e.message);
     return;
   }
+  if (SB.configured()) {
+    var invPayload = {cat:newItem.cat, name:newItem.name, storage:newItem.storage, color:newItem.color, grade:newItem.grade, battery:newItem.battery, year:newItem.year, qty:newItem.qty, price:newItem.price, mrp:newItem.mrp, imei:newItem.imei, features:newItem.features, visible:newItem.visible};
+    if (id) SB.update('inventory','id=eq.'+id, invPayload);
+    else SB.insert('inventory', invPayload).then(function(rows){ if (rows && rows[0] && rows[0].id) { newItem.id = rows[0].id; try{localStorage.setItem('smb_inv', JSON.stringify(inv));}catch(e){} } });
+  }
   document.getElementById('im2').classList.remove('on');
   gt('inv');
   // Flash the inventory tab green so user knows it worked
@@ -2357,8 +2520,8 @@ function saveI() {
   setTimeout(function(){ notice.remove(); }, 3000);
 }
 
-function tI(id) { var d=inv.find(function(x){return x.id===id;}); if(!d)return; d.visible=!d.visible; savI(); ri(); toast(d.visible?'Now on Buy page':'Hidden — Coming Soon'); }
-function delI(id) { if(!confirm('Delete?'))return; inv=inv.filter(function(x){return x.id!==id;}); savI(); ri(); toast('Removed'); }
+function tI(id) { var d=inv.find(function(x){return x.id===id;}); if(!d)return; d.visible=!d.visible; savI(); ri(); toast(d.visible?'Now on Buy page':'Hidden — Coming Soon'); if(SB.configured())SB.update('inventory','id=eq.'+id,{visible:d.visible}); }
+function delI(id) { if(!confirm('Delete?'))return; inv=inv.filter(function(x){return x.id!==id;}); savI(); ri(); toast('Removed'); if(SB.configured())SB.remove('inventory','id=eq.'+id); }
 function regN(devId,devName) {
   var n=rn('nfn_'+devId), p=rn('nfp_'+devId);
   if(!p){toast('Enter WhatsApp number','e');return;}

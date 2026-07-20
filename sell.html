@@ -300,7 +300,20 @@ var SB = (function() {
       return await r.json();
     } catch(e) { return null; }
   }
-  return {configured:configured, query:query, insert:insert, update:update, remove:remove, rpc:rpc};
+  async function uploadDataUrl(bucket, path, dataUrl) {
+    if (!configured() || !dataUrl) return null;
+    try {
+      var res = await fetch(dataUrl);
+      var blob = await res.blob();
+      var r = await fetch(URL+'/storage/v1/object/'+bucket+'/'+encodeURIComponent(path), {
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':blob.type||'image/jpeg','x-upsert':'true'},
+        body: blob
+      });
+      return r.ok ? path : null;
+    } catch(e) { return null; }
+  }
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove, rpc:rpc, uploadDataUrl:uploadDataUrl};
 })();
 
 // ================================================================
@@ -475,6 +488,21 @@ var SMB = (function() {
               if (rid) riderId = rid;
             }
           } catch(e) {}
+
+          var leadUid = uid();
+          var photoPaths = [];
+          try {
+            var photos = data.photos || [];
+            for (var i = 0; i < photos.length; i++) {
+              var p = await SB.uploadDataUrl('lead-photos', leadUid+'/photo-'+i+'.jpg', photos[i]);
+              if (p) photoPaths.push(p);
+            }
+          } catch(e) {}
+          var billPath = null;
+          try {
+            if (data.billPhoto) billPath = await SB.uploadDataUrl('lead-photos', leadUid+'/bill.jpg', data.billPhoto);
+          } catch(e) {}
+
           SB.insert('leads', {
             name: data.name || '', phone: data.phone || '',
             area: data.area || '', address: data.address || '',
@@ -485,7 +513,10 @@ var SMB = (function() {
             color: data.color || '', year: data.year || '',
             battery: data.batteryHealth || '', imei: data.imei || '',
             ram: data.ram || '', condition: data.condition || '',
-            accessories: data.accessories || [],
+            screen_condition: data.screenCondition || '', body_condition: data.bodyCondition || '',
+            water_damage: data.waterDamage === true, repaired_parts: data.repairedParts || [],
+            frp_cleared: !!data.frpCleared, bill_photo: billPath,
+            accessories: data.accessories || [], photos: photoPaths,
             ask_price: data.askingPrice || 0, base_price: data.askingPrice || 0,
             is_loyalty: !!data.isLoyalty, slot: data.slot || 'morning',
             source: 'website', rider_id: riderId, status: 'new',
@@ -760,12 +791,15 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         <div class="sec-div">Device Details</div>
         <div class="g2">
           <div class="fg"><label>Brand <span class="opt">required</span></label>
-            <select id="fBrand" onchange="onBrand()">
-              <option value="">Select brand</option>
-              <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
-              <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
-              <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
-            </select>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div id="brandLogoBox" style="width:40px;height:40px;flex-shrink:0;border:1px solid var(--border);border-radius:8px;display:none;align-items:center;justify-content:center;background:#fff;padding:6px"></div>
+              <select id="fBrand" onchange="onBrand()" style="flex:1">
+                <option value="">Select brand</option>
+                <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
+                <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
+                <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
+              </select>
+            </div>
           </div>
           <div class="fg"><label>Model <span class="opt">required</span></label><select id="fModel" onchange="onModel()"><option value="">Select model</option></select></div>
         </div>
@@ -786,24 +820,71 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         <div class="fg"><label>IMEI <span class="opt">dial *#06# — optional</span></label><input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)"><div class="imei-hint" id="imeiHint"></div></div>
         <div id="batterySection" style="display:none" class="fg"><label>Battery Health % <span class="opt">Settings → Battery → Battery Health</span></label><input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100" oninput="showEstimate()"><div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">⚡ Higher battery = higher payout</div></div>
 
+        <div style="background:#EFF6FF;border:1px solid rgba(37,99,235,.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:20px;flex-shrink:0">🤝</span>
+          <p style="font-size:12px;color:rgba(15,23,42,.7);line-height:1.6;margin:0">We won't drop the price because of what you honestly tell us here. Fill in the real condition — it helps us give you our <b>maximum possible price</b> with no surprises at pickup.</p>
+        </div>
         <div class="sec-div">Condition <span style="color:var(--brand)">*</span></div>
-        <div class="cond-grid">
+        <div class="cond-grid" id="mainCondGrid">
           <button class="cb" onclick="pickCond('Like New',this)"><span class="cb-em">⭐</span><span class="cb-lbl">Like New</span><span class="cb-sub">No scratches, perfect</span></button>
           <button class="cb" onclick="pickCond('Good',this)"><span class="cb-em">👍</span><span class="cb-lbl">Good</span><span class="cb-sub">Minor wear, fully working</span></button>
           <button class="cb" onclick="pickCond('Fair',this)"><span class="cb-em">👌</span><span class="cb-lbl">Fair</span><span class="cb-sub">Visible wear, working</span></button>
           <button class="cb" onclick="pickCond('Poor',this)"><span class="cb-em">🔧</span><span class="cb-lbl">Needs Repair</span><span class="cb-sub">Damage or issues</span></button>
         </div>
 
-        <!-- PRICE ESTIMATE -->
-        <div id="estimateBox" style="display:none;background:linear-gradient(135deg,#EFF6FF,#F1F5F9);border:1px solid rgba(37,99,235,.3);padding:20px 22px;margin-bottom:4px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-          <div>
-            <div style="font-size:10px;font-weight:700;color:var(--brand-d);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">📊 Estimated offer</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--ink);letter-spacing:-1px" id="estVal">₹0</div>
-            <div style="font-size:11px;color:rgba(15,23,42,.5);margin-top:2px"><span id="estBase"></span> · Condition: <span id="estCond"></span></div>
+        <div class="g2" style="margin-top:14px">
+          <div class="fg">
+            <label>Screen condition <span class="opt">optional</span></label>
+            <div class="cond-grid" style="grid-template-columns:repeat(3,1fr)" id="screenCondGrid">
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Perfect',this)"><span class="cb-em">✨</span><span class="cb-lbl">Perfect</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Minor scratches',this)"><span class="cb-em">〰️</span><span class="cb-lbl">Minor scratches</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Cracked',this)"><span class="cb-em">💥</span><span class="cb-lbl">Cracked</span></button>
+            </div>
           </div>
-          <div style="text-align:right">
-            <div id="estLoyal" style="display:none;background:#2563EB;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">🏆 +10% Loyalty</div>
-            <div style="font-size:11px;color:rgba(15,23,42,.45);line-height:1.6">Final offer confirmed<br>after inspection</div>
+          <div class="fg">
+            <label>Body condition <span class="opt">optional</span></label>
+            <div class="cond-grid" style="grid-template-columns:repeat(3,1fr)" id="bodyCondGrid">
+              <button type="button" class="cb sm" onclick="pickSubCond('body','Perfect',this)"><span class="cb-em">✨</span><span class="cb-lbl">Perfect</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('body','Minor scratches',this)"><span class="cb-em">〰️</span><span class="cb-lbl">Minor scratches</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('body','Dents/cracks',this)"><span class="cb-em">💥</span><span class="cb-lbl">Dents/cracks</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="g2" style="margin-top:14px">
+          <div class="fg">
+            <label>Any water damage? <span class="opt">optional</span></label>
+            <div class="cond-grid" style="grid-template-columns:repeat(2,1fr)" id="waterGrid">
+              <button type="button" class="cb sm" onclick="pickWater(false,this)"><span class="cb-em">✅</span><span class="cb-lbl">No</span></button>
+              <button type="button" class="cb sm" onclick="pickWater(true,this)"><span class="cb-em">💧</span><span class="cb-lbl">Yes</span></button>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Any parts replaced? <span class="opt">optional — select all that apply</span></label>
+            <div class="acc-wrap">
+              <button type="button" class="ac sm" onclick="togRepair(this,'Screen replaced')">🖥️ Screen</button>
+              <button type="button" class="ac sm" onclick="togRepair(this,'Battery replaced')">🔋 Battery</button>
+              <button type="button" class="ac sm" onclick="togRepair(this,'Back panel replaced')">🔲 Back panel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRICE ESTIMATE -->
+        <div id="estimateBox" style="display:none;background:linear-gradient(135deg,#EFF6FF,#F1F5F9);border:1px solid rgba(37,99,235,.3);padding:20px 22px;margin-bottom:4px;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--brand-d);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">📊 Today's price for <span id="estModelName">your device</span></div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--ink);letter-spacing:-1px" id="estVal">₹0</div>
+              <div style="font-size:11px;color:rgba(15,23,42,.5);margin-top:2px"><span id="estBase"></span> · Condition: <span id="estCond"></span></div>
+            </div>
+            <div style="text-align:right">
+              <div id="estLoyal" style="display:none;background:#2563EB;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase">🏆 +10% Loyalty</div>
+              <div style="font-size:11px;color:rgba(15,23,42,.45);line-height:1.6">Final offer confirmed<br>after inspection</div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid rgba(37,99,235,.25);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:16px">🔥</span>
+            <span style="font-size:12px;color:rgba(15,23,42,.75);font-weight:600">This price is already <span style="color:var(--brand-d);font-weight:800">10% higher</span> than what any other phone-buying website offers you.</span>
           </div>
         </div>
 
@@ -814,8 +895,13 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
           <button class="ac" onclick="togAcc(this,'Earphones')">🎧 Earphones</button>
           <button class="ac" onclick="togAcc(this,'Cable')">🔗 Cable</button>
           <button class="ac" onclick="togAcc(this,'Cover')">🛡️ Cover</button>
-          <button class="ac" onclick="togAcc(this,'Invoice')">🧾 Invoice</button>
+          <button class="ac" onclick="togAcc(this,'Invoice',true)">🧾 Invoice</button>
           <button class="ac" onclick="togAcc(this,'Screen Guard')">🪟 Screen Guard</button>
+        </div>
+        <div class="fg" id="billUploadWrap" style="display:none;margin-top:10px">
+          <label>Bill / Invoice photo <span class="opt">helps confirm original purchase</span></label>
+          <input type="file" id="billPhotoInput" accept="image/*" onchange="handleBillPhoto(this)">
+          <div id="billPhotoPreview" style="margin-top:8px"></div>
         </div>
 
         <div class="sec-div">Photos <span style="font-size:10px;color:rgba(15,23,42,.4);font-weight:400;text-transform:none;letter-spacing:0">better photos = better offer</span></div>
@@ -845,6 +931,13 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         </div>
         <input type="hidden" id="fSlot" value="morning">
         <div class="fg" style="margin-top:16px"><label>Notes <span class="opt">optional</span></label><textarea id="fNotes" placeholder="Any details, pickup instructions, specific issues..."></textarea></div>
+
+        <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px 16px;margin-top:8px">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:12px;color:#92400E;font-weight:500;line-height:1.5">
+            <input type="checkbox" id="fFrpCleared" style="width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:#D97706">
+            I confirm this device is signed out of my iCloud / Google account and any Screen Lock / FRP lock is removed, so it can be verified at pickup. <span style="color:#DC2626">*</span>
+          </label>
+        </div>
       </div>
 
       <div class="submit-area">
@@ -864,7 +957,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
   <div class="sidebar">
     <div class="side-card">
       <h3>Why sell with us?</h3>
-      <div class="why-row"><div class="wr-icon">🏅</div><div class="wr-body"><h4>We pay more, always</h4><p>We check what other buyers in Delhi are offering — then beat it. More cash in your hand, guaranteed.</p></div></div>
+      <div class="why-row"><div class="wr-icon">🏅</div><div class="wr-body"><h4>10% more than anywhere else</h4><p>We check what other phone-buying websites are offering — then beat it by 10%. More cash in your hand, guaranteed.</p></div></div>
       <div class="why-row"><div class="wr-icon">🚫</div><div class="wr-body"><h4>No small-print deductions</h4><p>No cuts for minor scratches, missing box, or small everyday wear. The price we quote is the price you're paid.</p></div></div>
       <div class="why-row"><div class="wr-icon">🚗</div><div class="wr-body"><h4>Free doorstep pickup</h4><p>We come to you. No travel, no minimum distance, no charge — ever.</p></div></div>
       <div class="why-row"><div class="wr-icon">⚡</div><div class="wr-body"><h4>Instant payment</h4><p>Cash or UPI the moment we verify your device. No delays.</p></div></div>
@@ -961,6 +1054,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
     </div>
     <div class="foot-bottom">
       <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
+      <p style="width:100%;margin-top:6px">Website design by <a href="tel:+919650961136" style="color:inherit;text-decoration:underline;opacity:.6">Harpal Singh</a> · <a href="https://instagram.com/Harpall69" target="_blank" style="color:inherit;opacity:.6">Instagram</a> · <a href="https://x.com/Harpall69" target="_blank" style="color:inherit;opacity:.6">Twitter</a> · <a href="https://linkedin.com/in/Harpall69" target="_blank" style="color:inherit;opacity:.6">LinkedIn</a></p>
       <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107</p>
     </div>
   </div>
@@ -1064,6 +1158,7 @@ var STORAGE = {
   playstation:['825GB']
 };
 var selCond='',selAccs=[],selSlot='morning',photoUrls=[],isReturning=false;
+var selScreenCond='',selBodyCond='',selWater=null,selRepairs=[],billPhotoUrl='';
 
 window.addEventListener('DOMContentLoaded',function(){
   smbUpdateNav();
@@ -1099,6 +1194,20 @@ window.addEventListener('DOMContentLoaded',function(){
   var p=new URLSearchParams(location.search).get('brand');
   if(p){var s=document.getElementById('fBrand');if(s.querySelector('option[value="'+p+'"]')){s.value=p;onBrand();}}
 });
+var BRAND_LOGOS={
+  iphone:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>',
+  samsung:'<svg viewBox="0 0 220 50"><text y="38" font-family="Helvetica,Arial,sans-serif" font-size="32" font-weight="700" letter-spacing="1" fill="#1428A0">SAMSUNG</text></svg>',
+  oneplus:'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#EB0028"/><text x="50" y="66" font-family="Arial,sans-serif" font-size="42" font-weight="900" fill="#fff" text-anchor="middle">1+</text></svg>',
+  xiaomi:'<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="26" fill="#FF6900"/><text x="60" y="80" font-family="Arial,sans-serif" font-size="52" font-weight="900" fill="#fff" text-anchor="middle">MI</text></svg>',
+  pixel:'<svg viewBox="0 0 150 70"><text x="0" y="46" font-family="Arial,sans-serif" font-size="34" font-weight="500" fill="#1F1F1F">Pixel</text></svg>',
+  realme:'<svg viewBox="0 0 200 60"><rect x="0" y="8" width="14" height="14" fill="#FFC90E"/><text x="22" y="48" font-family="Arial,sans-serif" font-size="38" font-weight="800" fill="#1A1A1A">realme</text></svg>',
+  oppo:'<svg viewBox="0 0 160 60"><text y="46" font-family="Arial,sans-serif" font-size="42" font-weight="800" fill="#1BA784">OPPO</text></svg>',
+  vivo:'<svg viewBox="0 0 130 60"><text y="46" font-family="Arial,sans-serif" font-size="44" font-weight="800" font-style="italic" fill="#1A7FF2">vivo</text></svg>',
+  nothing:'<svg viewBox="0 0 220 60"><text y="42" font-family="\'Courier New\',monospace" font-size="28" font-weight="700" letter-spacing="4" fill="#1A1A1A">NOTHING</text></svg>',
+  playstation:'<svg viewBox="0 0 200 140"><path fill="#0070CC" d="M58 115V28s21-3 21 18-21 28-21 28h22V115zm27 0V74l25 8V115zm28-8l-26-8 26-14c18-8 40-4 40 12s-22 18-40 10z"/></svg>',
+  airpods:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>',
+  applewatch:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'
+};
 function onBrand(){
   var b=document.getElementById('fBrand').value,ms=document.getElementById('fModel');
   ms.innerHTML='<option value="">Select model</option>';
@@ -1106,6 +1215,12 @@ function onBrand(){
   document.getElementById('batterySection').style.display=b==='iphone'?'':'none';
   document.getElementById('storageSection').style.display='none';
   document.getElementById('fStorage').value='';
+  var logoBox=document.getElementById('brandLogoBox');
+  if(logoBox){
+    if(b&&BRAND_LOGOS[b]){logoBox.innerHTML=BRAND_LOGOS[b];logoBox.style.display='flex';}
+    else{logoBox.style.display='none';logoBox.innerHTML='';}
+  }
+  updateProgress();
 }
 function onModel(){
   var b=document.getElementById('fBrand').value,opts=STORAGE[b]||['64GB','128GB','256GB'];
@@ -1114,9 +1229,43 @@ function onModel(){
   if(opts.length){document.getElementById('storageSection').style.display='';
     opts.forEach(function(s){var btn=document.createElement('button');btn.className='sc';btn.textContent=s;btn.type='button';
       btn.onclick=function(){document.querySelectorAll('.sc').forEach(function(b){b.classList.remove('on');});this.classList.add('on');document.getElementById('fStorage').value=s;showEstimate();};chips.appendChild(btn);});}
+  showEstimate();
+  updateProgress();
 }
-function pickCond(v,btn){document.querySelectorAll('.cb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');selCond=v;showEstimate();}
-function togAcc(btn,v){btn.classList.toggle('on');if(btn.classList.contains('on')){if(!selAccs.includes(v))selAccs.push(v);}else{selAccs=selAccs.filter(function(a){return a!==v;});}}
+function pickCond(v,btn){document.querySelectorAll('#mainCondGrid .cb').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');selCond=v;showEstimate();updateProgress();}
+function togAcc(btn,v,isInvoice){
+  btn.classList.toggle('on');
+  if(btn.classList.contains('on')){if(!selAccs.includes(v))selAccs.push(v);}else{selAccs=selAccs.filter(function(a){return a!==v;});}
+  if(isInvoice){
+    var wrap=document.getElementById('billUploadWrap');
+    if(wrap) wrap.style.display=btn.classList.contains('on')?'':'none';
+  }
+  updateProgress();
+}
+function togRepair(btn,v){
+  btn.classList.toggle('on');
+  if(btn.classList.contains('on')){if(!selRepairs.includes(v))selRepairs.push(v);}else{selRepairs=selRepairs.filter(function(a){return a!==v;});}
+}
+function pickSubCond(kind,v,btn){
+  var gridId=kind==='screen'?'screenCondGrid':'bodyCondGrid';
+  document.querySelectorAll('#'+gridId+' .cb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  if(kind==='screen') selScreenCond=v; else selBodyCond=v;
+}
+function pickWater(v,btn){
+  document.querySelectorAll('#waterGrid .cb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  selWater=v;
+}
+function handleBillPhoto(input){
+  var f=input.files&&input.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(e){
+    billPhotoUrl=e.target.result;
+    document.getElementById('billPhotoPreview').innerHTML='<img src="'+e.target.result+'" style="max-width:120px;border-radius:6px;border:1px solid var(--border)">';
+  };
+  r.readAsDataURL(f);
+}
 function pickSlot(v){selSlot=v;document.getElementById('slotMorn').classList.toggle('on',v==='morning');document.getElementById('slotEve').classList.toggle('on',v==='evening');}
 function handlePhotos(input){
   var files=Array.from(input.files).slice(0,6);photoUrls=[];
@@ -1179,7 +1328,34 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   document.getElementById('fArea').addEventListener('change',updateFullAddr);
   document.getElementById('fZone').addEventListener('change',function(){onZone();updateFullAddr();});
+
+  ['fName','fPhone','fAddress','fZone','fArea','fBrand','fModel','fPrice'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.addEventListener('input',updateProgress);el.addEventListener('change',updateProgress);}
+  });
+  var frp=document.getElementById('fFrpCleared');
+  if(frp) frp.addEventListener('change',updateProgress);
+  updateProgress();
 });
+function updateProgress(){
+  var bar=document.getElementById('progress');
+  if(!bar) return;
+  var checks=[
+    (rn0('fName')).trim().length>0,
+    (rn0('fPhone')).trim().length>=10,
+    (rn0('fAddress')).trim().length>0,
+    !!rn0('fZone'),
+    !!rn0('fArea'),
+    !!rn0('fBrand'),
+    !!rn0('fModel'),
+    !!selCond,
+    parseInt(rn0('fPrice'))>0,
+    !!(document.getElementById('fFrpCleared')&&document.getElementById('fFrpCleared').checked)
+  ];
+  var done=checks.filter(Boolean).length;
+  bar.style.width=Math.round(done/checks.length*100)+'%';
+}
+function rn0(id){var e=document.getElementById(id);return e?(e.value||''):'';}
 function useMyLocation(){
   var btn=document.getElementById('gpsFillBtn'), hint=document.getElementById('gpsHint');
   if(!navigator.geolocation){ showToast('Location is not supported by your browser','error'); return; }
@@ -1297,6 +1473,8 @@ function showEstimate() {
   document.getElementById('estVal').textContent = '₹' + result.est.toLocaleString('en-IN');
   document.getElementById('estBase').textContent = 'Base: ₹' + result.base.toLocaleString('en-IN');
   document.getElementById('estCond').textContent = result.cond;
+  var modelEl = document.getElementById('estModelName');
+  if (modelEl) { var m = document.getElementById('fModel').value; modelEl.textContent = m || 'your device'; }
   var loyEl = document.getElementById('estLoyal');
   if (loyEl) loyEl.style.display = result.loyal ? 'inline-block' : 'none';
 }
@@ -1316,6 +1494,7 @@ function submitSell(){
   if(!model){markErr('fModel');errs.push('Please select a model.');}
   if(!selCond){errs.push('Please select device condition.');}
   if(!price){markErr('fPrice');errs.push('Please enter your asking price.');}
+  if(!document.getElementById('fFrpCleared').checked){errs.push('Please confirm your device is signed out and unlocked.');}
   if(errs.length){showToast(errs[0],'error');return;}
   var btn=document.getElementById('submitBtn');
   document.getElementById('submitIcon').textContent='⏳';
@@ -1325,7 +1504,7 @@ function submitSell(){
   var data={name:name,phone:phone,email:(document.getElementById('fEmail').value||'').trim(),address:(document.getElementById('fAddress').value||'').trim(),
     zone:(document.getElementById('fZone').value||'').trim(),
     area:(document.getElementById('fArea').value||'').trim(),
-    pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
+    pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,screenCondition:selScreenCond,bodyCondition:selBodyCond,waterDamage:selWater,repairedParts:selRepairs.slice(),frpCleared:true,billPhoto:billPhotoUrl,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
   try{SMB.sells.submit(data,CU?CU.id:null);}catch(e){btn.disabled=false;document.getElementById('submitIcon').textContent='🚀';document.getElementById('submitText').textContent='Submit Sell Request';showToast('Something went wrong. Please try again.','error');return;}
   btn.disabled=false;
   document.getElementById('formCard').style.display='none';
