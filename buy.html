@@ -122,7 +122,8 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .fg{margin-bottom:16px}
 .fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .fg label .opt{color:rgba(15,23,42,.35);font-weight:400;text-transform:none;letter-spacing:0}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--cream2);border:1px solid var(--border);color:var(--ink);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:not([type="checkbox"]):not([type="radio"]),.fg select,.fg textarea{width:100%;background:var(--cream2);border:1px solid var(--border);color:var(--ink);font-size:14px;font-family:inherit;padding:12px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input[type="checkbox"],.fg input[type="radio"]{width:auto;-webkit-appearance:checkbox;appearance:checkbox}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--brand)}
 .fg input.err{border-color:var(--brand);background:rgba(37,99,235,.06)}
 .fg input.ok{border-color:rgba(22,163,74,.4)}

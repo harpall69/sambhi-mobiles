@@ -341,7 +341,8 @@ footer{background:#0D0D0D;padding:72px 48px 36px;border-top:1px solid rgba(255,2
 .fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .fg label .req{color:var(--brand);margin-left:2px}
 .fg label .opt{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
-.fg input,.fg select,.fg textarea{width:100%;background:var(--cream2);border:1px solid var(--border);color:var(--ink);font-size:13px;font-family:inherit;padding:11px 13px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:not([type="checkbox"]):not([type="radio"]),.fg select,.fg textarea{width:100%;background:var(--cream2);border:1px solid var(--border);color:var(--ink);font-size:13px;font-family:inherit;padding:11px 13px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input[type="checkbox"],.fg input[type="radio"]{width:auto;-webkit-appearance:checkbox;appearance:checkbox}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--brand);background:var(--white)}
 .fg input:read-only{opacity:.55;cursor:not-allowed}
 .fg textarea{resize:none;height:72px}

@@ -5,6 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%232563EB'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%232563EB' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%232563EB'/></svg>">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sambhi Mobiles — Admin CRM</title>
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -212,7 +213,7 @@ select.si{min-width:140px}
       <h1>Sambhi <span>Mobiles</span></h1>
     </div>
     <p class="lsub">Admin CRM — Secure Login</p>
-    <div class="lf"><label>Email</label><input type="email" id="lu" placeholder="Enter email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
+    <div class="lf"><label>Username</label><input type="text" id="lu" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
     <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button id="lbtn" onclick="doLogin()">Sign In →</button>
     <div id="lerr"></div>
@@ -1136,10 +1137,10 @@ function mapLeadFromSB(r) {
     screenCondition:r.screen_condition||'', bodyCondition:r.body_condition||'',
     waterDamage:!!r.water_damage, repairedParts:r.repaired_parts||[],
     frpCleared:!!r.frp_cleared, billPhoto:r.bill_photo||null,
-    photos:r.photos||[], askPrice:r.ask_price||0, basePrice:r.base_price||0,
+    photos:r.photos||[], askPrice:r.est_price||0, basePrice:r.base_price||0,
     isLoyalty:!!r.is_loyalty, slot:r.slot||'morning', source:r.source||'website',
     riderId:r.rider_id||null, status:r.status||'new', notes:r.notes||[],
-    customerId:r.customer_id||null, createdAt:r.created_at
+    createdAt:r.created_at
   };
 }
 
@@ -1155,7 +1156,7 @@ function mapRiderFromSB(r) {
     id:r.id, name:r.name||'', phone:r.phone||'', email:r.email||'', zone:r.zone||'',
     pincodes:r.pincodes||[], username:r.username||'', password:r.password||'',
     aadhaar_number:r.aadhaar_number||'', aadhaar_image_path:r.aadhaar_image_path||null,
-    active:r.active!==false
+    active:r.is_active!==false
   };
 }
 function mapInvFromSB(r) {
@@ -1282,54 +1283,45 @@ function dCamps() {
 }
 
 // ── LOGIN ────────────────────────────────────────────────────────
-async function loadAdminProfile(userId, fallbackEmail) {
-  var rows = await SB.query('admin_users', {filter: 'id=eq.'+userId, select: 'id,name,role,phone,email'});
-  var profile = (rows && rows[0]) || null;
-  if (!profile) return null;
-  return {u: profile.email || fallbackEmail, name: profile.name, role: profile.role, ph: profile.phone, em: profile.email, color:'#2563EB'};
-}
-
 async function doLogin() {
   var u = rn('lu').trim();
   var p = rn('lp').trim();
   var err = document.getElementById('lerr');
-  if (!u || !p) { err.textContent = 'Enter email and password'; err.style.display = 'block'; return; }
+  if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display = 'block'; return; }
   if (!SB.configured()) { err.textContent = 'Site is not connected to the database yet.'; err.style.display = 'block'; return; }
   err.style.display = 'none';
   var btn = document.getElementById('lbtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
-  var res = await SB.auth.signIn(u, p);
-  if (!res.ok) {
-    if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
-    err.textContent = res.err || 'Incorrect email or password.'; err.style.display = 'block';
-    return;
-  }
-  var found = await loadAdminProfile(res.user.id, res.user.email);
+  var rows = await SB.rpc('verify_admin_login', {p_username: u.toLowerCase(), p_password: p});
   if (btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
-  if (!found) {
-    SB.auth.signOut();
-    err.textContent = 'Login succeeded but this account has no admin profile. Ask the site owner to add you.';
-    err.style.display = 'block';
+  var profile = rows && rows[0];
+  if (!profile) {
+    err.textContent = 'Incorrect username or password.'; err.style.display = 'block';
     return;
   }
+  var found = {u: u.toLowerCase(), name: profile.name, role: profile.role, ph: profile.phone, em: profile.email, color: profile.color||'#2563EB', init: profile.initials};
   CU = found;
+  localStorage.setItem('smb_sess', JSON.stringify({u: found.u, name: found.name, role: found.role, ph: found.ph, em: found.em, color: found.color, init: found.init, ts: Date.now()}));
   document.getElementById('LS').style.display = 'none';
   startCRM(found);
 }
 
-async function trySession() {
-  var s = SB.auth.restore();
-  if (!s || !s.user) return;
-  var found = await loadAdminProfile(s.user.id, s.user.email);
-  if (!found) { SB.auth.signOut(); return; }
-  CU = found;
-  document.getElementById('LS').style.display = 'none';
-  startCRM(found);
+function trySession() {
+  try {
+    var s = localStorage.getItem('smb_sess');
+    if (!s) return;
+    var j = JSON.parse(s);
+    if (!j || !j.u) return;
+    if (Date.now() - j.ts > 43200000) { localStorage.removeItem('smb_sess'); return; }
+    CU = j;
+    document.getElementById('LS').style.display = 'none';
+    startCRM(j);
+  } catch(e) { localStorage.removeItem('smb_sess'); }
 }
 
 function doLogout() {
   CU = null;
-  SB.auth.signOut();
+  localStorage.removeItem('smb_sess');
   document.getElementById('LS').style.display = 'flex';
   document.getElementById('TOP').style.display = 'none';
   document.getElementById('TABS').style.display = 'none';
@@ -1716,7 +1708,7 @@ function saveLead() {
     SB.insert('leads', {
       name:n, phone:p, area:newLead.area, address:newLead.address,
       dev_type:dt, device:dev, model:dm, storage:st, color:co, year:yr, battery:ba,
-      imei:newLead.imei, base_price:addBase, ask_price:est, is_loyalty:loy,
+      imei:newLead.imei, base_price:addBase, est_price:est, is_loyalty:loy,
       slot:newLead.slot, source:newLead.source||'admin', rider_id:rid||null,
       notes:newLead.notes, status:'new'
     }).then(function(rows){
@@ -1969,7 +1961,7 @@ async function saveR() {
 
   if (SB.configured()) {
     var payload = {name:d.name, phone:d.phone, email:d.email, zone:d.zone, pincodes:d.pincodes,
-      aadhaar_number:d.aadhaar_number, aadhaar_image_path:d.aadhaar_image_path, active:true};
+      aadhaar_number:d.aadhaar_number, aadhaar_image_path:d.aadhaar_image_path, is_active:true};
     if (id) {
       SB.update('riders', 'id=eq.'+id, payload);
     } else {
