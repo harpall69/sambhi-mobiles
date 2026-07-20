@@ -48,12 +48,12 @@ nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:blur(20px);padding
 .nav-cta:hover{background:var(--brand-d)}
 .nav-acct{color:rgba(15,23,42,.5);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:inherit}
 .nav-acct:hover{color:var(--ink)}
-.burger{display:none;background:none;border:none;color:var(--ink);font-size:22px;padding:4px;cursor:none}
+.burger{display:none;background:none;border:none;color:var(--ink);font-size:22px;padding:4px;cursor:pointer}
 .mob-nav{display:none;position:fixed;inset:0;background:var(--white);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
 .mob-nav.open{display:flex}
 .mob-nl{color:var(--ink);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
 .mob-nl:hover{color:var(--brand)}
-.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(15,23,42,.4);font-size:26px;cursor:none}
+.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(15,23,42,.4);font-size:26px;cursor:pointer}
 
 /* PAGE HERO (light) */
 .pg-hero{padding:140px 48px 72px;background:#EFF6FF;position:relative;overflow:hidden}
@@ -111,12 +111,12 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
 .modal-bg.open{display:flex}
 .auth-box{background:var(--white);border:1px solid var(--border);padding:48px;width:100%;max-width:400px;position:relative;box-shadow:0 24px 64px rgba(15,23,42,.2)}
-.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(15,23,42,.35);font-size:20px;cursor:none;font-family:inherit;transition:color .15s}
+.auth-close{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(15,23,42,.35);font-size:20px;cursor:pointer;font-family:inherit;transition:color .15s}
 .auth-close:hover{color:var(--ink)}
 .auth-box h2{font-family:var(--f-display);font-size:36px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.5px}
 .auth-box .auth-sub{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:300}
 .auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--border)}
-.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:none;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
 .auth-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
 .auth-err{background:rgba(37,99,235,.1);color:var(--brand-d);border:1px solid rgba(37,99,235,.25);padding:10px 13px;font-size:12px;margin-bottom:12px;display:none;font-weight:500}
 .fg{margin-bottom:16px}
@@ -130,7 +130,7 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .fg .hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}
 .fg .hint.ok{color:var(--green)}
 .fg .hint.err{color:var(--brand-d)}
-.auth-btn{width:100%;background:var(--brand);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:background .15s;margin-top:4px}
+.auth-btn{width:100%;background:var(--brand);color:var(--white);border:none;padding:14px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:background .15s;margin-top:4px}
 .auth-btn:hover{background:var(--brand-d)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
@@ -172,21 +172,21 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .sec-div{font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 14px;display:flex;align-items:center;gap:10px}
 .sec-div::after{content:"";flex:1;height:1px;background:var(--border)}
 .spec-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.sc{background:var(--cream2);border:1px solid var(--border);color:var(--ink2);padding:7px 14px;font-size:12px;font-family:inherit;cursor:none;transition:all .15s}
+.sc{background:var(--cream2);border:1px solid var(--border);color:var(--ink2);padding:7px 14px;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s}
 .sc:hover{border-color:var(--brand);color:var(--brand)}
 .sc.on{background:var(--brand);border-color:var(--brand);color:var(--white);font-weight:700}
 .cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.cb{background:var(--cream2);border:1px solid var(--border);padding:14px 8px;font-family:inherit;cursor:none;transition:all .15s;text-align:center}
+.cb{background:var(--cream2);border:1px solid var(--border);padding:14px 8px;font-family:inherit;cursor:pointer;transition:all .15s;text-align:center}
 .cb-em{font-size:22px;display:block;margin-bottom:6px}
 .cb-lbl{font-size:11px;font-weight:700;color:var(--ink2);display:block;margin-bottom:2px}
 .cb-sub{font-size:9px;color:var(--muted);line-height:1.4}
 .cb:hover{border-color:var(--brand)}.cb.on{border-color:var(--brand);background:rgba(37,99,235,.08)}
 .cb.on .cb-lbl{color:var(--brand)}
 .acc-wrap{display:flex;flex-wrap:wrap;gap:7px}
-.ac{background:var(--cream2);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:0;font-size:12px;font-family:inherit;cursor:none;transition:all .15s;font-weight:400}
+.ac{background:var(--cream2);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:0;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:400}
 .ac:hover{border-color:var(--green);color:var(--green)}
 .ac.on{border-color:var(--green);background:rgba(22,163,74,.1);color:var(--green);font-weight:600}
-.photo-zone{border:1px dashed var(--border);padding:28px;text-align:center;cursor:none;transition:all .15s;background:var(--cream2)}
+.photo-zone{border:1px dashed var(--border);padding:28px;text-align:center;cursor:pointer;transition:all .15s;background:var(--cream2)}
 .photo-zone:hover{border-color:var(--brand);background:rgba(37,99,235,.04)}
 .photo-zone.has{border-style:solid;border-color:var(--green);background:rgba(22,163,74,.06)}
 .pz-icon{font-size:30px;margin-bottom:8px}
@@ -195,14 +195,14 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .photo-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;justify-content:center}
 .ph-wrap{position:relative}
 .ph-img{width:70px;height:70px;object-fit:cover;border:1px solid var(--border)}
-.ph-rm{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--brand);color:#fff;border:none;font-size:10px;cursor:none;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1}
+.ph-rm{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--brand);color:#fff;border:none;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1}
 .price-prev{background:var(--cream2);border:1px solid rgba(37,99,235,.25);padding:18px 20px;margin-top:10px;display:none;align-items:center;justify-content:space-between}
 .price-prev.on{display:flex}
 .pp-lbl{font-size:10px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
 .pp-val{font-family:var(--f-display);font-size:32px;font-weight:600;color:var(--ink);letter-spacing:-1px}
 .pp-bonus{background:var(--brand);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;margin-top:5px;display:inline-block;letter-spacing:.5px;text-transform:uppercase}
 .slot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.sl-btn{background:var(--cream2);border:1px solid var(--border);padding:16px;cursor:none;font-family:inherit;transition:all .15s;text-align:center}
+.sl-btn{background:var(--cream2);border:1px solid var(--border);padding:16px;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center}
 .sl-btn .sl-em{font-size:22px;display:block;margin-bottom:5px}
 .sl-btn .sl-nm{font-size:13px;font-weight:700;color:var(--ink2);display:block}
 .sl-btn .sl-t{font-size:11px;color:var(--muted)}
@@ -210,9 +210,9 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .sl-btn.on .sl-nm{color:var(--brand)}
 .sl-btn:hover:not(.on){border-color:rgba(37,99,235,.35)}
 .submit-area{background:var(--cream2);border-top:1px solid var(--border);padding:24px 32px}
-.submit-btn{width:100%;background:var(--brand);color:#fff;border:none;padding:16px;font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:none;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn{width:100%;background:var(--brand);color:#fff;border:none;padding:16px;font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:10px}
 .submit-btn:hover:not(:disabled){background:var(--brand-d)}
-.submit-btn:disabled{background:rgba(15,23,42,.12);color:rgba(15,23,42,.35);cursor:none}
+.submit-btn:disabled{background:rgba(15,23,42,.12);color:rgba(15,23,42,.35);cursor:pointer}
 .trust-pills{display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 .tp{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px;letter-spacing:.3px}
 .success-card{display:none;text-align:center;padding:72px 32px}
@@ -731,7 +731,14 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
           <div class="fg"><label>WhatsApp <span class="opt">required</span></label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
         </div>
         <div class="fg"><label>Email <span class="opt">optional</span></label><input type="email" id="fEmail" placeholder="yourname@gmail.com"><div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">📧 Confirmation sent to mobilessambhi@gmail.com</div></div>
-        <div class="fg"><label>House / Street Address <span class="req" style="color:#2563EB">*</span></label><input type="text" id="fAddress" placeholder="House no., street, landmark"></div>
+        <div class="fg">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <label>House / Street Address <span class="req" style="color:#2563EB">*</span></label>
+            <button type="button" id="gpsFillBtn" onclick="useMyLocation()" style="background:var(--cream2);border:1px solid var(--border);color:var(--ink2);padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;font-family:inherit;border-radius:6px;display:flex;align-items:center;gap:5px;white-space:nowrap" onmouseenter="this.style.borderColor='#2563EB';this.style.color='#2563EB'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--ink2)'">📍 Use my location</button>
+          </div>
+          <input type="text" id="fAddress" placeholder="House no., street, landmark">
+          <div id="gpsHint" style="font-size:11px;color:rgba(15,23,42,.45);margin-top:4px"></div>
+        </div>
         <div class="g2">
           <div class="fg"><label>Delhi Zone <span class="req" style="color:#2563EB">*</span></label>
             <select id="fZone" onchange="onZone()">
@@ -1173,6 +1180,62 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('fArea').addEventListener('change',updateFullAddr);
   document.getElementById('fZone').addEventListener('change',function(){onZone();updateFullAddr();});
 });
+function useMyLocation(){
+  var btn=document.getElementById('gpsFillBtn'), hint=document.getElementById('gpsHint');
+  if(!navigator.geolocation){ showToast('Location is not supported by your browser','error'); return; }
+  btn.disabled=true; btn.textContent='⏳ Locating…'; hint.textContent='';
+  navigator.geolocation.getCurrentPosition(function(pos){
+    var lat=pos.coords.latitude, lon=pos.coords.longitude;
+    fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon+'&addressdetails=1&zoom=18')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        applyGeocodedAddress(data);
+        btn.disabled=false; btn.textContent='📍 Use my location';
+      })
+      .catch(function(){
+        btn.disabled=false; btn.textContent='📍 Use my location';
+        hint.textContent='Could not look up your address — please fill it in manually.';
+      });
+  }, function(err){
+    btn.disabled=false; btn.textContent='📍 Use my location';
+    hint.textContent = err.code===1 ? 'Location access denied — please allow it in your browser, or fill in manually.' : 'Could not get your location — please fill in manually.';
+  }, { enableHighAccuracy:true, timeout:10000 });
+}
+
+function applyGeocodedAddress(data){
+  var hint=document.getElementById('gpsHint');
+  var a=(data&&data.address)||{};
+  var streetBits=[a.house_number,a.road].filter(Boolean).join(' ');
+  var addrEl=document.getElementById('fAddress');
+  if(streetBits) addrEl.value=streetBits;
+  else if(data.display_name) addrEl.value=data.display_name.split(',').slice(0,2).join(',').trim();
+
+  // Try to match the returned locality against our known Delhi zone/area list
+  var candidates=[a.suburb,a.neighbourhood,a.quarter,a.city_district,a.town,a.village].filter(Boolean).map(function(s){return s.toLowerCase();});
+  var matchedZone='', matchedArea='';
+  outer:
+  for(var zone in DELHI_AREAS){
+    for(var i=0;i<DELHI_AREAS[zone].length;i++){
+      var areaName=DELHI_AREAS[zone][i];
+      if(candidates.some(function(c){return c.indexOf(areaName.toLowerCase())>-1||areaName.toLowerCase().indexOf(c)>-1;})){
+        matchedZone=zone; matchedArea=areaName; break outer;
+      }
+    }
+  }
+  if(matchedZone){
+    document.getElementById('fZone').value=matchedZone;
+    onZone();
+    document.getElementById('fArea').value=matchedArea;
+  }
+  if(a.postcode&&/^\d{6}$/.test(a.postcode)){
+    document.getElementById('fPincode').value=a.postcode;
+    if(typeof validatePin==='function') validatePin(document.getElementById('fPincode'));
+  }
+  updateFullAddr();
+  if(matchedZone) showToast('📍 Address filled in — please double-check it!','i');
+  else { showToast('📍 Got your location, but please fill in zone/area manually','i'); hint.textContent='We filled in what we could — please check the zone/area below.'; }
+}
+
 function onZone(){
   var zone=document.getElementById('fZone').value;
   var sub=document.getElementById('fArea');
