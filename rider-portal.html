@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%232563EB'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%232563EB' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%232563EB'/></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sambhi Mobiles — Rider Portal</title>
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b:#2563EB;--bl:#EFF6FF;
+  --g:#16A34A;--gl:#F0FDF4;
+  --r:#DC2626;--rl:#FEF2F2;
+  --y:#D97706;--yl:#FFFBEB;
+  --ink:#0F172A;--muted:#64748B;--light:#94A3B8;
+  --border:#E2E8F0;--bg:#F8FAFC;--white:#fff;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08)
+}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+
+/* ── LOGIN ─────────────────────────────────────────────────────── */
+#LS{display:flex;min-height:100vh;align-items:center;justify-content:center;background:linear-gradient(135deg,#0F172A 0%,#1E1B4B 50%,#0F172A 100%)}
+.lcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:40px;width:100%;max-width:380px;backdrop-filter:blur(20px)}
+.lcard h1{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:6px}
+.lcard h1 span{color:#2563EB}
+.lsub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:26px;letter-spacing:.5px;text-transform:uppercase}
+.lf{margin-bottom:16px}
+.lf label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.lf input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:11px 14px;border-radius:var(--radius);font-size:14px;font-family:inherit;outline:none}
+.lf input:focus{border-color:#2563EB;background:rgba(37,99,235,.05)}
+#lbtn{width:100%;background:#2563EB;color:#fff;border:none;padding:13px;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px}
+#lbtn:hover{background:#1D4ED8}
+#lerr{color:#FCA5A5;font-size:12px;margin-top:10px;text-align:center;min-height:18px}
+
+/* ── APP ───────────────────────────────────────────────────────── */
+#APP{display:none;max-width:720px;margin:0 auto;padding:20px 16px 60px}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.hdr h2{font-size:18px;font-weight:800}
+.hdr p{font-size:12px;color:var(--muted)}
+.logout{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:var(--radius);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.logout:hover{background:var(--rl);color:var(--r);border-color:var(--r)}
+
+.earn{background:linear-gradient(135deg,#2563EB,#1D4ED8);border-radius:16px;padding:20px 22px;color:#fff;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.earn-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.75;margin-bottom:4px}
+.earn-val{font-family:'Georgia',serif;font-size:32px;font-weight:700}
+.earn-sub{font-size:11px;opacity:.75;margin-top:2px}
+.earn-count{text-align:right}
+.earn-count b{font-size:22px;display:block}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px}
+.tab{background:var(--white);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.tab.on{background:var(--b);border-color:var(--b);color:#fff}
+
+.lead{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.lead-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.lead-name{font-size:14px;font-weight:700}
+.lead-phone{font-size:12px;color:var(--b);text-decoration:none}
+.lead-device{font-size:12px;color:var(--muted);margin-top:2px}
+.lead-meta{font-size:11px;color:var(--light);margin-top:2px}
+.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap}
+.st-new{background:#EFF6FF;color:#2563EB}.st-contacted{background:#FFFBEB;color:#D97706}
+.st-scheduled{background:#F5F3FF;color:#7C3AED}.st-completed{background:#F0FDF4;color:#16A34A}
+.st-cancelled{background:#FEF2F2;color:#DC2626}
+.lead-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.act{background:#F1F5F9;border:none;padding:7px 12px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink)}
+.act:hover{background:var(--bl);color:var(--b)}
+.act.called{background:var(--gl);color:var(--g)}
+.act.notcalled{background:var(--rl);color:var(--r)}
+.empty{text-align:center;padding:40px 20px;color:var(--light);font-size:13px}
+
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+#toast.e{background:var(--r)}
+</style>
+</head>
+<body>
+
+<div id="LS">
+  <div class="lcard">
+    <h1>Sambhi <span>Riders</span></h1>
+    <div class="lsub">Rider Portal</div>
+    <div class="lf"><label>Phone Number</label><input type="tel" id="rlPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric" onkeydown="if(event.key==='Enter')riderLogin()"></div>
+    <div class="lf"><label>Password</label><input type="password" id="rlPass" placeholder="Your password" onkeydown="if(event.key==='Enter')riderLogin()"></div>
+    <button id="lbtn" onclick="riderLogin()">Sign In</button>
+    <div id="lerr"></div>
+  </div>
+</div>
+
+<div id="APP">
+  <div class="hdr">
+    <div><h2 id="riderName">Rider</h2><p id="riderZone"></p></div>
+    <button class="logout" onclick="riderLogout()">Log out</button>
+  </div>
+
+  <div class="earn">
+    <div>
+      <div class="earn-lbl">Total Earnings</div>
+      <div class="earn-val" id="earnTotal">₹0</div>
+      <div class="earn-sub">₹<span id="earnRate">300</span>/lead default · overrides applied where set</div>
+    </div>
+    <div class="earn-count"><b id="earnCount">0</b><span style="font-size:11px;opacity:.75">Completed</span></div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="leadList"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+var SB = (function() {
+  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
+  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
+  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
+  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
+  async function query(table, opts) {
+    if (!configured()) return null;
+    opts = opts || {};
+    var url = URL + '/rest/v1/' + table;
+    var params = [];
+    if (opts.select) params.push('select='+opts.select);
+    if (opts.filter) params.push(opts.filter);
+    if (opts.order)  params.push('order='+opts.order);
+    if (params.length) url += '?' + params.join('&');
+    try {
+      var r = await fetch(url, {method:'GET', headers:headers()});
+      if (!r.ok) return null;
+      if (r.status === 204) return [];
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function update(table, filter, data) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  async function rpc(fn, args) {
+    if (!configured()) return null;
+    try {
+      var r = await fetch(URL+'/rest/v1/rpc/'+fn, {method:'POST', headers:headers(), body:JSON.stringify(args||{})});
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+  return {configured:configured, query:query, update:update, rpc:rpc};
+})();
+
+function rn(id) { return (document.getElementById(id) || {}).value || ''; }
+function toast(m, t) {
+  var el = document.getElementById('toast');
+  el.textContent = m; el.className = t==='e' ? 'on e' : 'on';
+  setTimeout(function(){ el.className=''; }, 2600);
+}
+function fd(d) { return d ? new Date(d).toLocaleDateString('en-IN', {day:'2-digit',month:'short'}) : ''; }
+
+var RSESS_KEY = 'smb_rider_sess';
+var RSESS_TTL = 12*60*60*1000;
+var RIDER = null, myLeads = [], activeTab = '';
+
+var STAGES = [
+  {key:'', label:'All'},
+  {key:'new', label:'New'},
+  {key:'contacted', label:'Contacted'},
+  {key:'scheduled', label:'Scheduled'},
+  {key:'completed', label:'Completed'},
+  {key:'cancelled', label:'Cancelled'}
+];
+var STAGE_LABEL = {new:'New', contacted:'Contacted', scheduled:'Scheduled', completed:'Completed', cancelled:'Cancelled'};
+var STAGE_CLASS = {new:'st-new', contacted:'st-contacted', scheduled:'st-scheduled', completed:'st-completed', cancelled:'st-cancelled'};
+
+async function riderLogin() {
+  var phone = rn('rlPhone').trim(), pw = rn('rlPass').trim();
+  var err = document.getElementById('lerr'); err.textContent = '';
+  if (!SB.configured()) { err.textContent = 'Not connected to database.'; return; }
+  if (!phone || !pw) { err.textContent = 'Enter phone and password'; return; }
+  var rows = await SB.rpc('verify_rider_login', {p_phone:phone, p_password:pw});
+  var profile = rows && rows[0];
+  if (!profile) { err.textContent = 'Incorrect phone or password.'; return; }
+  RIDER = {id:profile.id, name:profile.name, phone:profile.phone, zone:profile.zone, payoutPerLead:profile.payout_per_lead};
+  localStorage.setItem(RSESS_KEY, JSON.stringify(Object.assign({},RIDER,{ts:Date.now()})));
+  showDashboard();
+}
+function trySession() {
+  try {
+    var s = localStorage.getItem(RSESS_KEY); if (!s) return;
+    var j = JSON.parse(s);
+    if (Date.now()-j.ts > RSESS_TTL) { localStorage.removeItem(RSESS_KEY); return; }
+    RIDER = j; showDashboard();
+  } catch(e) { localStorage.removeItem(RSESS_KEY); }
+}
+function riderLogout() { localStorage.removeItem(RSESS_KEY); RIDER = null; location.reload(); }
+
+function showDashboard() {
+  document.getElementById('LS').style.display = 'none';
+  document.getElementById('APP').style.display = 'block';
+  document.getElementById('riderName').textContent = RIDER.name;
+  document.getElementById('riderZone').textContent = RIDER.zone ? '📍 '+RIDER.zone : '';
+  document.getElementById('earnRate').textContent = RIDER.payoutPerLead || 300;
+  renderTabs();
+  loadMyLeads();
+}
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = STAGES.map(function(s){
+    return '<button class="tab'+(activeTab===s.key?' on':'')+'" onclick="setTab(\''+s.key+'\')">'+s.label+'</button>';
+  }).join('');
+}
+function setTab(key) { activeTab = key; renderTabs(); renderLeadList(); }
+
+function loadMyLeads() {
+  if (!RIDER) return;
+  SB.query('leads', {select:'*', filter:'rider_id=eq.'+RIDER.id, order:'created_at.desc'}).then(function(rows){
+    myLeads = rows || [];
+    renderEarnings();
+    renderLeadList();
+  });
+}
+function payoutFor(l) { return l.payout_override != null ? l.payout_override : (RIDER.payoutPerLead || 300); }
+function renderEarnings() {
+  var completed = myLeads.filter(function(l){ return l.status === 'completed'; });
+  var total = completed.reduce(function(s,l){ return s + payoutFor(l); }, 0);
+  document.getElementById('earnCount').textContent = completed.length;
+  document.getElementById('earnTotal').textContent = '₹' + total.toLocaleString('en-IN');
+}
+function renderLeadList() {
+  var wrap = document.getElementById('leadList');
+  var list = activeTab ? myLeads.filter(function(l){ return l.status === activeTab; }) : myLeads;
+  if (!list.length) { wrap.innerHTML = '<div class="empty">No leads here yet.</div>'; return; }
+  wrap.innerHTML = list.map(function(l){
+    var device = [l.brand, l.model, l.storage, l.ram].filter(Boolean).join(' · ') || l.device || '—';
+    var stCls = STAGE_CLASS[l.status] || 'st-new';
+    var stLbl = STAGE_LABEL[l.status] || l.status;
+    var callBtn = '<button class="act '+(l.rider_called?'called':'notcalled')+'" onclick="toggleCalled(\''+l.id+'\')">'+(l.rider_called?'✅ Called':'☎️ Mark Called')+'</button>';
+    var stageBtns = '';
+    if (l.status === 'new') stageBtns += '<button class="act" onclick="markStatus(\''+l.id+'\',\'contacted\')">Mark Contacted</button>';
+    if (l.status === 'contacted') stageBtns += '<button class="act" onclick="markStatus(\''+l.id+'\',\'scheduled\')">Mark Scheduled</button>';
+    return '<div class="lead">'
+      + '<div class="lead-top">'
+      +   '<div><div class="lead-name">'+(l.name||'—')+'</div><a class="lead-phone" href="tel:'+l.phone+'">'+(l.phone||'')+'</a></div>'
+      +   '<span class="badge '+stCls+'">'+stLbl+'</span>'
+      + '</div>'
+      + '<div class="lead-device">'+device+'</div>'
+      + '<div class="lead-meta">'+(l.area||'—')+' · '+(l.slot==='evening'?'🌆 Evening':'🌅 Morning')+' · '+fd(l.created_at)+'</div>'
+      + '<div class="lead-actions">'+callBtn+stageBtns+'</div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleCalled(id) {
+  var l = myLeads.find(function(x){ return x.id === id; }); if (!l) return;
+  l.rider_called = !l.rider_called;
+  l.rider_called_at = l.rider_called ? new Date().toISOString() : null;
+  SB.update('leads', 'id=eq.'+id, {rider_called:l.rider_called, rider_called_at:l.rider_called_at});
+  renderLeadList();
+  toast(l.rider_called ? 'Marked called' : 'Marked not called');
+}
+function markStatus(id, status) {
+  var l = myLeads.find(function(x){ return x.id === id; }); if (!l) return;
+  l.status = status;
+  SB.update('leads', 'id=eq.'+id, {status:status});
+  renderLeadList();
+  toast('Updated to ' + (STAGE_LABEL[status]||status));
+}
+
+window.addEventListener('DOMContentLoaded', trySession);
+</script>
+</body>
+</html>

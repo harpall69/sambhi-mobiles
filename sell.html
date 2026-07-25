@@ -778,9 +778,8 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
             <div class="model-grid" id="modelGrid"></div>
           </div>
         </div>
-        <div id="storageSection" style="display:none" class="fg"><label>Storage</label><div class="spec-chips" id="storageChips"></div><input type="hidden" id="fStorage"></div>
+        <div id="storageSection" style="display:none" class="fg"><label>Storage / RAM</label><div class="spec-chips" id="storageChips"></div><input type="hidden" id="fStorage"><input type="hidden" id="fRAM"></div>
         <div class="g3">
-          <div class="fg"><label>RAM <span class="opt">optional</span></label><select id="fRAM"><option value="">Select</option><option>2GB</option><option>3GB</option><option>4GB</option><option>6GB</option><option>8GB</option><option>12GB</option><option>16GB</option></select></div>
           <div class="fg"><label>Colour <span class="opt">optional</span></label>
             <select id="fColor">
               <option value="">Select</option>
@@ -790,7 +789,16 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
               <option>Other (mention in notes)</option>
             </select>
           </div>
-          <div class="fg"><label>Year <span class="opt">optional</span></label><select id="fYear"><option value="">Year</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016 or older</option></select></div>
+          <div class="fg"><label>Year <span class="opt">optional</span></label><select id="fYear" onchange="onYearChange()"><option value="">Year</option></select></div>
+          <div class="fg" id="monthWrap" style="display:none"><label>Month <span class="opt">optional</span></label>
+            <select id="fMonth" onchange="showEstimate()">
+              <option value="">Month</option>
+              <option value="Jan">Jan</option><option value="Feb">Feb</option><option value="Mar">Mar</option>
+              <option value="Apr">Apr</option><option value="May">May</option><option value="Jun">Jun</option>
+              <option value="Jul">Jul</option><option value="Aug">Aug</option><option value="Sep">Sep</option>
+              <option value="Oct">Oct</option><option value="Nov">Nov</option><option value="Dec">Dec</option>
+            </select>
+          </div>
         </div>
         <div class="fg"><label>IMEI <span class="opt">dial *#06# — optional</span></label><input type="text" id="fIMEI" placeholder="15-digit IMEI number" maxlength="15" inputmode="numeric" oninput="validateIMEI(this)"><div class="imei-hint" id="imeiHint"></div></div>
         <div id="batterySection" style="display:none" class="fg"><label>Battery Health % <span class="opt">Settings → Battery → Battery Health</span></label><input type="number" id="fBattery" placeholder="e.g. 87" min="50" max="100" oninput="showEstimate()"><div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">⚡ Higher battery = higher payout</div></div>
@@ -811,9 +819,9 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
           <div class="fg">
             <label>Screen condition <span class="opt">optional</span></label>
             <div class="cond-grid" style="grid-template-columns:repeat(3,1fr)" id="screenCondGrid">
-              <button type="button" class="cb sm" onclick="pickSubCond('screen','Perfect',this)"><span class="cb-em">✨</span><span class="cb-lbl">Perfect</span></button>
-              <button type="button" class="cb sm" onclick="pickSubCond('screen','Minor scratches',this)"><span class="cb-em">〰️</span><span class="cb-lbl">Minor scratches</span></button>
-              <button type="button" class="cb sm" onclick="pickSubCond('screen','Cracked',this)"><span class="cb-em">💥</span><span class="cb-lbl">Cracked</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Perfect',this)"><span class="cb-em"><svg viewBox="0 0 24 40" width="24" height="24"><rect x="1.5" y="1.5" width="21" height="37" rx="4" fill="none" stroke="#0F172A" stroke-width="2"/><line x1="9" y1="5" x2="15" y2="5" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/><path d="M6 12 L9 9" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round"/><path d="M15 10 L18 13" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="34" r="1.6" fill="#0F172A"/></svg></span><span class="cb-lbl">Perfect</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Minor scratches',this)"><span class="cb-em"><svg viewBox="0 0 24 40" width="24" height="24"><rect x="1.5" y="1.5" width="21" height="37" rx="4" fill="none" stroke="#0F172A" stroke-width="2"/><line x1="9" y1="5" x2="15" y2="5" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="14" x2="10" y2="20" stroke="#D97706" stroke-width="1.2" stroke-linecap="round"/><line x1="13" y1="18" x2="18" y2="24" stroke="#D97706" stroke-width="1.2" stroke-linecap="round"/><circle cx="12" cy="34" r="1.6" fill="#0F172A"/></svg></span><span class="cb-lbl">Minor scratches</span></button>
+              <button type="button" class="cb sm" onclick="pickSubCond('screen','Cracked',this)"><span class="cb-em"><svg viewBox="0 0 24 40" width="24" height="24"><rect x="1.5" y="1.5" width="21" height="37" rx="4" fill="none" stroke="#0F172A" stroke-width="2"/><line x1="9" y1="5" x2="15" y2="5" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/><polyline points="6,9 10,16 7,20 13,25 10,31" stroke="#DC2626" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="10,16 16,14 14,22" stroke="#DC2626" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="34" r="1.6" fill="#0F172A"/></svg></span><span class="cb-lbl">Cracked</span></button>
             </div>
           </div>
           <div class="fg">
@@ -887,17 +895,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
           <div class="photo-grid" id="photoGrid"></div>
         </div>
         <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
-
-        <div class="sec-div">Your Asking Price <span style="color:var(--brand)">*</span></div>
-        <div class="fg">
-          <label>Expected Amount (₹)</label>
-          <input type="number" id="fPrice" placeholder="e.g. 35000" oninput="updatePricePreview()">
-          <div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">Enter what you expect — we'll review and confirm within 2 hours</div>
-        </div>
-        <div class="price-prev" id="pricePreview">
-          <div><div class="pp-lbl">Your asking price</div><div class="pp-val" id="ppVal">₹0</div><div class="pp-bonus" id="ppBonus" style="display:none">+10% Loyalty Applied</div></div>
-          <div style="text-align:right;font-size:10px;color:rgba(15,23,42,.35);letter-spacing:.5px;text-transform:uppercase">Free pickup<br>Instant cash</div>
-        </div>
 
         <div class="sec-div">Your Details</div>
         <div class="g2">
@@ -1150,25 +1147,159 @@ var MODELS = {
   applewatch:['Apple Watch Ultra 2','Apple Watch Ultra','Apple Watch Series 9 45mm','Apple Watch Series 9 41mm','Apple Watch SE 2 44mm','Apple Watch SE 2 40mm','Apple Watch Series 8 45mm'],
   playstation:['PS5 Disc Edition','PS5 Digital Edition','PS5 Slim Disc','PS5 Slim Digital','PS4 Pro','PS4 Slim','PS4']
 };
-var STORAGE = {
-  iphone:['16GB','32GB','64GB','128GB','256GB','512GB','1TB'],
-  samsung:['64GB','128GB','256GB','512GB'],
-  oneplus:['128GB','256GB','512GB'],
-  pixel:['128GB','256GB','512GB'],
-  realme:['64GB','128GB','256GB'],
-  oppo:['64GB','128GB','256GB'],
-  vivo:['64GB','128GB','256GB'],
-  xiaomi:['64GB','128GB','256GB','512GB'],
-  nothing:['128GB','256GB'],
-  airpods:['Single unit'],
-  applewatch:['GPS','GPS + Cellular'],
-  playstation:['825GB']
+// Real-world storage (and, where the brand actually markets it, RAM) combos
+// per exact model — replaces the old generic per-brand list so the sell form
+// only ever offers configurations that model was actually sold in. Apple
+// products (iPhone/AirPods/Apple Watch) are storage-only entries since Apple
+// doesn't market RAM to consumers.
+var MODEL_SPECS = {
+  iphone: {
+    'iPhone 16 Pro Max':[{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 16 Pro':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 16 Plus':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 16':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 15 Pro Max':[{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 15 Pro':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 15 Plus':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 15':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 14 Pro Max':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 14 Pro':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 14 Plus':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 14':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 13 Pro Max':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 13 Pro':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'},{storage:'1TB'}],
+    'iPhone 13':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 13 Mini':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 12 Pro Max':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 12 Pro':[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 12':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone 12 Mini':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone 11 Pro Max':[{storage:'64GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 11 Pro':[{storage:'64GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone 11':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone SE (2022)':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone SE (2020)':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone XR':[{storage:'64GB'},{storage:'128GB'},{storage:'256GB'}],
+    'iPhone XS Max':[{storage:'64GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone XS':[{storage:'64GB'},{storage:'256GB'},{storage:'512GB'}],
+    'iPhone X':[{storage:'64GB'},{storage:'256GB'}]
+  },
+  samsung: {
+    'Galaxy S24 Ultra':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'},{ram:'12GB',storage:'1TB'}],
+    'Galaxy S24+':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Galaxy S24':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy S23 Ultra':[{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'},{ram:'12GB',storage:'1TB'}],
+    'Galaxy S23+':[{ram:'8GB',storage:'256GB'},{ram:'8GB',storage:'512GB'}],
+    'Galaxy S23':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy S22 Ultra':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Galaxy S22+':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy S22':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy A55':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy A54':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy A35':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy A34':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Galaxy A25':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'}],
+    'Galaxy A15':[{ram:'4GB',storage:'128GB'},{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'}],
+    'Galaxy M55':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'Galaxy M35':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'}]
+  },
+  oneplus: {
+    'OnePlus 12':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'OnePlus 12R':[{ram:'8GB',storage:'128GB'},{ram:'16GB',storage:'256GB'}],
+    'OnePlus 11':[{ram:'8GB',storage:'128GB'},{ram:'16GB',storage:'256GB'}],
+    'OnePlus 11R':[{ram:'8GB',storage:'128GB'},{ram:'16GB',storage:'256GB'}],
+    'Nord 4':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'Nord CE4':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Nord 3':[{ram:'8GB',storage:'128GB'},{ram:'16GB',storage:'256GB'}],
+    'OnePlus 10 Pro':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'OnePlus 10T':[{ram:'8GB',storage:'128GB'},{ram:'16GB',storage:'256GB'}],
+    'OnePlus 9 Pro':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}]
+  },
+  realme: {
+    'Realme GT 6':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'},{ram:'16GB',storage:'512GB'}],
+    'Realme GT 5':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'Realme 13 Pro+':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'Realme 13 Pro':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Realme 12 Pro+':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'Realme 12 Pro':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Realme 11 Pro+':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}]
+  },
+  oppo: {
+    'Find X7 Pro':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'Reno 12 Pro':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Reno 12':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'Reno 11 Pro':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'F27 Pro':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'A3 Pro':[{ram:'8GB',storage:'128GB'}]
+  },
+  vivo: {
+    'X100 Pro':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'X100':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'V40 Pro':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'V40':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'V30 Pro':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'V30':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Y200 Pro':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}]
+  },
+  xiaomi: {
+    'Xiaomi 14 Ultra':[{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'Xiaomi 14':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Redmi Note 13 Pro+':[{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'Redmi Note 13 Pro':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'Redmi Note 13':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'POCO X6 Pro':[{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'POCO F6 Pro':[{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'},{ram:'16GB',storage:'512GB'}],
+    'POCO F6':[{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+    'POCO M6 Pro':[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}]
+  },
+  pixel: {
+    'Pixel 9 Pro XL':[{ram:'12GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'},{ram:'16GB',storage:'1TB'}],
+    'Pixel 9 Pro':[{ram:'16GB',storage:'128GB'},{ram:'16GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+    'Pixel 9':[{ram:'12GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'Pixel 8 Pro':[{ram:'12GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'},{ram:'12GB',storage:'1TB'}],
+    'Pixel 8a':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Pixel 8':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+    'Pixel 7 Pro':[{ram:'12GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Pixel 7a':[{ram:'8GB',storage:'128GB'}],
+    'Pixel 7':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}]
+  },
+  nothing: {
+    'Nothing Phone (2a) Plus':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'Nothing Phone (2a)':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+    'Nothing Phone (2)':[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'12GB',storage:'512GB'}],
+    'Nothing Phone (1)':[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}]
+  },
+  airpods: {}, applewatch: {}, playstation: {
+    'PS5 Disc Edition':[{storage:'825GB'}],
+    'PS5 Digital Edition':[{storage:'825GB'}],
+    'PS5 Slim Disc':[{storage:'1TB'}],
+    'PS5 Slim Digital':[{storage:'1TB'}],
+    'PS4 Pro':[{storage:'1TB'}],
+    'PS4 Slim':[{storage:'500GB'},{storage:'1TB'}],
+    'PS4':[{storage:'500GB'}]
+  }
+};
+// Fallback for any brand/model not explicitly curated above.
+var MODEL_SPECS_DEFAULT = {
+  iphone:[{storage:'128GB'},{storage:'256GB'},{storage:'512GB'}],
+  samsung:[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+  oneplus:[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'},{ram:'16GB',storage:'512GB'}],
+  pixel:[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+  realme:[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+  oppo:[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+  vivo:[{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'}],
+  xiaomi:[{ram:'6GB',storage:'128GB'},{ram:'8GB',storage:'128GB'},{ram:'8GB',storage:'256GB'},{ram:'12GB',storage:'256GB'}],
+  nothing:[{ram:'8GB',storage:'128GB'},{ram:'12GB',storage:'256GB'}],
+  airpods:[{storage:'Single unit'}],
+  applewatch:[{storage:'GPS'},{storage:'GPS + Cellular'}],
+  playstation:[{storage:'825GB'}]
 };
 var selCond='',selAccs=[],selSlot='morning',photoUrls=[],isReturning=false;
 var selScreenCond='',selBodyCond='',selWater=null,selRepairs=[],billPhotoUrl='';
 
 window.addEventListener('DOMContentLoaded',function(){
   smbUpdateNav();
+  buildYearOptions();
   var CU=SMB.customer.current();
   if(CU){
     document.getElementById('authNotice').style.display='';
@@ -1185,7 +1316,6 @@ window.addEventListener('DOMContentLoaded',function(){
       var titleEl=document.getElementById('returningBarTitle');
       if(titleEl) titleEl.textContent='Welcome back, '+CU.name.split(' ')[0]+'! 🏆 Your +10% loyalty bonus is ready.';
       if(ld)document.getElementById('returningBarSub').textContent='Last sale: '+ld+(dt?' on '+dt:'')+'. Amount added automatically to your offer.';
-      document.getElementById('ppBonus').style.display='inline-block';
     }
     if(CU.homeAddress){document.getElementById('fAddress').value=CU.homeAddress;}
     if(CU.homeArea){
@@ -1236,6 +1366,7 @@ function onBrand(){
   document.getElementById('batterySection').style.display=b==='iphone'?'':'none';
   document.getElementById('storageSection').style.display='none';
   document.getElementById('fStorage').value='';
+  document.getElementById('fRAM').value='';
   var logoBox=document.getElementById('brandLogoBox');
   if(logoBox){
     if(b&&BRAND_LOGOS[b]){logoBox.innerHTML=BRAND_LOGOS[b];logoBox.style.display='flex';}
@@ -1244,12 +1375,25 @@ function onBrand(){
   updateProgress();
 }
 function onModel(){
-  var b=document.getElementById('fBrand').value,opts=STORAGE[b]||['64GB','128GB','256GB'];
+  var b=document.getElementById('fBrand').value,m=document.getElementById('fModel').value;
+  var combos=(MODEL_SPECS[b]&&MODEL_SPECS[b][m])||MODEL_SPECS_DEFAULT[b]||[{storage:'128GB'}];
   var chips=document.getElementById('storageChips');chips.innerHTML='';
   document.getElementById('fStorage').value='';
-  if(opts.length){document.getElementById('storageSection').style.display='';
-    opts.forEach(function(s){var btn=document.createElement('button');btn.className='sc';btn.textContent=s;btn.type='button';
-      btn.onclick=function(){document.querySelectorAll('.sc').forEach(function(b){b.classList.remove('on');});this.classList.add('on');document.getElementById('fStorage').value=s;showEstimate();};chips.appendChild(btn);});}
+  document.getElementById('fRAM').value='';
+  if(combos.length){document.getElementById('storageSection').style.display='';
+    combos.forEach(function(c){
+      var label=c.ram?(c.ram+' / '+c.storage):c.storage;
+      var btn=document.createElement('button');btn.className='sc';btn.textContent=label;btn.type='button';
+      btn.onclick=function(){
+        document.querySelectorAll('.sc').forEach(function(x){x.classList.remove('on');});
+        this.classList.add('on');
+        document.getElementById('fStorage').value=c.storage;
+        document.getElementById('fRAM').value=c.ram||'';
+        showEstimate();
+      };
+      chips.appendChild(btn);
+    });
+  }
   showEstimate();
   updateProgress();
 }
@@ -1316,11 +1460,21 @@ function validatePin(el){
   else if(v.length===6){h.textContent='⚠️ Only Delhi PINs accepted (starts with 110)';h.style.color='var(--brand)';el.classList.add('err');el.classList.remove('ok');}
   else{h.textContent=v.length+'/6 digits';h.style.color='rgba(15,23,42,.4)';el.classList.remove('err','ok');}
 }
-function updatePricePreview(){
-  var p=parseInt(document.getElementById('fPrice').value)||0;
-  var preview=document.getElementById('pricePreview');
-  if(p>0){preview.classList.add('on');document.getElementById('ppVal').textContent='₹'+p.toLocaleString('en-IN');}
-  else preview.classList.remove('on');
+function buildYearOptions(){
+  var sel=document.getElementById('fYear');
+  if(!sel) return;
+  var cy=new Date().getFullYear();
+  var html='<option value="">Year</option>';
+  for(var y=cy;y>=cy-8;y--) html+='<option>'+y+'</option>';
+  html+='<option>'+(cy-9)+' or older</option>';
+  sel.innerHTML=html;
+}
+function onYearChange(){
+  var y=document.getElementById('fYear').value;
+  var isCurrent=y===String(new Date().getFullYear());
+  document.getElementById('monthWrap').style.display=isCurrent?'':'none';
+  if(!isCurrent) document.getElementById('fMonth').value='';
+  showEstimate();
 }
 function markErr(id){var el=document.getElementById(id);if(el){el.classList.add('err');el.addEventListener('input',function(){el.classList.remove('err');},{once:true});}}
 var DELHI_AREAS={
@@ -1350,7 +1504,7 @@ document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('fArea').addEventListener('change',updateFullAddr);
   document.getElementById('fZone').addEventListener('change',function(){onZone();updateFullAddr();});
 
-  ['fName','fPhone','fAddress','fZone','fArea','fBrand','fModel','fPrice'].forEach(function(id){
+  ['fName','fPhone','fAddress','fZone','fArea','fBrand','fModel'].forEach(function(id){
     var el=document.getElementById(id);
     if(el){el.addEventListener('input',updateProgress);el.addEventListener('change',updateProgress);}
   });
@@ -1370,7 +1524,6 @@ function updateProgress(){
     !!rn0('fBrand'),
     !!rn0('fModel'),
     !!selCond,
-    parseInt(rn0('fPrice'))>0,
     !!(document.getElementById('fFrpCleared')&&document.getElementById('fFrpCleared').checked)
   ];
   var done=checks.filter(Boolean).length;
@@ -1444,7 +1597,15 @@ function onZone(){
   }
 }
 var PRICE_DB={"iphone": {"iPhone 16 Pro Max": 95000, "iPhone 16 Pro": 85000, "iPhone 16 Plus": 72000, "iPhone 16": 62000, "iPhone 15 Pro Max": 82000, "iPhone 15 Pro": 72000, "iPhone 15 Plus": 62000, "iPhone 15": 52000, "iPhone 14 Pro Max": 68000, "iPhone 14 Pro": 58000, "iPhone 14 Plus": 48000, "iPhone 14": 42000, "iPhone 13 Pro Max": 55000, "iPhone 13 Pro": 48000, "iPhone 13": 38000, "iPhone 13 Mini": 30000, "iPhone 12 Pro Max": 42000, "iPhone 12 Pro": 36000, "iPhone 12": 28000, "iPhone 12 Mini": 22000, "iPhone 11 Pro Max": 30000, "iPhone 11 Pro": 25000, "iPhone 11": 20000, "iPhone SE (2022)": 18000, "iPhone SE (2020)": 12000, "iPhone XR": 14000, "iPhone XS Max": 16000, "iPhone XS": 13000, "iPhone X": 10000}, "samsung": {"Galaxy S24 Ultra": 78000, "Galaxy S24+": 60000, "Galaxy S24": 48000, "Galaxy S23 Ultra": 62000, "Galaxy S23+": 48000, "Galaxy S23": 38000, "Galaxy S22 Ultra": 48000, "Galaxy S22+": 36000, "Galaxy S22": 28000, "Galaxy A55": 22000, "Galaxy A54": 18000, "Galaxy A35": 14000, "Galaxy A34": 12000, "Galaxy M55": 18000, "Galaxy M35": 12000}, "oneplus": {"OnePlus 12": 42000, "OnePlus 12R": 28000, "OnePlus 11": 32000, "OnePlus 11R": 22000, "Nord 4": 20000, "Nord CE4": 14000, "Nord 3": 16000, "OnePlus 10 Pro": 25000, "OnePlus 10T": 20000, "OnePlus 9 Pro": 18000}, "pixel": {"Pixel 9 Pro XL": 62000, "Pixel 9 Pro": 52000, "Pixel 9": 42000, "Pixel 8 Pro": 42000, "Pixel 8a": 28000, "Pixel 8": 35000, "Pixel 7 Pro": 30000, "Pixel 7a": 22000, "Pixel 7": 25000}, "realme": {"Realme GT 6": 22000, "Realme 13 Pro+": 20000, "Realme 13 Pro": 16000, "Realme 12 Pro+": 18000, "Realme 12 Pro": 14000}, "oppo": {"Find X7 Pro": 48000, "Reno 12 Pro": 24000, "Reno 12": 18000, "Reno 11 Pro": 20000}, "vivo": {"X100 Pro": 42000, "X100": 32000, "V40 Pro": 22000, "V40": 18000, "V30 Pro": 18000}, "xiaomi": {"Xiaomi 14 Ultra": 55000, "Xiaomi 14": 38000, "Redmi Note 13 Pro+": 18000, "Redmi Note 13 Pro": 14000, "POCO X6 Pro": 18000, "POCO F6 Pro": 22000, "POCO F6": 16000}, "nothing": {"Nothing Phone (2a) Plus": 20000, "Nothing Phone (2a)": 16000, "Nothing Phone (2)": 22000, "Nothing Phone (1)": 14000}, "airpods": {"AirPods Pro 2nd Gen (USB-C)": 14000, "AirPods Pro 2nd Gen": 12000, "AirPods Pro 1st Gen": 8000, "AirPods Max (USB-C)": 32000, "AirPods Max": 28000, "AirPods 4 (ANC)": 10000, "AirPods 4": 8000, "AirPods 3rd Gen": 5000, "AirPods 2nd Gen": 3000}, "applewatch": {"Apple Watch Ultra 2": 55000, "Apple Watch Series 9 45mm": 32000, "Apple Watch Series 9 41mm": 28000, "Apple Watch SE 2 44mm": 18000}, "playstation": {"PS5 Disc Edition": 34000, "PS5 Digital Edition": 28000, "PS5 Slim Disc Edition": 32000, "PS4 Pro": 16000, "PS4 Slim (1TB)": 10000, "PS4 (Original)": 8000, "PS3 Super Slim": 3000, "PS3 Slim": 2500}};
-var COND_MULT={'Like New':1.0,'Good':0.88,'Fair':0.72,'Poor':0.52};
+var COND_MULT={'Like New':1.0,'Good':0.88,'Fair':0.72,'Poor':0.52}; // fallback if DB fetch fails/hasn't landed yet
+(function loadConditionPricing(){
+  if (typeof SB==='undefined' || !SB.configured || !SB.configured()) return;
+  SB.query('condition_pricing', {select:'condition,multiplier'}).then(function(rows){
+    if (!rows || !rows.length) return;
+    rows.forEach(function(r){ if(r.condition) COND_MULT[r.condition]=parseFloat(r.multiplier); });
+    showEstimate();
+  });
+})();
 var BATT_DEDUCT={100:0,95:0,90:0,85:-0.03,80:-0.06,75:-0.10,70:-0.15,60:-0.22,50:-0.30};
 
 function getEstimate() {
@@ -1462,6 +1623,7 @@ function getEstimate() {
   // Storage adjustment
   if (stor) {
     var storGB = parseInt(stor);
+    if (/TB/i.test(stor)) storGB *= 1024;
     if (storGB >= 512) base = Math.round(base * 1.12);
     else if (storGB >= 256) base = Math.round(base * 1.06);
     else if (storGB <= 64) base = Math.round(base * 0.90);
@@ -1504,7 +1666,6 @@ function submitSell(){
   var phone=(document.getElementById('fPhone').value||'').trim();
   var brand=document.getElementById('fBrand').value;
   var model=document.getElementById('fModel').value;
-  var price=parseInt(document.getElementById('fPrice').value)||0;
   var errs=[];
   if(!name){markErr('fName');errs.push('Please enter your full name.');}
   if(phone.length<10){markErr('fPhone');errs.push('Please enter a valid 10-digit number.');}
@@ -1514,7 +1675,6 @@ function submitSell(){
   if(!brand){markErr('fBrand');errs.push('Please select a brand.');}
   if(!model){markErr('fModel');errs.push('Please select a model.');}
   if(!selCond){errs.push('Please select device condition.');}
-  if(!price){markErr('fPrice');errs.push('Please enter your asking price.');}
   if(!document.getElementById('fFrpCleared').checked){errs.push('Please confirm your device is signed out and unlocked.');}
   if(errs.length){showToast(errs[0],'error');return;}
   var btn=document.getElementById('submitBtn');
@@ -1525,7 +1685,7 @@ function submitSell(){
   var data={name:name,phone:phone,email:(document.getElementById('fEmail').value||'').trim(),address:(document.getElementById('fAddress').value||'').trim(),
     zone:(document.getElementById('fZone').value||'').trim(),
     area:(document.getElementById('fArea').value||'').trim(),
-    pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,screenCondition:selScreenCond,bodyCondition:selBodyCond,waterDamage:selWater,repairedParts:selRepairs.slice(),frpCleared:true,billPhoto:billPhotoUrl,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:price,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
+    pincode:(document.getElementById('fPincode').value||'').trim(),brand:brand,model:model,storage:document.getElementById('fStorage').value,ram:document.getElementById('fRAM').value,color:document.getElementById('fColor').value,year:document.getElementById('fYear').value,month:document.getElementById('fMonth').value,imei:(document.getElementById('fIMEI').value||'').trim(),batteryHealth:(document.getElementById('fBattery').value||'').trim(),condition:selCond,screenCondition:selScreenCond,bodyCondition:selBodyCond,waterDamage:selWater,repairedParts:selRepairs.slice(),frpCleared:true,billPhoto:billPhotoUrl,accessories:selAccs.slice(),photos:photoUrls.slice(),askingPrice:(getEstimate()||{}).est||0,isLoyalty:isReturning,slot:selSlot,notes:(document.getElementById('fNotes').value||'').trim()};
   try{SMB.sells.submit(data,CU?CU.id:null);}catch(e){btn.disabled=false;document.getElementById('submitIcon').textContent='🚀';document.getElementById('submitText').textContent='Submit Sell Request';showToast('Something went wrong. Please try again.','error');return;}
   btn.disabled=false;
   document.getElementById('formCard').style.display='none';

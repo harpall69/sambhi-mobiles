@@ -70,15 +70,22 @@ grant execute on function verify_admin_login(text, text) to anon, authenticated;
 
 -- Team Access page support — list team members and let the Owner edit them,
 -- without ever exposing password hashes over the API.
+-- Drop older, less-secure signatures of these functions if they already exist
+-- (from an earlier run), so only the guarded versions below remain callable.
+drop function if exists update_team_profile(uuid, text, text, text);
+drop function if exists update_team_profile(uuid, text, text, text, text, text);
+drop function if exists reset_team_password(uuid, text);
+drop function if exists create_team_member(text, text, text, text, text, text);
+
 create or replace function list_team_users()
-returns table(id uuid, name text, role text, phone text, email text, color text, initials text)
+returns table(id uuid, name text, role text, phone text, email text, color text, initials text, username text)
 language plpgsql
 security definer
 set search_path = public
 as $$
 begin
   return query
-  select t.id, t.name, t.role, t.phone, t.email, t.color, t.initials
+  select t.id, t.name, t.role, t.phone, t.email, t.color, t.initials, t.username
   from team_users t
   where t.is_active = true
   order by t.created_at asc;
@@ -86,31 +93,77 @@ end;
 $$;
 grant execute on function list_team_users() to anon, authenticated;
 
-create or replace function update_team_profile(p_id uuid, p_name text, p_phone text, p_email text)
+-- Shared guard: raises an exception unless (caller_username, caller_password)
+-- belongs to an active Owner. SECURITY DEFINER functions below call this
+-- first, so nobody can add/edit/reset accounts without proving they already
+-- ARE the Owner — closes the "anyone with the anon key" hole.
+create or replace function assert_is_owner(p_caller_username text, p_caller_password text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  ok boolean;
+begin
+  select exists(
+    select 1 from team_users t
+    where (t.username = p_caller_username or lower(t.email) = lower(p_caller_username))
+      and t.password_hash = extensions.crypt(p_caller_password, t.password_hash)
+      and t.role = 'Owner'
+      and t.is_active = true
+  ) into ok;
+  if not ok then
+    raise exception 'Not authorized — valid Owner credentials required';
+  end if;
+end;
+$$;
+
+create or replace function update_team_profile(p_caller_username text, p_caller_password text, p_id uuid, p_name text, p_phone text, p_email text, p_username text, p_role text)
 returns boolean
 language plpgsql
 security definer
 set search_path = public
 as $$
 begin
-  update team_users set name = p_name, phone = p_phone, email = p_email where id = p_id;
+  perform assert_is_owner(p_caller_username, p_caller_password);
+  update team_users set name = p_name, phone = p_phone, email = p_email, username = p_username, role = p_role where id = p_id;
   return found;
 end;
 $$;
-grant execute on function update_team_profile(uuid, text, text, text) to anon, authenticated;
+grant execute on function update_team_profile(text, text, uuid, text, text, text, text, text) to anon, authenticated;
 
-create or replace function reset_team_password(p_id uuid, p_new_password text)
+create or replace function reset_team_password(p_caller_username text, p_caller_password text, p_id uuid, p_new_password text)
 returns boolean
 language plpgsql
 security definer
 set search_path = public
 as $$
 begin
+  perform assert_is_owner(p_caller_username, p_caller_password);
   update team_users set password_hash = extensions.crypt(p_new_password, extensions.gen_salt('bf')) where id = p_id;
   return found;
 end;
 $$;
-grant execute on function reset_team_password(uuid, text) to anon, authenticated;
+grant execute on function reset_team_password(text, text, uuid, text) to anon, authenticated;
+
+create or replace function create_team_member(p_caller_username text, p_caller_password text, p_name text, p_role text, p_phone text, p_email text, p_username text, p_password text)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_id uuid;
+begin
+  perform assert_is_owner(p_caller_username, p_caller_password);
+  insert into team_users (name, role, phone, email, username, password_hash, color, initials, is_active)
+  values (p_name, p_role, p_phone, p_email, p_username, extensions.crypt(p_password, extensions.gen_salt('bf')), '#2563EB', upper(left(p_name,2)), true)
+  returning id into new_id;
+  return new_id;
+end;
+$$;
+grant execute on function create_team_member(text, text, text, text, text, text, text, text) to anon, authenticated;
 
 -- ── 2. Fix the actual live bug — new leads aren't saving ─────────
 -- Your leads table blocks ALL inserts right now (even from the website's

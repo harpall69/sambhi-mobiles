@@ -240,7 +240,12 @@ select.si{min-width:140px}
       <div style="flex:1;height:1px;background:#E2E8F0"></div>
     </div>
     <div class="lf"><label>Email</label><input type="email" id="lu" placeholder="Enter email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('lp').focus()"></div>
-    <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="lf"><label>Password</label>
+      <div style="display:flex;align-items:stretch;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius)">
+        <input type="password" id="lp" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="flex:1;min-width:0;background:none;border:none;color:#fff;padding:11px 14px;font-size:14px;font-family:inherit;outline:none">
+        <button type="button" onclick="togglePw('lp',this)" style="background:none;border:none;cursor:pointer;font-size:17px;padding:0 14px;color:rgba(255,255,255,.55)">👁️</button>
+      </div>
+    </div>
     <button id="lbtn" onclick="doLogin()">Sign In →</button>
     <div id="lerr"></div>
     <div style="margin-top:14px;text-align:center">
@@ -422,6 +427,7 @@ select.si{min-width:140px}
         <input class="si" id="src" placeholder="🔍 Search…" oninput="rl()">
         <select class="si" id="sst" onchange="rl()"><option value="">All Status</option><option value="new">New</option><option value="contacted">Contacted</option><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
         <select class="si" id="ssl" onchange="rl()"><option value="">All Slots</option><option value="morning">Morning</option><option value="evening">Evening</option></select>
+        <select class="si" id="scs" onchange="rl()"><option value="">All Calls</option><option value="called">Called</option><option value="not_called">Not called</option></select>
         <button class="ab" onclick="gt('add')">+ Add Lead</button>
       </div>
     </div>
@@ -546,11 +552,24 @@ select.si{min-width:140px}
     <div class="pex" id="mex">iPhone 14 Pro base ₹60,000 → Quote ₹60,000</div>
     <button class="ab" onclick="sm()">Save Multiplier</button>
   </div>
+  <div class="pcard" style="margin-top:16px">
+    <h3>🎚️ Condition Pricing %</h3>
+    <p>Percent of base price paid per condition. Saved to the database — takes effect on the sell form immediately, on every device.</p>
+    <div id="condPricingRows"></div>
+    <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px;margin-top:8px">
+      <label style="color:#92400E">🔒 Confirm it's you — your own password</label>
+      <input type="password" id="cpConfirmPw" placeholder="Your Owner password" style="background:#fff">
+    </div>
+    <button class="ab" onclick="saveConditionPricing()">Save Condition Pricing</button>
+  </div>
 </div>
 
 <!-- TEAM -->
 <div class="pg" id="pg-team">
-  <div style="margin-bottom:14px"><h2 style="font-size:16px;font-weight:700">Team Management</h2></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:9px">
+    <h2 style="font-size:16px;font-weight:700">Team Management</h2>
+    <button class="ab" onclick="openAddTM()" id="addTMBtn" style="display:none">+ Add Team Member</button>
+  </div>
   <div class="tg" id="tgrid"></div>
 </div>
 
@@ -648,9 +667,14 @@ select.si{min-width:140px}
   <div class="g2"><div class="fg"><label>Name *</label><input id="rn" placeholder="Rider name"></div><div class="fg"><label>Phone *</label><input id="rph" placeholder="+91…"></div></div>
   <div class="g2"><div class="fg"><label>Email</label><input id="rem" placeholder="email@…"></div><div class="fg"><label>Zone</label><input id="rzo" placeholder="South Delhi…"></div></div>
   <div class="fg"><label>Pincodes covered (for auto-assignment)</label><input id="rpin" placeholder="e.g. 110019, 110020, 110024"></div>
-  <div class="g2"><div class="fg"><label>Username</label><input id="rus" placeholder="rider1"></div><div class="fg"><label>Password</label><input type="password" id="rps" placeholder="Set password"></div></div>
+  <div class="g2"><div class="fg"><label>Username</label><input id="rus" placeholder="rider1"></div><div class="fg"><label>Payout per completed lead (₹)</label><input type="number" id="rpayout" min="0" step="1" value="300"></div></div>
+  <div class="fg"><label>New Password <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank to keep current — used for rider-portal login)</span></label><input type="password" id="rps" placeholder="Set/replace password"></div>
   <div class="fg"><label>Aadhaar Number</label><input id="raad" placeholder="XXXX XXXX XXXX" maxlength="14"></div>
   <div class="fg"><label>Aadhaar Card Image</label><input type="file" id="raadf" accept="image/*,.pdf"><div id="raadPrev" style="font-size:11px;color:#64748B;margin-top:5px"></div></div>
+  <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px">
+    <label style="color:#92400E">🔒 Confirm it's you — your own password</label>
+    <input type="password" id="rConfirmPw" placeholder="Your Owner password" style="background:#fff">
+  </div>
   <input type="hidden" id="reid"><button class="sb" onclick="saveR()">Save Rider</button>
 </div></div></div>
 
@@ -715,10 +739,40 @@ select.si{min-width:140px}
 <!-- TEAM MODAL -->
 <div class="mbg" id="tm2"><div class="modal" style="max-width:400px"><div class="mh"><h2>Edit Team Member</h2><button class="mx" onclick="cm('tm2')">✕</button></div><div class="mb">
   <div class="fg"><label>Name</label><input id="ttn" placeholder="Name"></div>
-  <div class="fg"><label>Phone</label><input id="ttp" placeholder="+91…"></div>
-  <div class="fg"><label>Email</label><input id="tte" placeholder="email@…"></div>
-  <div class="g2"><div class="fg"><label>New Username</label><input id="ttu" placeholder="Username"></div><div class="fg"><label>New Password</label><input type="password" id="ttw" placeholder="New password"></div></div>
+  <div class="g2"><div class="fg"><label>Phone</label><input id="ttp" placeholder="+91…"></div><div class="fg"><label>Role</label>
+    <select id="ttr"><option value="Owner">Owner</option><option value="Manager">Manager</option><option value="Executive">Executive</option></select>
+  </div></div>
+  <div class="g2"><div class="fg"><label>Email (used for login)</label><input id="tte" placeholder="email@…"></div><div class="fg"><label>Username</label><input id="ttu" placeholder="Username"></div></div>
+  <div class="fg"><label>New Password <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank to keep current)</span></label>
+    <div style="display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:var(--radius)">
+      <input type="password" id="ttw" placeholder="New password" style="flex:1;min-width:0;background:none;border:none;color:var(--ink);padding:9px 12px;font-size:14px;font-family:inherit;outline:none">
+      <button type="button" onclick="togglePw('ttw',this)" style="background:none;border:none;cursor:pointer;font-size:16px;padding:0 12px;color:var(--muted)">👁️</button>
+    </div>
+  </div>
+  <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px">
+    <label style="color:#92400E">🔒 Confirm it's you — your own password</label>
+    <input type="password" id="ttConfirmPw" placeholder="Your Owner password" style="background:#fff">
+  </div>
   <input type="hidden" id="tti"><button class="sb" onclick="saveTM()">Save Changes</button>
+</div></div></div>
+
+<div class="mbg" id="tmAdd"><div class="modal" style="max-width:400px"><div class="mh"><h2>Add Team Member</h2><button class="mx" onclick="cm('tmAdd')">✕</button></div><div class="mb">
+  <div class="fg"><label>Name *</label><input id="atn" placeholder="Full name"></div>
+  <div class="g2"><div class="fg"><label>Phone</label><input id="atp" placeholder="+91…"></div><div class="fg"><label>Role *</label>
+    <select id="atr"><option value="Manager">Manager</option><option value="Executive">Executive</option><option value="Owner">Owner</option></select>
+  </div></div>
+  <div class="g2"><div class="fg"><label>Email (used for login) *</label><input id="ate" placeholder="email@…"></div><div class="fg"><label>Username *</label><input id="atu" placeholder="Username"></div></div>
+  <div class="fg"><label>Password *</label>
+    <div style="display:flex;align-items:stretch;background:#fff;border:1px solid var(--border);border-radius:var(--radius)">
+      <input type="password" id="atw" placeholder="Set a password" style="flex:1;min-width:0;background:none;border:none;color:var(--ink);padding:9px 12px;font-size:14px;font-family:inherit;outline:none">
+      <button type="button" onclick="togglePw('atw',this)" style="background:none;border:none;cursor:pointer;font-size:16px;padding:0 12px;color:var(--muted)">👁️</button>
+    </div>
+  </div>
+  <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px">
+    <label style="color:#92400E">🔒 Confirm it's you — your own password</label>
+    <input type="password" id="atConfirmPw" placeholder="Your Owner password" style="background:#fff">
+  </div>
+  <button class="sb" onclick="addTM()">Add Team Member</button>
 </div></div></div>
 
 <div id="toast"></div>
@@ -1166,6 +1220,8 @@ function mapLeadFromSB(r) {
     photos:r.photos||[], askPrice:r.est_price||0, basePrice:r.base_price||0,
     isLoyalty:!!r.is_loyalty, slot:r.slot||'morning', source:r.source||'website',
     riderId:r.rider_id||null, status:r.status||'new', notes:r.notes||[],
+    riderCalled:!!r.rider_called, riderCalledAt:r.rider_called_at||null,
+    payoutOverride:r.payout_override!=null?r.payout_override:null,
     createdAt:r.created_at
   };
 }
@@ -1180,7 +1236,8 @@ async function viewLeadPhoto(path) {
 function mapRiderFromSB(r) {
   return {
     id:r.id, name:r.name||'', phone:r.phone||'', email:r.email||'', zone:r.zone||'',
-    pincodes:r.pincodes||[], username:r.username||'', password:r.password||'',
+    pincodes:r.pincodes||[], username:r.username||'',
+    payoutPerLead:r.payout_per_lead!=null?r.payout_per_lead:300,
     aadhaar_number:r.aadhaar_number||'', aadhaar_image_path:r.aadhaar_image_path||null,
     active:r.is_active!==false
   };
@@ -1239,13 +1296,14 @@ function load() {
       team = rows.map(mapTeamFromSB);
       if (typeof rTm==='function') rTm();
     });
+    if (typeof loadConditionPricing==='function') loadConditionPricing();
   }
 }
 function mapCampFromSB(r) {
   return { id:r.id, t:r.title||'', d:r.description||'', wa:r.wa_message||'', on:!!r.is_active, fr:r.activated_at||'', to:r.deactivated_at||'' };
 }
 function mapTeamFromSB(r) {
-  return { id:r.id, u:(r.email||'').toLowerCase(), name:r.name||'', role:r.role||'Executive', ph:r.phone||'', em:r.email||'', color:r.color||'#2563EB', init:r.initials||(r.name||'?').charAt(0).toUpperCase() };
+  return { id:r.id, u:r.username||'', name:r.name||'', role:r.role||'Executive', ph:r.phone||'', em:r.email||'', color:r.color||'#2563EB', init:r.initials||(r.name||'?').charAt(0).toUpperCase() };
 }
 var team = [];
 function savL() {
@@ -1353,6 +1411,12 @@ async function signInAdminWithGoogle() {
     err.textContent = 'Google sign-in failed: ' + e.message;
     err.style.display = 'block';
   }
+}
+
+function togglePw(id, btn) {
+  var el = document.getElementById(id); if (!el) return;
+  if (el.type === 'password') { el.type = 'text'; btn.textContent = '🙈'; }
+  else { el.type = 'password'; btn.textContent = '👁️'; }
 }
 
 async function doLogin() {
@@ -1512,6 +1576,8 @@ function rl() {
   if (q)  f = f.filter(function(l){return(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().indexOf(q)>-1;});
   if (st) f = f.filter(function(l){return l.status===st;});
   if (sl) f = f.filter(function(l){return l.slot===sl;});
+  var cs = rn('scs');
+  if (cs) f = f.filter(function(l){ return cs==='called' ? l.riderCalled : !l.riderCalled; });
   document.getElementById('ltb').innerHTML = f.length
     ? f.map(function(l){return lr(l,false);}).join('')
     : '<tr><td colspan="9" style="text-align:center;padding:22px;color:#94A3B8">No leads found.</td></tr>';
@@ -1520,7 +1586,8 @@ function rl() {
 function lr(l, compact) {
   var est = cE(l);
   var sb  = l.slot==='morning' ? '<span class="sm">🌅 Morn</span>' : '<span class="se">🌆 Eve</span>';
-  var stb = '<span class="badge '+(SC[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span>';
+  var stb = '<span class="badge '+(SC[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span>'
+    +'<br><span class="badge" style="cursor:pointer;background:'+(l.riderCalled?'#DCFCE7':'#FEE2E2')+';color:'+(l.riderCalled?'#15803D':'#B91C1C')+'" onclick="event.stopPropagation();toggleRiderCalled(\''+l.id+'\')">'+(l.riderCalled?'✅ Called':'☎️ Not called')+'</span>';
   var loy = l.isLoyalty ? '<span style="font-size:10px;background:#FFFBEB;color:#D97706;padding:1px 5px;border-radius:100px;margin-left:3px">🏆</span>' : '';
   var isO = CU && CU.role === 'Owner';
   var bbt = isO ? (l.status==='completed' ? '<button class="act abi" onclick="event.stopPropagation();oBF(\''+l.id+'\')">🧾</button>' : '<button class="act abi" disabled>🧾</button>') : '';
@@ -1583,6 +1650,32 @@ function pushLeadToSB(l) {
   SB.update('leads', 'id=eq.'+l.id, {status:l.status, rider_id:l.riderId||null, notes:l.notes||[]});
 }
 
+function toggleRiderCalled(id) {
+  var l = leads.find(function(x){return x.id===id;});
+  if (!l) return;
+  l.riderCalled = !l.riderCalled;
+  l.riderCalledAt = l.riderCalled ? new Date().toISOString() : null;
+  aN(l, l.riderCalled ? '📞 Marked as called' : 'Marked as NOT called');
+  savL(); rl(); rk();
+  if (SB.configured()) SB.update('leads', 'id=eq.'+id, {rider_called:l.riderCalled, rider_called_at:l.riderCalledAt, notes:l.notes||[]});
+  toast(l.riderCalled ? 'Marked called' : 'Marked not called');
+}
+
+async function savePayoutOverride(id) {
+  var l = leads.find(function(x){return x.id===id;});
+  if (!l) return;
+  var v = rn('poOverride').trim();
+  var override = v==='' ? null : parseFloat(v);
+  if (v!=='' && isNaN(override)) { toast('Enter a valid amount','e'); return; }
+  var myPw = rn('poConfirmPw').trim();
+  if (!myPw) { toast('Enter your password to confirm','e'); return; }
+  var ok = await SB.rpc('set_lead_payout_override', {p_caller_username:CU.u, p_caller_password:myPw, p_lead_id:id, p_override:override});
+  if (ok!==true) { toast('Failed — check your password','e'); return; }
+  l.payoutOverride = override;
+  savL();
+  toast('Payout override saved');
+}
+
 // ── LEAD MODAL ───────────────────────────────────────────────────
 function renderLeadConditionBlock(l) {
   var hasDetail = l.screenCondition || l.bodyCondition || l.waterDamage || (l.repairedParts&&l.repairedParts.length) || l.frpCleared || l.billPhoto || (l.photos&&l.photos.length);
@@ -1637,9 +1730,16 @@ function oL(id) {
     +'<div style="font-size:12px;color:#94A3B8">Slot: '+(l.slot==='morning'?'🌅 Morning':'🌆 Evening')+'</div>'
     +'<div style="margin-top:8px"><label style="font-size:10px;font-weight:700;color:#94A3B8;display:block;margin-bottom:3px">ASSIGN RIDER</label>'
     +'<select onchange="aR(\''+id+'\',this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none;background:var(--gray)">'+ro+'</select></div>'
+    +'<button class="act" style="margin-top:8px;width:100%" onclick="toggleRiderCalled(\''+id+'\');oL(\''+id+'\')">'+(l.riderCalled?'✅ Called — tap to undo':'☎️ Mark as Called')+'</button>'
     +'</div></div>'
     +renderLeadConditionBlock(l)
-    +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
+    +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+(l.payoutOverride!=null?' <span style="font-size:11px;opacity:.7">(override: '+Rs(l.payoutOverride)+')</span>':'')+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
+    +(isO?'<div style="background:var(--gray);border-radius:10px;padding:11px;margin-bottom:11px">'
+      +'<div style="font-size:10px;font-weight:700;color:var(--b);margin-bottom:6px">RIDER PAYOUT OVERRIDE (₹, blank = rider default)</div>'
+      +'<div style="display:flex;gap:6px;margin-bottom:6px"><input type="number" id="poOverride" value="'+(l.payoutOverride!=null?l.payoutOverride:'')+'" placeholder="e.g. 500" style="flex:1;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none"></div>'
+      +'<input type="password" id="poConfirmPw" placeholder="Your Owner password" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:6px">'
+      +'<button class="act" style="width:100%" onclick="savePayoutOverride(\''+id+'\')">Save Override</button>'
+      +'</div>':'')
     +bbt+dbt
     +'<div style="font-size:10px;font-weight:700;color:#94A3B8;margin-bottom:7px">ACTIVITY LOG</div>'
     +'<div class="tl">'+(tl||'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:9px">No activity yet</p>')+'</div>'
@@ -1983,7 +2083,7 @@ function rRid() {
       +'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="openRM(\''+r.id+'\')">✏️ Edit</button>'
       +'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="window.open(\'tel:'+r.phone+'\')">📞 Call</button>'
       +(r.aadhaar_image_path?'<button style="background:#F1F5F9;border:none;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="viewAadhaar(\''+r.id+'\')">🪪 Aadhaar</button>':'')+'</div>'
-      +'<div style="font-size:10px;color:#94A3B8;margin-top:8px">'+r.username+' / '+r.password+'</div></div>';
+      +(r.username?'<div style="font-size:10px;color:#94A3B8;margin-top:8px">👤 '+r.username+' · ₹'+(r.payoutPerLead||300)+'/lead</div>':'<div style="font-size:10px;color:#94A3B8;margin-top:8px">₹'+(r.payoutPerLead||300)+'/lead</div>')+'</div>';
   }).join('');
 }
 
@@ -1997,7 +2097,9 @@ function openRM(id) {
   document.getElementById('rzo').value = r ? r.zone||''  : '';
   document.getElementById('rpin').value = r && r.pincodes ? r.pincodes.join(', ') : '';
   document.getElementById('rus').value = r ? r.username||'' : '';
-  document.getElementById('rps').value = r ? r.password||'' : '';
+  document.getElementById('rpayout').value = r ? (r.payoutPerLead!=null?r.payoutPerLead:300) : 300;
+  document.getElementById('rps').value = '';
+  document.getElementById('rConfirmPw').value = '';
   document.getElementById('raad').value = r ? r.aadhaar_number||'' : '';
   document.getElementById('raadf').value = '';
   document.getElementById('raadPrev').textContent = r && r.aadhaar_image_path ? '📎 Aadhaar image already on file' : '';
@@ -2008,11 +2110,21 @@ function openRM(id) {
 async function saveR() {
   var n=rn('rn').trim(), p=rn('rph').trim();
   if (!n||!p) { toast('Name and phone required','e'); return; }
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var myPw = rn('rConfirmPw').trim();
+  if (!myPw) { toast('Enter your password to confirm this change','e'); return; }
+
   var id = rn('reid') || null;
   var pincodes = rn('rpin').split(',').map(function(s){return s.trim();}).filter(Boolean);
+  var payout = parseFloat(rn('rpayout'));
+  if (isNaN(payout) || payout < 0) { toast('Enter a valid payout amount','e'); return; }
+  var newPw = rn('rps').trim();
+  if (!id && (!newPw || newPw.length < 6)) { toast('Set a password (min 6 characters) for this rider','e'); return; }
+  if (newPw && newPw.length < 6) { toast('Password must be at least 6 characters','e'); return; }
+
   var d = {
     id:id||uid(), name:n, phone:p, email:rn('rem').trim(), zone:rn('rzo').trim(),
-    pincodes:pincodes, username:rn('rus').trim(), password:rn('rps').trim(),
+    pincodes:pincodes, username:rn('rus').trim(), payoutPerLead:payout,
     aadhaar_number:rn('raad').trim()
   };
   var existing = id ? riders.find(function(x){return x.id===id;}) : null;
@@ -2022,27 +2134,34 @@ async function saveR() {
   var file = fileInput && fileInput.files && fileInput.files[0];
   if (file) {
     var path = d.id + '-' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-    var ok = SB.configured() ? await SB.uploadFile('rider-docs', path, file) : false;
+    var ok = await SB.uploadFile('rider-docs', path, file);
     if (ok) d.aadhaar_image_path = path;
-    else if (SB.configured()) toast('Rider saved, but Aadhaar image upload failed — try again', 'e');
+    else toast('Rider saved, but Aadhaar image upload failed — try again', 'e');
   }
 
-  if (id) { var idx=riders.findIndex(function(x){return x.id===id;}); if(idx>-1)riders[idx]=d; }
-  else riders.push(d);
-  savR(); rRid(); popR(); cm('rm2'); toast('Rider saved');
+  var payload = {name:d.name, phone:d.phone, email:d.email, zone:d.zone, pincodes:d.pincodes,
+    username:d.username, aadhaar_number:d.aadhaar_number, aadhaar_image_path:d.aadhaar_image_path, is_active:true};
 
-  if (SB.configured()) {
-    var payload = {name:d.name, phone:d.phone, email:d.email, zone:d.zone, pincodes:d.pincodes,
-      aadhaar_number:d.aadhaar_number, aadhaar_image_path:d.aadhaar_image_path, is_active:true};
-    if (id) {
-      SB.update('riders', 'id=eq.'+id, payload);
-    } else {
-      // Don't send our local id — it isn't a real UUID. Adopt whatever Supabase assigns.
-      SB.insert('riders', payload).then(function(rows){
-        if (rows && rows[0] && rows[0].id) { d.id = rows[0].id; savR(); rRid(); }
-      });
+  if (id) {
+    await SB.update('riders', 'id=eq.'+id, payload);
+    var payoutOk = await SB.rpc('set_rider_payout', {p_caller_username:CU.u, p_caller_password:myPw, p_rider_id:id, p_payout:payout});
+    if (payoutOk!==true) { toast('Profile saved, but payout update failed — check your password','e'); return; }
+    if (newPw) {
+      var pwOk = await SB.rpc('set_rider_password', {p_caller_username:CU.u, p_caller_password:myPw, p_rider_id:id, p_new_password:newPw});
+      if (pwOk!==true) { toast('Profile saved, but password reset failed','e'); return; }
     }
+    var idx=riders.findIndex(function(x){return x.id===id;}); if(idx>-1)riders[idx]=d;
+  } else {
+    var rows = await SB.insert('riders', payload);
+    var newId = rows && rows[0] && rows[0].id;
+    if (!newId) { toast('Could not add rider — phone/username may already be in use','e'); return; }
+    d.id = newId;
+    var payoutOk2 = await SB.rpc('set_rider_payout', {p_caller_username:CU.u, p_caller_password:myPw, p_rider_id:newId, p_payout:payout});
+    var pwOk2 = await SB.rpc('set_rider_password', {p_caller_username:CU.u, p_caller_password:myPw, p_rider_id:newId, p_new_password:newPw});
+    if (payoutOk2!==true || pwOk2!==true) { toast('Rider created, but payout/password setup failed — edit the rider to retry','e'); }
+    riders.push(d);
   }
+  savR(); rRid(); popR(); cm('rm2'); toast('Rider saved');
 }
 
 async function viewAadhaar(id) {
@@ -2605,6 +2724,7 @@ function regN(devId,devName) {
 function rPr() {
   var s = parseFloat(localStorage.getItem('smb_mult')||'1');
   document.getElementById('msl').value = s; um(s);
+  renderConditionPricing();
 }
 function um(v) {
   v = parseFloat(v);
@@ -2613,9 +2733,49 @@ function um(v) {
 }
 function sm() { var v=parseFloat(document.getElementById('msl').value); localStorage.setItem('smb_mult',v.toFixed(2)); toast('Price multiplier saved'); }
 
+// ── CONDITION PRICING ────────────────────────────────────────────
+var conditionPricing = {'Like New':1,'Good':.88,'Fair':.72,'Poor':.52};
+var CP_IDS = {'Like New':'cp_likenew','Good':'cp_good','Fair':'cp_fair','Poor':'cp_poor'};
+function loadConditionPricing() {
+  if (!SB.configured()) return;
+  SB.query('condition_pricing', {select:'condition,multiplier'}).then(function(rows){
+    if (!rows) return;
+    rows.forEach(function(r){ if (r.condition) conditionPricing[r.condition]=parseFloat(r.multiplier); });
+    renderConditionPricing();
+  });
+}
+function renderConditionPricing() {
+  var wrap = document.getElementById('condPricingRows');
+  if (!wrap) return;
+  var isO = CU && CU.role === 'Owner';
+  wrap.innerHTML = Object.keys(CP_IDS).map(function(cond){
+    var pct = Math.round((conditionPricing[cond]||1)*100);
+    return '<div class="g2" style="align-items:center;margin-bottom:8px"><label style="font-size:13px;font-weight:600">'+cond+'</label><input type="number" min="1" max="200" id="'+CP_IDS[cond]+'" value="'+pct+'" '+(isO?'':'disabled')+'></div>';
+  }).join('');
+  var btn = document.querySelector('#pg-prices .pcard:nth-child(2) .ab');
+  if (btn) btn.style.display = isO ? '' : 'none';
+}
+async function saveConditionPricing() {
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var myPw = rn('cpConfirmPw').trim();
+  if (!myPw) { toast('Enter your password to confirm','e'); return; }
+  var conds = Object.keys(CP_IDS);
+  for (var i=0;i<conds.length;i++) {
+    var cond = conds[i], pct = parseFloat(rn(CP_IDS[cond]));
+    if (isNaN(pct) || pct<=0 || pct>200) { toast('Invalid % for '+cond,'e'); return; }
+    var ok = await SB.rpc('set_condition_pricing', {p_caller_username:CU.u, p_caller_password:myPw, p_condition:cond, p_multiplier:pct/100});
+    if (ok!==true) { toast('Failed to save '+cond+' — check your password','e'); return; }
+    conditionPricing[cond] = pct/100;
+  }
+  document.getElementById('cpConfirmPw').value = '';
+  toast('Condition pricing saved — live on sell form now');
+}
+
 // ── TEAM ─────────────────────────────────────────────────────────
 function rTm() {
   var isO = CU && CU.role === 'Owner';
+  var addBtn = document.getElementById('addTMBtn');
+  if (addBtn) addBtn.style.display = isO ? '' : 'none';
   document.getElementById('tgrid').innerHTML = team.map(function(u,i){
     return '<div class="tc">'
       +'<div class="tav2" style="background:'+u.color+'">'+u.init+'</div>'
@@ -2623,6 +2783,7 @@ function rTm() {
       +'<span class="tr '+(u.role==='Owner'?'tro':u.role==='Manager'?'trm':'tre')+'">'+u.role+'</span>'
       +(u.ph?'<div class="ti">📞 '+u.ph+'</div>':'')
       +(u.em?'<div class="ti">✉️ '+u.em+'</div>':'')
+      +(u.u?'<div class="ti">👤 '+u.u+'</div>':'')
       +'<div class="ti" style="color:#CBD5E1">Account: ••••••••</div>'
       +(isO?'<button class="teb" onclick="oTE('+i+')">✏️ Edit</button>':'')
       +'</div>';
@@ -2635,7 +2796,9 @@ function oTE(i) {
   document.getElementById('ttp').value = u.ph||'';
   document.getElementById('tte').value = u.em||'';
   document.getElementById('ttu').value = u.u||'';
+  document.getElementById('ttr').value = u.role||'Executive';
   document.getElementById('ttw').value = '';
+  document.getElementById('ttConfirmPw').value = '';
   document.getElementById('tti').value = i;
   document.getElementById('tm2').classList.add('on');
 }
@@ -2644,20 +2807,45 @@ async function saveTM() {
   var i = parseInt(rn('tti')); if (isNaN(i)) return;
   var u = team[i]; if (!u) return;
   if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var myPw = rn('ttConfirmPw').trim();
+  if (!myPw) { toast('Enter your own password to confirm this change','e'); return; }
   var name = rn('ttn').trim() || u.name;
   var email = rn('tte').trim() || u.em;
   var phone = rn('ttp').trim();
+  var username = rn('ttu').trim() || u.u;
+  var role = rn('ttr') || u.role;
   var newPw = rn('ttw').trim();
-  var ok = await SB.rpc('update_team_profile', {p_id: u.id, p_name: name, p_phone: phone, p_email: email});
-  if (ok === false) { toast('Update failed — is update_team_profile set up in Supabase?','e'); return; }
+  var ok = await SB.rpc('update_team_profile', {p_caller_username: CU.u, p_caller_password: myPw, p_id: u.id, p_name: name, p_phone: phone, p_email: email, p_username: username, p_role: role});
+  if (ok !== true) { toast('Update failed — check your password, or that update_team_profile is set up in Supabase','e'); return; }
   if (newPw) {
     if (newPw.length < 6) { toast('New password must be at least 6 characters','e'); return; }
-    var pwOk = await SB.rpc('reset_team_password', {p_id: u.id, p_new_password: newPw});
-    if (pwOk === false) { toast('Profile updated, but password reset failed','e'); }
+    var pwOk = await SB.rpc('reset_team_password', {p_caller_username: CU.u, p_caller_password: myPw, p_id: u.id, p_new_password: newPw});
+    if (pwOk !== true) { toast('Profile updated, but password reset failed','e'); }
   }
-  u.name = name; u.em = email; u.ph = phone;
+  u.name = name; u.em = email; u.ph = phone; u.u = username; u.role = role;
   u.init = name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
   rTm(); cm('tm2'); toast('Updated');
+}
+
+function openAddTM() {
+  ['atn','atp','ate','atu','atw','atConfirmPw'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
+  document.getElementById('atr').value = 'Manager';
+  document.getElementById('tmAdd').classList.add('on');
+}
+
+async function addTM() {
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var myPw = rn('atConfirmPw').trim();
+  if (!myPw) { toast('Enter your own password to confirm this','e'); return; }
+  var name = rn('atn').trim(), email = rn('ate').trim(), username = rn('atu').trim(), pw = rn('atw').trim();
+  var phone = rn('atp').trim(), role = rn('atr');
+  if (!name || !email || !username || !pw) { toast('Name, email, username, and password are all required','e'); return; }
+  if (pw.length < 6) { toast('Password must be at least 6 characters','e'); return; }
+  var newId = await SB.rpc('create_team_member', {p_caller_username: CU.u, p_caller_password: myPw, p_name: name, p_role: role, p_phone: phone, p_email: email, p_username: username, p_password: pw});
+  if (!newId) { toast('Could not add team member — check your password, or the username/email isn\'t already used','e'); return; }
+  var colors = ['#2563EB','#16A34A','#7C3AED','#D97706','#0891B2'];
+  team.push({id:newId, u:username.toLowerCase(), name:name, role:role, ph:phone, em:email, color:colors[team.length%colors.length], init:name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase()});
+  rTm(); cm('tmAdd'); toast('Team member added');
 }
 
 // ── SEED DATA ────────────────────────────────────────────────────
