@@ -183,6 +183,10 @@ footer{background:#0D0D0D;padding:80px 48px 36px;border-top:1px solid rgba(255,2
 .cb-sub{font-size:9px;color:var(--muted);line-height:1.4}
 .cb:hover{border-color:var(--brand)}.cb.on{border-color:var(--brand);background:rgba(37,99,235,.08)}
 .cb.on .cb-lbl{color:var(--brand)}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:6px}
+.model-grid .cb{padding:10px 6px}
+.model-grid .cb-em{margin-bottom:5px}
+.model-grid .cb-lbl{font-size:10px;line-height:1.3;white-space:normal}
 .acc-wrap{display:flex;flex-wrap:wrap;gap:7px}
 .ac{background:var(--cream2);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:0;font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;font-weight:400}
 .ac:hover{border-color:var(--green);color:var(--green)}
@@ -769,7 +773,10 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
               </select>
             </div>
           </div>
-          <div class="fg"><label>Model <span class="opt">required</span></label><select id="fModel" onchange="onModel()"><option value="">Select model</option></select></div>
+          <div class="fg"><label>Model <span class="opt">required</span></label>
+            <select id="fModel" onchange="onModel()" style="display:none"><option value="">Select model</option></select>
+            <div class="model-grid" id="modelGrid"></div>
+          </div>
         </div>
         <div id="storageSection" style="display:none" class="fg"><label>Storage</label><div class="spec-chips" id="storageChips"></div><input type="hidden" id="fStorage"></div>
         <div class="g3">
@@ -1180,7 +1187,6 @@ window.addEventListener('DOMContentLoaded',function(){
       if(ld)document.getElementById('returningBarSub').textContent='Last sale: '+ld+(dt?' on '+dt:'')+'. Amount added automatically to your offer.';
       document.getElementById('ppBonus').style.display='inline-block';
     }
-  }
     if(CU.homeAddress){document.getElementById('fAddress').value=CU.homeAddress;}
     if(CU.homeArea){
       var zoneEl=document.getElementById('fZone');
@@ -1191,6 +1197,7 @@ window.addEventListener('DOMContentLoaded',function(){
       setTimeout(function(){document.getElementById('fArea').value=CU.homeArea||'';updateFullAddr();},50);
     }
     if(CU.pincode){document.getElementById('fPincode').value=CU.pincode;validatePin(document.getElementById('fPincode'));}
+  }
   var p=new URLSearchParams(location.search).get('brand');
   if(p){var s=document.getElementById('fBrand');if(s.querySelector('option[value="'+p+'"]')){s.value=p;onBrand();}}
 });
@@ -1208,10 +1215,24 @@ var BRAND_LOGOS={
   airpods:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>',
   applewatch:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'
 };
+var MODEL_ICON_SVG='<svg viewBox="0 0 24 40" width="26" height="26"><rect x="1.5" y="1.5" width="21" height="37" rx="4" fill="none" stroke="#0F172A" stroke-width="2"/><line x1="9" y1="5" x2="15" y2="5" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="34" r="1.6" fill="#0F172A"/></svg>';
 function onBrand(){
   var b=document.getElementById('fBrand').value,ms=document.getElementById('fModel');
   ms.innerHTML='<option value="">Select model</option>';
-  (MODELS[b]||[]).forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);});
+  var grid=document.getElementById('modelGrid');grid.innerHTML='';
+  (MODELS[b]||[]).forEach(function(m){
+    var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);
+    var card=document.createElement('button');
+    card.type='button';card.className='cb';
+    card.innerHTML='<span class="cb-em">'+MODEL_ICON_SVG+'</span><span class="cb-lbl">'+m+'</span>';
+    card.onclick=function(){
+      Array.prototype.forEach.call(grid.querySelectorAll('.cb'),function(c){c.classList.remove('on');});
+      card.classList.add('on');
+      ms.value=m;
+      onModel();
+    };
+    grid.appendChild(card);
+  });
   document.getElementById('batterySection').style.display=b==='iphone'?'':'none';
   document.getElementById('storageSection').style.display='none';
   document.getElementById('fStorage').value='';
