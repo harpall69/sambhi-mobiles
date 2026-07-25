@@ -756,38 +756,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
           <a href="account.html" style="color:var(--brand);margin-left:6px;font-weight:600">My Account →</a>
         </div>
 
-        <div class="sec-div">Your Details</div>
-        <div class="g2">
-          <div class="fg"><label>Full Name <span class="opt">required</span></label><input type="text" id="fName" placeholder="Your full name"></div>
-          <div class="fg"><label>WhatsApp <span class="opt">required</span></label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
-        </div>
-        <div class="fg"><label>Email <span class="opt">optional</span></label><input type="email" id="fEmail" placeholder="yourname@gmail.com"><div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">📧 Confirmation sent to mobilessambhi@gmail.com</div></div>
-        <div class="fg">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-            <label>House / Street Address <span class="req" style="color:#2563EB">*</span></label>
-            <button type="button" id="gpsFillBtn" onclick="useMyLocation()" style="background:var(--cream2);border:1px solid var(--border);color:var(--ink2);padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;font-family:inherit;border-radius:6px;display:flex;align-items:center;gap:5px;white-space:nowrap" onmouseenter="this.style.borderColor='#2563EB';this.style.color='#2563EB'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--ink2)'">📍 Use my location</button>
-          </div>
-          <input type="text" id="fAddress" placeholder="House no., street, landmark">
-          <div id="gpsHint" style="font-size:11px;color:rgba(15,23,42,.45);margin-top:4px"></div>
-        </div>
-        <div class="g2">
-          <div class="fg"><label>Delhi Zone <span class="req" style="color:#2563EB">*</span></label>
-            <select id="fZone" onchange="onZone()">
-              <option value="">Select zone *</option>
-              <option>Central Delhi</option><option>South Delhi</option><option>South West Delhi</option>
-              <option>West Delhi</option><option>North Delhi</option><option>North East Delhi</option>
-              <option>East Delhi</option><option>New Delhi</option><option>NCR</option>
-            </select>
-          </div>
-          <div class="fg"><label>Area / Colony <span class="req" style="color:#2563EB">*</span></label>
-            <select id="fArea"><option value="">Select area *</option></select>
-          </div>
-        </div>
-        <div class="g2">
-          <div class="fg"><label>Delhi PIN Code <span class="opt">optional</span></label><input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)"><div class="pin-hint" id="pinHint"></div></div>
-          <div class="fg"><label>Full Address</label><input type="text" id="fFullAddr" placeholder="Auto-filled from above" readonly style="opacity:.5"></div>
-        </div>
-
         <div class="sec-div">Device Details</div>
         <div class="g2">
           <div class="fg"><label>Brand <span class="opt">required</span></label>
@@ -795,8 +763,8 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
               <div id="brandLogoBox" style="width:40px;height:40px;flex-shrink:0;border:1px solid var(--border);border-radius:8px;display:none;align-items:center;justify-content:center;background:#fff;padding:6px"></div>
               <select id="fBrand" onchange="onBrand()" style="flex:1">
                 <option value="">Select brand</option>
-                <optgroup label="Apple"><option value="iphone">iPhone</option><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
-                <optgroup label="Android"><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
+                <optgroup label="Mobiles"><option value="iphone">iPhone</option><option value="samsung">Samsung</option><option value="oneplus">OnePlus</option><option value="realme">Realme</option><option value="oppo">Oppo</option><option value="vivo">Vivo</option><option value="xiaomi">Xiaomi / Redmi</option><option value="pixel">Google Pixel</option><option value="nothing">Nothing Phone</option></optgroup>
+                <optgroup label="Other Apple"><option value="airpods">AirPods</option><option value="applewatch">Apple Watch</option></optgroup>
                 <optgroup label="Gaming"><option value="playstation">PlayStation</option></optgroup>
               </select>
             </div>
@@ -922,6 +890,38 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         <div class="price-prev" id="pricePreview">
           <div><div class="pp-lbl">Your asking price</div><div class="pp-val" id="ppVal">₹0</div><div class="pp-bonus" id="ppBonus" style="display:none">+10% Loyalty Applied</div></div>
           <div style="text-align:right;font-size:10px;color:rgba(15,23,42,.35);letter-spacing:.5px;text-transform:uppercase">Free pickup<br>Instant cash</div>
+        </div>
+
+        <div class="sec-div">Your Details</div>
+        <div class="g2">
+          <div class="fg"><label>Full Name <span class="opt">required</span></label><input type="text" id="fName" placeholder="Your full name"></div>
+          <div class="fg"><label>WhatsApp <span class="opt">required</span></label><input type="tel" id="fPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+        </div>
+        <div class="fg"><label>Email <span class="opt">optional</span></label><input type="email" id="fEmail" placeholder="yourname@gmail.com"><div class="hint" style="color:rgba(15,23,42,.35);font-size:11px;margin-top:4px">📧 Confirmation sent to mobilessambhi@gmail.com</div></div>
+        <div class="fg">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <label>House / Street Address <span class="req" style="color:#2563EB">*</span></label>
+            <button type="button" id="gpsFillBtn" onclick="useMyLocation()" style="background:var(--cream2);border:1px solid var(--border);color:var(--ink2);padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;font-family:inherit;border-radius:6px;display:flex;align-items:center;gap:5px;white-space:nowrap" onmouseenter="this.style.borderColor='#2563EB';this.style.color='#2563EB'" onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--ink2)'">📍 Use my location</button>
+          </div>
+          <input type="text" id="fAddress" placeholder="House no., street, landmark">
+          <div id="gpsHint" style="font-size:11px;color:rgba(15,23,42,.45);margin-top:4px"></div>
+        </div>
+        <div class="g2">
+          <div class="fg"><label>Delhi Zone <span class="req" style="color:#2563EB">*</span></label>
+            <select id="fZone" onchange="onZone()">
+              <option value="">Select zone *</option>
+              <option>Central Delhi</option><option>South Delhi</option><option>South West Delhi</option>
+              <option>West Delhi</option><option>North Delhi</option><option>North East Delhi</option>
+              <option>East Delhi</option><option>New Delhi</option><option>NCR</option>
+            </select>
+          </div>
+          <div class="fg"><label>Area / Colony <span class="req" style="color:#2563EB">*</span></label>
+            <select id="fArea"><option value="">Select area *</option></select>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="fg"><label>Delhi PIN Code <span class="opt">optional</span></label><input type="text" id="fPincode" placeholder="e.g. 110019" maxlength="6" inputmode="numeric" oninput="validatePin(this)"><div class="pin-hint" id="pinHint"></div></div>
+          <div class="fg"><label>Full Address</label><input type="text" id="fFullAddr" placeholder="Auto-filled from above" readonly style="opacity:.5"></div>
         </div>
 
         <div class="sec-div">Pickup Slot</div>
