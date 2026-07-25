@@ -12,7 +12,12 @@
 create extension if not exists pgcrypto;
 
 -- ── 1. RIDERS: real auth + configurable payout ───────────────────
+-- NOTE: your riders table already has username/password_hash/is_active/
+-- created_at (added by an earlier run of supabase_real_schema_fix.sql or
+-- directly in the dashboard) — these ADD COLUMN IF NOT EXISTS lines are
+-- safe no-ops where that's already true, and fill the gap otherwise.
 alter table riders add column if not exists username text;
+alter table riders add column if not exists password_hash text;
 alter table riders add column if not exists is_active boolean default true;
 alter table riders add column if not exists created_at timestamptz default now();
 alter table riders add column if not exists payout_per_lead numeric not null default 300;
@@ -20,25 +25,24 @@ alter table riders add column if not exists payout_per_lead numeric not null def
 create unique index if not exists riders_phone_unique
   on riders (phone) where phone is not null and phone <> '';
 
--- Password hashes live in a SEPARATE table with RLS enabled and NO
--- policies at all — the anon/authenticated REST API cannot read or
--- write this table under any circumstance, regardless of whatever
--- row-level policy exists on `riders` itself. Only the SECURITY
--- DEFINER functions below (which run as table owner, bypassing RLS)
--- can touch it — same principle already used for team_users.
-create table if not exists rider_auth (
-  rider_id      uuid primary key references riders(id) on delete cascade,
-  password_hash text not null,
-  updated_at    timestamptz default now()
-);
-alter table rider_auth enable row level security;
+-- Convert any plaintext values already sitting in password_hash into real
+-- bcrypt hashes (safe to re-run — skips rows already hashed). Mirrors the
+-- same migration line used for team_users.
+update riders
+set password_hash = crypt(password_hash, gen_salt('bf'))
+where password_hash is not null and password_hash !~ '^\$2[aby]\$';
+
+-- password_hash lives directly on `riders` (matching how team_users
+-- already does it), but riders is still a row-readable table (see the
+-- pre-existing "public_all" policy noted at the bottom of this file) —
+-- so on its own, any site visitor's anon key could read every rider's
+-- hash straight out of the REST API. This column-level revoke blocks
+-- that specifically, regardless of the table's row-level policy state.
+revoke select (password_hash) on riders from anon, authenticated;
 
 -- Lock down payout_per_lead specifically (it's a money field) so it
 -- can only change via the Owner-gated RPC below, regardless of the
--- table's existing row-level policy state (riders currently still
--- has a wide-open legacy "public_all" policy from the original setup
--- script — this column-level revoke closes the payout bypass without
--- touching that broader, separate, pre-existing issue).
+-- table's existing row-level policy state.
 revoke update (payout_per_lead) on riders from anon, authenticated;
 
 create or replace function verify_rider_login(p_phone text, p_password text)
@@ -51,9 +55,9 @@ begin
   return query
   select r.id, r.name, r.phone, r.zone, r.payout_per_lead
   from riders r
-  join rider_auth a on a.rider_id = r.id
   where r.phone = p_phone
-    and a.password_hash = extensions.crypt(p_password, a.password_hash)
+    and r.password_hash is not null
+    and r.password_hash = extensions.crypt(p_password, r.password_hash)
     and r.is_active = true;
 end;
 $$;
@@ -67,10 +71,8 @@ set search_path = public
 as $$
 begin
   perform assert_is_owner(p_caller_username, p_caller_password);
-  insert into rider_auth (rider_id, password_hash, updated_at)
-  values (p_rider_id, extensions.crypt(p_new_password, extensions.gen_salt('bf')), now())
-  on conflict (rider_id) do update set password_hash = excluded.password_hash, updated_at = now();
-  return true;
+  update riders set password_hash = extensions.crypt(p_new_password, extensions.gen_salt('bf')) where id = p_rider_id;
+  return found;
 end;
 $$;
 grant execute on function set_rider_password(text, text, uuid, text) to anon, authenticated;
@@ -181,8 +183,10 @@ grant execute on function set_condition_pricing(text, text, text, numeric) to an
 -- `leads` and `riders` still carry a wide-open "public_all" policy
 -- from the original supabase_setup.sql (for all using (true)), meaning
 -- the public anon key can already read/write/delete any row in those
--- tables directly, independent of any admin login. This file only
--- closes the two money-specific columns above; a full RLS hardening
--- pass for `leads`/`riders` (mirroring what was already done for
--- team_users) is a separate, larger piece of work worth doing later.
+-- tables directly, independent of any admin login. This file closes the
+-- specific things that matter most (rider password hashes, payout
+-- amounts, per-lead payout overrides) via column-level revokes above;
+-- a full RLS hardening pass for `leads`/`riders` (mirroring what was
+-- already done for team_users) is a separate, larger piece of work
+-- worth doing later.
 -- ================================================================
