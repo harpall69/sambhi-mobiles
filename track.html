@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%23FF4D00'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%23FF4D00' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%23FF4D00'/></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Track My Sell — Sambhi Mobiles</title>
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0A0A0A;--cream:#F2EDE6;--orange:#FF4D00;--orange-d:#CC3D00;
+  --g:#16A34A;--b:#2563EB;--y:#D97706;--p:#7C3AED;--r:#DC2626;
+  --border:rgba(255,255,255,.08);--card:#111118;--bg:#0D0D0F;
+  --f-d:"Cormorant Garamond",serif;--f-b:"Inter",system-ui,sans-serif
+}
+body{font-family:var(--f-b);background:var(--bg);color:var(--cream);min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px}
+.nav-back{background:none;border:none;color:rgba(242,237,230,.5);font-size:20px;cursor:pointer;padding:4px;line-height:1}
+.nav-back:hover{color:var(--cream)}
+.nav-title{font-size:15px;font-weight:700;color:var(--cream);flex:1}
+.nav-share{background:none;border:1px solid var(--border);color:rgba(242,237,230,.5);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:20px;transition:all .15s}
+.nav-share:hover{border-color:var(--orange);color:var(--orange)}
+
+/* BOOKING HERO */
+.booking-hero{background:linear-gradient(135deg,rgba(255,77,0,.12),rgba(255,77,0,.04));border-bottom:1px solid rgba(255,77,0,.15);padding:18px 20px}
+.bh-id{font-size:11px;color:rgba(242,237,230,.35);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.bh-title{font-family:var(--f-d);font-size:26px;font-weight:700;color:var(--cream);margin-bottom:14px;letter-spacing:-.3px}
+
+/* BENEFITS BANNER */
+.benefits-banner{background:linear-gradient(135deg,rgba(100,200,150,.08),rgba(100,200,150,.04));border:1px solid rgba(100,200,150,.2);border-radius:14px;padding:14px 16px;margin-bottom:0;cursor:pointer}
+.bb-title{font-size:13px;font-weight:700;color:rgba(100,220,150,.8);display:flex;align-items:center;justify-content:space-between}
+.bb-items{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.bb-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 8px;text-align:center;position:relative}
+.bb-item.done::after{content:'✓';position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:var(--g);color:#fff;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:18px}
+.bb-icon{font-size:20px;margin-bottom:5px}
+.bb-label{font-size:10px;color:rgba(242,237,230,.5);line-height:1.3;font-weight:500}
+.bb-note{font-size:10px;color:rgba(242,237,230,.25);margin-top:8px;font-style:italic}
+
+/* PAGE BODY */
+.page-body{padding:20px;max-width:500px;margin:0 auto}
+
+/* SECTION HEADER */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-size:16px;font-weight:700;color:var(--cream)}
+.sec-toggle{background:none;border:none;color:rgba(242,237,230,.4);font-size:18px;cursor:pointer;padding:4px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:0}
+.tl-item{display:flex;gap:16px;margin-bottom:0;position:relative}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0}
+.tl-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:3px;position:relative;z-index:1}
+.tl-dot.done{background:var(--g);box-shadow:0 0 0 3px rgba(22,163,74,.2)}
+.tl-dot.active{background:var(--orange);box-shadow:0 0 0 3px rgba(255,77,0,.25);animation:pulse 2s infinite}
+.tl-dot.pending{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.15)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,77,0,.25)}50%{box-shadow:0 0 0 6px rgba(255,77,0,.1)}}
+.tl-line{width:2px;flex:1;min-height:24px;background:rgba(255,255,255,.08);margin:4px 0}
+.tl-line.done{background:linear-gradient(to bottom,var(--g),var(--g))}
+.tl-line.active{background:linear-gradient(to bottom,var(--orange),rgba(255,255,255,.08))}
+.tl-content{flex:1;padding-bottom:24px}
+.tl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;cursor:pointer}
+.tl-title{font-size:15px;font-weight:700;color:var(--cream)}
+.tl-title.pending{color:rgba(242,237,230,.35)}
+.tl-badge{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;flex-shrink:0}
+.badge-scheduled{background:rgba(37,99,235,.15);color:rgba(100,150,255,.9);border:1px solid rgba(37,99,235,.25)}
+.badge-reached{background:rgba(22,163,74,.12);color:rgba(100,220,130,.8);border:1px solid rgba(22,163,74,.2)}
+.badge-collected{background:rgba(22,163,74,.15);color:rgba(100,220,130,.9);border:1px solid rgba(22,163,74,.25)}
+.badge-pending{background:rgba(255,255,255,.05);color:rgba(242,237,230,.3);border:1px solid rgba(255,255,255,.08)}
+.badge-paid{background:rgba(255,77,0,.15);color:#FF4D00;border:1px solid rgba(255,77,0,.25)}
+.badge-reviewing{background:rgba(124,58,237,.12);color:rgba(180,140,255,.9);border:1px solid rgba(124,58,237,.2)}
+.tl-time{font-size:11px;color:rgba(242,237,230,.3);margin-bottom:8px}
+.tl-toggle{background:none;border:none;color:rgba(242,237,230,.3);font-size:16px;cursor:pointer}
+
+/* DETAIL CARDS */
+.detail-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;margin-top:8px}
+.dc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.dc-row:last-child{margin:0}
+.dc-icon{font-size:14px;opacity:.6;flex-shrink:0}
+.dc-label{font-size:11px;color:rgba(242,237,230,.35);margin-bottom:1px}
+.dc-val{font-size:13px;color:var(--cream);font-weight:500}
+
+/* RIDER CARD */
+.rider-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 16px;margin-top:10px;display:flex;align-items:center;gap:14px}
+.rider-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FF4D00,#FF8533);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;position:relative}
+.rider-rating{position:absolute;bottom:-4px;right:-4px;background:#D97706;color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:8px}
+.rider-info{flex:1}
+.rider-id-lbl{font-size:10px;color:rgba(242,237,230,.3);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px}
+.rider-id{font-size:14px;font-weight:700;color:var(--cream)}
+.rider-status{font-size:11px;color:rgba(100,220,130,.7);margin-top:2px}
+.rider-call{background:rgba(255,77,0,.1);border:1px solid rgba(255,77,0,.2);color:var(--orange);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;text-decoration:none;transition:all .15s;flex-shrink:0}
+.rider-call:hover{background:var(--orange);color:#fff}
+
+/* ADDRESS */
+.addr-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-top:8px}
+.addr-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.1);color:rgba(100,150,255,.8);font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;border:1px solid rgba(37,99,235,.2);margin-bottom:7px}
+.addr-text{font-size:13px;color:rgba(242,237,230,.7);line-height:1.6}
+
+/* DEVICE CARD */
+.device-card{background:linear-gradient(135deg,rgba(255,77,0,.08),rgba(255,77,0,.03));border:1px solid rgba(255,77,0,.2);border-radius:14px;padding:16px;margin-bottom:20px}
+.device-card-hd{font-size:10px;font-weight:700;color:rgba(255,77,0,.6);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.device-name{font-family:var(--f-d);font-size:22px;font-weight:700;color:var(--cream);margin-bottom:6px;letter-spacing:-.2px}
+.device-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.device-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(242,237,230,.6);font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px}
+.device-price-row{display:flex;align-items:baseline;gap:8px}
+.device-price{font-family:var(--f-d);font-size:28px;font-weight:700;color:var(--orange);letter-spacing:-1px}
+.device-price-note{font-size:11px;color:rgba(242,237,230,.3)}
+
+/* WHATSAPP HELP */
+.wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:rgba(37,211,102,.8);padding:13px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;margin-top:20px;transition:all .15s;cursor:pointer;width:100%}
+.wa-btn:hover{background:rgba(37,211,102,.15);color:#25D366}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px}
+.empty-icon{font-size:52px;margin-bottom:14px;opacity:.4}
+.empty-title{font-family:var(--f-d);font-size:28px;font-weight:600;color:rgba(242,237,230,.3);margin-bottom:8px}
+.empty-sub{font-size:13px;color:rgba(242,237,230,.2);margin-bottom:20px}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:10px 20px 20px;display:flex;gap:10px;max-width:500px;margin:0 auto}
+.bn-btn{flex:1;padding:12px;border-radius:10px;font-size:13px;font-weight:700;text-align:center;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .15s}
+.bn-primary{background:var(--orange);color:#fff}
+.bn-primary:hover{background:var(--orange-d)}
+.bn-secondary{background:rgba(255,255,255,.06);color:rgba(242,237,230,.7);border:1px solid var(--border)}
+.bn-secondary:hover{background:rgba(255,255,255,.1)}
+
+/* PAGE PADDING for fixed bottom nav */
+.page-bottom-pad{height:100px}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;width:90%;max-width:400px}
+.toast{background:var(--orange);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:700;text-align:center;transform:translateY(10px);opacity:0;transition:all .25s}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(min-width:500px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:500px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-back" onclick="history.back()">←</button>
+  <div class="nav-title">Track My Sell</div>
+  <button class="nav-share" onclick="shareRequest()">↗ Share</button>
+</nav>
+
+<!-- BOOKING HERO -->
+<div class="booking-hero" id="bookingHero">
+  <div class="bh-id" id="bkId">BOOKING ID: —</div>
+  <div class="bh-title">Sell Request Details</div>
+  <!-- BENEFITS -->
+  <div class="benefits-banner" onclick="toggleBenefits()">
+    <div class="bb-title">
+      <span>🎁 Your Sell Benefits</span>
+      <span id="bbChev">▼</span>
+    </div>
+    <div class="bb-items" id="bbItems">
+      <div class="bb-item done">
+        <div class="bb-icon">📋</div>
+        <div class="bb-label">Free Price Estimate</div>
+      </div>
+      <div class="bb-item" id="bBenefit2">
+        <div class="bb-icon">🚗</div>
+        <div class="bb-label">Free Doorstep Pickup</div>
+      </div>
+      <div class="bb-item" id="bBenefit3">
+        <div class="bb-icon">💰</div>
+        <div class="bb-label">Instant Payment</div>
+      </div>
+    </div>
+    <div class="bb-note">*Free pickup and instant payment after inspection</div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- DEVICE SUMMARY -->
+  <div class="device-card" id="deviceCard" style="display:none">
+    <div class="device-card-hd">📱 Your Device</div>
+    <div class="device-name" id="dName">—</div>
+    <div class="device-meta" id="dMeta"></div>
+    <div class="device-price-row">
+      <div class="device-price" id="dPrice">—</div>
+      <div class="device-price-note">Estimated offer</div>
+    </div>
+  </div>
+
+  <!-- TRACK SECTION -->
+  <div class="sec-hd">
+    <div class="sec-title">Track My Booking</div>
+    <button class="sec-toggle" onclick="toggleTimeline()">∧</button>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <!-- Steps injected by JS -->
+  </div>
+
+  <!-- WHATSAPP HELP -->
+  <a class="wa-btn" onclick="openWA()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.137.558 4.14 1.532 5.875L0 24l6.318-1.497A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.896 0-3.663-.525-5.17-1.434l-.371-.22-3.75.888.926-3.655-.241-.386A9.96 9.96 0 012 12C2 6.478 6.478 2 12 2s10 4.478 10 10-4.478 10-10 10z"/></svg>
+    Need help? Chat on WhatsApp
+  </a>
+
+  <div class="page-bottom-pad"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottomNav" style="display:none">
+  <button class="bn-btn bn-secondary" onclick="window.location.href='account.html'">← My Account</button>
+  <button class="bn-btn bn-primary" onclick="window.location.href='sell.html'">+ Sell Another</button>
+</div>
+
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+// ── SHARED DATA LAYER ──────────────────────────────────────────────
+var K = {
+  customers:'smb_customers', sell_reqs:'smb_sell_reqs', cust_sess:'smb_cust_sess'
+};
+function get(key){try{var v=localStorage.getItem(key);return v?JSON.parse(v):null;}catch(e){return null;}}
+function fmtDate(ts){
+  if(!ts)return'—';
+  var d=new Date(ts);
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';
+  h=h%12||12;
+  return d.getDate()+'th '+months[d.getMonth()]+' '+d.getFullYear()+', '+h+':'+(m<10?'0':'')+m+' '+ap;
+}
+function Rs(n){return '₹'+(parseInt(n)||0).toLocaleString('en-IN');}
+
+// ── STATUS CONFIG ─────────────────────────────────────────────────
+var STATUS_STEPS = {
+  pending:    0,
+  reviewing:  1,
+  scheduled:  2,
+  completed:  3,
+  rejected:   -1
+};
+
+var STEPS = [
+  {
+    key: 'created',
+    title: 'Request Submitted',
+    icon: '📋',
+    detail: function(req) {
+      return '<div class="detail-card"><div class="dc-row"><span class="dc-icon">📅</span><div><div class="dc-label">Submitted on</div><div class="dc-val">' + fmtDate(req.createdAt) + '</div></div></div>' +
+             '<div class="dc-row"><span class="dc-icon">📱</span><div><div class="dc-label">Device</div><div class="dc-val">' + [(req.brand||'').replace(/^\w/,c=>c.toUpperCase()), req.model, req.storage].filter(Boolean).join(' ') + '</div></div></div>' +
+             '<div class="dc-row"><span class="dc-icon">⭐</span><div><div class="dc-label">Condition</div><div class="dc-val">' + (req.condition||'—') + '</div></div></div>' +
+             '</div>';
+    },
+    badge: function(step, req) {
+      return step >= 0 ? {cls:'badge-scheduled', text:'✅ Submitted'} : null;
+    }
+  },
+  {
+    key: 'reviewing',
+    title: 'Under Review',
+    icon: '🔍',
+    detail: function(req) {
+      return '<div class="detail-card"><div class="dc-row"><span class="dc-icon">💬</span><div><div class="dc-label">Our team is reviewing your request</div><div class="dc-val">We will call you within 2 hours to confirm pickup slot</div></div></div>' +
+             (req.adminNote ? '<div class="dc-row"><span class="dc-icon">📌</span><div><div class="dc-label">Note from team</div><div class="dc-val">' + req.adminNote + '</div></div></div>' : '') +
+             '</div>';
+    },
+    badge: function(step) {
+      return step >= 1 ? {cls:'badge-reviewing', text:'🔍 In Review'} : {cls:'badge-pending', text:'Upcoming'};
+    }
+  },
+  {
+    key: 'scheduled',
+    title: 'Pickup Scheduled',
+    icon: '🚗',
+    detail: function(req) {
+      var slot = req.slot === 'morning' ? '🌅 Morning (9 AM – 1 PM)' : req.slot === 'evening' ? '🌆 Evening (4 PM – 8 PM)' : '🕐 Any time';
+      var addr = [req.address, req.area, req.zone, req.pincode ? 'PIN: '+req.pincode : ''].filter(Boolean).join(', ');
+      return '<div class="rider-card"><div class="rider-avatar">🏍<div class="rider-rating">⭐ 4.8</div></div>' +
+             '<div class="rider-info"><div class="rider-id-lbl">Rider assigned</div><div class="rider-id">Sambhi Rider</div><div class="rider-status">📍 On the way to you</div></div>' +
+             '<a class="rider-call" href="tel:+917827505579" title="Call us">📞</a></div>' +
+             '<div class="addr-card"><div class="addr-tag">📍 Pickup from Home</div><div class="addr-text">' + (addr || 'Address on file') + '</div></div>' +
+             '<div class="detail-card" style="margin-top:8px"><div class="dc-row"><span class="dc-icon">⏰</span><div><div class="dc-label">Pickup Slot</div><div class="dc-val">' + slot + '</div></div></div></div>';
+    },
+    badge: function(step) {
+      return step >= 2 ? {cls:'badge-reached', text:'📅 Scheduled'} : {cls:'badge-pending', text:'Upcoming'};
+    }
+  },
+  {
+    key: 'completed',
+    title: 'Payment Done',
+    icon: '💰',
+    detail: function(req) {
+      var price = req.askingPrice || req.estimatedPrice || req.price || 0;
+      return '<div class="detail-card"><div class="dc-row"><span class="dc-icon">✅</span><div><div class="dc-label">Payment transferred</div><div class="dc-val" style="font-size:18px;font-weight:700;color:#FF4D00">' + (price ? Rs(price) : 'As agreed') + '</div></div></div>' +
+             '<div class="dc-row"><span class="dc-icon">🧾</span><div><div class="dc-label">GST Invoice</div><div class="dc-val">Sent on WhatsApp</div></div></div>' +
+             '<div class="dc-row"><span class="dc-icon">🏆</span><div><div class="dc-label">Thank you!</div><div class="dc-val">Your next sell gets +10% loyalty bonus</div></div></div>' +
+             '</div>';
+    },
+    badge: function(step) {
+      return step >= 3 ? {cls:'badge-paid', text:'💰 Paid!'} : {cls:'badge-pending', text:'Upcoming'};
+    }
+  }
+];
+
+// ── INIT ───────────────────────────────────────────────────────────
+var currentReq = null;
+var tlOpen = [true, true, true, true];
+
+function init() {
+  // Get request ID from URL
+  var params = new URLSearchParams(window.location.search);
+  var reqId = params.get('id');
+
+  // Get current customer
+  var sess = get(K.cust_sess);
+  var customers = get(K.customers) || [];
+  var CU = sess ? customers.find(function(c){ return c.id === sess.id; }) : null;
+
+  // Get sell requests
+  var sells = get(K.sell_reqs) || [];
+
+  // Find the request
+  if (reqId) {
+    currentReq = sells.find(function(s){ return s.id === reqId; });
+  } else if (CU) {
+    // Show latest request for this customer
+    var mySells = sells.filter(function(s){ return s.customerId === CU.id; })
+                       .sort(function(a,b){ return new Date(b.createdAt) - new Date(a.createdAt); });
+    currentReq = mySells[0] || null;
+  }
+
+  if (!currentReq) {
+    showEmpty();
+    return;
+  }
+
+  renderRequest(currentReq);
+  document.getElementById('bottomNav').style.display = 'flex';
+}
+
+function renderRequest(req) {
+  var shortId = (req.id || '').slice(-8).toUpperCase();
+  document.getElementById('bkId').textContent = 'BOOKING ID: SM-' + shortId;
+  document.title = 'Track SM-' + shortId + ' — Sambhi Mobiles';
+
+  // Device card
+  var devName = [(req.brand||'').replace(/^\w/,c=>c.toUpperCase()), req.model].filter(Boolean).join(' ');
+  if (devName) {
+    document.getElementById('deviceCard').style.display = 'block';
+    document.getElementById('dName').textContent = devName;
+    var chips = [req.storage, req.color, req.condition].filter(Boolean);
+    document.getElementById('dMeta').innerHTML = chips.map(function(c){
+      return '<span class="device-chip">' + c + '</span>';
+    }).join('');
+    var price = req.askingPrice || req.estimatedPrice || req.price;
+    document.getElementById('dPrice').textContent = price ? Rs(price) : 'Price TBD';
+  }
+
+  // Benefits
+  var step = STATUS_STEPS[req.status] || 0;
+  if (step >= 2) document.getElementById('bBenefit2').classList.add('done');
+  if (step >= 3) document.getElementById('bBenefit3').classList.add('done');
+
+  renderTimeline(req);
+}
+
+function renderTimeline(req) {
+  var step = STATUS_STEPS[req.status] || 0;
+  var isRejected = req.status === 'rejected';
+  var tl = document.getElementById('timeline');
+
+  tl.innerHTML = STEPS.map(function(s, i) {
+    var isDone   = step > i;
+    var isActive = step === i && !isRejected;
+    var isPending = step < i;
+    var badge = s.badge(step, req);
+    var detail = (isDone || isActive) ? s.detail(req) : '';
+    var isOpen = tlOpen[i];
+
+    var dotClass = isDone ? 'done' : isActive ? 'active' : 'pending';
+    var lineClass = isDone ? 'done' : isActive ? 'active' : '';
+    var titleClass = isPending ? 'pending' : '';
+    var isLast = i === STEPS.length - 1;
+
+    return '<div class="tl-item">' +
+      '<div class="tl-left">' +
+        '<div class="tl-dot ' + dotClass + '"></div>' +
+        (!isLast ? '<div class="tl-line ' + lineClass + '"></div>' : '') +
+      '</div>' +
+      '<div class="tl-content">' +
+        '<div class="tl-header" onclick="toggleStep(' + i + ')">' +
+          '<div class="tl-title ' + titleClass + '">' + s.icon + ' ' + s.title + '</div>' +
+          (badge ? '<span class="tl-badge ' + badge.cls + '">' + badge.text + '</span>' : '') +
+        '</div>' +
+        (isDone || isActive ? '<div class="tl-time">' + (i===0 ? fmtDate(req.createdAt) : (req.updatedAt ? fmtDate(req.updatedAt) : '')) + '</div>' : '') +
+        (detail && isOpen ? detail : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Rejected state
+  if (isRejected) {
+    tl.innerHTML += '<div class="tl-item"><div class="tl-left"><div class="tl-dot" style="background:#DC2626;box-shadow:0 0 0 3px rgba(220,38,38,.2)"></div></div><div class="tl-content"><div class="tl-header"><div class="tl-title">Request Declined</div><span class="tl-badge" style="background:rgba(220,38,38,.12);color:rgba(255,100,100,.9);border:1px solid rgba(220,38,38,.2)">❌ Declined</span></div>' +
+      (req.adminNote ? '<div class="detail-card"><div class="dc-row"><span class="dc-icon">📌</span><div><div class="dc-label">Reason</div><div class="dc-val">' + req.adminNote + '</div></div></div></div>' : '') +
+      '</div></div>';
+  }
+}
+
+function toggleStep(i) {
+  tlOpen[i] = !tlOpen[i];
+  renderTimeline(currentReq);
+}
+
+var bbOpen = true;
+function toggleBenefits() {
+  bbOpen = !bbOpen;
+  document.getElementById('bbItems').style.display = bbOpen ? 'grid' : 'none';
+  document.getElementById('bbChev').textContent = bbOpen ? '▼' : '▲';
+}
+
+var tlVisible = true;
+function toggleTimeline() {
+  tlVisible = !tlVisible;
+  document.getElementById('timeline').style.display = tlVisible ? 'block' : 'none';
+  document.querySelector('.sec-toggle').textContent = tlVisible ? '∧' : '∨';
+}
+
+function showEmpty() {
+  document.getElementById('bookingHero').style.display = 'none';
+  document.getElementById('deviceCard').style.display = 'none';
+  document.querySelector('.sec-hd').style.display = 'none';
+  document.getElementById('timeline').innerHTML = '<div class="empty"><div class="empty-icon">📦</div><h2 class="empty-title">No request found</h2><p class="empty-sub">Submit a sell request to start tracking it here.</p><a href="sell.html" style="display:inline-block;background:#FF4D00;color:#fff;padding:12px 28px;font-size:13px;font-weight:700;text-decoration:none;border-radius:8px">Sell a Phone →</a></div>';
+}
+
+function openWA() {
+  var msg = currentReq
+    ? 'Hi! I need help with my sell request SM-' + (currentReq.id||'').slice(-8).toUpperCase() + ' for ' + [(currentReq.brand||'').replace(/^\w/,c=>c.toUpperCase()), currentReq.model].filter(Boolean).join(' ')
+    : 'Hi! I need help with my sell request.';
+  window.open('https://wa.me/917827505579?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareRequest() {
+  var url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: 'My Sambhi Mobiles Sell Request', url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function(){ showToast('Link copied! 📋'); });
+  }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

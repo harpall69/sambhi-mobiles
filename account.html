@@ -1142,12 +1142,13 @@ function refreshAll() {
 }
 
 function devCard(s) {
+  var trackUrl = 'track.html?id=' + (s.id || '');
   var dt = (s.brand||s.devType||'').toLowerCase();
   var icon = BRAND_ICON[dt] || '📱';
   var name = [s.brand,s.model,s.storage].filter(Boolean).join(' ') || s.device || 'Device';
   var st = s.status || 'pending';
   var shortId = (s.id||'').slice(-6).toUpperCase();
-  return '<div class="dev-card status-' + st + '">'
+  return '<div class="dev-card status-' + st + '" onclick="window.location.href=\''+trackUrl+'\'" style="cursor:pointer">'
     + '<div class="dc-icon">' + icon + '</div>'
     + '<div class="dc-info">'
       + '<div class="dc-name">' + name + '</div>'
