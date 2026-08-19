@@ -41,44 +41,10 @@
 <script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --ink:#0F172A;--ink2:#334155;
-  --cream:#F8FAFC;--cream2:#F1F5F9;
-  --brand:#2563EB;--brand-d:#1D4ED8;
-  --white:#fff;--muted:#64748B;
-  --border:#E2E8F0;
-  --blue:#2563EB;--green:#16A34A;--purple:#7C3AED;--teal:#0891B2;
-  --f-display:"Cormorant Garamond",Georgia,serif;
-  --f-body:"Inter",system-ui,sans-serif
-}
-html{scroll-behavior:smooth}
-body{font-family:var(--f-body);background:var(--cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.nav-logo span{font-family:var(--f-display);font-size:20px;font-weight:700;color:var(--ink)}
-.nav-logo span b{color:var(--brand);font-weight:700}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nl{color:rgba(15,23,42,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;transition:color .2s}
-.nl:hover,.nl.active{color:var(--ink)}
-.nav-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
-.nav-cta{background:var(--brand);color:#fff;padding:9px 20px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;text-transform:uppercase;transition:background .2s}
-.nav-cta:hover{background:var(--brand-d)}
-.nav-acct{color:rgba(15,23,42,.55);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:none;border:none;font-family:inherit;cursor:pointer;transition:color .2s}
-.nav-acct:hover{color:var(--ink)}
-.burger{display:none;background:none;border:none;color:var(--ink);font-size:22px;cursor:pointer}
-.mob-nav{display:none;position:fixed;inset:0;background:var(--white);z-index:450;flex-direction:column;align-items:center;justify-content:center;gap:28px}
-.mob-nav.open{display:flex}
-.mob-nl{color:var(--ink);text-decoration:none;font-family:var(--f-display);font-size:44px;font-weight:600;font-style:italic;transition:color .2s}
-.mob-nl:hover{color:var(--brand)}
-.mob-close{position:absolute;top:24px;right:40px;background:none;border:none;color:rgba(15,23,42,.4);font-size:26px;cursor:pointer;font-family:inherit}
-
-/* PROGRESS BAR */
-#progress{position:fixed;top:0;left:0;height:2px;background:var(--brand);z-index:600;width:0%;transition:width .08s}
-
+/* HOME PAGE — page-specific only; nav/footer/buttons/ticker/modal/toast/reveal live in shared.css */
+body{overflow-x:hidden}
 /* HERO */
 .hero{min-height:100vh;padding-top:62px;display:flex;align-items:center;position:relative;overflow:hidden;background:var(--cream)}
 .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
@@ -99,7 +65,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:fl
 .d-dot.on{background:var(--brand);width:22px;border-radius:3px}
 .hero-scroll{display:flex;align-items:center;gap:10px;font-size:10px;color:rgba(15,23,42,.4);letter-spacing:1.5px;text-transform:uppercase;margin-top:28px}
 .hero-scroll::before{content:'';width:32px;height:1px;background:rgba(15,23,42,.2)}
-
 /* 3D PHONE */
 .phone-3d-wrap{position:absolute;right:4%;top:50%;transform:translateY(-50%);width:48%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:1}
 .phone-3d-scene{width:280px;height:560px;perspective:1000px}
@@ -132,14 +97,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:fl
 .psc-notif-bd{font-size:12px;color:rgba(242,237,230,.6);line-height:1.5;transition:opacity .3s}
 .psc-apps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin-top:auto}
 .psc-app{height:44px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:18px}
-/* HERO WATERMARK */
 .hero-watermark{position:absolute;bottom:-40px;right:-60px;font-family:var(--f-display);font-size:clamp(140px,20vw,240px);font-weight:700;color:rgba(15,23,42,.035);line-height:1;pointer-events:none;letter-spacing:-4px;z-index:0;white-space:nowrap;user-select:none}
-/* TICKER */
-.ticker{background:var(--brand);padding:13px 0;overflow:hidden;white-space:nowrap}
-.ticker-track{display:inline-flex;animation:tick 22s linear infinite}
-.ticker-item{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;padding:0 24px}
-.ticker-sep{color:rgba(255,255,255,.4);margin:0 8px}
-@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 /* STATS */
 .stats-strip{background:#EFF6FF;padding:72px 48px}
 .stats-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
@@ -152,7 +110,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:fl
 /* BRANDS */
 .brands-sec{background:var(--white);padding:96px 48px}
 .brands-in{max-width:1200px;margin:0 auto}
-.sec-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--brand);margin-bottom:18px}
 .sec-title-lg{font-family:var(--f-display);font-size:clamp(36px,5vw,64px);font-weight:600;color:var(--ink);line-height:1.05;letter-spacing:-1px;margin-bottom:48px}
 .sec-title-lg em{font-style:italic;color:rgba(15,23,42,.35)}
 .brands-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)}
@@ -171,8 +128,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:fl
 .how-cta-block .kicker{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 .how-cta-block h2{font-family:var(--f-display);font-size:clamp(32px,4vw,50px);font-weight:600;color:var(--ink);line-height:1.1;letter-spacing:-1px;margin-bottom:26px}
 .how-cta-block h2 em{font-style:italic;color:var(--brand)}
-.btn-dark{display:inline-block;background:var(--ink);color:var(--white);padding:13px 30px;font-size:12px;font-weight:700;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;transition:all .2s}
-.btn-dark:hover{background:var(--brand)}
 .how-step{border-top:1px solid rgba(15,23,42,.12);padding:24px 0;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
 .step-num{font-family:var(--f-display);font-size:13px;font-weight:400;color:var(--brand);letter-spacing:.5px;padding-top:4px;min-width:22px}
 .step-body h3{font-family:var(--f-display);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:5px;letter-spacing:-.2px}
@@ -187,574 +142,91 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:18px 48px;display:fl
 .pc-title{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:9px;letter-spacing:-.2px}
 .pc-body{font-size:13px;color:var(--muted);line-height:1.8}
 .pc-badge{display:inline-block;background:var(--purple);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;margin-top:14px}
-/* TESTIMONIALS */
-.test-sec{background:#F0FDF4;padding:96px 48px}
-.test-in{max-width:1200px;margin:0 auto}
-.sec-title-lg.dark{color:var(--ink)}
-.test-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
-.test-card{background:#fff;padding:32px;position:relative;box-shadow:0 1px 3px rgba(15,23,42,.06)}
-.tc-accent{position:absolute;top:20px;right:24px;font-family:var(--f-display);font-size:64px;font-weight:700;color:rgba(37,99,235,.1);line-height:1}
-.tc-stars{color:var(--brand);font-size:13px;margin-bottom:5px;letter-spacing:2px}
-.tc-quote{font-family:var(--f-display);font-size:clamp(14px,1.6vw,17px);font-style:italic;color:var(--ink);line-height:1.65;margin-bottom:20px}
-.tc-name{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink)}
-.tc-loc{font-size:11px;color:var(--muted);margin-top:2px}
-/* LOYALTY */
-.loyalty-sec{background:#EFF6FF;padding:96px 48px}
-.loyalty-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-.loyalty-calc{background:var(--white);border:1px solid var(--border);padding:36px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
-.lc-title{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:4px}
-.lc-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
-.lc-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.lc-slider{width:100%;accent-color:var(--brand);margin-bottom:14px}
-.lc-val{font-family:var(--f-display);font-size:34px;font-weight:600;color:var(--brand);margin-bottom:20px;letter-spacing:-1px}
-.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pay-box{padding:18px}
-.pay-box.normal{background:var(--cream2)}
-.pay-box.loyal{background:var(--brand)}
-.pay-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
-.pay-box.loyal .pay-lbl{color:rgba(255,255,255,.7)}
-.pay-amt{font-family:var(--f-display);font-size:26px;font-weight:600;color:var(--ink);letter-spacing:-1px}
-.pay-box.loyal .pay-amt{color:#fff}
-.pay-note{font-size:10px;color:var(--muted);margin-top:3px}
-.pay-box.loyal .pay-note{color:rgba(255,255,255,.6)}
-.pay-tag{display:inline-block;background:rgba(255,255,255,.25);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;margin-top:7px;letter-spacing:.3px}
+.sec-more-link{display:inline-block;margin-top:32px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--brand);text-decoration:none}
+.sec-more-link:hover{text-decoration:underline}
+/* LOYALTY TEASER (condensed — full interactive calculator lives on /why-choose-us) */
+.loyalty-teaser{background:#EFF6FF;padding:96px 48px}
+.loyalty-teaser-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.loyalty-card{background:var(--white);border:1px solid var(--border);padding:40px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.loyalty-card .lc-big{font-family:var(--f-display);font-size:64px;font-weight:700;color:var(--brand);line-height:1;letter-spacing:-2px}
+.loyalty-card .lc-big span{font-size:28px;font-style:italic;color:rgba(15,23,42,.35)}
+.loyalty-card p{font-size:13px;color:var(--muted);margin:14px 0 22px;line-height:1.7}
+/* REVIEWS PREVIEW (3 static cards — full 12-review slider lives on /reviews) */
+.rev-preview-sec{background:#F0FDF4;padding:96px 48px}
+.rev-preview-in{max-width:1200px;margin:0 auto}
+.rev-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.rev-mini{background:#fff;border:1px solid var(--border);border-radius:16px;padding:26px}
+.rev-mini-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.rev-mini-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.rev-mini-initials{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0}
+.rev-mini-name{font-size:14px;font-weight:700;color:var(--ink)}
+.rev-mini-loc{font-size:11px;color:var(--muted)}
+.rev-mini-stars{color:var(--brand);font-size:12px;letter-spacing:2px}
+.rev-mini-quote{font-size:13px;color:rgba(15,23,42,.68);line-height:1.75;font-style:italic}
+/* FAQ PREVIEW */
+.faq-preview-sec{background:var(--white);padding:96px 48px}
+.faq-preview-in{max-width:820px;margin:0 auto}
+.faqp-item{border-bottom:1px solid var(--border);padding:22px 0}
+.faqp-item h3{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.faqp-item p{font-size:13px;color:var(--muted);line-height:1.8}
 /* CTA */
 .cta-sec{background:var(--brand);padding:96px 48px;text-align:center;overflow:hidden;position:relative}
 .cta-sec h2{font-family:var(--f-display);font-size:clamp(40px,8vw,96px);font-weight:700;color:#fff;line-height:.95;letter-spacing:-2px;margin-bottom:24px}
 .cta-sec h2 em{font-style:italic;font-weight:400}
 .cta-sec p{font-size:15px;color:rgba(255,255,255,.65);max-width:400px;margin:0 auto 32px;font-weight:300}
 .cta-bg{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);font-family:var(--f-display);font-size:clamp(80px,18vw,220px);font-weight:700;color:rgba(255,255,255,.06);white-space:nowrap;pointer-events:none;letter-spacing:-4px}
-.btn-white{display:inline-block;background:#fff;color:var(--brand);padding:14px 40px;font-size:12px;font-weight:800;letter-spacing:.5px;text-decoration:none;text-transform:uppercase;transition:all .2s;margin-right:12px}
-.btn-white:hover{background:var(--ink);color:#fff}
-.btn-outline-white{display:inline-block;border:2px solid rgba(255,255,255,.4);color:#fff;padding:13px 36px;font-size:12px;font-weight:600;text-decoration:none;text-transform:uppercase;transition:all .2s;letter-spacing:.4px}
-.btn-outline-white:hover{background:#fff;color:var(--brand)}
-/* FOOTER */
-footer{background:#0D0D0D;padding:72px 48px 36px;border-top:1px solid rgba(255,255,255,.04)}
-.foot-in{max-width:1200px;margin:0 auto}
-.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.foot-logo{font-family:var(--f-display);font-size:22px;font-weight:700;color:var(--cream);margin-bottom:12px;display:block}
-.foot-logo b{color:var(--brand)}
-.foot-desc{font-size:13px;color:rgba(242,237,230,.28);line-height:1.8;margin-bottom:16px;font-weight:300}
-.foot-contact a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:5px;transition:color .15s;font-weight:300}
-.foot-contact a:hover{color:var(--cream)}
-.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(242,237,230,.2);margin-bottom:14px}
-.foot-col a{display:block;font-size:13px;color:rgba(242,237,230,.35);text-decoration:none;margin-bottom:8px;transition:color .15s;font-weight:300}
-.foot-col a:hover{color:var(--cream)}
-.foot-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.foot-bottom p{font-size:11px;color:rgba(242,237,230,.18)}
-/* AUTH MODAL */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:700;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
-.modal-bg.open{display:flex}
-.auth-box{background:var(--white);border:1px solid var(--border);padding:44px;width:100%;max-width:400px;position:relative;box-shadow:0 24px 64px rgba(15,23,42,.2)}
-.auth-close{position:absolute;top:12px;right:12px;background:none;border:none;color:rgba(15,23,42,.4);font-size:20px;cursor:pointer;font-family:inherit;transition:color .15s}
-.auth-close:hover{color:var(--ink)}
-.auth-box h2{font-family:var(--f-display);font-size:34px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-.5px}
-.auth-box .auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px;font-weight:300}
-.auth-tabs{display:flex;margin-bottom:24px;border-bottom:1px solid var(--border)}
-.auth-tab{flex:1;padding:10px;background:none;border:none;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
-.auth-tab.on{color:var(--brand);border-bottom-color:var(--brand)}
-.auth-err{background:rgba(37,99,235,.1);color:var(--brand-d);border:1px solid rgba(37,99,235,.25);padding:9px 12px;font-size:12px;margin-bottom:12px;display:none}
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.fg input{width:100%;background:var(--cream2);border:1px solid var(--border);color:var(--ink);font-size:14px;font-family:inherit;padding:11px 13px;outline:none;transition:border-color .15s}
-.fg input:focus{border-color:var(--brand)}
-.auth-btn{width:100%;background:var(--brand);color:#fff;border:none;padding:13px;font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:background .15s}
-.auth-btn:hover{background:var(--brand-d)}
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-32px);transition:opacity .7s ease,transform .7s ease}
-.reveal-left.in{opacity:1;transform:translateX(0)}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
-/* TOAST */
-.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:9999;pointer-events:none}
-.toast{background:var(--brand);color:#fff;padding:13px 20px;font-size:13px;font-weight:700;letter-spacing:.3px;box-shadow:0 8px 28px rgba(37,99,235,.35);transform:translateY(12px);opacity:0;transition:all .3s;margin-top:8px}
-.toast.show{transform:translateY(0);opacity:1}
-/* REVIEW SLIDER */
-.rev-slider-wrap{position:relative;display:flex;align-items:center;gap:14px}
-.rev-slider{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 2px 20px;flex:1;-webkit-overflow-scrolling:touch}
-.rev-slider::-webkit-scrollbar{height:6px}
-.rev-slider::-webkit-scrollbar-track{background:transparent}
-.rev-slider::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.rev-card{scroll-snap-align:start;flex:0 0 340px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:26px;display:flex;flex-direction:column;transition:transform .2s,border-color .2s,box-shadow .2s}
-.rev-card:hover{transform:translateY(-4px);border-color:rgba(37,99,235,.3);box-shadow:0 14px 34px rgba(15,23,42,.1)}
-.rev-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.rev-photo{width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:center top;border:3px solid #2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.15);flex-shrink:0}
-.rev-initials{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:26px;color:#fff;flex-shrink:0;box-shadow:0 6px 16px rgba(15,23,42,.18)}
-.rev-name{font-size:15px;font-weight:700;color:var(--ink)}
-.rev-loc{font-size:12px;color:var(--muted);margin-top:1px}
-.rev-stars{color:#2563EB;font-size:13px;letter-spacing:2px;margin-top:3px}
-.rev-quote{font-size:14px;color:rgba(15,23,42,.68);line-height:1.75;font-style:italic;flex:1;margin-bottom:14px}
-.rev-insta{font-size:11px;color:rgba(37,99,235,.8);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
-.rev-arrow{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--border);color:var(--ink);font-size:20px;cursor:pointer;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.rev-arrow:hover{background:#2563EB;color:#fff;border-color:#2563EB}
-.rev-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
-.rev-dot{width:6px;height:6px;border-radius:50%;background:var(--border);border:none;cursor:pointer;padding:0;transition:all .25s}
-.rev-dot.on{background:#2563EB;width:20px;border-radius:3px}
-@media(max-width:640px){.rev-card{flex:0 0 84vw}.rev-arrow{display:none}}
-/* FLOATING PHONE BG */
-.float-phones{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.float-phone{position:absolute;opacity:.05;color:#0F172A;animation:floatDrift 22s ease-in-out infinite}
-.float-phone svg{width:100%;height:100%}
-@keyframes floatDrift{
-  0%{transform:translate(0,0) rotate(-8deg)}
-  50%{transform:translate(24px,-30px) rotate(6deg)}
-  100%{transform:translate(0,0) rotate(-8deg)}
-}
-@media(prefers-reduced-motion:reduce){.float-phone{animation:none}}
 /* RESPONSIVE */
 @media(max-width:1100px){
-  nav{padding:16px 28px}
   .hero{padding:80px 28px 40px}
   .hero-left{padding:0;flex:1}
   .phone-3d-wrap{display:none}
   .hero-watermark{display:none}
-  .stats-strip,.brands-sec,.how-sec,.promise-sec,.test-sec,.loyalty-sec,.cta-sec{padding-left:28px;padding-right:28px}
-  footer{padding-left:28px;padding-right:28px}
+  .stats-strip,.brands-sec,.how-sec,.promise-sec,.loyalty-teaser,.rev-preview-sec,.faq-preview-sec,.cta-sec{padding-left:28px;padding-right:28px}
   .brands-grid{grid-template-columns:repeat(3,1fr)}
   .promise-grid{grid-template-columns:repeat(2,1fr)}
   .how-in{grid-template-columns:1fr;gap:40px}
-  .loyalty-in{grid-template-columns:1fr;gap:40px}
-  .foot-top{grid-template-columns:1fr 1fr}
+  .loyalty-teaser-in{grid-template-columns:1fr;gap:40px}
+  .rev-preview-grid{grid-template-columns:1fr 1fr}
 }
-@media(max-width:1100px){.review-grid{grid-template-columns:repeat(2,1fr)!important}}
-@media(max-width:640px){.review-grid{grid-template-columns:1fr!important}}
 @media(max-width:768px){
-  .nav-links,.nav-right{display:none}
-  .burger{display:block}
   .stats-in{grid-template-columns:1fr 1fr;gap:24px}
   .stat-item::after{display:none}
   .brands-grid{grid-template-columns:repeat(2,1fr)}
   .promise-grid{grid-template-columns:1fr}
-  .test-grid{grid-template-columns:1fr}
-  .foot-top{grid-template-columns:1fr}
+  .rev-preview-grid{grid-template-columns:1fr}
 }
-@media(prefers-reduced-motion:reduce){
-  .reveal,.reveal-left{opacity:1;transform:none;transition:none}
-  .ticker-track{animation-duration:.001ms}
-  .phone-3d-card{animation:none}
-}
+@media(prefers-reduced-motion:reduce){.phone-3d-card{animation:none}}
 </style>
-<script>
-// ── SUPABASE CLIENT ─────────────────────────────────────────────
-var SB = (function() {
-  var URL = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : '';
-  var KEY = (typeof window !== 'undefined' && window.SUPABASE_KEY) ? window.SUPABASE_KEY : '';
-  function configured(){ return !!(URL && KEY && URL !== 'YOUR_PROJECT_URL_HERE' && KEY !== 'YOUR_ANON_KEY_HERE'); }
-  function headers(){ return {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=representation'}; }
-  async function query(table, opts) {
-    if (!configured()) return null;
-    opts = opts || {};
-    var url = URL + '/rest/v1/' + table;
-    var params = [];
-    if (opts.select) params.push('select='+opts.select);
-    if (opts.filter) params.push(opts.filter);
-    if (opts.order)  params.push('order='+opts.order);
-    if (opts.limit)  params.push('limit='+opts.limit);
-    if (params.length) url += '?' + params.join('&');
-    try {
-      var r = await fetch(url, {method:'GET', headers:headers()});
-      if (!r.ok) return null;
-      if (r.status === 204) return [];
-      return await r.json();
-    } catch(e) { return null; }
-  }
-  async function insert(table, data) {
-    if (!configured()) return null;
-    try {
-      var r = await fetch(URL+'/rest/v1/'+table, {method:'POST', headers:headers(), body:JSON.stringify(data)});
-      if (!r.ok) return null;
-      return await r.json();
-    } catch(e) { return null; }
-  }
-  async function update(table, filter, data) {
-    if (!configured()) return null;
-    try {
-      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'PATCH', headers:headers(), body:JSON.stringify(data)});
-      if (!r.ok) return null;
-      return await r.json();
-    } catch(e) { return null; }
-  }
-  async function remove(table, filter) {
-    if (!configured()) return null;
-    try {
-      var r = await fetch(URL+'/rest/v1/'+table+'?'+filter, {method:'DELETE', headers:headers()});
-      return r.ok;
-    } catch(e) { return false; }
-  }
-  return {configured:configured, query:query, insert:insert, update:update, remove:remove};
-})();
-
-// ================================================================
-// SAMBHI MOBILES — SHARED.JS v3
-// Central data layer, auth, and utilities
-// All pages load this file first
-// ================================================================
-'use strict';
-
-var SMB = (function() {
-
-  // ── STORAGE KEYS ───────────────────────────────────────────────
-  var K = {
-    customers:    'smb_customers',
-    cust_sess:    'smb_cust_sess',
-    sell_reqs:    'smb_sell_reqs',
-    inv:          'smb_inv',
-    leads:        'smb_leads',
-    bills:        'smb_bills',
-    riders:       'smb_riders',
-    camps:        'smb_camps',
-    active_camp:  'smb_active_camp',
-    team:         'smb_team',
-    mult:         'smb_mult',
-    admin_sess:   'smb_sess',
-    notifs:       'smb_notifs',
-    invn:         'smb_invn',
-    videos:       'smb_videos'
-  };
-
-  // ── SAFE STORAGE ───────────────────────────────────────────────
-  function get(key) {
-    try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
-    catch(e) { return null; }
-  }
-  function set(key, val) {
-    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
-    catch(e) { return false; }
-  }
-  function arr(key) {
-    var v = get(key); return Array.isArray(v) ? v : [];
-  }
-
-  // ── HASH (djb2 — no plain text passwords stored) ──────────────
-  function hash(str) {
-    var h = 5381;
-    for (var i = 0; i < str.length; i++) {
-      h = ((h << 5) + h) + str.charCodeAt(i);
-      h = h & h;
-    }
-    return 'smb_' + Math.abs(h).toString(16) + '_' + str.length;
-  }
-
-  // ── UTILITIES ──────────────────────────────────────────────────
-  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-  function now() { return new Date().toISOString(); }
-  function Rs(n) { return n ? '₹' + parseInt(n).toLocaleString('en-IN') : '—'; }
-  function fmtDate(d) {
-    return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  // ── CUSTOMER AUTH ──────────────────────────────────────────────
-  var SESSION_TTL = 12 * 60 * 60 * 1000; // 12 hours
-
-  var customer = {
-    all: function() { return arr(K.customers); },
-    save: function(list) { set(K.customers, list); },
-
-    byPhone: function(phone) {
-      var clean = (phone + '').replace(/\D/g, '').slice(-10);
-      return customer.all().find(function(c) {
-        return c.phone === clean || (c.altPhone && c.altPhone === clean);
-      }) || null;
-    },
-
-    register: function(name, phone, altPhone, password) {
-      phone = (phone + '').replace(/\D/g, '').slice(-10);
-      altPhone = altPhone ? (altPhone + '').replace(/\D/g, '').slice(-10) : '';
-      if (customer.byPhone(phone)) return { ok: false, err: 'Phone number already registered. Please login.' };
-      if (password.length < 6) return { ok: false, err: 'Password must be at least 6 characters.' };
-      var c = {
-        id: uid(), name: name.trim(), phone: phone, altPhone: altPhone,
-        pwHash: hash(password), createdAt: now(),
-        sellCount: 0, buyCount: 0, totalEarned: 0,
-        homeAddress: '', pickupAddress: '', pincode: '',
-        lat: null, lng: null,
-        aadhaarSame: false,
-        visitCount: 1, lastSeen: now()
-      };
-      var list = customer.all(); list.push(c); customer.save(list);
-      customer.startSession(c);
-      notify.log(phone, 'registration', { name: name });
-      return { ok: true, customer: c };
-    },
-
-    byPhone: function(phone) { phone=(phone+"").replace(/\D/g,"").slice(-10); return SMB.arr(SMB.K.customers).find(function(c){return c.phone===phone;})||null; },
-    login: function(phone, password) {
-      var c = customer.byPhone(phone);
-      if (!c) return { ok: false, err: 'No account found. Please register first.' };
-      if (c.pwHash !== hash(password)) return { ok: false, err: 'Incorrect password.' };
-      customer.startSession(c);
-      return { ok: true, customer: c };
-    },
-
-    startSession: function(c) {
-      set(K.cust_sess, { id: c.id, ts: Date.now() });
-      // Bump visit count
-      var list = customer.all();
-      var i = list.findIndex(function(x){ return x.id === c.id; });
-      if (i > -1) { list[i].visitCount = (list[i].visitCount||0) + 1; list[i].lastSeen = now(); customer.save(list); }
-    },
-    logout: function() { localStorage.removeItem(K.cust_sess); },
-
-    current: function() {
-      var sess = get(K.cust_sess);
-      if (!sess || !sess.id) return null;
-      if (Date.now() - sess.ts > SESSION_TTL) { localStorage.removeItem(K.cust_sess); return null; }
-      return customer.all().find(function(c) { return c.id === sess.id; }) || null;
-    },
-
-    update: function(id, changes) {
-      var list = customer.all();
-      var i = list.findIndex(function(c) { return c.id === id; });
-      if (i < 0) return false;
-      list[i] = Object.assign(list[i], changes);
-      customer.save(list); return true;
-    }
-  };
-
-  // ── SELL REQUESTS ──────────────────────────────────────────────
-  var sells = {
-    all: function() { return arr(K.sell_reqs); },
-    save: function(list) { set(K.sell_reqs, list); },
-
-    submit: function(data, custId) {
-      var req = Object.assign({}, data, {
-        id: uid(), customerId: custId || null,
-        status: 'pending', createdAt: now(), adminNote: ''
-      });
-      var reqToSave = Object.assign({}, req, {photos: []}); // strip base64 to prevent localStorage overflow
-      var list = sells.all(); list.push(reqToSave); sells.save(list);
-
-      // Mirror to admin leads
-      var leads = arr(K.leads);
-      leads.push({
-        id: req.id, name: data.name || '', phone: data.phone || '',
-        device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
-        devType: (data.brand || '').toLowerCase(),
-        model: data.model || '', storage: data.storage || '',
-        color: data.color || '', condition: data.condition || '',
-        battery: data.batteryHealth || '', imei: data.imei || '',
-        ram: data.ram || '',
-        accessories: data.accessories || [],
-        photos: [], // not stored in leads (too large)
-        askPrice: data.askingPrice || 0,
-        notes: [{ t: 'Website submission', at: now() }],
-        status: 'new', slot: data.slot || 'morning',
-        source: 'website', createdAt: now(), customerId: custId || null
-      });
-      set(K.leads, leads);
-
-      notify.log(data.phone || '', 'sell_received', { name: data.name, device: data.model });
-      return req;
-    },
-
-    forCustomer: function(custId) {
-      return sells.all().filter(function(r) { return r.customerId === custId; });
-    }
-  };
-
-  // ── INVENTORY ──────────────────────────────────────────────────
-  var inventory = {
-    all: function() { return arr(K.inv); },
-    visible: function() { return inventory.all().filter(function(i) { return i.visible; }); }
-  };
-
-  // ── NOTIFICATION STUB ──────────────────────────────────────────
-  // Structured for easy drop-in of paid API later
-  var notify = {
-    log: function(phone, template, data) {
-      console.log('[NOTIFY] phone=' + phone + ' tpl=' + template, data);
-      // Future: if (window.SMB_NOTIFY === 'twilio') { ... }
-      // Future: if (window.SMB_NOTIFY === 'interakt') { ... }
-    },
-    templates: {
-      registration:  'Welcome {name}! You are registered with Sambhi Mobiles. +91 7827505579',
-      sell_received: 'Hi {name}! We received your sell request for {device}. We will call within 2 hours.',
-      pickup_booked: 'Pickup confirmed for {device}. Rider on the way. +91 7827505579'
-    }
-  };
-
-  // Public API
-  // Track page views for logged-in customer
-  (function trackPage(){
-    try {
-      var sess = get(K.cust_sess);
-      if (!sess || !sess.id) return;
-      var key = 'smb_pv_' + new Date().toDateString().replace(/ /g,'_');
-      var pv = get(key) || {};
-      pv[sess.id] = (pv[sess.id]||0) + 1;
-      set(key, pv);
-    } catch(e){}
-  })();
-  return { K: K, get: get, set: set, arr: arr, hash: hash, uid: uid, now: now, Rs: Rs, fmtDate: fmtDate, customer: customer, sells: sells, inventory: inventory, notify: notify };
-})();
-
-// ── NAV STATE ──────────────────────────────────────────────────────
-function smbUpdateNav() {
-  var c = SMB.customer.current();
-  document.querySelectorAll('[data-guest]').forEach(function(el) {
-    el.style.display = c ? 'none' : '';
-  });
-  document.querySelectorAll('[data-auth]').forEach(function(el) {
-    el.style.display = c ? '' : 'none';
-  });
-  document.querySelectorAll('[data-cname]').forEach(function(el) {
-    el.textContent = c ? c.name.split(' ')[0] : '';
-  });
-}
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', smbUpdateNav);
-} else { smbUpdateNav(); }
-
-
-// ── OTP AUTH ──────────────────────────────────────────────────────────
-var otpStore = {};  // {phone: {code, expires, name}}
-
-SMB.otp = {
-  generate: function(phone, name) {
-    phone = (phone + '').replace(/\D/g, '').slice(-10);
-    var code = String(Math.floor(100000 + Math.random() * 900000));
-    otpStore[phone] = { code: code, expires: Date.now() + 10 * 60 * 1000, name: name || '' };
-    return { phone: phone, code: code };
-  },
-  verify: function(phone, inputCode) {
-    phone = (phone + '').replace(/\D/g, '').slice(-10);
-    var entry = otpStore[phone];
-    if (!entry) return { ok: false, err: 'No OTP sent for this number. Please request again.' };
-    if (Date.now() > entry.expires) { delete otpStore[phone]; return { ok: false, err: 'OTP expired. Please request a new one.' }; }
-    if (entry.code !== inputCode.trim()) return { ok: false, err: 'Incorrect OTP. Please check and try again.' };
-    delete otpStore[phone];
-    // Find or create customer
-    var c = SMB.customer.byPhone ? SMB.customer.byPhone(phone) : null;
-    if (!c) {
-      // Auto-register with phone only (no password)
-      c = { id: SMB.uid(), name: entry.name || 'Customer', phone: phone, altPhone: '',
-            pwHash: SMB.hash(SMB.uid()), // random pw hash
-            createdAt: SMB.now(), sellCount: 0, buyCount: 0,
-            visitCount: 1, lastSeen: SMB.now(), homeAddress: '', pickupAddress: '',
-            aadhaarSame: false, lat: null, lng: null };
-      var list = SMB.arr(SMB.K.customers); list.push(c); SMB.set(SMB.K.customers, list);
-    }
-    SMB.customer.startSession(c);
-    return { ok: true, customer: c };
-  }
-};
-
-// ── GOOGLE AUTH HELPER ────────────────────────────────────────────────
-SMB.googleAuth = {
-  handleUser: function(googleUser) {
-    // Called after Firebase Google sign-in
-    var email = googleUser.email || '';
-    var name  = googleUser.displayName || email.split('@')[0] || 'User';
-    var uid   = googleUser.uid || googleUser.providerData?.[0]?.uid || email;
-    var phone = ''; // Google doesn't give phone
-    // Try to find by email first
-    var list = SMB.arr(SMB.K.customers);
-    var c = list.find(function(x) { return x.email === email || x.googleUid === uid; });
-    if (!c) {
-      c = { id: SMB.uid(), name: name, phone: phone, altPhone: '',
-            pwHash: SMB.hash(uid), email: email, googleUid: uid,
-            createdAt: SMB.now(), sellCount: 0, buyCount: 0,
-            visitCount: 1, lastSeen: SMB.now(), homeAddress: '', pickupAddress: '',
-            aadhaarSame: false, lat: null, lng: null };
-      list.push(c); SMB.set(SMB.K.customers, list);
-    } else {
-      c.name = name; c.email = email; c.googleUid = uid;
-      var i = list.findIndex(function(x){return x.id===c.id;}); if(i>-1) list[i]=c;
-      SMB.set(SMB.K.customers, list);
-    }
-    SMB.customer.startSession(c);
-    return { ok: true, customer: c };
-  }
-};
-
-</script>
-<!-- Firebase Auth -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script>
-// ── FIREBASE CONFIG ─────────────────────────────────────────────────
-// SETUP: Go to console.firebase.google.com → New project → Authentication
-// → Sign-in methods → Enable Google → Web app → Copy config here
-var FIREBASE_CONFIG = {
-  apiKey: "AIzaSyDHG4dABs-YHKKU1MaNL2w-4Sl9cg74hRU",
-  authDomain: "sambhi-mobiles.firebaseapp.com",
-  projectId: "sambhi-mobiles",
-  appId: "1:586493572164:web:796d629dcad7bcc12db811",
-};
-var firebaseApp = null, firebaseAuth = null;
-try {
-  if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_FIREBASE_API_KEY') {
-    firebaseApp  = firebase.initializeApp(FIREBASE_CONFIG);
-    firebaseAuth = firebase.auth();
-    console.log('✅ Firebase initialized');
-  }
-} catch(e) { console.warn('Firebase not configured:', e.message); }
-
-function signInWithGoogle() {
-  if (!firebaseAuth) {
-    alert('Google login not configured yet.\n\nTo enable:\n1. Go to console.firebase.google.com\n2. Create a project\n3. Enable Google sign-in\n4. Add your Firebase config to index.html');
-    return;
-  }
-  var provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope('profile');
-  provider.addScope('email');
-  firebaseAuth.signInWithPopup(provider).then(function(result) {
-    var user = result.user;
-    var r = SMB.googleAuth.handleUser({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
-    });
-    if (r.ok) {
-      closeAuth();
-      smbUpdateNav();
-      showToast('Welcome, ' + r.customer.name.split(' ')[0] + '! 🎉');
-    }
-  }).catch(function(err) {
-    var errEl = document.getElementById('authErr');
-    if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
-  });
-}
-</script>
 </head>
 <body>
 
 <div id="progress"></div>
-
-<!-- MOBILE NAV -->
-<div class="mob-nav" id="mobNav">
-  <button class="mob-close" onclick="closeMobNav()">✕</button>
-  <a class="mob-nl" href="index.html" onclick="closeMobNav()">Home</a>
-  <a class="mob-nl" href="sell.html" onclick="closeMobNav()">Sell</a>
-  <a class="mob-nl" href="buy.html" onclick="closeMobNav()">Buy</a>
-  <a class="mob-nl" href="about.html" onclick="closeMobNav()">About</a>
-  <a class="mob-nl" href="blog.html" onclick="closeMobNav()">Blog</a>
-  <a class="mob-nl" href="sell.html">Sell Now →</a>
-</div>
-
-<!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="nav-logo">
-    <svg width="34" height="34" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#2563EB"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#2563EB" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#2563EB"/><circle cx="24" cy="9" r="2.5" fill="#2563EB"/><circle cx="24" cy="9" r="1" fill="white"/></svg>
-    <span>Sambhi <b>Mobiles</b></span>
-  </a>
+  <a href="/" class="nav-logo" style="display:flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#2563EB"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#2563EB" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#2563EB"/><circle cx="24" cy="9" r="2.5" fill="#2563EB"/><circle cx="24" cy="9" r="1" fill="white"/></svg><span>Sambhi <strong style="color:#2563EB">Mobiles</strong></span></a>
   <div class="nav-links">
-    <a href="index.html" class="nl active">Home</a>
-    <a href="sell.html" class="nl">Sell</a>
-    <a href="buy.html" class="nl">Buy</a>
-    <a href="about.html" class="nl">About</a>
-    <a href="blog.html" class="nl">Blog</a>
+    <a href="/" class="nl active">Home</a>
+    <a href="/sell-phone" class="nl">Sell</a>
+    <a href="/buy" class="nl">Buy</a>
+    <a href="/about" class="nl">About</a>
+    <a href="/blog" class="nl">Blog</a>
   </div>
   <div class="nav-right">
-    <a href="#" class="nav-acct" data-guest id="navLogin" onclick="openAuth();return false">Login</a>
-    <a href="account.html" class="nav-acct" data-auth id="navAccount" style="display:none">↳ <span data-cname></span></a>
-    <button class="nav-acct" data-auth id="navLogout" style="display:none" onclick="doLogout()">Logout</button>
-    <a href="sell.html" class="nav-cta">Get Instant Price</a>
+    <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
+    <a href="/account" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
+    <button class="nav-acct" data-auth style="display:none;font-size:12px;letter-spacing:.4px" onclick="doLogout()">Logout</button>
+    <a href="/sell-phone" class="nav-cta">Get My Price</a>
   </div>
   <button class="burger" onclick="openMobNav()">☰</button>
 </nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="/" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="/sell-phone" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="/buy" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="/about" onclick="closeMobNav()">About</a>
+  <a class="mob-nl" href="/blog" onclick="closeMobNav()">Blog</a>
+  <a class="mob-nl" href="/sell-phone">Sell Now →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="heroWrap">
@@ -770,8 +242,8 @@ function signInWithGoogle() {
     </h1>
     <p class="hero-desc" id="heroSubEl">Best price for iPhones in Delhi. Free doorstep pickup. Instant cash or UPI. GST bill guaranteed.</p>
     <div class="hero-actions">
-      <a href="sell.html" class="btn-hero-p">💸 Get My Price →</a>
-      <a href="buy.html" class="btn-hero-s">Browse devices</a>
+      <a href="/sell-phone" class="btn-hero-p">💸 Get My Price →</a>
+      <a href="/buy" class="btn-hero-s">Browse devices</a>
     </div>
     <div class="device-dots" id="deviceDots"></div>
     <div class="hero-scroll">Scroll to explore</div>
@@ -817,22 +289,22 @@ function signInWithGoogle() {
 
 <!-- TICKER -->
 <div class="ticker"><div class="ticker-track">
-  <span class="ticker-item">Free pickup<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Instant cash<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Zero fee<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">GST bill<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">IMEI verified<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">10% loyalty bonus<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Best price Delhi<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Same day pickup<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Free pickup<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Instant cash<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Zero fee<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">GST bill<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">IMEI verified<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">10% loyalty bonus<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Best price Delhi<span class="ticker-sep">·</span></span>
-  <span class="ticker-item">Same day pickup<span class="ticker-sep">·</span></span>
+  <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+  <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+  <span class="ticker-item">Zero fee<span class="sep">·</span></span>
+  <span class="ticker-item">GST bill<span class="sep">·</span></span>
+  <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+  <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+  <span class="ticker-item">Best price Delhi<span class="sep">·</span></span>
+  <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
+  <span class="ticker-item">Free pickup<span class="sep">·</span></span>
+  <span class="ticker-item">Instant cash<span class="sep">·</span></span>
+  <span class="ticker-item">Zero fee<span class="sep">·</span></span>
+  <span class="ticker-item">GST bill<span class="sep">·</span></span>
+  <span class="ticker-item">IMEI verified<span class="sep">·</span></span>
+  <span class="ticker-item">10% loyalty bonus<span class="sep">·</span></span>
+  <span class="ticker-item">Best price Delhi<span class="sep">·</span></span>
+  <span class="ticker-item">Same day pickup<span class="sep">·</span></span>
 </div></div>
 
 <!-- STATS -->
@@ -861,7 +333,8 @@ function signInWithGoogle() {
       <div class="kicker">Simple. Fast. Fair.</div>
       <h2>Three steps<br>to <em>instant cash</em></h2>
       <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:26px;max-width:340px">Fill once. We handle everything. No surprises, no middlemen.</p>
-      <a href="sell.html" class="btn-dark">Start selling →</a>
+      <a href="/sell-phone" class="btn-dark">Start selling →</a>
+      <a href="/how-it-works" class="sec-more-link" style="display:block;margin-top:16px">See the full process →</a>
     </div>
     <div>
       <div class="how-step reveal"><div class="step-num">01</div><div class="step-body"><h3>📋 Fill the form</h3><p>Choose your brand and model. Live price estimate in 60 seconds — fully transparent.</p></div></div>
@@ -882,184 +355,83 @@ function signInWithGoogle() {
       <div class="promise-card reveal d1"><span class="pc-icon">🚗</span><h3 class="pc-title">Free doorstep pickup</h3><p class="pc-body">Anywhere in Delhi NCR. No minimum distance. No travel cost. Zero exceptions.</p><span class="pc-badge">Always free</span></div>
       <div class="promise-card reveal d2"><span class="pc-icon">🏆</span><h3 class="pc-title">10% loyalty — forever</h3><p class="pc-body">Every return sale earns 10% extra. Automatic. No expiry. No conditions.</p><span class="pc-badge">Lifetime</span></div>
     </div>
+    <a href="/why-choose-us" class="sec-more-link">See why customers choose us →</a>
   </div>
 </section>
 
-<!-- LOYALTY CALC -->
-<section class="loyalty-sec">
-  <div class="loyalty-in">
+<!-- LOYALTY TEASER -->
+<section class="loyalty-teaser">
+  <div class="loyalty-teaser-in">
     <div class="reveal-left">
       <div class="sec-eyebrow">Returning customer bonus</div>
       <h2 class="sec-title-lg">10% extra.<br><em>Every time you</em><br>return.</h2>
       <p style="font-size:14px;color:rgba(15,23,42,.4);line-height:1.8;max-width:360px;margin-top:14px">The only gadget buyer in Delhi with zero fees and a lifetime loyalty reward. Applied automatically.</p>
     </div>
-    <div class="loyalty-calc reveal">
-      <div class="lc-title">Loyalty Bonus Calculator</div>
-      <div class="lc-sub">See how much extra you earn as a returning customer</div>
-      <div class="lc-lbl">Your device value</div>
-      <input type="range" class="lc-slider" min="3000" max="120000" value="50000" step="1000" id="loySlider" oninput="calcLoy(this.value)">
-      <div class="lc-val" id="loyVal">₹50,000</div>
-      <div class="pay-row">
-        <div class="pay-box normal"><div class="pay-lbl">First time</div><div class="pay-amt" id="payNorm">₹50,000</div><div class="pay-note">Standard payout</div></div>
-        <div class="pay-box loyal"><div class="pay-lbl">Returning customer</div><div class="pay-amt" id="payLoyal">₹55,000</div><div class="pay-note">+10% loyalty bonus</div><div class="pay-tag" id="payBonus">+₹5,000 extra</div></div>
+    <div class="loyalty-card reveal">
+      <div class="lc-big">+10<span>%</span></div>
+      <p>Extra on every return sale — try the calculator to see exactly how much you'd earn.</p>
+      <a href="/why-choose-us" class="btn-p">Calculate my bonus →</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS PREVIEW -->
+<section class="rev-preview-sec">
+  <div class="rev-preview-in">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="sec-eyebrow reveal">What Delhi says</div>
+        <h2 class="sec-title-lg reveal">Real people.<br><em>Real payouts.</em></h2>
       </div>
+      <div style="text-align:right;flex-shrink:0" class="reveal">
+        <div style="font-family:var(--f-display);font-size:40px;font-weight:700;color:var(--brand);line-height:1;letter-spacing:-2px">4.9<span style="font-size:20px;font-weight:400;font-style:italic;color:rgba(15,23,42,.4)"> / 5</span></div>
+        <div style="font-size:11px;color:rgba(15,23,42,.3);margin-top:4px">Based on 200+ reviews</div>
+      </div>
+    </div>
+    <div class="rev-preview-grid">
+      <div class="rev-mini reveal">
+        <div class="rev-mini-top"><div class="rev-mini-initials" style="background:#2563EB">RS</div><div><div class="rev-mini-name">Rahul Sharma</div><div class="rev-mini-loc">Lajpat Nagar</div><div class="rev-mini-stars">★★★★★</div></div></div>
+        <p class="rev-mini-quote">"Excellent service! Best price for my phone compared to other buyers. Quick, transparent, and payment was instant."</p>
+      </div>
+      <div class="rev-mini reveal d1">
+        <div class="rev-mini-top"><div class="rev-mini-initials" style="background:#7C3AED">SK</div><div><div class="rev-mini-name">Sunita Kapoor</div><div class="rev-mini-loc">Vasant Kunj</div><div class="rev-mini-stars">★★★★★</div></div></div>
+        <p class="rev-mini-quote">"Honest valuation, hassle-free process. No hidden charges, no unnecessary negotiations — just great service."</p>
+      </div>
+      <div class="rev-mini reveal d2">
+        <div class="rev-mini-top"><div class="rev-mini-initials" style="background:#0D9488">AV</div><div><div class="rev-mini-name">Amit Verma</div><div class="rev-mini-loc">Dwarka, Delhi</div><div class="rev-mini-stars">★★★★★</div></div></div>
+        <p class="rev-mini-quote">"Third time selling here. Every time — same day, honest price, instant cash. This is how it should work."</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <a href="/reviews" class="btn-p">Read All 200+ Reviews →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ PREVIEW -->
+<section class="faq-preview-sec">
+  <div class="faq-preview-in">
+    <div class="sec-eyebrow reveal" style="text-align:center">Questions & Answers</div>
+    <h2 class="sec-title-lg reveal" style="text-align:center">Quick <em>answers.</em></h2>
+    <div style="margin-top:40px">
+      <div class="faqp-item reveal"><h3>Is pickup really free?</h3><p>Yes, always — anywhere in Delhi NCR, with no minimum distance and no travel cost.</p></div>
+      <div class="faqp-item reveal d1"><h3>How do I get paid?</h3><p>Cash or UPI, the moment inspection is complete — no waiting for bank transfers.</p></div>
+      <div class="faqp-item reveal d2"><h3>Can the price change after inspection?</h3><p>Only if the device's actual condition doesn't match what you declared. Otherwise your quoted price stands.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="/faq" class="sec-more-link">View all FAQs →</a>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-
-<!-- CUSTOMER REVIEWS -->
-<section style="background:#F8FAFC;padding:96px 48px;border-top:1px solid #E2E8F0;position:relative;overflow:hidden">
-  <div class="float-phones">
-    <div class="float-phone" style="top:-30px;left:4%;width:110px;height:220px;animation-duration:26s"><svg viewBox="0 0 100 200" fill="currentColor"><rect x="8" y="4" width="84" height="192" rx="18"/></svg></div>
-    <div class="float-phone" style="top:35%;right:6%;width:80px;height:160px;animation-duration:19s;animation-delay:-6s"><svg viewBox="0 0 100 200" fill="currentColor"><rect x="8" y="4" width="84" height="192" rx="18"/></svg></div>
-    <div class="float-phone" style="bottom:-50px;left:42%;width:140px;height:280px;animation-duration:31s;animation-delay:-12s"><svg viewBox="0 0 100 200" fill="currentColor"><rect x="8" y="4" width="84" height="192" rx="18"/></svg></div>
-  </div>
-  <div style="max-width:1200px;margin:0 auto;position:relative;z-index:2">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px">
-      <div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2563EB;margin-bottom:14px" class="reveal">What Delhi says</div>
-        <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(36px,5vw,62px);font-weight:600;color:#0F172A;line-height:1.05;letter-spacing:-1px" class="reveal">
-          Real people.<br><em style="font-style:italic;color:#2563EB">Real payouts.</em>
-        </h2>
-      </div>
-      <div style="text-align:right;flex-shrink:0" class="reveal">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;color:#2563EB;line-height:1;letter-spacing:-2px">4.9<span style="font-size:22px;font-weight:400;font-style:italic;color:rgba(15,23,42,.4)"> / 5</span></div>
-        <div style="font-size:11px;color:rgba(15,23,42,.3);margin-top:4px;letter-spacing:.5px">Based on 200+ reviews</div>
-        <div style="color:#2563EB;font-size:18px;letter-spacing:3px;margin-top:4px">★★★★★</div>
-      </div>
-    </div>
-    <div style="background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);padding:13px 18px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <span style="font-size:13px;color:rgba(15,23,42,.6)">📸 Sold to us? Share your experience and tag us!</span>
-      <a href="https://www.instagram.com/secondhandmobilesdelhi/" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#2563EB;color:#fff;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.4px;text-decoration:none;text-transform:uppercase">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-        @secondhandmobilesdelhi
-      </a>
-    </div>
-    <div class="rev-slider-wrap reveal">
-      <button class="rev-arrow" onclick="revScroll(-1)" aria-label="Previous review">‹</button>
-      <div class="rev-slider" id="revSlider"></div>
-      <button class="rev-arrow" onclick="revScroll(1)" aria-label="Next review">›</button>
-    </div>
-    <div class="rev-dots" id="revDots"></div>
-    <div style="text-align:center;margin-top:40px">
-      <a href="sell.html" style="display:inline-block;background:#2563EB;color:#fff;padding:14px 36px;font-size:12px;font-weight:700;letter-spacing:.6px;text-decoration:none;text-transform:uppercase;transition:background .2s" onmouseenter="this.style.background='#1D4ED8'" onmouseleave="this.style.background='#2563EB'">Join Them — Sell Your Phone →</a>
-    </div>
-  </div>
-</section>
-<script>
-var REVIEWS=[
-  {name:'Rahul Sharma',loc:'Lajpat Nagar',quote:'"Excellent service! Best price for my phone compared to other buyers. Quick, transparent, and payment was instant."',initials:'RS',color:'#2563EB',insta:'rahul.s'},
-  {name:'Disha Poniya',loc:'Delhi, India ✅ Verified',quote:'"Very smooth experience from start to finish. Fair inspection, got exactly what was promised. Highly recommended!"',photo:'data:image/jpeg;base64,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',insta:'dishaponiya'},
-  {name:'Vishal Maheshwari',loc:'Delhi, India ✅ Verified',quote:'"Entire process took less than 20 minutes. Staff was professional, payment transferred immediately after inspection."',photo:'data:image/jpeg;base64,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',insta:'mahevvishal'},
-  {name:'Sunita Kapoor',loc:'Vasant Kunj',quote:'"Honest valuation, hassle-free process. No hidden charges, no unnecessary negotiations — just great service."',initials:'SK',color:'#7C3AED',insta:'sunita_k'},
-  {name:'Vikram Singh',loc:'Rohini, Delhi',quote:'"Online price estimate was very accurate. After inspection I received almost the same amount. Great experience!"',initials:'VS',color:'#D97706',insta:'vikram.s'},
-  {name:'Anjali Gupta',loc:'Greater Kailash',quote:'"Selling my phone was simple and stress-free. Team explained everything clearly and offered genuine market price."',initials:'AG',color:'#0891B2',insta:'anjali_g'},
-  {name:'Deepak Suyal',loc:'Delhi, India ✅ Verified',quote:'"Fast, reliable, and trustworthy. I checked with several buyers — this was the best offer. Will use again!"',photo:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAB4AHgDASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAcBAgQFBggDCf/EADUQAAEDAwMCAgcGBwAAAAAAAAEAAgMEBREGEiEHMUFRCBMiYXGBsRYyUmKRoRQVIzRDwdH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABgRAQEBAQEAAAAAAAAAAAAAAAABMRFB/9oADAMBAAIRAxEAPwDxkiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiq1pc4NA5PAQURZ0FAHAGadseTgNaNzsrKFnAOHtqhkZyIcge/ug06LfT6bq2Rl8c1O/jIaXbXH5HzWjeCCQRgjghBaiIgIiICIiAiIgK4BWq9nZAxwr4dweAwZeTgIQu06Laai1Pr6koqn+1iBmnH4mjjb8yUHy0lYLxXTNp7LaZ7ncHjcGMZubGPzHsPmpNt3RzqnPC+WripaEufuLHSBx7fl+i9O6UslttVC2K3UNNSxNAAbDGG8fLuulnDYqYSzPihZjvI8N+qktOPz01tYNQ2m5z09xcxz4htJjBwcY4zj91xU4dvJf97PK/QLXei7Xe3SVU0DXTBpyCOCvIvWnRP2fqG3GmYGU8shY9oHDT4FBGaIioIiICIiAiIgK5itVW90H2Uh9BtQ2vTGsJrheHubSmlLTsblxO5uAAo7C3+gJpYdYWySGCOeUTAMjfjD3YOB+qD3J026g2TVlPUQW2CWmqGE+rin4c8AdwPLzUb6iqnG6Vlz6g32uqKaA4ioYdwjhaXYy7aM9yAB25+C3XSWwX+t1HQ3+/173SNduhp2RhrYwWHIz3PlnjjzUpv0nbLjWyVfq8ztw2TDi3cM5AOPeiOa6bYq7LLJQzVc1teAYG1IcHQ44LRu52+49lyOuNAQ6vFbQVjKl9K0ghlO9rZXzd2NaXAgDAJJI7D3qaJqWO20Ygia1gAxhvZcfbpYn6xbC2vnp5fYlY2I/ePtNwfdyMjxCYrwPrrT1VpTV1z09WEOloZzHu/E3gtd82kH5rSKU/SsY1vXS/lrQ3cKd3Hj/QZyosQEREBERAREQFUd1REH2HZZlnrX266UlfGcPppmSt+LXA/6WE08KuUHtm8dR5dM6Ht2r7XS01axsgZNBI/YXCRuAWnzB8PIlYfTjrrZJa2sk1FdLg31vMHrKdgYwk5IGwA7RjgO3HnuvOVrutfqqxWzSrJ2Rfw9Qw4echzS0t7eJGO35lNHSuwaM1Dfa7TDtKuqJLZEySaprZB7Yzg+w0ADnwVmJ6lzXfUC3UFop7lFUMqI6podA5hy1wPYqH9L6wqqXqA6vD2VVTLSyBsbidjuQfDstR1trrDZIfsdZiGUtLP62KIOy2IOGXMBz2DuR5bsLhun13muPUa1QxOLmCTDuO4A5S4TXH9W7tc751HvlzvGwVktW5rwxuGtDfZaAPINAXKqV+v+mJKDXVVdWxuNHWygOcP8cmB9RyPgVFtVA+nmMbx8D4EeaivkiIgIiICIiAiIgvaeFU9kRBk2yrloquOohkdFJG4Oa5p5BBXeUmurzT3ituVNWCKpr27aiSL2C4YAwfkPqiKwcrcblNWTk+tklleeSXZJP/FM/o+aTNNU/wA1qGB9TJgA44Y3yCIpdFfShubYa2js0ZHrKgtqJh5NZkN/Un9lCdRG2opQ2R2HA5B8soiDWzUU8eSG72jxbyscgjuiIKIiICIiD//Z',insta:'the_dapper_deep'},
-  {name:'Meera Nair',loc:'Hauz Khas',quote:'"Excellent customer support and transparent buying process. Payment received immediately. Seamless experience."',initials:'MN',color:'#059669',insta:'meera.n'},
-  {name:'Rajan Arora',loc:'Pitampura, Delhi',quote:'"Highly recommend! Fair pricing, quick verification, and instant payment. Best service for selling used phones."',initials:'RA',color:'#9333EA',insta:'rajan.a'},
-  {name:'Kavita Sharma',loc:'Mayur Vihar',quote:'"One of the best places to sell a used smartphone. Professional staff, quick evaluation, highest value for device."',initials:'KS',color:'#4F46E5',insta:'kavita.sh'},
-  {name:'Priya Mehta',loc:'Saket, Delhi',quote:'"Sold my PS5 and got UPI in 10 minutes of inspection. The loyalty bonus added ₹4,200 extra. Unbeatable."',initials:'PM',color:'#DB2777'},
-  {name:'Amit Verma',loc:'Dwarka, Delhi',quote:'"Third time selling here. Every time — same day, honest price, instant cash. This is how it should work."',initials:'AV',color:'#0D9488'}
-];
-(function(){
-  var track=document.getElementById('revSlider');
-  var dotsWrap=document.getElementById('revDots');
-  if(!track) return;
-  REVIEWS.forEach(function(r,i){
-    var card=document.createElement('div');
-    card.className='rev-card';
-    var top=document.createElement('div');
-    top.className='rev-top';
-    var avatar;
-    if(r.photo){
-      avatar=document.createElement('img');
-      avatar.className='rev-photo';
-      avatar.src=r.photo;
-      avatar.alt=r.name;
-    }else{
-      avatar=document.createElement('div');
-      avatar.className='rev-initials';
-      avatar.style.background=r.color;
-      avatar.textContent=r.initials;
-    }
-    var info=document.createElement('div');
-    info.innerHTML='<div class="rev-name">'+r.name+'</div><div class="rev-loc">'+r.loc+'</div><div class="rev-stars">★★★★★</div>';
-    top.appendChild(avatar);top.appendChild(info);
-    var quote=document.createElement('p');
-    quote.className='rev-quote';
-    quote.textContent=r.quote;
-    card.appendChild(top);card.appendChild(quote);
-    if(r.insta){
-      var a=document.createElement('a');
-      a.className='rev-insta';
-      a.href='https://www.instagram.com/'+r.insta+'/';
-      a.target='_blank';
-      a.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> @'+r.insta;
-      card.appendChild(a);
-    }
-    track.appendChild(card);
-    if(dotsWrap){
-      var dot=document.createElement('button');
-      dot.className='rev-dot'+(i===0?' on':'');
-      dot.setAttribute('aria-label','Go to review '+(i+1));
-      dot.onclick=function(c){return function(){track.scrollTo({left:c.offsetLeft-16,behavior:'smooth'});};}(card);
-      dotsWrap.appendChild(dot);
-    }
-  });
-  var dots=dotsWrap?dotsWrap.children:[];
-  track.addEventListener('scroll',function(){
-    var w=track.children[0]?track.children[0].offsetWidth+20:340;
-    var idx=Math.round(track.scrollLeft/w);
-    for(var i=0;i<dots.length;i++) dots[i].classList.toggle('on', i===idx);
-  });
-  var revAuto=setInterval(function(){
-    if(track.scrollLeft+track.clientWidth>=track.scrollWidth-10){ track.scrollTo({left:0,behavior:'smooth'}); }
-    else{ track.scrollBy({left:(track.children[0]?track.children[0].offsetWidth:340)+20,behavior:'smooth'}); }
-  },4500);
-  track.addEventListener('mouseenter',function(){clearInterval(revAuto);});
-})();
-function revScroll(dir){
-  var track=document.getElementById('revSlider');
-  if(!track||!track.children[0]) return;
-  track.scrollBy({left:dir*(track.children[0].offsetWidth+20),behavior:'smooth'});
-}
-</script>
 <section class="cta-sec">
   <div class="cta-bg">SELL</div>
   <h2>Ready to get<br><em>paid today?</em></h2>
   <p>Join 2,400+ Delhi customers who chose the smarter way to sell.</p>
-  <a href="sell.html" class="btn-white">💸 Get My Price Now</a>
-  <a href="tel:+917827505579" class="btn-outline-white">📞 Call Us</a>
+  <a href="/sell-phone" class="cta-btn-white">💸 Get My Price Now</a>
+  <a href="tel:+917827505579" class="cta-btn-outline">📞 Call Us</a>
 </section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="foot-in">
-    <div class="foot-top">
-      <div>
-        <span class="foot-logo">Sambhi <b>Mobiles</b></span>
-        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill.</p>
-        <div class="foot-contact">
-          <a href="tel:+917827505579">📞 +91 7827505579</a>
-          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
-          <a href="https://www.instagram.com/secondhandmobilesdelhi/" target="_blank">📸 @secondhandmobilesdelhi</a>
-          <a href="#">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
-          <a href="admin.html">Admin ↗</a>
-        </div>
-      </div>
-      <div class="foot-col"><h4>Sell</h4><a href="sell.html">Sell iPhone</a><a href="sell.html">Sell Samsung</a><a href="sell.html">Sell OnePlus</a><a href="sell.html">Any brand</a></div>
-      <div class="foot-col"><h4>Buy</h4><a href="buy.html">iPhones</a><a href="buy.html">AirPods</a><a href="buy.html">Apple Watch</a><a href="buy.html">PlayStation</a></div>
-      <div class="foot-col"><h4>Company</h4><a href="account.html">My Account</a><a href="about.html">About Us</a><a href="blog.html">Blog</a></div>
-    </div>
-    <div class="foot-bottom">
-      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh</p>
-      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107 · Okhla, New Delhi</p>
-      <p style="width:100%;margin-top:6px">Website design by <a href="tel:+919650961136" style="color:rgba(242,237,230,.4);text-decoration:underline">Harpal Singh</a> · <a href="https://instagram.com/Harpall69" target="_blank" style="color:rgba(242,237,230,.4)">Instagram</a> · <a href="https://x.com/Harpall69" target="_blank" style="color:rgba(242,237,230,.4)">Twitter</a> · <a href="https://linkedin.com/in/Harpall69" target="_blank" style="color:rgba(242,237,230,.4)">LinkedIn</a></p>
-    </div>
-  </div>
-</footer>
 
 <!-- AUTH MODAL -->
 <div class="modal-bg" id="authModal">
@@ -1067,28 +439,21 @@ function revScroll(dir){
     <button class="auth-close" onclick="closeAuth()">✕</button>
     <h2>Welcome<br><em style="font-style:italic;color:#2563EB">back.</em></h2>
     <p class="auth-sub">Login or create an account to track your sells</p>
-
-    <!-- METHOD TABS -->
     <div class="auth-tabs" style="margin-bottom:20px">
       <button class="auth-tab on" id="tabL"   onclick="authSwitch('login')">🔑 Password</button>
       <button class="auth-tab"    id="tabOTP" onclick="authSwitch('otp')">📱 OTP</button>
       <button class="auth-tab"    id="tabR"   onclick="authSwitch('reg')">✨ Register</button>
     </div>
     <div class="auth-err" id="authErr"></div>
-
-    <!-- GOOGLE LOGIN (always visible) -->
-    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;color:#0F172A;padding:11px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:16px" onmouseenter="this.style.borderColor='#4285F4';this.style.boxShadow='0 2px 8px rgba(66,133,244,.2)'" onmouseleave="this.style.borderColor='#E2E8F0';this.style.boxShadow='none'">
+    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;color:#0F172A;padding:11px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:16px" onmouseenter="this.style.borderColor='#4285F4'" onmouseleave="this.style.borderColor='#E2E8F0'">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.9 3 4 11.9 4 23s8.9 20 20 20c11 0 20-8 20-20 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.7 0-14.3 4.4-17.7 11.7z"/><path fill="#FBBC05" d="M24 43c5.9 0 10.9-2 14.5-5.4l-6.7-5.5C29.8 33.6 27 34.5 24 34.5c-6 0-11.1-4-12.9-9.5L4.2 30c3.4 7.3 10.1 13 19.8 13z"/><path fill="#EA4335" d="M43.6 20H24v8.5h11.8c-.8 2.4-2.3 4.4-4.3 5.8l6.7 5.5C41.8 36.2 44 30 44 24c0-1.3-.2-2.7-.4-4z"/></svg>
       Continue with Google
     </button>
-
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
       <div style="flex:1;height:1px;background:rgba(15,23,42,.08)"></div>
       <span style="font-size:11px;color:rgba(15,23,42,.25);font-weight:600;letter-spacing:.5px">OR</span>
       <div style="flex:1;height:1px;background:rgba(15,23,42,.08)"></div>
     </div>
-
-    <!-- PASSWORD LOGIN -->
     <div id="loginForm">
       <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
       <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -1097,8 +462,6 @@ function revScroll(dir){
         <button onclick="authSwitch('otp')" style="background:none;border:none;color:rgba(37,99,235,.7);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Forgot password? Login with OTP instead</button>
       </div>
     </div>
-
-    <!-- OTP LOGIN -->
     <div id="otpForm" style="display:none">
       <div id="otpStep1">
         <div class="fg"><label>Your Name <span style="opacity:.4;font-size:10px">(for new accounts)</span></label><input type="text" id="otpName" placeholder="Your full name"></div>
@@ -1118,8 +481,6 @@ function revScroll(dir){
         </div>
       </div>
     </div>
-
-    <!-- REGISTER -->
     <div id="regForm" style="display:none">
       <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
       <div class="fg"><label>Mobile Number</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
@@ -1130,8 +491,44 @@ function revScroll(dir){
   </div>
 </div>
 
-<div class="toast-wrap" id="toastWrap"></div>
+<div class="toast-wrap"></div>
 
+<!-- FOOTER -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="https://www.instagram.com/secondhandmobilesdelhi/" target="_blank">📸 @secondhandmobilesdelhi</a>
+          <a href="/contact">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="/admin">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="/sell-phone/apple">Sell iPhone</a><a href="/sell-phone/samsung">Sell Samsung</a><a href="/sell-phone/oneplus">Sell OnePlus</a><a href="/sell-phone">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="/buy">iPhones</a><a href="/buy">AirPods</a><a href="/buy">Apple Watch</a><a href="/buy">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="/about">About Us</a><a href="/how-it-works">How It Works</a><a href="/why-choose-us">Why Choose Us</a><a href="/blog">Blog</a></div>
+      <div class="foot-col"><h4>Support</h4><a href="/faq">FAQs</a><a href="/reviews">Reviews</a><a href="/contact">Contact Us</a><a href="/account">My Account</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></p>
+      <p style="width:100%;margin-top:6px">Website design by <a href="tel:+919650961136">Harpal Singh</a> · <a href="https://instagram.com/Harpall69" target="_blank">Instagram</a> · <a href="https://x.com/Harpall69" target="_blank">Twitter</a> · <a href="https://linkedin.com/in/Harpall69" target="_blank">LinkedIn</a></p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107 · Okhla, New Delhi</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+var FIREBASE_CONFIG={apiKey:"AIzaSyDHG4dABs-YHKKU1MaNL2w-4Sl9cg74hRU",authDomain:"sambhi-mobiles.firebaseapp.com",projectId:"sambhi-mobiles",appId:"1:586493572164:web:796d629dcad7bcc12db811"};
+window.firebaseAuth=null;
+try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(FIREBASE_CONFIG);window.firebaseAuth=firebase.auth();}}catch(e){}
+</script>
+<script src="shared.js"></script>
 <script>
 // ── BRANDS ─────────────────────────────────────────────────────────
 var BRANDS=[
@@ -1151,7 +548,7 @@ var BRANDS=[
   if(!g) return;
   BRANDS.forEach(function(b){
     var a=document.createElement('a');
-    a.href='sell.html?brand='+(b.k==='apple'?'iphone':b.k);
+    a.href='/sell-phone/'+(b.k==='apple'?'iphone':b.k);
     a.className='brand-tile';
     var ic=document.createElement('div');ic.className='bt-icon';ic.innerHTML=b.svg;
     var nm=document.createElement('div');nm.className='bt-name';nm.textContent=b.n;
@@ -1233,94 +630,21 @@ setInterval(function(){
   if(el){el.style.opacity='0';setTimeout(function(){el.innerHTML=NOTIFS[nIdx];el.style.opacity='1';},280);}
 },3000);
 
-// ── LOYALTY CALC ─────────────────────────────────────────────────
-function calcLoy(v){
-  v=parseInt(v);
-  var fmt=function(n){return'₹'+n.toLocaleString('en-IN');};
-  document.getElementById('loyVal').textContent=fmt(v);
-  document.getElementById('payNorm').textContent=fmt(v);
-  var bonus=Math.round(v*.1);
-  document.getElementById('payLoyal').textContent=fmt(v+bonus);
-  document.getElementById('payBonus').textContent='+'+fmt(bonus)+' extra';
-}
-
-// ── SCROLL ───────────────────────────────────────────────────────
+// ── STATS COUNTER (fires once .stats-strip enters view) ──────────
 var counted=false;
 window.addEventListener('scroll',function(){
-  var prog=document.getElementById('progress');
-  if(prog) prog.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
-  document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
-    if(el.getBoundingClientRect().top<window.innerHeight*.88) el.classList.add('in');
-  });
-  if(!counted){
-    var strip=document.querySelector('.stats-strip');
-    if(strip&&strip.getBoundingClientRect().top<window.innerHeight){
-      counted=true;
-      var start=0,target=2400,steps=80;
-      var inc=target/steps;
-      var t=setInterval(function(){start+=inc;if(start>=target){start=target;clearInterval(t);}
-        var el=document.getElementById('cntDevices');
-        if(el)el.textContent=Math.floor(start).toLocaleString('en-IN');
-      },1400/steps);
-    }
+  if(counted) return;
+  var strip=document.querySelector('.stats-strip');
+  if(strip&&strip.getBoundingClientRect().top<window.innerHeight){
+    counted=true;
+    var start=0,target=2400,steps=80;
+    var inc=target/steps;
+    var t=setInterval(function(){start+=inc;if(start>=target){start=target;clearInterval(t);}
+      var el=document.getElementById('cntDevices');
+      if(el)el.textContent=Math.floor(start).toLocaleString('en-IN');
+    },1400/steps);
   }
 },{passive:true});
-// Initial reveal
-setTimeout(function(){
-  document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){
-    if(el.getBoundingClientRect().top<window.innerHeight*.88) el.classList.add('in');
-  });
-},100);
-
-// ── MOBILE NAV ───────────────────────────────────────────────────
-function openMobNav(){document.getElementById('mobNav').classList.add('open');document.body.style.overflow='hidden';}
-function closeMobNav(){document.getElementById('mobNav').classList.remove('open');document.body.style.overflow='';}
-
-// ── AUTH ─────────────────────────────────────────────────────────
-function openAuth(){document.getElementById('authModal').classList.add('open');document.body.style.overflow='hidden';}
-function closeAuth(){document.getElementById('authModal').classList.remove('open');document.body.style.overflow='';}
-function authSwitch(tab){
-  document.getElementById('tabL').classList.toggle('on',tab==='login');
-  document.getElementById('tabR').classList.toggle('on',tab==='reg');
-  document.getElementById('loginForm').style.display=tab==='login'?'':'none';
-  document.getElementById('regForm').style.display=tab==='reg'?'':'none';
-  document.getElementById('authErr').style.display='none';
-}
-function showErr(msg){var e=document.getElementById('authErr');e.textContent=msg;e.style.display='block';}
-function doLogin(){
-  var ph=(document.getElementById('lPhone').value||'').trim();
-  var pw=(document.getElementById('lPw').value||'').trim();
-  if(!ph||!pw){showErr('Enter phone number and password.');return;}
-  var r=SMB.customer.login(ph,pw);
-  if(!r.ok){showErr(r.err);return;}
-  closeAuth();smbUpdateNav();showToast('Welcome back, '+r.customer.name.split(' ')[0]+'!');
-}
-function doRegister(){
-  var name=(document.getElementById('rName').value||'').trim();
-  var ph=(document.getElementById('rPhone').value||'').trim();
-  var alt=(document.getElementById('rAlt').value||'').trim();
-  var pw=(document.getElementById('rPw').value||'').trim();
-  if(!name){showErr('Enter your full name.');return;}
-  if(ph.length<10){showErr('Enter a valid 10-digit mobile number.');return;}
-  if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
-  var r=SMB.customer.register(name,ph,alt,pw,'');
-  if(!r.ok){showErr(r.err);return;}
-  closeAuth();smbUpdateNav();showToast('Welcome to Sambhi Mobiles, '+name.split(' ')[0]+'! 🎉');
-}
-function doLogout(){SMB.customer.logout();smbUpdateNav();showToast('Logged out.');}
-
-// ── TOAST ─────────────────────────────────────────────────────────
-function showToast(msg,type){
-  var w=document.getElementById('toastWrap');if(!w)return;
-  var t=document.createElement('div');t.className='toast';t.textContent=msg;
-  w.appendChild(t);
-  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add('show');});});
-  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},3800);
-}
-
-// ── INIT ──────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',function(){smbUpdateNav();});
-document.addEventListener('click',function(e){if(e.target.id==='authModal')closeAuth();});
 </script>
 </body>
 </html>

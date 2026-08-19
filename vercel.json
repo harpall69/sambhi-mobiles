@@ -1,32 +1,20 @@
 {
   "routes": [
-    {
-      "src": "/sell",
-      "dest": "/sell.html"
-    },
-    {
-      "src": "/buy",
-      "dest": "/buy.html"
-    },
-    {
-      "src": "/about",
-      "dest": "/about.html"
-    },
-    {
-      "src": "/blog",
-      "dest": "/blog.html"
-    },
-    {
-      "src": "/admin",
-      "dest": "/admin.html"
-    },
-    {
-      "src": "/account",
-      "dest": "/account.html"
-    },
-    {
-      "src": "/track",
-      "dest": "/track.html"
-    }
+    { "src": "/sell", "status": 301, "headers": { "Location": "/sell-phone" } },
+    { "src": "/sell-phone/(?<brand>[^/]+)", "dest": "/sell.html?brand=$brand" },
+    { "src": "/sell-phone", "dest": "/sell.html" },
+    { "src": "/buy", "dest": "/buy.html" },
+    { "src": "/about", "dest": "/about.html" },
+    { "src": "/blog", "dest": "/blog.html" },
+    { "src": "/how-it-works", "dest": "/how-it-works.html" },
+    { "src": "/why-choose-us", "dest": "/why-choose-us.html" },
+    { "src": "/reviews", "dest": "/reviews.html" },
+    { "src": "/faq", "dest": "/faq.html" },
+    { "src": "/contact", "dest": "/contact.html" },
+    { "src": "/privacy-policy", "dest": "/privacy-policy.html" },
+    { "src": "/terms", "dest": "/terms.html" },
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/account", "dest": "/account.html" },
+    { "src": "/track", "dest": "/track.html" }
   ]
 }

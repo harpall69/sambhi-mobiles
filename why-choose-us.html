@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%232563EB'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%232563EB' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%232563EB'/></svg>">
+<link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%232563EB'/><rect x='10' y='6' width='16' height='24' rx='3' fill='white' opacity='.95'/><rect x='14' y='8' width='8' height='14' rx='1' fill='%232563EB' opacity='.7'/><circle cx='18' cy='26' r='1.5' fill='%232563EB'/></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Why Choose Us — Sambhi Mobiles Delhi</title>
+<meta name="description" content="Zero processing fee, free doorstep pickup, GST bill + IMEI certificate, and a 10% loyalty bonus for life. See what makes Sambhi Mobiles different — and calculate your loyalty bonus.">
+<!-- TODO: replace REPLACE-WITH-YOUR-DOMAIN below with your real live domain once you have one -->
+<link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN/why-choose-us">
+<script src="config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* WHY CHOOSE US PAGE */
+.sec{padding:96px 48px;max-width:1280px;margin:0 auto}
+.sec-title-lg{font-family:var(--f-display);font-size:clamp(32px,5vw,60px);font-weight:600;color:var(--ink);line-height:1.05;letter-spacing:-1px}
+.sec-title-lg em{font-style:italic;color:var(--brand)}
+/* PROMISE */
+.promise-sec{background:#F5F3FF;padding:96px 48px}
+.promise-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:48px}
+.promise-card{background:var(--white);padding:40px 32px;transition:background .2s}
+.promise-card:hover{background:#F8F5FF}
+.pc-icon{font-size:30px;margin-bottom:18px;display:block}
+.pc-title{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:9px;letter-spacing:-.2px}
+.pc-body{font-size:13px;color:var(--muted);line-height:1.8}
+.pc-badge{display:inline-block;background:var(--purple);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;margin-top:14px}
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:48px}
+.val-card{background:var(--white);padding:40px 32px;transition:background .2s}
+.val-card:hover{background:#F8F5FF}
+.val-icon{font-size:28px;margin-bottom:16px}
+.val-title{font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.3px}
+.val-body{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300}
+/* STATS */
+.stats-strip{background:#EFF6FF;padding:72px 48px}
+.stats-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+.stat-item{position:relative;text-align:center}
+.stat-item::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(15,23,42,.12)}
+.stat-item:last-child::after{display:none}
+.stat-num{font-family:var(--f-display);font-size:clamp(40px,5vw,64px);font-weight:600;color:var(--ink);line-height:1;letter-spacing:-2px}
+.stat-num .unit{font-size:.5em;font-style:italic;color:var(--brand);font-weight:400}
+.stat-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:8px}
+/* LOYALTY CALCULATOR */
+.loyalty-sec{background:#EFF6FF;padding:96px 48px}
+.loyalty-in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.loyalty-calc{background:var(--white);border:1px solid var(--border);padding:36px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+.lc-title{font-family:var(--f-display);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.lc-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
+.lc-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.lc-slider{width:100%;accent-color:var(--brand);margin-bottom:14px}
+.lc-val{font-family:var(--f-display);font-size:34px;font-weight:600;color:var(--brand);margin-bottom:20px;letter-spacing:-1px}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-box{padding:18px}
+.pay-box.normal{background:var(--cream2)}
+.pay-box.loyal{background:var(--brand)}
+.pay-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.pay-box.loyal .pay-lbl{color:rgba(255,255,255,.7)}
+.pay-amt{font-family:var(--f-display);font-size:26px;font-weight:600;color:var(--ink);letter-spacing:-1px}
+.pay-box.loyal .pay-amt{color:#fff}
+.pay-note{font-size:10px;color:var(--muted);margin-top:3px}
+.pay-box.loyal .pay-note{color:rgba(255,255,255,.6)}
+.pay-tag{display:inline-block;background:rgba(255,255,255,.25);color:#fff;font-size:9px;font-weight:700;padding:3px 7px;margin-top:7px;letter-spacing:.3px}
+@media(max-width:1024px){.promise-grid{grid-template-columns:1fr 1fr}.values-grid{grid-template-columns:1fr 1fr}.loyalty-in{grid-template-columns:1fr;gap:40px}.sec{padding:64px 28px}}
+@media(max-width:640px){.promise-grid,.values-grid{grid-template-columns:1fr}.stats-in{grid-template-columns:1fr 1fr;gap:24px}.stat-item::after{display:none}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav id="nav">
+  <a href="/" class="nav-logo" style="display:flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#2563EB"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#2563EB" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#2563EB"/><circle cx="24" cy="9" r="2.5" fill="#2563EB"/><circle cx="24" cy="9" r="1" fill="white"/></svg><span>Sambhi <strong style="color:#2563EB">Mobiles</strong></span></a>
+  <div class="nav-links">
+    <a href="/" class="nl">Home</a>
+    <a href="/sell-phone" class="nl">Sell</a>
+    <a href="/buy" class="nl">Buy</a>
+    <a href="/about" class="nl">About</a>
+    <a href="/blog" class="nl">Blog</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
+    <a href="/account" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
+    <button class="nav-acct" data-auth style="display:none;font-size:12px;letter-spacing:.4px" onclick="doLogout()">Logout</button>
+    <a href="/sell-phone" class="nav-cta">Get My Price</a>
+  </div>
+  <button class="burger" onclick="openMobNav()">☰</button>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeMobNav()">✕</button>
+  <a class="mob-nl" href="/" onclick="closeMobNav()">Home</a>
+  <a class="mob-nl" href="/sell-phone" onclick="closeMobNav()">Sell</a>
+  <a class="mob-nl" href="/buy" onclick="closeMobNav()">Buy</a>
+  <a class="mob-nl" href="/about" onclick="closeMobNav()">About</a>
+  <a class="mob-nl" href="/blog" onclick="closeMobNav()">Blog</a>
+  <a class="mob-nl" href="/sell-phone">Sell Now →</a>
+</div>
+
+<div class="pg-hero">
+  <div class="pg-hero-bg-grid"></div>
+  <div class="pg-hero-in">
+    <div class="pg-eyebrow">The Sambhi Promise</div>
+    <h1 class="pg-h1">Every customer.<br><em>Every single time.</em></h1>
+    <p class="pg-sub">Four guarantees we make to every single person who sells us a phone — no exceptions, no fine print.</p>
+  </div>
+</div>
+
+<div class="promise-sec">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="promise-grid">
+      <div class="promise-card reveal"><span class="pc-icon">🏅</span><h3 class="pc-title">10% more than anywhere else.</h3><p class="pc-body">We check what other phone-buying websites are offering — then beat it by 10%. More cash in your hand, every single time.</p><span class="pc-badge">10% higher, guaranteed</span></div>
+      <div class="promise-card reveal d1"><span class="pc-icon">🚫</span><h3 class="pc-title">No small-print deductions</h3><p class="pc-body">No cuts for minor scratches, missing box, or small everyday wear. The price we quote is the price you're paid.</p><span class="pc-badge">Guaranteed</span></div>
+      <div class="promise-card reveal d2"><span class="pc-icon">🚗</span><h3 class="pc-title">Free doorstep pickup</h3><p class="pc-body">Anywhere in Delhi NCR. No minimum distance. No travel cost. Zero exceptions.</p><span class="pc-badge">Always free</span></div>
+      <div class="promise-card reveal d3"><span class="pc-icon">🏆</span><h3 class="pc-title">10% loyalty — forever</h3><p class="pc-body">Every return sale earns 10% extra. Automatic. No expiry. No conditions.</p><span class="pc-badge">Lifetime</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stats-in">
+    <div class="stat-item reveal"><div class="stat-num">2,400<span class="unit">+</span></div><div class="stat-lbl">Devices Purchased</div></div>
+    <div class="stat-item reveal d1"><div class="stat-num">4.9<span class="unit">★</span></div><div class="stat-lbl">Customer Rating</div></div>
+    <div class="stat-item reveal d2"><div class="stat-num">90<span class="unit">min</span></div><div class="stat-lbl">Avg Pickup Time</div></div>
+    <div class="stat-item reveal d3"><div class="stat-num">100<span class="unit">%</span></div><div class="stat-lbl">IMEI Verified</div></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-eyebrow reveal">What makes us different</div>
+  <h2 class="sec-title-lg reveal">Our values.</h2>
+  <div class="values-grid">
+    <div class="val-card reveal"><div class="val-icon">🤝</div><h3 class="val-title">Radical transparency</h3><p class="val-body">We show you exactly how we calculate your price — model, year, battery, condition. No black box. No surprises at the door. Ever.</p></div>
+    <div class="val-card reveal d1"><div class="val-icon">🔒</div><h3 class="val-title">Zero pressure</h3><p class="val-body">We call once to confirm pickup. That's it. No repeated follow-ups, no WhatsApp spam, no sales pressure. Respect is non-negotiable.</p></div>
+    <div class="val-card reveal d2"><div class="val-icon">⚡</div><h3 class="val-title">Speed above all</h3><p class="val-body">Most pickups happen within 90 minutes of you filling the form. Cash or UPI the moment inspection is done. No waiting.</p></div>
+  </div>
+</div>
+
+<div class="loyalty-sec">
+  <div class="loyalty-in">
+    <div class="reveal-left">
+      <div class="sec-eyebrow">Returning customer bonus</div>
+      <h2 class="sec-title-lg">10% extra.<br><em>Every time you</em><br>return.</h2>
+      <p style="font-size:14px;color:rgba(15,23,42,.4);line-height:1.8;max-width:360px;margin-top:14px">The only gadget buyer in Delhi with zero fees and a lifetime loyalty reward. Applied automatically — try the calculator to see how much extra you'd earn.</p>
+    </div>
+    <div class="loyalty-calc reveal">
+      <div class="lc-title">Loyalty Bonus Calculator</div>
+      <div class="lc-sub">See how much extra you earn as a returning customer</div>
+      <div class="lc-lbl">Your device value</div>
+      <input type="range" class="lc-slider" min="3000" max="120000" value="50000" step="1000" id="loySlider" oninput="calcLoy(this.value)">
+      <div class="lc-val" id="loyVal">₹50,000</div>
+      <div class="pay-row">
+        <div class="pay-box normal"><div class="pay-lbl">First time</div><div class="pay-amt" id="payNorm">₹50,000</div><div class="pay-note">Standard payout</div></div>
+        <div class="pay-box loyal"><div class="pay-lbl">Returning customer</div><div class="pay-amt" id="payLoyal">₹55,000</div><div class="pay-note">+10% loyalty bonus</div><div class="pay-tag" id="payBonus">+₹5,000 extra</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-sec">
+  <div class="cta-bg">SELL</div>
+  <h2>Ready to get<br><em>paid today?</em></h2>
+  <p>Join 2,400+ Delhi customers who've chosen the smarter way.</p>
+  <a href="/sell-phone" class="cta-btn-white">💸 Get My Price Now</a>
+  <a href="tel:+917827505579" class="cta-btn-outline">📞 Call Us</a>
+</div>
+
+<div class="modal-bg" id="authModal">
+  <div class="auth-box" style="max-width:420px">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <h2>Welcome<br><em style="font-style:italic;color:#2563EB">back.</em></h2>
+    <p class="auth-sub">Login or create an account</p>
+    <div class="auth-tabs" style="margin-bottom:20px">
+      <button class="auth-tab on" id="tabL"   onclick="authSwitch('login')">🔑 Password</button>
+      <button class="auth-tab"    id="tabOTP" onclick="authSwitch('otp')">📱 OTP</button>
+      <button class="auth-tab"    id="tabR"   onclick="authSwitch('reg')">✨ Register</button>
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <button onclick="signInWithGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1.5px solid #E2E8F0;color:#0F172A;padding:11px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:16px" onmouseenter="this.style.borderColor='#4285F4'" onmouseleave="this.style.borderColor='#E2E8F0'">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3 12.9 3 4 11.9 4 23s8.9 20 20 20c11 0 20-8 20-20 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 16 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 5.1 29.6 3 24 3c-7.7 0-14.3 4.4-17.7 11.7z"/><path fill="#FBBC05" d="M24 43c5.9 0 10.9-2 14.5-5.4l-6.7-5.5C29.8 33.6 27 34.5 24 34.5c-6 0-11.1-4-12.9-9.5L4.2 30c3.4 7.3 10.1 12 19.8 13z"/><path fill="#EA4335" d="M43.6 20H24v8.5h11.8c-.8 2.4-2.3 4.4-4.3 5.8l6.7 5.5C41.8 36.2 44 30 44 24c0-1.3-.2-2.7-.4-4z"/></svg>
+      Continue with Google
+    </button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="flex:1;height:1px;background:rgba(15,23,42,.08)"></div>
+      <span style="font-size:11px;color:rgba(15,23,42,.3);font-weight:600">OR</span>
+      <div style="flex:1;height:1px;background:rgba(15,23,42,.08)"></div>
+    </div>
+    <div id="loginForm">
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="lPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lPw" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-btn" onclick="doLogin()">Login →</button>
+      <div style="text-align:center;margin-top:10px"><button onclick="authSwitch('otp')" style="background:none;border:none;color:rgba(37,99,235,.7);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">Forgot password? Use OTP</button></div>
+    </div>
+    <div id="otpForm" style="display:none">
+      <div id="otpStep1">
+        <div class="fg"><label>Your Name</label><input type="text" id="otpName" placeholder="Your full name"></div>
+        <div class="fg"><label>Mobile Number</label><input type="tel" id="otpPhone" placeholder="10-digit WhatsApp number" maxlength="10" inputmode="numeric"></div>
+        <button class="auth-btn" onclick="sendOTP()">Send OTP via WhatsApp →</button>
+        <p style="font-size:11px;color:rgba(15,23,42,.4);margin-top:10px;text-align:center;line-height:1.6">A 6-digit code will be sent to your WhatsApp</p>
+      </div>
+      <div id="otpStep2" style="display:none">
+        <div style="background:rgba(100,200,100,.08);border:1px solid rgba(100,200,100,.2);padding:12px 14px;border-radius:8px;margin-bottom:16px">
+          <div style="font-size:12px;color:rgba(100,200,100,.8);font-weight:600">📱 OTP sent to WhatsApp!</div>
+          <div style="font-size:11px;color:rgba(15,23,42,.45);margin-top:3px">Check WhatsApp from Sambhi Mobiles</div>
+        </div>
+        <div class="fg"><label>Enter 6-Digit OTP</label><input type="text" id="otpCode" placeholder="XXXXXX" maxlength="6" inputmode="numeric" style="font-size:24px;letter-spacing:8px;text-align:center" onkeydown="if(event.key==='Enter')verifyOTP()"></div>
+        <button class="auth-btn" onclick="verifyOTP()">Verify &amp; Login →</button>
+        <div style="text-align:center;margin-top:10px"><button onclick="resetOTP()" style="background:none;border:none;color:rgba(15,23,42,.4);font-size:12px;cursor:pointer;font-family:inherit;text-decoration:underline">← Change number</button></div>
+      </div>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Full Name</label><input type="text" id="rName" placeholder="Your full name"></div>
+      <div class="fg"><label>Mobile Number</label><input type="tel" id="rPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric"></div>
+      <div class="fg"><label>Alternate Mobile <span style="opacity:.4;font-size:10px">(optional)</span></label><input type="tel" id="rAlt" placeholder="Second number" maxlength="10"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPw" placeholder="Min 6 characters"></div>
+      <button class="auth-btn" onclick="doRegister()">Create Account →</button>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap"></div>
+<footer>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div>
+        <span class="foot-logo">Sambhi <span>Mobiles</span></span>
+        <p class="foot-desc">Delhi's most trusted platform to sell any smartphone and buy certified pre-owned devices. Free pickup, instant cash, GST bill guaranteed.</p>
+        <div class="foot-contact">
+          <a href="tel:+917827505579">📞 +91 7827505579</a>
+          <a href="mailto:mobilessambhi@gmail.com">📧 mobilessambhi@gmail.com</a>
+          <a href="https://www.instagram.com/secondhandmobilesdelhi/" target="_blank">📸 @secondhandmobilesdelhi</a>
+          <a href="/contact">📍 1498 Bhagat Niwas, 13 Govind Puri, New Delhi – 110019</a>
+          <a href="/admin">Admin ↗</a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Sell</h4><a href="/sell-phone/apple">Sell iPhone</a><a href="/sell-phone/samsung">Sell Samsung</a><a href="/sell-phone/oneplus">Sell OnePlus</a><a href="/sell-phone">Any brand</a></div>
+      <div class="foot-col"><h4>Buy</h4><a href="/buy">iPhones</a><a href="/buy">AirPods</a><a href="/buy">Apple Watch</a><a href="/buy">PlayStation</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="/about">About Us</a><a href="/how-it-works">How It Works</a><a href="/why-choose-us" class="active">Why Choose Us</a><a href="/blog">Blog</a></div>
+      <div class="foot-col"><h4>Support</h4><a href="/faq">FAQs</a><a href="/reviews">Reviews</a><a href="/contact">Contact Us</a><a href="/account">My Account</a></div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2025 Sambhi Mobiles · GSTIN: 07BWPPS6835M1ZI · PAN: BWPPS6835M · Prop: Amrik Singh · <a href="/terms">Terms</a> · <a href="/privacy-policy">Privacy</a></p>
+      <p style="width:100%;margin-top:6px">Website design by <a href="tel:+919650961136">Harpal Singh</a> · <a href="https://instagram.com/Harpall69" target="_blank">Instagram</a> · <a href="https://x.com/Harpall69" target="_blank">Twitter</a> · <a href="https://linkedin.com/in/Harpall69" target="_blank">LinkedIn</a></p>
+      <p>IDFC First Bank · Acc: 10084177443 · IFSC: IDFB0020107 · Okhla, New Delhi</p>
+    </div>
+  </div>
+</footer>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+var FIREBASE_CONFIG={apiKey:"AIzaSyDHG4dABs-YHKKU1MaNL2w-4Sl9cg74hRU",authDomain:"sambhi-mobiles.firebaseapp.com",projectId:"sambhi-mobiles",appId:"1:586493572164:web:796d629dcad7bcc12db811"};
+window.firebaseAuth=null;
+try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(FIREBASE_CONFIG);window.firebaseAuth=firebase.auth();}}catch(e){}
+</script>
+<script src="shared.js"></script>
+<script>
+// ── LOYALTY CALCULATOR ───────────────────────────────────────────
+function calcLoy(v){
+  v=parseInt(v);
+  var fmt=function(n){return'₹'+n.toLocaleString('en-IN');};
+  document.getElementById('loyVal').textContent=fmt(v);
+  document.getElementById('payNorm').textContent=fmt(v);
+  var bonus=Math.round(v*.1);
+  document.getElementById('payLoyal').textContent=fmt(v+bonus);
+  document.getElementById('payBonus').textContent='+'+fmt(bonus)+' extra';
+}
+</script>
+</body>
+</html>
