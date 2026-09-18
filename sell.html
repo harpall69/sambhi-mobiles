@@ -49,6 +49,7 @@
 .model-grid .cb::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% -10%,rgba(37,99,235,.35),transparent 60%);pointer-events:none}
 .model-grid .cb-em{margin-bottom:10px;position:relative;z-index:1;display:flex;justify-content:center}
 .model-grid .cb-em svg{width:56px;height:56px}
+.model-grid .cb-em img{width:56px;height:56px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;box-sizing:border-box}
 .model-grid .cb-lbl{font-size:11px;line-height:1.35;white-space:normal;color:#fff;position:relative;z-index:1;font-weight:700}
 .model-grid .cb:hover{border-color:rgba(37,99,235,.5)}
 .model-grid .cb.on{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand),0 10px 28px rgba(37,99,235,.35)}
@@ -136,7 +137,16 @@
 .imei-hint{font-size:11px;margin-top:4px;font-weight:500}
 .pin-hint{font-size:11px;margin-top:4px;font-weight:500}
 @media(max-width:1100px){.sell-layout{grid-template-columns:1fr;padding:0 28px 60px}.sidebar{position:static}}
-@media(max-width:640px){.cond-grid{grid-template-columns:1fr 1fr}.form-body{padding:20px}.form-header{padding:18px 20px}.submit-area{padding:18px 20px}}
+@media(max-width:640px){
+  .cond-grid{grid-template-columns:1fr 1fr}
+  .form-body{padding:20px 20px 96px}
+  .form-header{padding:18px 20px}
+  .submit-area{padding:18px 20px}
+  /* Continue/Back pinned to the viewport bottom so they're never scrolled out
+     of view below a long question (model grid, multi-select lists, etc). */
+  .condQ-nav{position:fixed;left:0;right:0;bottom:0;z-index:200;margin:0;background:var(--white);border-top:1px solid var(--border);padding:12px 20px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(15,23,42,.06)}
+  .condQ-continue{flex:1;text-align:center}
+}
 
 /* ── PREMIUM WIZARD UPGRADE ───────────────────────────────────── */
 .form-card{border-radius:20px;box-shadow:0 2px 8px rgba(15,23,42,.05),0 24px 64px rgba(15,23,42,.07);border-color:rgba(15,23,42,.06)}
@@ -160,10 +170,11 @@
 .device-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% -10%,rgba(37,99,235,.35),transparent 60%);pointer-events:none}
 .dh-icon{width:52px;height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
 .dh-icon svg{width:48px;height:48px}
+.dh-icon img{width:48px;height:48px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;box-sizing:border-box}
 .dh-info{position:relative;z-index:1;min-width:0}
 .dh-name{font-family:var(--f-display);font-size:18px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dh-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.3px}
-@media(max-width:640px){.device-hero{margin:0 20px 16px;padding:14px 16px}.dh-icon{width:44px;height:44px}.dh-icon svg{width:40px;height:40px}}
+@media(max-width:640px){.device-hero{margin:0 20px 16px;padding:14px 16px}.dh-icon{width:44px;height:44px}.dh-icon svg{width:40px;height:40px}.dh-icon img{width:40px;height:40px}}
 
 /* Step transition — fade + slight rise on every question change */
 .condQ-step{animation:cqIn .28s ease}
@@ -1004,6 +1015,132 @@ var BRAND_LOGOS={
   airpods:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>',
   applewatch:'<svg viewBox="0 0 170 210"><path fill="#1D1D1F" d="M150 72c-1 1-21 12-21 37s25 39 26 39c0 1-4 14-13 28-8 12-17 24-30 24s-17-8-32-8c-15 0-20 8-32 8s-20-11-30-25C8 154 0 129 0 106c0-41 26-62 52-62 14 0 25 9 33 9s21-10 37-10c6 0 21 1 33 15zm-46-40c6-7 10-17 10-27l-1-4c-10 0-21 7-28 15-6 6-11 16-11 26l1 4c1 0 2 0 3 0 9 0 20-6 26-14z"/></svg>'
 };
+// ── REAL DEVICE PHOTOS ──────────────────────────────────────────
+// Verified official/retailer product photos, keyed by full model name as
+// each brand markets it. MODELS[] above drops the brand prefix for some
+// brands (oneplus's Nord line, all of oppo/vivo) to keep labels short, so
+// realImgFor() retries with the brand prefix — always an exact-string
+// lookup, never substring matching, so "X100" can never accidentally
+// resolve to the "X100 Pro" photo.
+var DEV_IMG={
+  'iPhone 16 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-7inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 16':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-7inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 15':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-black?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14 Plus':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 14':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-7inch-sierrablue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-pro-finish-select-202209-6-1inch-sierrablue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-finish-select-202209-6-1inch-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 13 Mini':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-mini-finish-select-202209-blue?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-max-pacific-blue-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-pacific-blue-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-black-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 12 Mini':    'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-mini-black-select-2020?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11 Pro Max': 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-pro-max-midnight-green-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11 Pro':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-pro-midnight-green-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone 11':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-11-black-select-2019?wid=200&hei=200&fmt=png-alpha',
+  'iPhone SE (2022)':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-se-finish-select-202203-midnight?wid=200&hei=200&fmt=png-alpha',
+  'iPhone SE (2020)':  'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-se-black-select-202004?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XR':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xr-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XS Max':     'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xs-max-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone XS':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-xs-black-select-201809?wid=200&hei=200&fmt=png-alpha',
+  'iPhone X':          'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-x-black-select-2017?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen (USB-C)':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MTJV3?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 2nd Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Pro 1st Gen':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MWP22?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Max (USB-C)':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-midnight-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods Max':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-spacegray-202011?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 4 (ANC)':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-anc-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 4':         'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-select-202409?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 3rd Gen':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MME73?wid=200&hei=200&fmt=png-alpha',
+  'AirPods 2nd Gen':   'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MV7N2?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Ultra 2':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra-2-finish-unselect-gallery-1-202309?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 9 45mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-45mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 9 41mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s9-finish-select-202309-41mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'Apple Watch Series 8 45mm':'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-s8-finish-select-202209-45mm-midnight?wid=200&hei=200&fmt=png-alpha',
+  'PS5 Disc Edition':  'https://gmedia.playstation.com/is/image/SIEPDC/ps5-product-thumbnail-01-en-14sep21?$facebook$',
+  'PS5 Digital Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-digital-edition-product-thumbnail-01-en-14sep21?$facebook$',
+  'PS5 Slim Disc':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-product-thumbnail-01-en-14sep23?$facebook$',
+  'PS5 Slim Digital':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-digital-edition-product-thumbnail-01-en-14sep23?$facebook$',
+  'PS4 Pro':           'https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21',
+  'PS4 Slim':          'https://gmedia.playstation.com/is/image/SIEPDC/ps4-slim-product-thumbnail-01-en-14sep21',
+  'Galaxy S24 Ultra':   'https://images.samsung.com/is/image/samsung/assets/in/smartphones/galaxy-s24-ultra/buy/S24Ultra-Color-Titanium_Grey_PC_0527_final.jpg',
+  'Galaxy S24+':        'https://images.samsung.com/is/image/samsung/p6pim/us/sm5s926uzkaxaa/gallery/us-galaxy-s24-plus-563944-sm5s926uzkaxaa-548943318?$PD_GALLERY_PNG$',
+  'Galaxy S24':         'https://images.samsung.com/is/image/samsung/assets/in/smartphones/galaxy-s24/buy/S24-Color-Amber_Yellow_PC_0527_final.jpg',
+  'Galaxy S23 Ultra':   'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bzecins-534863289',
+  'Galaxy S23+':        'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s916-sm-s916bzecins-534842223',
+  'Galaxy S23':         'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s911-sm-s911bzecins-534842661',
+  'Galaxy S22 Ultra':   'https://images.samsung.com/is/image/samsung/p6pim/levant/2202/gallery/levant-galaxy-s22-ultra-s908-413037-sm-s908ezkgmea-530970280',
+  'Galaxy S22+':        'https://images.samsung.com/is/image/samsung/p6pim/ca/2202/gallery/ca-galaxy-s22-plus-s906-sm-s906wzvaxac-530778305',
+  'Galaxy S22':         'https://images.samsung.com/is/image/samsung/p6pim/levant/2202/gallery/levant-galaxy-s22-s901-412882-sm-s901ezkgmea-530960309',
+  'Galaxy A55':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556elbgins/gallery/in-galaxy-a55-5g-sm-a556-498926-sm-a556elbgins-540255018',
+  'Galaxy A54':         'https://images.samsung.com/is/image/samsung/p6pim/ph/sm-a546ezkdphl/gallery/ph-galaxy-a54-5g-sm-a546-453968-sm-a546ezkdphl-535885026',
+  'Galaxy A35':         'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-a356bzkgeub/gallery/uk-galaxy-a35-5g-sm-a356-sm-a356bzkgeub-540079790',
+  'Galaxy A34':         'https://images.samsung.com/is/image/samsung/p6pim/es/sm-a346bzsaeub/gallery/es-galaxy-a34-5g-sm-a346-sm-a346bzsaeub-535603674',
+  'Galaxy A15':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-a156ezbnins/gallery/in-galaxy-a15-5g-sm-a156-sm-a156ezbnins-539414295',
+  'Galaxy M55':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-m556bzkains/gallery/in-galaxy-m55-5g-sm-m556-sm-m556bzkains-540951266',
+  'Galaxy M35':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-m356bdbbins/gallery/in-galaxy-m35-5g-sm-m356-sm-m356bdbbins-542678438',
+  'OnePlus 12':         'https://image01-in.oneplus.net/media/202407/04/41900be750fcc2707894c7eb516d1ce8.png',
+  'OnePlus 12R':        'https://image01-in.oneplus.net/media/202407/02/46f7a671b96efc920304eaadabf30ad6.png',
+  'OnePlus 11':         'https://oasis.opstatics.com/content/dam/oasis/product-asset-library/salami/en/images-global-in-kv-marble-1.jpg.webp',
+  'OnePlus 11R':        'https://oasis.opstatics.com/content/dam/oasis/page/2023/in/product/11r/11r-red.png',
+  'OnePlus Nord 4':     'https://oasis.opstatics.com/content/dam/oasis/page/2024/global/product/avalon/avalon-share.jpg',
+  'OnePlus Nord CE4':   'https://oasis.opstatics.com/content/dam/oasis/page/2024/nav/in/nord-ce4-green-new.png',
+  'OnePlus Nord 3':     'https://www.oneplus.com/content/dam/oasis/page/2023/share/vitamin-share-gray.jpg',
+  'OnePlus 10 Pro':     'https://oasis.opstatics.com/content/dam/oasis/page/negroni-en/popup/phone-m-black-1-0cca84.jpg',
+  'Realme GT 6':        'https://static2.realme.net/images/realme-gt-6/color/silver.jpg',
+  'Realme GT 5':        'https://static.realme.net/v2/realme-gt-5/images/specs/silver-b3baf30f0c.jpg',
+  'Realme 13 Pro+':     'https://static2.realme.net/images/realme-13-pro-plus/color/gold.png',
+  'Realme 13 Pro':      'https://static2.realme.net/images/realme-13pro-5g/color/bg.jpg',
+  'Realme 12 Pro+':     'https://static2.realme.net/images/realme-12-pro-plus/color/blue-off.png',
+  'Realme 12 Pro':      'https://static2.realme.net/images/realme-12-pro/color/pc1.jpg',
+  'Oppo Reno 12 Pro':   'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/reno-12-pro-en/listpage/427-600-gold.png',
+  'Oppo Reno 12':       'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/reno-12-en/listpage/427-600-pink.png',
+  'Oppo F27 Pro':       'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/f27-pro-plus-5g/listpage-new/427_600-blue-v2.png',
+  'Vivo X100 Pro':      'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1704283292827/76e97c2bc773136b094b78e1d2c74c03.png',
+  'Vivo X100':          'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1704281156699/cad444ca01145c57b8eccea137568cff.png',
+  'Vivo V40 Pro':       'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1722925125867/4b1bbf7a59e7dc3db57eed794d31c5ef.png',
+  'Vivo V40':           'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1722924753024/47995171af5020fc13caa5b05e0e4900.png',
+  'Vivo V30':           'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1709710345023/25f92b24473572141c20c66dc9616800.png',
+  'Xiaomi 14 Ultra':    'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/y/w/s/14-ultra-mzb0gfhin-xiaomi-original-imagzt8cdy56wmzx.jpeg?q=70',
+  'Xiaomi 14':          'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/p/z/g/-original-imagzr2e2xxem9kq.jpeg?q=70',
+  'Redmi Note 13 Pro+': 'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/x/j/m/-original-imagwubk2ky9v2gz.jpeg?q=70',
+  'Redmi Note 13 Pro':  'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/z/l/m/note-13-pro-5g-mzb0g42inin-mzb0g42in-redmi-original-imah4e97g4agtgut.jpeg?q=70',
+  'Redmi Note 13':      'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/4/7/c/-original-imagzrfwawrb9fzx.jpeg?q=70',
+  'POCO X6 Pro':        'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/9/l/v/-original-imah4mdfseheaf3x.jpeg?q=70',
+  'POCO F6':            'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/2/4/s/-original-imah4gzvp2fef9ys.jpeg?q=70',
+  'POCO M6 Pro':        'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/d/h/q/m6-pro-5g-mzb0eprin-poco-original-imags3e7vewsafst.jpeg?q=70',
+  'Pixel 9 Pro XL':     'https://m.media-amazon.com/images/I/71NRTIgZjXL._AC_SL1500_.jpg',
+  'Pixel 9 Pro':        'https://m.media-amazon.com/images/I/517Jv7f6mRL._AC_SL1500_.jpg',
+  'Pixel 9':            'https://m.media-amazon.com/images/I/61fh21u3DJL._AC_SL1500_.jpg',
+  'Pixel 8 Pro':        'https://lh3.googleusercontent.com/TOcZSwRVklpjJaBQWw5efaj9S0IG8566ayw3R40Rfbqma3o6w5qUOecqmKb9rCZFGl1dEq1an46wpcSuxAwn916MPkaz90odEaw=rj-sc0xffffffff',
+  'Pixel 8':            'https://lh3.googleusercontent.com/IigjdpP92zuyA1JFiHUMCdnxq0Lo2HtHF5VmSeQDkxmLsHLE85holHTfuFXq21OsMrxxYCwmVmEelST9Xi86j-iGlZTiVHO0NLg=rj-sc0xffffffff',
+  'Pixel 7a':           'https://lh3.googleusercontent.com/Cdr1_vY-rGSsXHbiLGIeGMRCsc_9ahC2TkxRDeRIXqHG1AA921U18BQWK2OvX-N47qqAag8eDkABVWbg37vrECVLKOKw1N1wQQ=rw-rj-sc0xffffffff',
+  'Pixel 7 Pro':        'https://m.media-amazon.com/images/I/615rI0PoyOL._AC_SL1500_.jpg',
+  'Pixel 7':            'https://m.media-amazon.com/images/I/816gMjg908L._AC_SL1500_.jpg',
+  'Nothing Phone (2a) Plus': 'https://cdn.shopify.com/s/files/1/0376/5420/0459/files/black-1_3c568ada-6e03-4748-8fa2-17531ef4416e.png?v=1722243402',
+  'Nothing Phone (2a)':      'https://cdn.shopify.com/s/files/1/0376/5420/0459/files/phone-2a.jpg?v=1713081154',
+  'Nothing Phone (2)':       'https://cdn.shopify.com/s/files/1/0376/5420/0459/products/BA_ALAK_200.1001.png?v=1688651388',
+  'Nothing Phone (1)':       'https://cdn.shopify.com/s/files/1/0376/5420/0459/products/phone1black1600x2160.png?v=1658461176'
+};
+// Brands whose MODELS[] entries drop the brand name (oneplus only drops it
+// for the Nord sub-line; oppo/vivo drop it everywhere) — tried as a retry
+// prefix, exact-match only, if the bare model name isn't a direct DEV_IMG hit.
+var DEV_IMG_PREFIX={oneplus:'OnePlus ',oppo:'Oppo ',vivo:'Vivo '};
+function realImgFor(brand,model){
+  if(!model) return '';
+  if(DEV_IMG[model]) return DEV_IMG[model];
+  var pfx=DEV_IMG_PREFIX[brand];
+  if(pfx && DEV_IMG[pfx+model]) return DEV_IMG[pfx+model];
+  return '';
+}
 // ── PER-MODEL ICONS ─────────────────────────────────────────────
 // Original vector silhouettes, not photos — shape/cutout/camera-cluster
 // vary by each model's real distinguishing features so the grid reads as
@@ -1121,12 +1258,25 @@ function deviceIconSVG(brand,model){
   if(brand==='playstation') return consoleIconSVG(model);
   return phoneIconSVG(brand,model);
 }
+// Fills a visual slot with the real product photo when we have a verified
+// one (realImgFor), falling back to the generated SVG silhouette otherwise
+// — and falling back again, live, if a hotlinked photo ever 404s later.
+function setCardVisual(container,brand,model){
+  if(!container) return;
+  var url=realImgFor(brand,model);
+  if(!url){ container.innerHTML=deviceIconSVG(brand,model); return; }
+  var img=document.createElement('img');
+  img.src=url; img.alt=model; img.loading='lazy';
+  img.onerror=function(){ container.innerHTML=deviceIconSVG(brand,model); };
+  container.innerHTML='';
+  container.appendChild(img);
+}
 function updateDeviceHero(){
   var hero=document.getElementById('deviceHero');
   if(!hero) return;
   var b=document.getElementById('fBrand').value,m=document.getElementById('fModel').value;
   if(!b||!m){ hero.classList.remove('on'); return; }
-  document.getElementById('dhIcon').innerHTML=deviceIconSVG(b,m);
+  setCardVisual(document.getElementById('dhIcon'),b,m);
   document.getElementById('dhName').textContent=m;
   var stor=document.getElementById('fStorage').value,ram=document.getElementById('fRAM').value;
   document.getElementById('dhSub').textContent=[ram,stor].filter(Boolean).join(' / ')||'Storage not chosen yet';
@@ -1140,7 +1290,8 @@ function onBrand(){
     var o=document.createElement('option');o.value=m;o.textContent=m;ms.appendChild(o);
     var card=document.createElement('button');
     card.type='button';card.className='cb';
-    card.innerHTML='<span class="cb-em">'+deviceIconSVG(b,m)+'</span><span class="cb-lbl">'+m+'</span>';
+    card.innerHTML='<span class="cb-em"></span><span class="cb-lbl">'+m+'</span>';
+    setCardVisual(card.querySelector('.cb-em'),b,m);
     card.onclick=function(){
       Array.prototype.forEach.call(grid.querySelectorAll('.cb'),function(c){c.classList.remove('on');});
       card.classList.add('on');
@@ -1384,7 +1535,12 @@ function cqRender(){
   var isLast=pos===applic.length-1;
   var answered=CQ_ANSWERED[cqIdx]();
   var cb=document.getElementById('condContinueBtn');
-  cb.style.display=CQ_AUTO[cqIdx]?'none':'';
+  // Auto-advance steps still get an instant 260ms auto-advance as a happy-path
+  // speed-up, but the Continue button always stays visible/enabled as a manual
+  // fallback — an invisible button with no way to proceed if the timer gets
+  // throttled (backgrounded tab, mobile browser suspension) or races a
+  // rapid re-tap was the root cause of "Continue doesn't appear" reports.
+  cb.style.display='';
   cb.disabled=CQ_REQUIRED[cqIdx]&&!answered;
   cb.textContent=(cqIdx===LEAD_GATE_IDX)?'Get My Offer →':(isLast?'Finish ✓':((!CQ_REQUIRED[cqIdx]&&!answered)?'Skip →':'Continue →'));
   renderPhaseBar(phase);
@@ -1399,6 +1555,19 @@ function cqAutoAdvance(){
     cqAdvanceTimer=setTimeout(function(){ condNext(); }, 260);
   }
 }
+// Enter key advances the wizard from any single-line text/number/select field
+// (not the Notes textarea, where Enter should insert a newline as usual).
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  var t=e.target;
+  if(!t||t.tagName==='TEXTAREA') return;
+  var wrap=document.getElementById('condWizard');
+  if(!wrap||!wrap.contains(t)) return;
+  if(t.tagName==='INPUT'||t.tagName==='SELECT'){
+    e.preventDefault();
+    condNext();
+  }
+});
 function condNext(){
   if(CQ_REQUIRED[cqIdx]&&!CQ_ANSWERED[cqIdx]()) return;
   if(cqIdx===LEAD_GATE_IDX){ runLeadGeneration(); return; }
@@ -1414,6 +1583,7 @@ function condBack(){
   if(pos>0){ cqIdx=applic[pos-1]; cqRender(); }
 }
 function collectLeadData(diagnostics){
+  var priceAudit=calculatePriceWithAudit()||{base:0,final:0,steps:[]};
   return {
     name:(document.getElementById('fName').value||'').trim(),
     phone:(document.getElementById('fPhone').value||'').trim(),
@@ -1426,10 +1596,14 @@ function collectLeadData(diagnostics){
     condition:selCond, screenCondition:selScreenCond, bodyCondition:selBodyCond,
     waterDamage:selWater, repairedParts:selRepairs.slice(),
     billPhoto:billPhotoUrl, accessories:selAccs.slice(), photos:photoUrls.slice(),
-    askingPrice:(getEstimate()||{}).est||0, isLoyalty:isReturning, diagnostics:diagnostics
+    basePrice:priceAudit.base, askingPrice:priceAudit.final, priceSteps:priceAudit.steps,
+    isLoyalty:isReturning, diagnostics:diagnostics
   };
 }
+var leadGenInProgress=false;
 function runLeadGeneration(){
+  if(leadGenInProgress) return; // guards against a double-click/double-tap firing this twice
+  leadGenInProgress=true;
   document.getElementById('condWizard').style.display='none';
   document.getElementById('priceMask').classList.remove('on');
   var gate=document.getElementById('lgGate'); gate.classList.add('on');
@@ -1448,12 +1622,14 @@ function runLeadGeneration(){
     gate.classList.remove('on');
     showRevealPrice(data);
   }
-  function fail(){
+  function fail(err){
     clearInterval(msgTimer);
+    leadGenInProgress=false; // allow the customer to retry
     gate.classList.remove('on');
     document.getElementById('condWizard').style.display='';
     document.getElementById('priceMask').classList.add('on');
-    showToast('Something went wrong getting your offer. Please try again.','error');
+    var msg=(err&&err.message)?err.message:'We couldn\'t save your details. Please try again.';
+    showToast(msg,'error');
   }
   SMB.sells.createLead(data,CU?CU.id:null).then(done,fail);
 }
@@ -1563,9 +1739,13 @@ function buildYearOptions(){
 function onYearChange(){
   var y=document.getElementById('fYear').value;
   var isCurrent=y===String(new Date().getFullYear());
-  document.getElementById('monthWrap').style.display=isCurrent?'':'none';
+  // The month question is its own CQ_STEP (applicability already gated by
+  // CQ_APPLICABLE[5] checking fYear above) — there is no separate wrapper
+  // element to toggle here. (Previously referenced a nonexistent #monthWrap,
+  // which threw and aborted before showEstimate()/cqRefresh() ever ran.)
   if(!isCurrent) document.getElementById('fMonth').value='';
   showEstimate();
+  cqRefresh();
 }
 function markErr(id){var el=document.getElementById(id);if(el){el.classList.add('err');el.addEventListener('input',function(){el.classList.remove('err');},{once:true});}}
 var DELHI_AREAS={
@@ -1701,45 +1881,106 @@ var COND_MULT={'Like New':1.0,'Good':0.88,'Fair':0.72,'Poor':0.52}; // fallback 
     showEstimate();
   });
 })();
+// Fallback tables — overwritten in place from Supabase (loadConditionPricing()
+// below, and loadPricingRules() further down) so the owner can change any of
+// these percentages from the admin CRM without a code deploy. These literal
+// values are only what's used until that fetch resolves (or if it fails).
 var BATT_DEDUCT={100:0,95:0,90:0,85:-0.03,80:-0.06,75:-0.10,70:-0.15,60:-0.22,50:-0.30};
+var PRICING_RULES={
+  screen_condition:{'Perfect':0,'Minor scratches':-0.05,'Cracked':-0.25},
+  body_condition:{'Perfect':0,'Minor scratches':-0.05,'Dents/cracks':-0.15},
+  water_damage:{'true':-0.20,'false':0},
+  repaired_parts:{'Screen replaced':-0.08,'Battery replaced':-0.05,'Back panel replaced':-0.06},
+  accessories:{'Original Box':0.02,'Charger':0.01,'Earphones':0.01,'Cable':0.005,'Cover':0.005,'Invoice':0.01,'Screen Guard':0.005}
+};
+(function loadPricingRules(){
+  if (typeof SB==='undefined' || !SB.configured || !SB.configured()) return;
+  SB.query('pricing_rules', {select:'question_key,answer_key,adjustment_percent', filter:'active=eq.true'}).then(function(rows){
+    if (!rows || !rows.length) return;
+    rows.forEach(function(r){
+      if (r.question_key==='battery_tier') { BATT_DEDUCT[r.answer_key]=parseFloat(r.adjustment_percent)/100; return; }
+      if (!PRICING_RULES[r.question_key]) PRICING_RULES[r.question_key]={};
+      PRICING_RULES[r.question_key][r.answer_key]=parseFloat(r.adjustment_percent)/100;
+    });
+    showEstimate();
+  });
+})();
 
-function getEstimate() {
+// Walks every price-affecting answer in order, compounding a running total and
+// recording a full audit-trail step (question/answer/before/%/amount/after)
+// for every adjustment that actually changes the price — this is what gets
+// saved to `price_adjustments` on submit so the CRM shows exactly why a
+// customer received a given quote. getEstimate() below wraps this and keeps
+// returning its original {base,est,loyal,cond} shape so every existing call
+// site (showEstimate, showRevealPrice, condFinish, collectLeadData) is unaffected.
+function calculatePriceWithAudit() {
   var brand = document.getElementById('fBrand').value;
   var model = document.getElementById('fModel').value;
-  var cond  = selCond || 'Good';
-  var batt  = parseInt(document.getElementById('fBattery').value) || 100;
-  var stor  = document.getElementById('fStorage').value;
-  var loyal = isReturning;
-
   if (!brand || !model) return null;
   var base = (PRICE_DB[brand] && PRICE_DB[brand][model]) || 0;
   if (!base) return null;
 
-  // Storage adjustment
+  var running = base;
+  var steps = [];
+  function applyMult(questionKey, questionLabel, answer, mult) {
+    if (!mult) return; // 0% adjustment — nothing to log, matches "only what changed" audit trail
+    var before = running;
+    var amount = Math.round(before * mult);
+    running = before + amount;
+    steps.push({question_key:questionKey, question_label:questionLabel, answer:String(answer),
+      base_price:before, adjustment_percentage:Math.round(mult*10000)/100, adjustment_amount:amount, resulting_price:running});
+  }
+
+  // Storage adjustment — unchanged business rule (same thresholds/order,
+  // including the pre-existing quirk that <=64 is checked before <=32/<=16,
+  // so that branch is effectively unreachable; preserved exactly as-is
+  // rather than silently changing existing pricing behavior).
+  var stor = document.getElementById('fStorage').value;
   if (stor) {
     var storGB = parseInt(stor);
     if (/TB/i.test(stor)) storGB *= 1024;
-    if (storGB >= 512) base = Math.round(base * 1.12);
-    else if (storGB >= 256) base = Math.round(base * 1.06);
-    else if (storGB <= 64) base = Math.round(base * 0.90);
-    else if (storGB <= 16 || storGB <= 32) base = Math.round(base * 0.78);
+    var storMult = 0;
+    if (storGB >= 512) storMult = 0.12;
+    else if (storGB >= 256) storMult = 0.06;
+    else if (storGB <= 64) storMult = -0.10;
+    else if (storGB <= 16 || storGB <= 32) storMult = -0.22;
+    applyMult('storage', 'Storage', stor, storMult);
   }
 
-  // Condition multiplier
-  var cMult = COND_MULT[cond] || 0.85;
-  var est = Math.round(base * cMult);
+  // Overall condition — unchanged, still DB-backed via COND_MULT/condition_pricing.
+  var cond = selCond || 'Good';
+  applyMult('condition', 'Overall Condition', cond, (COND_MULT[cond] || 0.85) - 1);
 
-  // Battery deduction (iPhone only)
+  // Previously-collected-but-inert factors — now real, DB-configurable adjustments.
+  if (selScreenCond) applyMult('screen_condition', 'Screen Condition', selScreenCond, (PRICING_RULES.screen_condition||{})[selScreenCond] || 0);
+  if (selBodyCond) applyMult('body_condition', 'Body Condition', selBodyCond, (PRICING_RULES.body_condition||{})[selBodyCond] || 0);
+  if (selWater !== null) applyMult('water_damage', 'Water Damage', selWater ? 'Yes' : 'No', (PRICING_RULES.water_damage||{})[String(selWater)] || 0);
+  (selRepairs || []).forEach(function(part) {
+    applyMult('repaired_parts', 'Repaired Parts', part, (PRICING_RULES.repaired_parts||{})[part] || 0);
+  });
+
+  // Battery deduction (iPhone only) — unchanged business rule.
+  var batt = parseInt(document.getElementById('fBattery').value) || 100;
   if (brand === 'iphone' && batt < 100) {
     var battKey = Math.floor(batt / 5) * 5;
-    var deduct = BATT_DEDUCT[battKey] || (batt < 60 ? -0.35 : 0);
-    est = Math.round(est * (1 + deduct));
+    var battMult = (BATT_DEDUCT[battKey] !== undefined) ? BATT_DEDUCT[battKey] : (batt < 60 ? -0.35 : 0);
+    applyMult('battery_tier', 'Battery Health', batt + '%', battMult);
   }
 
-  // Loyalty bonus
-  if (loyal) est = Math.round(est * 1.10);
+  (selAccs || []).forEach(function(acc) {
+    applyMult('accessories', 'Accessories Included', acc, (PRICING_RULES.accessories||{})[acc] || 0);
+  });
 
-  return {base: base, est: est, loyal: loyal, cond: cond};
+  // Loyalty bonus — unchanged business rule, applied last on top of everything else.
+  if (isReturning) applyMult('loyalty', 'Returning Customer Bonus', 'Yes', 0.10);
+
+  return {base: base, final: Math.max(0, running), steps: steps, cond: cond, loyal: isReturning};
+}
+
+function getEstimate() {
+  var audit = calculatePriceWithAudit();
+  if (!audit) return null;
+  return {base: audit.base, est: audit.final, loyal: audit.loyal, cond: audit.cond};
 }
 
 // Never renders the real number in the questionnaire — only updates the

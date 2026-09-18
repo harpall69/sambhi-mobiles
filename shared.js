@@ -71,6 +71,27 @@ var SB = (function() {
       return await r.json();
     } catch(e) { return null; }
   }
+  // Like rpc(), but THROWS with the real server-side error message instead of
+  // swallowing every failure into a bare null. Used where the caller needs to
+  // tell "the server rejected this input" (show the customer a real, fixable
+  // error) apart from "silently didn't work" — e.g. lead submission, where a
+  // swallowed failure would otherwise look like a fake success to the customer
+  // while the lead never actually reaches the real leads table.
+  async function rpcStrict(fn, args) {
+    if (!configured()) throw new Error('Not connected — please check your internet connection and try again.');
+    var r;
+    try {
+      r = await fetch(URL+'/rest/v1/rpc/'+fn, {method:'POST', headers:headers(), body:JSON.stringify(args||{})});
+    } catch(e) {
+      throw new Error('Could not reach the server — please check your internet connection and try again.');
+    }
+    if (!r.ok) {
+      var msg = 'Something went wrong. Please try again.';
+      try { var body = await r.json(); if (body && body.message) msg = body.message; } catch(e) {}
+      throw new Error(msg);
+    }
+    return await r.json();
+  }
   async function uploadDataUrl(bucket, path, dataUrl) {
     if (!configured() || !dataUrl) return null;
     try {
@@ -84,7 +105,7 @@ var SB = (function() {
       return r.ok ? path : null;
     } catch(e) { return null; }
   }
-  return {configured:configured, query:query, insert:insert, update:update, remove:remove, rpc:rpc, uploadDataUrl:uploadDataUrl};
+  return {configured:configured, query:query, insert:insert, update:update, remove:remove, rpc:rpc, rpcStrict:rpcStrict, uploadDataUrl:uploadDataUrl};
 })();
 
 // ── SMB DATA LAYER ──────────────────────────────────────────────
@@ -242,9 +263,13 @@ var SMB = (function() {
       leads.push(localLead);
       set(K.leads, leads);
 
-      return new Promise(function(resolve) {
+      return new Promise(function(resolve, reject) {
         if (!(typeof SB !== 'undefined' && SB.configured && SB.configured())) {
-          resolve({ localId: req.id, dbId: null });
+          // Site isn't wired to a database at all (a deploy-config issue, not
+          // a customer's problem) — keep the local record so nothing is lost,
+          // but a real business still needs this to reach the real leads
+          // table, so don't pretend this succeeded.
+          reject(new Error('This site is not connected to a database right now. Please call us directly instead.'));
           return;
         }
         (async function() {
@@ -262,33 +287,38 @@ var SMB = (function() {
             if (data.billPhoto) billPath = await SB.uploadDataUrl('lead-photos', leadUid+'/bill.jpg', data.billPhoto);
           } catch(e) {}
 
-          // NOTE: the live 'leads' table has no 'email' or 'diagnostics' column (confirmed via a
-          // PGRST204 schema-cache error during testing) — folding both into the existing 'notes'
-          // field instead of altering the table schema without sign-off. Add an `email text` and/or
-          // `diagnostics jsonb` column to 'leads' later if you want them queryable directly.
-          var extraNote = (data.email ? ('Email: ' + data.email + '. ') : '') + (data.diagnostics ? ('Diagnostics — power/charging: ' + (data.diagnostics.power ? 'OK' : 'issue reported')
-            + ', biometrics/camera: ' + (data.diagnostics.bio ? 'OK' : 'issue reported')
-            + ', speaker/mic/buttons: ' + (data.diagnostics.av ? 'OK' : 'issue reported')) : '');
+          // Validated server-side (never trust the frontend alone) and inserted
+          // atomically with its full price_adjustments audit trail by the
+          // submit_sell_lead() RPC — see supabase_sell_pricing_upgrade.sql.
+          // email/diagnostics are real columns now (previously folded into
+          // `notes` because they didn't exist yet). Uses rpcStrict (not rpc)
+          // so a real validation/network failure rejects with a useful
+          // message instead of silently looking like a fake success.
+          try {
+            var rpcResult = await SB.rpcStrict('submit_sell_lead', {
+              p_name: data.name || '', p_phone: data.phone || '', p_email: data.email || '',
+              p_dev_type: (data.brand || '').toLowerCase(),
+              p_device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
+              p_model: data.model || '', p_storage: data.storage || '',
+              p_color: data.color || '', p_year: data.year || '', p_month: data.month || '',
+              p_battery: data.batteryHealth || '', p_imei: data.imei || '',
+              p_ram: data.ram || '', p_condition: data.condition || '',
+              p_screen_condition: data.screenCondition || '', p_body_condition: data.bodyCondition || '',
+              p_water_damage: data.waterDamage === true, p_repaired_parts: data.repairedParts || [],
+              p_bill_photo: billPath,
+              p_accessories: data.accessories || [], p_photos: photoPaths,
+              p_base_price: data.basePrice || 0, p_ask_price: data.askingPrice || 0,
+              p_is_loyalty: !!data.isLoyalty, p_customer_id: custId || null,
+              p_diagnostics: data.diagnostics || {},
+              p_notes: [{ t: 'Website submission (pre-pickup)', at: now() }],
+              p_price_steps: data.priceSteps || []
+            });
+          } catch (err) {
+            reject(err);
+            return;
+          }
 
-          var rows = await SB.insert('leads', {
-            name: data.name || '', phone: data.phone || '',
-            dev_type: (data.brand || '').toLowerCase(),
-            device: [data.brand, data.model, data.storage].filter(Boolean).join(' '),
-            model: data.model || '', storage: data.storage || '',
-            color: data.color || '', year: data.year || '',
-            battery: data.batteryHealth || '', imei: data.imei || '',
-            ram: data.ram || '', condition: data.condition || '',
-            screen_condition: data.screenCondition || '', body_condition: data.bodyCondition || '',
-            water_damage: data.waterDamage === true, repaired_parts: data.repairedParts || [],
-            frp_cleared: false, bill_photo: billPath,
-            accessories: data.accessories || [], photos: photoPaths,
-            est_price: data.askingPrice || 0, base_price: data.askingPrice || 0,
-            is_loyalty: !!data.isLoyalty, slot: '',
-            source: 'website', status: 'new',
-            notes: [{ t: 'Website submission (pre-pickup)' + (extraNote ? ' — ' + extraNote : ''), at: now() }]
-          }).catch(function(){ return null; });
-
-          var dbId = (rows && rows[0] && rows[0].id) || null;
+          var dbId = (rpcResult && rpcResult[0] && rpcResult[0].lead_id) || null;
           notify.log(data.phone || '', 'sell_received', { name: data.name, device: data.model });
           resolve({ localId: req.id, dbId: dbId });
         })();

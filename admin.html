@@ -425,7 +425,7 @@ select.si{min-width:140px}
     <div class="ttop"><h3>All Leads</h3>
       <div class="tbar">
         <input class="si" id="src" placeholder="🔍 Search…" oninput="rl()">
-        <select class="si" id="sst" onchange="rl()"><option value="">All Status</option><option value="new">New</option><option value="contacted">Contacted</option><option value="scheduled">Scheduled</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+        <select class="si" id="sst" onchange="rl()"><option value="">All Status</option><option value="new">New</option><option value="contacted">Contacted</option><option value="pickup_scheduled">Pickup Scheduled</option><option value="picked_up">Picked Up</option><option value="quality_check">Quality Check</option><option value="price_confirmed">Price Confirmed</option><option value="purchased">Purchased</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select>
         <select class="si" id="ssl" onchange="rl()"><option value="">All Slots</option><option value="morning">Morning</option><option value="evening">Evening</option></select>
         <select class="si" id="scs" onchange="rl()"><option value="">All Calls</option><option value="called">Called</option><option value="not_called">Not called</option></select>
         <button class="ab" onclick="gt('add')">+ Add Lead</button>
@@ -442,8 +442,8 @@ select.si{min-width:140px}
   <div class="kan">
     <div class="kc kc-new"><div class="kh">🆕 New <span class="kn" id="kn-new">0</span></div><div class="kb" id="kb-new"></div></div>
     <div class="kc kc-con"><div class="kh">📞 Contacted <span class="kn" id="kn-contacted">0</span></div><div class="kb" id="kb-contacted"></div></div>
-    <div class="kc kc-sch"><div class="kh">📅 Scheduled <span class="kn" id="kn-scheduled">0</span></div><div class="kb" id="kb-scheduled"></div></div>
-    <div class="kc kc-don"><div class="kh">✅ Done <span class="kn" id="kn-completed">0</span></div><div class="kb" id="kb-completed"></div></div>
+    <div class="kc kc-sch"><div class="kh">🚚 In Progress <span class="kn" id="kn-scheduled">0</span></div><div class="kb" id="kb-scheduled"></div></div>
+    <div class="kc kc-don"><div class="kh">✅ Purchased <span class="kn" id="kn-completed">0</span></div><div class="kb" id="kb-completed"></div></div>
   </div>
 </div>
 
@@ -561,6 +561,16 @@ select.si{min-width:140px}
       <input type="password" id="cpConfirmPw" placeholder="Your Owner password" style="background:#fff">
     </div>
     <button class="ab" onclick="saveConditionPricing()">Save Condition Pricing</button>
+  </div>
+  <div class="pcard" style="margin-top:16px">
+    <h3>🧩 Other Pricing Factors</h3>
+    <p>Every other question that adjusts a quote — screen/body condition, water damage, repaired parts, accessories, and battery health. Positive % adds to the quote, negative % subtracts. Saved to the database — takes effect on the sell form immediately.</p>
+    <div id="pricingRulesRows"></div>
+    <div class="fg" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px;margin-top:8px">
+      <label style="color:#92400E">🔒 Confirm it's you — your own password</label>
+      <input type="password" id="prConfirmPw" placeholder="Your Owner password" style="background:#fff">
+    </div>
+    <button class="ab" onclick="savePricingRules()">Save Pricing Factors</button>
   </div>
 </div>
 
@@ -1198,8 +1208,22 @@ var DEPS = [
   {id:'faceid',  l:'Face ID broken',    p:0.10}
 ];
 
-var SN = {new:'New',contacted:'Contacted',scheduled:'Scheduled',completed:'Completed',cancelled:'Cancelled'};
-var SC = {new:'st-new',contacted:'st-contacted',scheduled:'st-scheduled',completed:'st-completed',cancelled:'st-cancelled'};
+// 9-stage lead lifecycle. Older leads may still hold one of the previous
+// 5 values (new/contacted/scheduled/completed/cancelled) — statusBucket()
+// below maps those onto their closest new equivalent everywhere status is
+// displayed, filtered, or counted, so historical leads keep showing up
+// correctly without needing a database backfill.
+var SN = {new:'New',contacted:'Contacted',pickup_scheduled:'Pickup Scheduled',picked_up:'Picked Up',
+  quality_check:'Quality Check',price_confirmed:'Price Confirmed',purchased:'Purchased',
+  rejected:'Rejected',cancelled:'Cancelled'};
+var SC = {new:'st-new',contacted:'st-contacted',pickup_scheduled:'st-scheduled',picked_up:'st-scheduled',
+  quality_check:'st-completed',price_confirmed:'st-completed',purchased:'st-completed',
+  rejected:'st-cancelled',cancelled:'st-cancelled'};
+function statusBucket(s) {
+  if (s === 'scheduled') return 'pickup_scheduled';
+  if (s === 'completed') return 'purchased';
+  return s || 'new';
+}
 var II = {iphone:'📱',airpods:'🎧',applewatch:'⌚',playstation:'🎮',samsung:'🌟',oneplus:'⚡',realme:'🎯',oppo:'💚',vivo:'🔵',xiaomi:'🔴',pixel:'🌐',nothing:'⭕'};
 
 // ── STATE ────────────────────────────────────────────────────────
@@ -1210,14 +1234,17 @@ var invN=1, addDeps={}, addBase=0, editR=null, editI=null;
 // ── STORAGE ──────────────────────────────────────────────────────
 function mapLeadFromSB(r) {
   return {
-    id:r.id, name:r.name||'', phone:r.phone||'', area:r.area||'', address:r.address||'',
+    id:r.id, name:r.name||'', phone:r.phone||'', email:r.email||'', area:r.area||'', address:r.address||'',
     pincode:r.pincode||'', devType:r.dev_type||'', device:r.device||'', model:r.model||'',
     storage:r.storage||'', color:r.color||'', year:r.year||'', battery:r.battery||'',
     imei:r.imei||'', ram:r.ram||'', condition:r.condition||'', accessories:r.accessories||[],
     screenCondition:r.screen_condition||'', bodyCondition:r.body_condition||'',
     waterDamage:!!r.water_damage, repairedParts:r.repaired_parts||[],
-    frpCleared:!!r.frp_cleared, billPhoto:r.bill_photo||null,
-    photos:r.photos||[], askPrice:r.est_price||0, basePrice:r.base_price||0,
+    frpCleared:!!r.frp_cleared, billPhoto:r.bill_photo||null, diagnostics:r.diagnostics||{},
+    // NOTE: was r.est_price, a column that was never actually created by any
+    // migration — every Supabase-sourced lead's estimated payout silently
+    // read as 0 because of this. The real column is ask_price.
+    photos:r.photos||[], askPrice:r.ask_price||0, basePrice:r.base_price||0,
     isLoyalty:!!r.is_loyalty, slot:r.slot||'morning', source:r.source||'website',
     riderId:r.rider_id||null, status:r.status||'new', notes:r.notes||[],
     riderCalled:!!r.rider_called, riderCalledAt:r.rider_called_at||null,
@@ -1297,6 +1324,7 @@ function load() {
       if (typeof rTm==='function') rTm();
     });
     if (typeof loadConditionPricing==='function') loadConditionPricing();
+    if (typeof loadPricingRules==='function') loadPricingRules();
   }
 }
 function mapCampFromSB(r) {
@@ -1551,8 +1579,8 @@ function rd() {
   var td = new Date().toDateString();
   var n0 = leads.filter(function(l){return l.status==='new'&&new Date(l.createdAt).toDateString()===td;}).length;
   var n1 = leads.filter(function(l){return['new','contacted'].indexOf(l.status)>-1;}).length;
-  var n2 = leads.filter(function(l){return l.status==='scheduled';}).length;
-  var n3 = leads.filter(function(l){return l.status==='completed';}).length;
+  var n2 = leads.filter(function(l){return statusBucket(l.status)==='pickup_scheduled';}).length;
+  var n3 = leads.filter(function(l){return statusBucket(l.status)==='purchased';}).length;
   var n4 = bills.reduce(function(s,b){return s+(parseInt(b.a)||0);},0);
   document.getElementById('s0').textContent = n0;
   document.getElementById('s1').textContent = n1;
@@ -1574,7 +1602,7 @@ function rl() {
   var sl = rn('ssl');
   var f  = leads.slice().sort(srt);
   if (q)  f = f.filter(function(l){return(l.name+l.phone+(l.device||'')+(l.area||'')).toLowerCase().indexOf(q)>-1;});
-  if (st) f = f.filter(function(l){return l.status===st;});
+  if (st) f = f.filter(function(l){return statusBucket(l.status)===st;});
   if (sl) f = f.filter(function(l){return l.slot===sl;});
   var cs = rn('scs');
   if (cs) f = f.filter(function(l){ return cs==='called' ? l.riderCalled : !l.riderCalled; });
@@ -1586,11 +1614,12 @@ function rl() {
 function lr(l, compact) {
   var est = cE(l);
   var sb  = l.slot==='morning' ? '<span class="sm">🌅 Morn</span>' : '<span class="se">🌆 Eve</span>';
-  var stb = '<span class="badge '+(SC[l.status]||'st-new')+'">'+(SN[l.status]||l.status)+'</span>'
+  var lStatus = statusBucket(l.status);
+  var stb = '<span class="badge '+(SC[lStatus]||'st-new')+'">'+(SN[lStatus]||lStatus)+'</span>'
     +'<br><span class="badge" style="cursor:pointer;background:'+(l.riderCalled?'#DCFCE7':'#FEE2E2')+';color:'+(l.riderCalled?'#15803D':'#B91C1C')+'" onclick="event.stopPropagation();toggleRiderCalled(\''+l.id+'\')">'+(l.riderCalled?'✅ Called':'☎️ Not called')+'</span>';
   var loy = l.isLoyalty ? '<span style="font-size:10px;background:#FFFBEB;color:#D97706;padding:1px 5px;border-radius:100px;margin-left:3px">🏆</span>' : '';
   var isO = CU && CU.role === 'Owner';
-  var bbt = isO ? (l.status==='completed' ? '<button class="act abi" onclick="event.stopPropagation();oBF(\''+l.id+'\')">🧾</button>' : '<button class="act abi" disabled>🧾</button>') : '';
+  var bbt = isO ? (lStatus==='purchased' ? '<button class="act abi" onclick="event.stopPropagation();oBF(\''+l.id+'\')">🧾</button>' : '<button class="act abi" disabled>🧾</button>') : '';
   var dbt = isO ? '<button class="act ad" onclick="event.stopPropagation();dL(\''+l.id+'\')">🗑</button>' : '';
   if (compact) return '<tr onclick="oL(\''+l.id+'\')">'
     +'<td><strong>'+l.name+loy+'</strong><br><span style="font-size:11px;color:var(--b)">'+l.phone+'</span></td>'
@@ -1695,20 +1724,71 @@ function renderLeadConditionBlock(l) {
     +'</div>';
 }
 
+// Full price audit trail for a lead — fetched lazily per-lead (not part of
+// the leads row itself) from price_adjustments, written atomically by
+// submit_sell_lead() at lead-creation time. Cached so re-opening the same
+// lead in one session doesn't refetch.
+var priceAdjustmentsCache = {}; // lead id -> array of rows, or null while loading
+var currentLeadModalId = null;
+function renderPriceBreakdown(l) {
+  var rows = priceAdjustmentsCache[l.id];
+  if (rows === undefined) return ''; // not fetched yet this open — fetchPriceAdjustments() will re-render
+  if (rows === null) return '<div style="background:var(--gray);border-radius:10px;padding:11px;margin-bottom:11px"><div style="font-size:10px;font-weight:700;color:var(--b);margin-bottom:6px">PRICING BREAKDOWN</div><div style="font-size:12px;color:#94A3B8">Loading…</div></div>';
+  if (!l.basePrice) return '';
+  var html = '<div style="background:var(--gray);border-radius:10px;padding:11px;margin-bottom:11px">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--b);margin-bottom:8px">PRICING BREAKDOWN</div>'
+    +'<div style="font-size:13px;color:var(--ink);line-height:1.9"><b>Base Price: '+Rs(l.basePrice)+'</b></div>';
+  if (!rows.length) {
+    html += '<div style="font-size:12px;color:#94A3B8;margin-top:4px">No adjustments applied — quoted at base price.</div>';
+  } else {
+    rows.forEach(function(r){
+      var pct = parseFloat(r.adjustment_percentage);
+      var sign = pct>=0?'+':'';
+      var color = pct<0?'var(--r)':(pct>0?'var(--g)':'#94A3B8');
+      html += '<div style="font-size:12px;color:var(--ink);margin-top:4px">'+r.question_label+': '+(r.answer||'—')
+        +' <b style="color:'+color+'">'+sign+pct+'%</b> → '+Rs(r.resulting_price)+'</div>';
+    });
+  }
+  html += '<div style="font-size:13px;color:var(--ink);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><b>Final Offer: '+Rs(l.askPrice)+'</b></div>';
+  html += '</div>';
+  return html;
+}
+function isLeadModalShowing(id) {
+  var m = document.getElementById('lm');
+  return !!(m && m.classList.contains('on') && currentLeadModalId === id);
+}
+function fetchPriceAdjustments(id) {
+  if (priceAdjustmentsCache[id] !== undefined) { if (isLeadModalShowing(id)) oL(id); return; }
+  priceAdjustmentsCache[id] = null; // "loading" sentinel
+  if (!SB.configured()) { priceAdjustmentsCache[id] = []; return; }
+  SB.query('price_adjustments', {select:'*', filter:'lead_id=eq.'+id, order:'created_at.asc'}).then(function(rows){
+    priceAdjustmentsCache[id] = rows || [];
+    if (isLeadModalShowing(id)) oL(id); // still viewing this lead — refresh with real data
+  });
+}
+
 function oL(id) {
   var l = leads.find(function(x){return x.id===id;}); if (!l) return;
+  currentLeadModalId = id;
   document.getElementById('lmt').textContent = l.name;
-  var steps = ['new','contacted','scheduled','completed','cancelled'];
+  var lStatus = statusBucket(l.status);
+  var steps = ['new','contacted','pickup_scheduled','picked_up','quality_check','price_confirmed','purchased'];
   var sh = steps.map(function(s){
-    var cls = l.status===s ? 'active' : (steps.indexOf(s)<steps.indexOf(l.status)?'done':'');
+    var cls = lStatus===s ? 'active' : (steps.indexOf(s)<steps.indexOf(lStatus)?'done':'');
     return '<button class="sp '+cls+'" onclick="uS(\''+id+'\',\''+s+'\')">'+SN[s]+'</button>';
+  }).join('')
+  // Rejected/Cancelled are terminal alternate outcomes, not forward steps —
+  // shown after the main progression, same convention the old 5-stage
+  // stepper used for its trailing "Cancelled" button.
+  + ['rejected','cancelled'].map(function(s){
+    return '<button class="sp '+(lStatus===s?'active':'')+'" onclick="uS(\''+id+'\',\''+s+'\')">'+SN[s]+'</button>';
   }).join('');
   var depL = DEPS.filter(function(d){return(l.deps||{})[d.id];}).map(function(d){return d.l;}).join(', ')||'None';
   var ro = '<option value="">Unassigned</option>'+riders.map(function(r){return'<option value="'+r.id+'"'+(l.riderId===r.id?' selected':'')+'>'+r.name+'</option>';}).join('');
   var tl = (l.notes||[]).slice().reverse().map(function(n){return'<div class="tli"><div class="tld"></div><div><div class="tlt">'+n.t+'</div><div class="tlm">'+fd(n.at)+' '+ft(n.at)+'</div></div></div>';}).join('');
   var est = cE(l);
   var isO = CU && CU.role === 'Owner';
-  var bbt = isO&&l.status==='completed' ? '<button class="sb" style="margin-bottom:7px" onclick="oBF(\''+id+'\');cm(\'lm\')">🧾 Generate GST Bill</button>' : '';
+  var bbt = isO&&statusBucket(l.status)==='purchased' ? '<button class="sb" style="margin-bottom:7px" onclick="oBF(\''+id+'\');cm(\'lm\')">🧾 Generate GST Bill</button>' : '';
   var dbt = isO ? '<button class="sb" style="background:var(--r);margin-bottom:7px" onclick="dL(\''+id+'\')">🗑 Delete Lead</button>' : '';
   document.getElementById('lmb').innerHTML =
     '<div class="stpr">'+sh+'</div>'
@@ -1733,6 +1813,7 @@ function oL(id) {
     +'<button class="act" style="margin-top:8px;width:100%" onclick="toggleRiderCalled(\''+id+'\');oL(\''+id+'\')">'+(l.riderCalled?'✅ Called — tap to undo':'☎️ Mark as Called')+'</button>'
     +'</div></div>'
     +renderLeadConditionBlock(l)
+    +renderPriceBreakdown(l)
     +(est?'<div class="pb" style="margin-bottom:11px"><div><div class="pbl">Estimated Payout</div><div class="pbv">'+Rs(est)+(l.payoutOverride!=null?' <span style="font-size:11px;opacity:.7">(override: '+Rs(l.payoutOverride)+')</span>':'')+'</div></div><div style="font-size:10px;color:rgba(255,255,255,.25)">Final on inspection</div></div>':'')
     +(isO?'<div style="background:var(--gray);border-radius:10px;padding:11px;margin-bottom:11px">'
       +'<div style="font-size:10px;font-weight:700;color:var(--b);margin-bottom:6px">RIDER PAYOUT OVERRIDE (₹, blank = rider default)</div>'
@@ -1745,6 +1826,7 @@ function oL(id) {
     +'<div class="tl">'+(tl||'<p style="font-size:12px;color:#94A3B8;text-align:center;padding:9px">No activity yet</p>')+'</div>'
     +'<div class="nr"><input id="nin" placeholder="Add a note…"><button onclick="sN(\''+id+'\')">Add</button></div>';
   document.getElementById('lm').classList.add('on');
+  fetchPriceAdjustments(id); // re-renders this modal once the audit trail arrives
 }
 
 function uS(id, s) {
@@ -1767,9 +1849,21 @@ function sN(id) {
 }
 
 // ── KANBAN ───────────────────────────────────────────────────────
+// Kanban stays 4 columns for readability even though the lifecycle now has
+// 9 stages — "scheduled" groups every mid-funnel stage (pickup scheduled
+// through price confirmed) and "completed" means purchased. The full
+// 9-stage detail is still visible in the leads table and lead-detail
+// stepper; this board is a coarse overview only.
+var KANBAN_BUCKETS = {
+  new: ['new'],
+  contacted: ['contacted'],
+  scheduled: ['pickup_scheduled','picked_up','quality_check','price_confirmed'],
+  completed: ['purchased']
+};
 function rk() {
   ['new','contacted','scheduled','completed'].forEach(function(st) {
-    var items = leads.filter(function(l){return l.status===st;}).sort(srt);
+    var bucket = KANBAN_BUCKETS[st];
+    var items = leads.filter(function(l){return bucket.indexOf(statusBucket(l.status))>-1;}).sort(srt);
     document.getElementById('kn-' + st).textContent = items.length;
     document.getElementById('kb-' + st).innerHTML = items.length
       ? items.map(function(l) {
@@ -1912,7 +2006,7 @@ function rBill() {
     document.getElementById('pg-bill').innerHTML = '<div style="padding:50px;text-align:center;color:#94A3B8"><div style="font-size:40px;margin-bottom:12px">🔒</div><h3>Bill generation is Owner only</h3></div>';
     return;
   }
-  var comp = leads.filter(function(l){return l.status==='completed';});
+  var comp = leads.filter(function(l){return statusBucket(l.status)==='purchased';});
   document.getElementById('bsel').innerHTML = '<option value="">— Choose completed lead —</option>'
     + comp.map(function(l){return'<option value="'+l.id+'">'+l.name+' — '+(l.device||'Device')+'</option>';}).join('');
   document.getElementById('bform').style.display = 'none';
@@ -2069,7 +2163,7 @@ function rRid() {
   if (!riders.length) { g.innerHTML = '<p style="font-size:14px;color:#94A3B8">No riders yet. Click + Add Rider.</p>'; return; }
   g.innerHTML = riders.map(function(r,i){
     var al = leads.filter(function(l){return l.riderId===r.id;}).length;
-    var cl = leads.filter(function(l){return l.riderId===r.id&&l.status==='completed';}).length;
+    var cl = leads.filter(function(l){return l.riderId===r.id&&statusBucket(l.status)==='purchased';}).length;
     return '<div class="rc">'
       +'<div class="rav" style="background:'+RC[i%RC.length]+'">'+r.name.charAt(0)+'</div>'
       +'<h3 style="font-size:14px;font-weight:700;margin-bottom:2px">'+r.name+'</h3>'
@@ -2604,7 +2698,65 @@ var IMG = {
   'PS5 Slim Disc Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-product-thumbnail-01-en-14sep23?$facebook$',
   'PS5 Slim Digital Edition':'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-digital-edition-product-thumbnail-01-en-14sep23?$facebook$',
   'PS4 Pro':           'https://gmedia.playstation.com/is/image/SIEPDC/ps4-pro-product-thumbnail-01-en-14sep21',
-  'PS4 Slim':          'https://gmedia.playstation.com/is/image/SIEPDC/ps4-slim-product-thumbnail-01-en-14sep21'
+  'PS4 Slim':          'https://gmedia.playstation.com/is/image/SIEPDC/ps4-slim-product-thumbnail-01-en-14sep21',
+  'Galaxy S24 Ultra':   'https://images.samsung.com/is/image/samsung/assets/in/smartphones/galaxy-s24-ultra/buy/S24Ultra-Color-Titanium_Grey_PC_0527_final.jpg',
+  'Galaxy S24+':        'https://images.samsung.com/is/image/samsung/p6pim/us/sm5s926uzkaxaa/gallery/us-galaxy-s24-plus-563944-sm5s926uzkaxaa-548943318?$PD_GALLERY_PNG$',
+  'Galaxy S24':         'https://images.samsung.com/is/image/samsung/assets/in/smartphones/galaxy-s24/buy/S24-Color-Amber_Yellow_PC_0527_final.jpg',
+  'Galaxy S23 Ultra':   'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s918-sm-s918bzecins-534863289',
+  'Galaxy S23+':        'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s916-sm-s916bzecins-534842223',
+  'Galaxy S23':         'https://images.samsung.com/is/image/samsung/p6pim/in/2302/gallery/in-galaxy-s23-s911-sm-s911bzecins-534842661',
+  'Galaxy S22 Ultra':   'https://images.samsung.com/is/image/samsung/p6pim/levant/2202/gallery/levant-galaxy-s22-ultra-s908-413037-sm-s908ezkgmea-530970280',
+  'Galaxy S22+':        'https://images.samsung.com/is/image/samsung/p6pim/ca/2202/gallery/ca-galaxy-s22-plus-s906-sm-s906wzvaxac-530778305',
+  'Galaxy S22':         'https://images.samsung.com/is/image/samsung/p6pim/levant/2202/gallery/levant-galaxy-s22-s901-412882-sm-s901ezkgmea-530960309',
+  'Galaxy A55':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-a556elbgins/gallery/in-galaxy-a55-5g-sm-a556-498926-sm-a556elbgins-540255018',
+  'Galaxy A54':         'https://images.samsung.com/is/image/samsung/p6pim/ph/sm-a546ezkdphl/gallery/ph-galaxy-a54-5g-sm-a546-453968-sm-a546ezkdphl-535885026',
+  'Galaxy A35':         'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-a356bzkgeub/gallery/uk-galaxy-a35-5g-sm-a356-sm-a356bzkgeub-540079790',
+  'Galaxy A34':         'https://images.samsung.com/is/image/samsung/p6pim/es/sm-a346bzsaeub/gallery/es-galaxy-a34-5g-sm-a346-sm-a346bzsaeub-535603674',
+  'Galaxy A15':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-a156ezbnins/gallery/in-galaxy-a15-5g-sm-a156-sm-a156ezbnins-539414295',
+  'Galaxy M55':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-m556bzkains/gallery/in-galaxy-m55-5g-sm-m556-sm-m556bzkains-540951266',
+  'Galaxy M35':         'https://images.samsung.com/is/image/samsung/p6pim/in/sm-m356bdbbins/gallery/in-galaxy-m35-5g-sm-m356-sm-m356bdbbins-542678438',
+  'OnePlus 12':         'https://image01-in.oneplus.net/media/202407/04/41900be750fcc2707894c7eb516d1ce8.png',
+  'OnePlus 12R':        'https://image01-in.oneplus.net/media/202407/02/46f7a671b96efc920304eaadabf30ad6.png',
+  'OnePlus 11':         'https://oasis.opstatics.com/content/dam/oasis/product-asset-library/salami/en/images-global-in-kv-marble-1.jpg.webp',
+  'OnePlus 11R':        'https://oasis.opstatics.com/content/dam/oasis/page/2023/in/product/11r/11r-red.png',
+  'OnePlus Nord 4':     'https://oasis.opstatics.com/content/dam/oasis/page/2024/global/product/avalon/avalon-share.jpg',
+  'OnePlus Nord CE4':   'https://oasis.opstatics.com/content/dam/oasis/page/2024/nav/in/nord-ce4-green-new.png',
+  'OnePlus Nord 3':     'https://www.oneplus.com/content/dam/oasis/page/2023/share/vitamin-share-gray.jpg',
+  'OnePlus 10 Pro':     'https://oasis.opstatics.com/content/dam/oasis/page/negroni-en/popup/phone-m-black-1-0cca84.jpg',
+  'Realme GT 6':        'https://static2.realme.net/images/realme-gt-6/color/silver.jpg',
+  'Realme GT 5':        'https://static.realme.net/v2/realme-gt-5/images/specs/silver-b3baf30f0c.jpg',
+  'Realme 13 Pro+':     'https://static2.realme.net/images/realme-13-pro-plus/color/gold.png',
+  'Realme 13 Pro':      'https://static2.realme.net/images/realme-13pro-5g/color/bg.jpg',
+  'Realme 12 Pro+':     'https://static2.realme.net/images/realme-12-pro-plus/color/blue-off.png',
+  'Realme 12 Pro':      'https://static2.realme.net/images/realme-12-pro/color/pc1.jpg',
+  'Oppo Reno 12 Pro':   'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/reno-12-pro-en/listpage/427-600-gold.png',
+  'Oppo Reno 12':       'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/reno-12-en/listpage/427-600-pink.png',
+  'Oppo F27 Pro':       'https://www.oppo.com/content/dam/oppo/common/mkt/v2-2/f27-pro-plus-5g/listpage-new/427_600-blue-v2.png',
+  'Vivo X100 Pro':      'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1704283292827/76e97c2bc773136b094b78e1d2c74c03.png',
+  'Vivo X100':          'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1704281156699/cad444ca01145c57b8eccea137568cff.png',
+  'Vivo V40 Pro':       'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1722925125867/4b1bbf7a59e7dc3db57eed794d31c5ef.png',
+  'Vivo V40':           'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1722924753024/47995171af5020fc13caa5b05e0e4900.png',
+  'Vivo V30':           'https://exstatic-in.vivo.com/Oz84QB3Wo0uns8j1/in/1709710345023/25f92b24473572141c20c66dc9616800.png',
+  'Xiaomi 14 Ultra':    'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/y/w/s/14-ultra-mzb0gfhin-xiaomi-original-imagzt8cdy56wmzx.jpeg?q=70',
+  'Xiaomi 14':          'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/p/z/g/-original-imagzr2e2xxem9kq.jpeg?q=70',
+  'Redmi Note 13 Pro+': 'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/x/j/m/-original-imagwubk2ky9v2gz.jpeg?q=70',
+  'Redmi Note 13 Pro':  'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/z/l/m/note-13-pro-5g-mzb0g42inin-mzb0g42in-redmi-original-imah4e97g4agtgut.jpeg?q=70',
+  'Redmi Note 13':      'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/4/7/c/-original-imagzrfwawrb9fzx.jpeg?q=70',
+  'POCO X6 Pro':        'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/9/l/v/-original-imah4mdfseheaf3x.jpeg?q=70',
+  'POCO F6':            'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/2/4/s/-original-imah4gzvp2fef9ys.jpeg?q=70',
+  'POCO M6 Pro':        'https://rukminim2.flixcart.com/image/832/832/xif0q/mobile/d/h/q/m6-pro-5g-mzb0eprin-poco-original-imags3e7vewsafst.jpeg?q=70',
+  'Pixel 9 Pro XL':     'https://m.media-amazon.com/images/I/71NRTIgZjXL._AC_SL1500_.jpg',
+  'Pixel 9 Pro':        'https://m.media-amazon.com/images/I/517Jv7f6mRL._AC_SL1500_.jpg',
+  'Pixel 9':            'https://m.media-amazon.com/images/I/61fh21u3DJL._AC_SL1500_.jpg',
+  'Pixel 8 Pro':        'https://lh3.googleusercontent.com/TOcZSwRVklpjJaBQWw5efaj9S0IG8566ayw3R40Rfbqma3o6w5qUOecqmKb9rCZFGl1dEq1an46wpcSuxAwn916MPkaz90odEaw=rj-sc0xffffffff',
+  'Pixel 8':            'https://lh3.googleusercontent.com/IigjdpP92zuyA1JFiHUMCdnxq0Lo2HtHF5VmSeQDkxmLsHLE85holHTfuFXq21OsMrxxYCwmVmEelST9Xi86j-iGlZTiVHO0NLg=rj-sc0xffffffff',
+  'Pixel 7a':           'https://lh3.googleusercontent.com/Cdr1_vY-rGSsXHbiLGIeGMRCsc_9ahC2TkxRDeRIXqHG1AA921U18BQWK2OvX-N47qqAag8eDkABVWbg37vrECVLKOKw1N1wQQ=rw-rj-sc0xffffffff',
+  'Pixel 7 Pro':        'https://m.media-amazon.com/images/I/615rI0PoyOL._AC_SL1500_.jpg',
+  'Pixel 7':            'https://m.media-amazon.com/images/I/816gMjg908L._AC_SL1500_.jpg',
+  'Nothing Phone (2a) Plus': 'https://cdn.shopify.com/s/files/1/0376/5420/0459/files/black-1_3c568ada-6e03-4748-8fa2-17531ef4416e.png?v=1722243402',
+  'Nothing Phone (2a)':      'https://cdn.shopify.com/s/files/1/0376/5420/0459/files/phone-2a.jpg?v=1713081154',
+  'Nothing Phone (2)':       'https://cdn.shopify.com/s/files/1/0376/5420/0459/products/BA_ALAK_200.1001.png?v=1688651388',
+  'Nothing Phone (1)':       'https://cdn.shopify.com/s/files/1/0376/5420/0459/products/phone1black1600x2160.png?v=1658461176'
 };
 
 function getImg(name) {
@@ -2725,6 +2877,7 @@ function rPr() {
   var s = parseFloat(localStorage.getItem('smb_mult')||'1');
   document.getElementById('msl').value = s; um(s);
   renderConditionPricing();
+  renderPricingRules();
 }
 function um(v) {
   v = parseFloat(v);
@@ -2769,6 +2922,66 @@ async function saveConditionPricing() {
   }
   document.getElementById('cpConfirmPw').value = '';
   toast('Condition pricing saved — live on sell form now');
+}
+
+// ── OTHER PRICING FACTORS (generic question_key/answer_key rules) ─
+// Same admin-editable, owner-gated pattern as condition pricing above,
+// generalized over every other price-affecting question. Answer keys here
+// must match the exact strings sell.html's wizard sends — see
+// pickSubCond()/pickWater()/togRepair()/togAcc() and the battery-tier
+// rounding in getEstimate()/calculatePriceWithAudit().
+var PRICING_RULE_GROUPS = [
+  {key:'screen_condition', label:'Screen Condition', answers:['Perfect','Minor scratches','Cracked']},
+  {key:'body_condition',   label:'Body Condition',   answers:['Perfect','Minor scratches','Dents/cracks']},
+  {key:'water_damage',     label:'Water Damage',      answers:['false','true'], answerLabel:function(a){return a==='true'?'Yes':'No';}},
+  {key:'repaired_parts',   label:'Repaired Parts',    answers:['Screen replaced','Battery replaced','Back panel replaced']},
+  {key:'accessories',      label:'Accessories Included', answers:['Original Box','Charger','Earphones','Cable','Cover','Invoice','Screen Guard']},
+  {key:'battery_tier',     label:'Battery Health',    answers:['100','95','90','85','80','75','70','60','50'], answerLabel:function(a){return a+'%';}}
+];
+var pricingRules = {}; // 'question_key|answer_key' -> percent (e.g. -5 for -5%)
+function prKey(q,a){ return q+'|'+a; }
+function loadPricingRules() {
+  if (!SB.configured()) return;
+  SB.query('pricing_rules', {select:'question_key,answer_key,adjustment_percent', filter:'active=eq.true'}).then(function(rows){
+    if (!rows) return;
+    rows.forEach(function(r){ pricingRules[prKey(r.question_key,r.answer_key)] = parseFloat(r.adjustment_percent); });
+    renderPricingRules();
+  });
+}
+function renderPricingRules() {
+  var wrap = document.getElementById('pricingRulesRows');
+  if (!wrap) return;
+  var isO = CU && CU.role === 'Owner';
+  var html = '';
+  PRICING_RULE_GROUPS.forEach(function(g){
+    html += '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted,#64748B);margin:14px 0 6px">'+g.label+'</div>';
+    g.answers.forEach(function(a){
+      var id = 'pr_'+g.key+'_'+a.replace(/[^a-zA-Z0-9]/g,'_');
+      var pct = pricingRules[prKey(g.key,a)]; if (pct===undefined) pct = 0;
+      var lbl = g.answerLabel ? g.answerLabel(a) : a;
+      html += '<div class="g2" style="align-items:center;margin-bottom:8px" data-q="'+g.key+'" data-a="'+a+'"><label style="font-size:13px;font-weight:600">'+lbl+'</label><input type="number" step="0.5" min="-100" max="100" id="'+id+'" value="'+pct+'" '+(isO?'':'disabled')+'></div>';
+    });
+  });
+  wrap.innerHTML = html;
+  var btn = document.querySelector('#pg-prices .pcard:nth-child(3) .ab');
+  if (btn) btn.style.display = isO ? '' : 'none';
+}
+async function savePricingRules() {
+  if (!SB.configured()) { toast('Not connected to database','e'); return; }
+  var myPw = rn('prConfirmPw').trim();
+  if (!myPw) { toast('Enter your password to confirm','e'); return; }
+  var rows = document.querySelectorAll('#pricingRulesRows [data-q]');
+  for (var i=0;i<rows.length;i++) {
+    var q = rows[i].getAttribute('data-q'), a = rows[i].getAttribute('data-a');
+    var input = rows[i].querySelector('input');
+    var pct = parseFloat(input.value);
+    if (isNaN(pct) || pct<-100 || pct>100) { toast('Invalid % for '+q+' / '+a,'e'); return; }
+    var ok = await SB.rpc('set_pricing_rule', {p_caller_username:CU.u, p_caller_password:myPw, p_question_key:q, p_answer_key:a, p_adjustment_percent:pct});
+    if (ok!==true) { toast('Failed to save '+q+' ('+a+') — check your password','e'); return; }
+    pricingRules[prKey(q,a)] = pct;
+  }
+  document.getElementById('prConfirmPw').value = '';
+  toast('Pricing factors saved — live on sell form now');
 }
 
 // ── TEAM ─────────────────────────────────────────────────────────
