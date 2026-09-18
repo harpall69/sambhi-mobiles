@@ -76,7 +76,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
 <div id="progress"></div>
 <nav id="nav">
   <a href="/" class="nav-logo" style="display:flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#2563EB"/><rect x="10" y="6" width="16" height="24" rx="3" fill="white" opacity=".95"/><rect x="14" y="8" width="8" height="14" rx="1" fill="#2563EB" opacity=".7"/><circle cx="18" cy="26" r="1.5" fill="#2563EB"/><circle cx="24" cy="9" r="2.5" fill="#2563EB"/><circle cx="24" cy="9" r="1" fill="white"/></svg><span>Sambhi <strong style="color:#2563EB">Mobiles</strong></span></a>
-  <div class="nav-links"><a href="/" class="nl">Home</a><a href="/sell-phone" class="nl">Sell</a><a href="/buy" class="nl">Buy</a><a href="/about" class="nl">About</a><a href="/blog" class="nl active">Blog</a></div>
+  <div class="nav-links"><a href="/" class="nl">Home</a><a href="/sell-phone" class="nl">Sell</a><a href="/about" class="nl">About</a><a href="/blog" class="nl active">Blog</a></div>
   <div class="nav-right">
     <a href="#" class="nav-acct" data-guest onclick="openAuth();return false">Login</a>
     <a href="/account" class="nav-acct" data-auth style="display:none">↳ <span data-cname></span></a>
@@ -89,7 +89,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
   <button class="mob-close" onclick="closeMobNav()">✕</button>
   <a class="mob-nl" href="/" onclick="closeMobNav()">Home</a>
   <a class="mob-nl" href="/sell-phone" onclick="closeMobNav()">Sell</a>
-  <a class="mob-nl" href="/buy" onclick="closeMobNav()">Buy</a>
   <a class="mob-nl" href="/about" onclick="closeMobNav()">About</a>
   <a class="mob-nl" href="/blog" onclick="closeMobNav()">Blog</a>
   <a class="mob-nl" href="/sell-phone">Sell Now →</a>
@@ -248,7 +247,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         </div>
       </div>
       <div class="foot-col"><h4>Sell</h4><a href="/sell-phone/apple">Sell iPhone</a><a href="/sell-phone/samsung">Sell Samsung</a><a href="/sell-phone/oneplus">Sell OnePlus</a><a href="/sell-phone">Any brand</a></div>
-      <div class="foot-col"><h4>Buy</h4><a href="/buy">iPhones</a><a href="/buy">AirPods</a><a href="/buy">Apple Watch</a><a href="/buy">PlayStation</a></div>
+      
       <div class="foot-col"><h4>Company</h4><a href="/about">About Us</a><a href="/how-it-works">How It Works</a><a href="/why-choose-us">Why Choose Us</a><a href="/blog" class="active">Blog</a></div>
       <div class="foot-col"><h4>Support</h4><a href="/faq">FAQs</a><a href="/reviews">Reviews</a><a href="/contact">Contact Us</a><a href="/account">My Account</a></div>
     </div>

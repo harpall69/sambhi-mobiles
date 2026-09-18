@@ -159,7 +159,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
   <div class="nav-links">
     <a href="/" class="nl">Home</a>
     <a href="/sell-phone" class="nl">Sell</a>
-    <a href="/buy" class="nl">Buy</a>
+    
     <a href="/about" class="nl">About</a>
     <a href="/blog" class="nl">Blog</a>
   </div>
@@ -172,7 +172,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
   <button class="mob-close" onclick="closeMobNav()">✕</button>
   <a class="mob-nl" href="/" onclick="closeMobNav()">Home</a>
   <a class="mob-nl" href="/sell-phone" onclick="closeMobNav()">Sell</a>
-  <a class="mob-nl" href="/buy" onclick="closeMobNav()">Buy</a>
   <a class="mob-nl" href="/about" onclick="closeMobNav()">About</a>
   <a class="mob-nl" onclick="doLogout()">Logout</a>
 </div>
@@ -217,7 +216,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
       <button class="snav-item" onclick="goTab('security',this)"><span class="sni-icon">🔒</span>Security</button>
       <div class="snav-sep"></div>
       <a class="snav-item" href="/sell-phone"><span class="sni-icon">🚀</span>Sell a Phone →</a>
-      <a class="snav-item" href="/buy"><span class="sni-icon">🛒</span>Buy Devices →</a>
       <div class="snav-sep"></div>
       <button class="snav-item snav-logout" onclick="doLogout()"><span class="sni-icon">↩</span>Logout</button>
     </div>
@@ -262,7 +260,6 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
       <div class="section-hd">Quick Links</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <a href="/sell-phone" class="btn-p" style="font-size:11px;padding:10px 20px">💸 Sell a Phone</a>
-        <a href="/buy" class="btn-ghost" style="font-size:11px;padding:9px 20px">🛒 Browse Devices</a>
         <button onclick="goTab('profile',document.querySelectorAll('.snav-item')[3])" class="btn-ghost" style="font-size:11px;padding:9px 20px;cursor:pointer">📍 Update Address</button>
       </div>
     </div>
@@ -450,7 +447,7 @@ try{if(FIREBASE_CONFIG.apiKey!=='YOUR_FIREBASE_API_KEY'){firebase.initializeApp(
         </div>
       </div>
       <div class="foot-col"><h4>Sell</h4><a href="/sell-phone/apple">Sell iPhone</a><a href="/sell-phone/samsung">Sell Samsung</a><a href="/sell-phone/oneplus">Sell OnePlus</a><a href="/sell-phone">Any brand</a></div>
-      <div class="foot-col"><h4>Buy</h4><a href="/buy">iPhones</a><a href="/buy">AirPods</a><a href="/buy">Apple Watch</a><a href="/buy">PlayStation</a></div>
+      
       <div class="foot-col"><h4>Company</h4><a href="/about">About Us</a><a href="/how-it-works">How It Works</a><a href="/why-choose-us">Why Choose Us</a><a href="/blog">Blog</a></div>
       <div class="foot-col"><h4>Support</h4><a href="/faq">FAQs</a><a href="/reviews">Reviews</a><a href="/contact">Contact Us</a><a href="/account" class="active">My Account</a></div>
     </div>
